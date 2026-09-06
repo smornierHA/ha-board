@@ -1,0 +1,28 @@
+name: POC application contracts
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: poc-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - name: Record actual checked-out revision
+        run: git rev-parse HEAD HEAD^{tree}
+      - name: Syntax and import integrity
+        run: |
+          node --version
+          node --check src/person-history-map-card-v14.js
+          node --check src/person-rich-card-v34.js
+          python3 scripts/check_import.py
+      - name: Strict behavioral contracts — baseline currently fails
+        run: node tests/baseline.mjs

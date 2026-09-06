@@ -1,0 +1,9 @@
+{
+  "exceptions": [],
+  "package_sha256": null,
+  "profile": "home-assistant",
+  "release_commit": null,
+  "repository": "smornierHA/project-playbook",
+  "status": "prepared-not-adopted",
+  "version": "1.0.0-rc.4"
+}
