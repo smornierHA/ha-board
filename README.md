@@ -1,18 +1,20 @@
-# HA-BOARD — premier POC du socle projets
+# HA-BOARD
 
-**Profil : Home Assistant · Socle : 1.0.0-rc.4 · Livraison : HACS / Dashboard**
+**Cartes Home Assistant · Installation HACS / Dashboard · Socle projets**
 
-- [Installation, mise à jour et retour arrière HACS](docs/HACS.md)
-- [Architecture](docs/ARCHITECTURE.md) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette HA](docs/ACCEPTANCE.md) · [Roadmap](docs/ROADMAP.md)
+[![Ouvrir HA-BOARD dans HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=smornierHA&repository=ha-board&category=plugin)
 
-Le dépôt public [smornierHA/ha-board](https://github.com/smornierHA/ha-board) est accessible. Sa branche `main` a été initialisée avec un README uniquement, au commit `ff9cd91848ad8548be0b5ef6b70add8d45f56669`, puis relue. L'import complet préparé localement reste à effectuer sur branche et PR. Aucune CI produit distante, adoption du socle ou livraison produit n'est revendiquée. Preuve : `evidence/github-bootstrap-2026-09-06.json`.
+Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargement. HACS doit déjà être installé ; aucune adresse de ton installation n’est stockée dans ce dépôt. [Installation, mises à jour et retour arrière](docs/HACS.md).
 
-Commencer par AGENTS.md, PROJECT.md, docs/STATUS.md, docs/ROADMAP.md puis docs/IMPORT-AND-PR.md. La référence acquise de l'incident CARTO n'est pas réauditée.
+| Carte | Fonctions | Configuration |
+|---|---|---|
+| [Person History Map](docs/CARDS.md#person-history-map) | Historique des déplacements, filtres individuels/multiples, Tous/aucun et couleurs | Éditeur visuel natif HA ou YAML |
+| [Person Rich Card](docs/CARDS.md#person-rich-card) | Présence, dernière position connue, Memoji, batteries et charge ; compact/détail | Éditeur visuel natif HA ou YAML |
 
-src/ conserve les deux ressources HA actives sans modification ; source-manifest.json conserve leurs SHA256. examples/ contient des configurations fictives qui ne doivent jamais remplacer la configuration familiale réelle. Les assets familiaux et sauvegardes restent hors du dépôt public ; trois images HA ne sont pour l'instant que référencées, pas téléchargées.
+[Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 
-Les tests de baseline distinguent fonctions qui passent et défauts observés. Ils échouent tant que ces défauts persistent. La CI documentaire du starter contrôle uniquement les documents. Le correctif officiel Core et la future correction des cartes ont deux circuits de livraison séparés.
+Le candidat `0.1.0-rc.2` traite le chargement natif à froid et l’affichage des données GPS, ajoute les éditeurs et conserve les types YAML existants. La recette familiale de `0.1.0-rc.1` a révélé une panne intermittente : installation HACS réussie ne signifie pas fonctionnement validé. Aucun correctif du fournisseur de tuiles n’est inclus ; le chantier Core reste distinct.
 
-La révision documentaire RC.4 prépare l'adoption du socle `1.0.0-rc.4`, sans changement des sources applicatives. Les préférences sont reprises dans AGENTS.md et docs/USER-PREFERENCES.md. Les petites archives indispensables vont dans project-archives privé, après chiffrement côté client de l'archive familiale et conservation de la clé hors GitHub. Aucune archive chiffrée n'y a encore été envoyée. Le coffre NAS Volume 3 est reporté pour ces fichiers ; la sauvegarde HA exploitable exigée avant Core reste distincte. Voir docs/PRIVATE-STORAGE.md.
+Pour contribuer : [AGENTS.md](AGENTS.md), [projet](PROJECT.md), [architecture](docs/ARCHITECTURE.md), [CI](docs/CI-CONTRACT.md), [roadmap](docs/ROADMAP.md). Le socle central est privé ; ses règles applicables sont disponibles ici dans AGENTS.md. Les originaux immuables restent dans `src/`, les sources maintenues dans `src/candidate/`, le bundle HACS dans `dist/`.
 
-Sur `main`, `protected:false`, aucun check requis et aucun ruleset HA-BOARD ont été observés. L'import par PR et la vérification de la révision intégrée restent obligatoires dans le circuit de livraison ; ces règles de travail ne prétendent pas être imposées par GitHub.
+Code et exemples fictifs publics uniquement. Données et images familiales exclues. Les tests Node simulent les contrats frontend ; la CI documentaire ne valide aucune application. Les protections GitHub observées sont absentes : PR, revue et contrôle du SHA intégré sont des règles de livraison, sans verrou natif revendiqué.

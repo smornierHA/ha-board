@@ -25,7 +25,7 @@ function harness({ storage = new Map(), loader } = {}) {
       if ([...this.nodes.values()].includes(doc.activeElement)) doc.activeElement = null;
       this.html = value; this.nodes = new Map(); this.children = []; this.writes++;
       if (this.kind === 'shadow') {
-        for (const name of ['.filters', '.count', '#map', '.empty', 'ha-card']) if (value.includes(name === '#map' ? 'id="map"' : name === 'ha-card' ? '<ha-card' : `class="${name.slice(1)}`)) this.nodes.set(name, new Node(name));
+        for (const name of ['.filters', '.count', '#map', '.empty', '.retry', 'ha-card']) if (value.includes(name === '#map' ? 'id="map"' : name === 'ha-card' ? '<ha-card' : `class="${name.slice(1)}`)) this.nodes.set(name, new Node(name));
       }
       if (this.kind === '.filters') {
         if (value.includes('data-all')) this.nodes.set('[data-all]', new Node('button'));
@@ -46,8 +46,8 @@ function harness({ storage = new Map(), loader } = {}) {
     dispatchEvent(event) { this.events.push(event); return true; }
   }
   class Event { constructor(type, detail = {}) { this.type = type; Object.assign(this, detail); } }
-  const context = vm.createContext({ HTMLElement, customElements: { get: name => registry.get(name), define: (name, klass) => registry.set(name, klass) }, window: { loadCardHelpers: loader || (async () => ({ createCardElement: async config => fakeMap(config) })), dispatchEvent: event => windowEvents.push(event) }, document: doc, Event, CustomEvent: Event, history: { pushState: (_state, _title, url) => historyEntries.push(url) }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) }, console });
-  for (const file of files) vm.runInContext(source[file], context, { filename: file });
+  const context = vm.createContext({ HTMLElement, customElements: { get: name => registry.get(name), define: (name, klass) => registry.set(name, klass) }, window: { setTimeout, clearTimeout, loadCardHelpers: loader || (async () => ({ createCardElement: async config => fakeMap(config) })), dispatchEvent: event => windowEvents.push(event) }, document: doc, Event, CustomEvent: Event, history: { pushState: (_state, _title, url) => historyEntries.push(url) }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) }, console });
+  if(process.env.POC_BUNDLE)vm.runInContext(fs.readFileSync(process.env.POC_BUNDLE,'utf8'),context,{filename:'ha-board.js'});else for (const file of files) vm.runInContext(source[file], context, { filename: file });
   return { history: () => new (registry.get('person-history-map-card-v14'))(), rich: () => new (registry.get('person-rich-card-v34'))(), storage, doc, windowEvents, historyEntries, context };
 }
 
@@ -192,8 +192,63 @@ await test('R11', 'freshness', 'A future source-fix timestamp is flagged as unre
   return { ok: markup.includes('fraîcheur non fiable'), observed: { futureTimestampFlagged: markup.includes('fraîcheur non fiable') } };
 });
 
+await test('H11', 'cold-load', 'An initially unupgraded native map waits for its definition and receives latest filters and hass.', async()=>{
+  const ready=deferred(),native={localName:'hui-map-card'};
+  const env=harness({loader:async()=>({createCardElement:()=>native})});
+  env.context.customElements.whenDefined=()=>ready.promise;
+  env.context.customElements.upgrade=el=>{el.setConfig=c=>{el.config=c;};};
+  const card=env.history();card.setConfig(historyConfig());await tick();
+  const waiting=!card.map;card.shadowRoot.querySelector('.filters').querySelectorAll('[data-id]')[1].onclick();
+  const h={states:{}};card.hass=h;ready.resolve();await tick();
+  return {ok:waiting&&card.map===native&&native.hass===h&&native.config.entities.filter(x=>x.entity.startsWith('person.')).length===1,observed:{waiting,nativeMounted:card.map===native,latestHass:native.hass===h}};
+});
+await test('H12', 'cold-load', 'A timed out load can be retried; an old completion never replaces the retry.', async()=>{
+  const old=deferred();let timeout,loads=0;
+  const env=harness({loader:()=>++loads===1?old.promise:Promise.resolve({createCardElement:fakeMap})});
+  env.context.window.setTimeout=fn=>{timeout=fn;return 1;};env.context.window.clearTimeout=()=>{};
+  const card=env.history();card.setConfig(historyConfig());await tick();timeout();await tick();
+  const error=card.shadowRoot.innerHTML.includes('Réessayer');
+  card.shadowRoot.querySelector('.retry').onclick();await tick();const current=card.map;
+  old.resolve({createCardElement:fakeMap});await tick();
+  return {ok:error&&!!current&&card.map===current,observed:{error,retryMounted:!!current,lateCompletionIgnored:card.map===current}};
+});
+await test('H13', 'cold-load', 'Detaching cancels pending timeout and remounting creates a usable map.', async()=>{
+  let loads=0,cleared=0;const pending=deferred();
+  const env=harness({loader:()=>++loads===1?pending.promise:Promise.resolve({createCardElement:fakeMap})});
+  env.context.window.setTimeout=()=>1;env.context.window.clearTimeout=()=>cleared++;
+  const card=env.history();card.setConfig(historyConfig());await tick();card.disconnectedCallback();await tick();
+  const cancelled=cleared>0;card.connectedCallback();await tick();
+  return {ok:cancelled&&!!card.map,observed:{cancelled,mapAfterReconnect:!!card.map}};
+});
+await test('R12', 'location', 'Home presence retains GPS accuracy and a separately labelled geocoded address.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode'}));
+  card.hass=richHass({'person.alice':entity('home'),'sensor.example_gps':entity('Maison'),'sensor.example_geocode':entity('Ville Exemple'),'device_tracker.alice_example':entity('home',{latitude:0,longitude:0,gps_accuracy:17})});
+  const l=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
+  return {ok:l.coords&&l.precision===17&&l.geocode==='Ville Exemple'&&l.city==='Maison'&&html.includes('source distincte')&&html.includes('Dernière position connue'),observed:{coords:l.coords,precision:l.precision,presence:l.presence}};
+});
+await test('R13', 'location', 'A text sensor does not hide tracker accuracy or lend its date to geocoding.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time'}));
+  card.hass=richHass({'sensor.example_gps':entity('Ville Exemple'),'sensor.example_geocode':entity('Adresse Exemple'),'device_tracker.alice_example':entity('not_home',{latitude:0,longitude:0,gps_accuracy:1500,fix_time:'2026-09-05T10:00:00Z'})});
+  const l=card.location(card.e('person.alice'));
+  return {ok:l.coords&&l.precision===1500&&l.timestamp===Date.parse('2026-09-05T10:00:00Z')&&l.geocode==='Adresse Exemple',observed:{coords:l.coords,precision:l.precision,sourceTimestamp:l.timestamp}};
+});
+await test('E01', 'visual-editor', 'Both discoverable cards provide native form editors and unversioned names with documentation links.', async()=>{
+  const env=harness();const cards=[env.history(),env.rich()];
+  const forms=cards.map(c=>c.constructor.getConfigForm());
+  const meta=env.context.window.customCards;
+  return {ok:forms.every(f=>f.schema.length>0)&&meta.length===2&&meta.every(m=>!/[Vv]\d/.test(m.name)&&m.documentationURL),observed:{fields:forms.map(f=>f.schema.length),names:meta.map(m=>m.name)}};
+});
+await test('E02', 'visual-editor', 'History uses editable person rows; Rich exposes all entity fields, modes and source freshness settings.', async()=>{
+  const env=harness(),history=env.history().constructor.getConfigForm(),rich=env.rich().constructor.getConfigForm();
+  const people=history.schema.find(s=>s.name==='persons').selector.object;
+  const names=new Set(rich.schema.map(s=>s.name));
+  const required=['entity','mode','tracker','gps','geocoded_location','battery','battery_state','tablet_tracker','position_timestamp_entity','position_timestamp_attribute','position_stale_after_minutes','navigation_path','location_entities'];
+  return {ok:people.multiple&&people.fields.entity.required&&people.fields.name&&people.fields.color&&required.every(x=>names.has(x)),observed:{multiplePersonRows:people.multiple,missingRichFields:required.filter(x=>!names.has(x))}};
+});
+
 const report = {
   schemaVersion: 1, createdAt: new Date().toISOString(), nodeVersion: process.version,
+  bundle: process.env.POC_BUNDLE ? {path:'dist/ha-board.js',sha256:crypto.createHash('sha256').update(fs.readFileSync(process.env.POC_BUNDLE)).digest('hex')} : null,
   environment: 'Local Node vm with minimal DOM, storage and HA helper doubles; not a real browser and not Home Assistant.',
   personalData: 'Only fictional entities, names, paths, places and synthetic coordinates are used by this harness.',
   productModified: true,

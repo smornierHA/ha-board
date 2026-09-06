@@ -21,3 +21,15 @@ Les cases non exécutées ne sont pas validées par la CI documentaire ni par le
 Pour chaque livraison consigner : date/fenêtre, dépôt/PR, head/base testés, SHA intégré, checks/URLs, SHA256 artefact, versions Core/frontend, ressource chargée par client, preuve réseau/runtime, résultats par case, erreurs avant/après, limites, sauvegarde privée et retour arrière.
 
 HTTP réussi ≠ recette fonctionnelle ; capture ≠ tous les clics ; tests Node ≠ Web Components natifs HA ni rendu mobile/thème.
+
+## Retour utilisateur et reprise RC.2
+
+La recette de RC.1 est **en échec** : chargement intermittent de la carte et éditeur absent. Les captures familiales restent privées. RC.2 doit vérifier, en plus des parcours ci-dessus :
+
+- ouverture directe de Personnes dans un nouvel onglet, avant toute visite de `/map` ; plusieurs refresh à froid, attente native et bouton Réessayer après panne simulée ; navigation aller-retour ;
+- éditeur visuel des deux cartes : ajouter/modifier/supprimer/réordonner une personne, couleur, mode compact/détail et capteurs optionnels ; sauvegarder puis rouvrir ; vérifier que les clés YAML existantes non éditées sont conservées ;
+- catalogue et titres sans version ; bouton GitHub ouvre la bonne fiche HACS ;
+- présence à domicile avec coordonnées et précision disponibles, adresse séparée, absence de date de mesure, valeur ancienne/future/indisponible ; ne jamais déduire l’âge du GPS de la durée de présence ou des informations de trajet ;
+- téléchargement de la prérelease puis retour à la révision précédente dans HACS, bundle relu par SHA256 et une seule ressource active.
+
+Le harnais ajoute sept contrats aux 21 existants et exécute les 28 sur le bundle distribué. Il ne reproduit pas le rendu Lit/HA, les tuiles ou un smartphone réel.

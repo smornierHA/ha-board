@@ -20,3 +20,11 @@ Noter la release installée et sauvegarder la liste des ressources. Installer la
 Dans HACS, ouvrir HA-BOARD, choisir **Retélécharger**, sélectionner la release précédente et recharger complètement. Vérifier la bannière et la recette. Si HACS est indisponible, rétablir les deux anciennes ressources `/local` sauvegardées et désactiver `/hacsfiles/ha-board/ha-board.js`; ne jamais charger les deux générations simultanément.
 
 La CI contrôle bundle, syntaxe, empreintes et contrats simulés. Elle ne prouve ni installation HACS ni rendu réel HA.
+
+## Accès direct et canal candidat
+
+[![Ouvrir dans HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=smornierHA&repository=ha-board&category=plugin)
+
+Ce lien officiel ouvre la fiche HACS ; confirmer le téléchargement reste nécessaire. Il fonctionne aussi pour les dépôts personnalisés. Voir [My Home Assistant / HACS](https://www.hacs.xyz/docs/use/my/).
+
+Les versions `-rc.N` sont des préreleases destinées à la recette. Activer l’affichage des versions bêta du dépôt dans HACS pour les sélectionner, selon l’interface HACS installée. Un commit téléchargé depuis main n’est pas une release. Le pipeline publie seulement les candidats, après les contrats du SHA réellement intégré ; une version stable exige la recette HA documentée et une publication distincte. Les noms du catalogue restent sans version.

@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "status": "tested-locally-not-deployed",
-  "base_commit": "59dd43b4e46a6ac3e78ecdb2e54c7e4d63e441d3",
+  "status": "candidate-pending-ci-and-ha-acceptance",
+  "base_commit": "c164258e78daa85c5b3200cb7d57db2814f0f060",
   "sources": [
     {
       "path": "src/candidate/person-history-map-card-v14.js",
-      "version": "1.4.1",
-      "bytes": 8063,
-      "sha256": "d086c433fd0fcbfd5959f4723afc216156c9d62cbfe1673ba956fbac472c4d4c"
+      "version": "1.4.2",
+      "bytes": 11188,
+      "sha256": "906b9e00cda9dab687e27411829139c641f840b1fdc9ec7998e924f4683a6433"
     },
     {
       "path": "src/candidate/person-rich-card-v34.js",
-      "version": "3.4.4",
-      "bytes": 17295,
-      "sha256": "e9526d31540c3b6844b121f090fdd63eed81ef7f9b556dd69bd5b3b83aeb523e"
+      "version": "3.4.5",
+      "bytes": 20952,
+      "sha256": "66e57da3d8e2510fae625c8954f63fd2e2284246c3ba635f68080c1709a7562e"
     }
   ]
 }

@@ -22,3 +22,7 @@ Les tests utilisent uniquement des noms, identifiants, villes et coordonnées fi
 ## Candidat 1.4.1 / 3.4.4
 
 Le candidat n'utilise toujours pas `last_updated` comme heure de mesure GPS. Sans horodatage source explicitement configuré, il affiche « Fraîcheur GPS non établie ». Les coordonnées nulles, vides, booléennes, non numériques ou hors bornes sont refusées. `unknown`/`unavailable` ne réutilisent pas silencieusement des attributs conservés. `gps_accuracy` est affiché en mètres ou kilomètres. Un attribut d'horodatage source peut être nommé par `position_timestamp_attribute` et un seuil optionnel par `position_stale_after_minutes`; un horodatage futur est signalé comme non fiable. Les tests utilisent uniquement des données fictives.
+
+## RC.2 — défaut démontré par la recette
+
+`home` renvoyait immédiatement « Domicile », avant toute lecture du tracker : coordonnées et précision disponibles étaient masquées. Un capteur de texte placé avant le tracker masquait également sa précision. Le candidat lit les coordonnées séparément de la présence et conserve l’adresse géocodée comme source distincte, sans lui prêter la date du tracker. Les derniers capteurs de trajet restent affichés avec une fraîcheur non établie. Le choix de la source de l’historique natif reste inchangé.

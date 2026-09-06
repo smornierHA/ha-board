@@ -1,9 +1,9 @@
 {
-  "package_version": "0.1.0-rc.1",
+  "package_version": "0.1.0-rc.2",
   "entrypoint": "dist/ha-board.js",
-  "sha256": "bdb4eaa334febba2ce126200056067789e9605973633203ed263d7685b74c086",
+  "sha256": "79df079bdc2c752956e808df2c492791213eaebe36fe854f60bfecb0061160c8",
   "components": {
-    "person-history-map-card-v14": "1.4.1",
-    "person-rich-card-v34": "3.4.4"
+    "person-history-map-card-v14": "1.4.2",
+    "person-rich-card-v34": "3.4.5"
   }
 }
