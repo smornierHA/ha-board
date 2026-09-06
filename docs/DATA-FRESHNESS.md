@@ -18,3 +18,7 @@ La carte native reçoit actuellement `person.*`. Le champ local `map_entity` exi
 - Aucun calendrier, timer ou rafraîchissement n'est laissé actif au détachement. Un mécanisme d'âge doit évoluer même sans nouvel événement hass et être nettoyé au démontage.
 
 Les tests utilisent uniquement des noms, identifiants, villes et coordonnées fictifs. Aucun état de position familial n'est nécessaire pour démontrer ces contrats.
+
+## Candidat 1.4.1 / 3.4.4
+
+Le candidat n'utilise toujours pas `last_updated` comme heure de mesure GPS. Sans horodatage source explicitement configuré, il affiche « Fraîcheur GPS non établie ». Les coordonnées nulles, vides, booléennes, non numériques ou hors bornes sont refusées. `unknown`/`unavailable` ne réutilisent pas silencieusement des attributs conservés. `gps_accuracy` est affiché en mètres ou kilomètres. Un attribut d'horodatage source peut être nommé par `position_timestamp_attribute` et un seuil optionnel par `position_stale_after_minutes`; un horodatage futur est signalé comme non fiable. Les tests utilisent uniquement des données fictives.

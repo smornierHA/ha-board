@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "observed_at_utc": "2026-09-06T13:54:19.649Z",
+  "state": "tested-locally-not-ci-not-deployed",
+  "base_commit": "59dd43b4e46a6ac3e78ecdb2e54c7e4d63e441d3",
+  "environment": "Local Node vm with minimal DOM, storage and HA helper doubles; not a real browser and not Home Assistant.",
+  "nodeVersion": "v22.16.0",
+  "summary": {
+    "total": 21,
+    "pass": 21,
+    "fail": 0,
+    "harnessError": 0
+  },
+  "candidate_sources": [
+    {
+      "file": "person-history-map-card-v14.js",
+      "sha256": "d086c433fd0fcbfd5959f4723afc216156c9d62cbfe1673ba956fbac472c4d4c"
+    },
+    {
+      "file": "person-rich-card-v34.js",
+      "sha256": "e9526d31540c3b6844b121f090fdd63eed81ef7f9b556dd69bd5b3b83aeb523e"
+    }
+  ],
+  "privacy": "fictional test data only; separate local scan returned zero private IP/family-name/secret hits",
+  "limits": [
+    "No native HA map implementation, real history API, real tile provider or CARTO watermark is exercised.",
+    "No browser rendering, CSS layout, Memoji asset loading, mobile/desktop, light/dark theme or production acceptance is established.",
+    "GPS freshness requires a verified source-specific fix timestamp. Entity last_updated is not substituted for that timestamp.",
+    "Candidate source code is modified relative to the preserved baseline; original src/ files remain unchanged.",
+    "No Home Assistant browser acceptance, deployment, merge or production version verification is established."
+  ]
+}
