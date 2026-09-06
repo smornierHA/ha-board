@@ -1,5 +1,10 @@
 # HA-BOARD — premier POC du socle projets
 
+**Profil : Home Assistant · Socle : 1.0.0-rc.4 · Livraison : HACS / Dashboard**
+
+- [Installation, mise à jour et retour arrière HACS](docs/HACS.md)
+- [Architecture](docs/ARCHITECTURE.md) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette HA](docs/ACCEPTANCE.md) · [Roadmap](docs/ROADMAP.md)
+
 Le dépôt public [smornierHA/ha-board](https://github.com/smornierHA/ha-board) est accessible. Sa branche `main` a été initialisée avec un README uniquement, au commit `ff9cd91848ad8548be0b5ef6b70add8d45f56669`, puis relue. L'import complet préparé localement reste à effectuer sur branche et PR. Aucune CI produit distante, adoption du socle ou livraison produit n'est revendiquée. Preuve : `evidence/github-bootstrap-2026-09-06.json`.
 
 Commencer par AGENTS.md, PROJECT.md, docs/STATUS.md, docs/ROADMAP.md puis docs/IMPORT-AND-PR.md. La référence acquise de l'incident CARTO n'est pas réauditée.

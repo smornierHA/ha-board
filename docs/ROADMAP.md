@@ -16,6 +16,7 @@
 | P12 | P2 | Inventorier puis archiver versions obsolètes | Pas de suppression dans ce cycle |
 | P13 | Permanent | Retour d'expérience dans socle + registre adoption | Ajouts documentaires préparés v1.0.0-rc.4 ; maintenance existante inchangée |
 | P14 | P1 | Petite archive indispensable dans project-archives privé, chiffrée côté client, clé hors GitHub et relecture vérifiée | Dépôt privé accessible et initialisé ; original préservé, chiffrement/récupération/transfert à établir ; NAS reporté |
+| P15 | P1 | Livraison HACS Dashboard, release et rollback | Bundle `0.1.0-rc.1` préparé ; publication et recette HA restantes |
 
 
 L'amorçage des trois dépôts est prouvé dans `evidence/github-bootstrap-2026-09-06.json`. main contient les README initiaux uniquement ; aucun import complet, CI produit, adoption ou transfert d'archive n'est déduit de ces commits. Les branches ne sont pas protégées et n'imposent aucun check ; HA-BOARD n'a pas de ruleset, et l'offre actuelle refuse cette fonction aux deux dépôts privés.
