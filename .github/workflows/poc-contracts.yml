@@ -18,11 +18,17 @@ jobs:
           persist-credentials: false
       - name: Record actual checked-out revision
         run: git rev-parse HEAD HEAD^{tree}
-      - name: Syntax and import integrity
+      - name: Preserve original import and verify candidate syntax
         run: |
           node --version
           node --check src/person-history-map-card-v14.js
           node --check src/person-rich-card-v34.js
+          node --check src/candidate/person-history-map-card-v14.js
+          node --check src/candidate/person-rich-card-v34.js
           python3 scripts/check_import.py
-      - name: Strict behavioral contracts — baseline currently fails
-        run: node tests/baseline.mjs
+          python3 scripts/check_candidate.py
+      - name: Strict behavioral contracts on candidate
+        env:
+          POC_SOURCE_DIR: ${{ github.workspace }}/src/candidate
+          POC_REPORT_DIR: ${{ github.workspace }}/artifacts
+        run: node tests/contracts.mjs
