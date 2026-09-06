@@ -1,0 +1,21 @@
+{
+  "observed_at_utc": "2026-09-06T10:40:56.022279+00:00",
+  "repository": "smornierHA/hass-livebox-component",
+  "pr": 1,
+  "pr_url": "https://github.com/smornierHA/hass-livebox-component/pull/1",
+  "state": "draft-not-merged",
+  "head_sha": "196564bad3fc024d23cf34e994e40b101652c4fe",
+  "base_sha": "f5554bba97772244570ee8e0af0a61117e11ce70",
+  "tested_merge_sha": "11554c1d6daea15fd95ff2819fbf9de0c5793a93",
+  "run_id": 34027960512,
+  "job_id": 101472207347,
+  "runtime_changed": false,
+  "environment": {"homeassistant":"2026.9.1","pytest-homeassistant-custom-component":"0.13.364","aiosysbus":"1.2.4","python":"3.14.6"},
+  "checks": {"hacs":"success","hassfest":"success","static":"success","locked_environment":"success","actual_versions_assertion":"success","pytest":"failure"},
+  "pytest": {"collected":84,"passed":77,"failed":7,"seconds":6.01,"coverage_percent":56.78,"coverage_required_percent":85},
+  "other_runs": {"lint":"failure","inherited_pytest":"failure","inherited_hassfest":"success","hacs_action":"skipped","dependency_automerge":"skipped"},
+  "compatibility_validated": false,
+  "merged": false,
+  "deployed": false,
+  "required_followup": "Resolve documented failures and coverage, then revalidate actual merge revision; no rerun without change."
+}

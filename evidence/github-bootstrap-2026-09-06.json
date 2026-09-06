@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "checked_at": "2026-09-06",
+  "operation": "readme-only-bootstrap-and-readback",
+  "repositories": [
+    {"repository":"smornierHA/project-playbook","visibility":"private","permissions":{"admin":true,"maintain":true,"push":true,"pull":true},"branch":"main","commit":"55a06a66dd0a4f058bee21dbda331e13f91a4a04","tree":"c44bea4d316d90ceea3a8b529951bcd33fa5aa44","commit_date":"2026-09-06T12:07:43Z","branch_protected":false,"required_checks":{"enforcement_level":"off","contexts":[],"checks":[]},"rulesets":{"status":403,"reason":"Upgrade to GitHub Pro or make this repository public to enable this feature."},"scope":"README-only; full import, product CI, adoption and archive upload not performed"},
+    {"repository":"smornierHA/ha-board","visibility":"public","permissions":{"admin":true,"maintain":true,"push":true,"pull":true},"branch":"main","commit":"ff9cd91848ad8548be0b5ef6b70add8d45f56669","tree":"803e4c4aa0752b9f85c40fdae2f73066c117cb48","commit_date":"2026-09-06T12:08:00Z","branch_protected":false,"required_checks":{"enforcement_level":"off","contexts":[],"checks":[]},"rulesets":[],"scope":"README-only; full import, product CI, adoption and archive upload not performed"},
+    {"repository":"smornierHA/project-archives","visibility":"private","permissions":{"admin":true,"maintain":true,"push":true,"pull":true},"branch":"main","commit":"bce2c851355af670eb5e5aa62b41e1c5c4267684","tree":"71e6ecb307a81cebc8e919d5f6b013316f1ebae4","commit_date":"2026-09-06T12:08:01Z","branch_protected":false,"required_checks":{"enforcement_level":"off","contexts":[],"checks":[]},"rulesets":{"status":403,"reason":"Upgrade to GitHub Pro or make this repository public to enable this feature."},"scope":"README-only; full import, product CI, adoption and archive upload not performed"}
+  ],
+  "remaining": "Refresh main before branch/PR import; verify checks against actual integrated SHA. Manual PR discipline does not enforce GitHub branch protections."
+}

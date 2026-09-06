@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-09-06T12:49:49.728Z",
+  "nodeVersion": "v22.16.0",
+  "environment": "Local Node vm with minimal DOM, storage and HA helper doubles; not a real browser and not Home Assistant.",
+  "personalData": "Only fictional entities, names, paths, places and synthetic coordinates are used by this harness.",
+  "productModified": false,
+  "sources": [
+    {
+      "file": "person-history-map-card-v14.js",
+      "sha256": "5f7eafddc9ad338e71030d759e373d51bfc6bf384e291b26cd11e5708031c0a4"
+    },
+    {
+      "file": "person-rich-card-v34.js",
+      "sha256": "9b89f12c630750fe67000434b2ee9a9b92efab76413e83babad6a6ce17a18477"
+    }
+  ],
+  "limitations": [
+    "No native HA map implementation, real history API, real tile provider or CARTO watermark is exercised.",
+    "No browser rendering, CSS layout, Memoji asset loading, mobile/desktop, light/dark theme or production acceptance is established.",
+    "GPS freshness requires a verified source-specific fix timestamp. Entity last_updated is not substituted for that timestamp.",
+    "Rejections are captured by the harness process solely to record baseline failures; the product code is unchanged."
+  ],
+  "summary": {
+    "total": 19,
+    "pass": 7,
+    "fail": 12,
+    "harnessError": 0
+  },
+  "tests": [
+    {
+      "id": "H01",
+      "category": "preserved",
+      "contract": "History delegates to native map with configured history hours and aspect ratio.",
+      "status": "pass",
+      "observed": {
+        "type": "map",
+        "hours_to_show": 48,
+        "aspect_ratio": "4:3",
+        "auto_fit": true,
+        "fit_zones": false,
+        "cluster": false,
+        "entities": [
+          {
+            "entity": "person.alice",
+            "focus": true,
+            "name": "Alice Exemple",
+            "color": "#4269d0"
+          },
+          {
+            "entity": "person.bob",
+            "focus": true,
+            "name": "Bob Exemple",
+            "color": "#f4bd4a"
+          },
+          {
+            "entity": "zone.example_home",
+            "focus": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "H02",
+      "category": "preserved",
+      "contract": "Individual filters support multiple selections and stable entity colors.",
+      "status": "pass",
+      "observed": {
+        "afterRemove": [
+          {
+            "entity": "person.bob",
+            "focus": true,
+            "name": "Bob Exemple",
+            "color": "#f4bd4a"
+          },
+          {
+            "entity": "zone.example_home",
+            "focus": false
+          }
+        ],
+        "selectedAfterRestore": [
+          "person.bob",
+          "person.alice"
+        ]
+      }
+    },
+    {
+      "id": "H03",
+      "category": "preserved",
+      "contract": "Tous toggles all to none; the empty selection survives reload.",
+      "status": "pass",
+      "observed": {
+        "emptyPersisted": true,
+        "selectedAfterTous": [
+          "person.alice",
+          "person.bob"
+        ]
+      }
+    },
+    {
+      "id": "H04",
+      "category": "preserved",
+      "contract": "Explicit different storage keys isolate two instances.",
+      "status": "pass",
+      "observed": {
+        "selectedInSecondInstance": [
+          "person.alice",
+          "person.bob"
+        ]
+      }
+    },
+    {
+      "id": "H05",
+      "category": "regression",
+      "contract": "A later setConfig wins when native-card creations finish in reverse order.",
+      "status": "fail",
+      "observed": {
+        "configuredPersons": [
+          "person.charlie"
+        ],
+        "actuallyMountedPersons": [
+          "person.alice",
+          "person.bob"
+        ]
+      }
+    },
+    {
+      "id": "H06",
+      "category": "regression",
+      "contract": "A filter clicked during initial card creation is applied to the mounted map.",
+      "status": "fail",
+      "observed": {
+        "selected": [
+          "person.alice"
+        ],
+        "actuallyMountedPersons": [
+          "person.alice",
+          "person.bob"
+        ]
+      }
+    },
+    {
+      "id": "H07",
+      "category": "regression",
+      "contract": "Failure to load native helpers is caught and surfaced inside the card.",
+      "status": "fail",
+      "observed": {
+        "unhandledRejections": [
+          "Synthetic helper unavailable"
+        ],
+        "visibleErrorRendered": false,
+        "mapMounted": false
+      }
+    },
+    {
+      "id": "H08",
+      "category": "regression",
+      "contract": "A card detached while native-card creation is pending ignores that completion.",
+      "status": "fail",
+      "observed": {
+        "detached": true,
+        "hasDisconnectLifecycle": false,
+        "childMountedAfterDetach": true
+      }
+    },
+    {
+      "id": "H09",
+      "category": "regression",
+      "contract": "Default filter persistence is scoped to the card instance.",
+      "status": "fail",
+      "observed": {
+        "defaultStorageKey": "person-history-map-filter-v11",
+        "secondIndependentInstanceSelectedCount": 0,
+        "mitigation": "Explicit distinct storage_key per configured instance already works (H04)."
+      }
+    },
+    {
+      "id": "H10",
+      "category": "regression",
+      "contract": "Unrelated hass updates preserve the current filter DOM and keyboard focus.",
+      "status": "fail",
+      "observed": {
+        "filterButtonReplaced": true,
+        "keyboardFocusPreserved": false
+      }
+    },
+    {
+      "id": "R01",
+      "category": "preserved",
+      "contract": "Unavailable batteries stay unknown, levels are bounded, and charging remains visible.",
+      "status": "pass",
+      "observed": {
+        "unavailable": {
+          "ok": false,
+          "pct": 0
+        },
+        "upperBoundPct": 100,
+        "chargingIconInMarkup": true
+      }
+    },
+    {
+      "id": "R02",
+      "category": "preserved",
+      "contract": "Avatar, compact battery structure and Enter navigation remain available.",
+      "status": "pass",
+      "observed": {
+        "avatarReferenceRetained": true,
+        "compactBatteryMarkup": true,
+        "navigationPaths": [
+          "/lovelace/example-people"
+        ],
+        "dispatchedEvents": [
+          "location-changed"
+        ],
+        "nativeBrowserNavigationTested": false
+      }
+    },
+    {
+      "id": "R03",
+      "category": "preserved",
+      "contract": "Detail activation emits hass-more-info for the configured entity.",
+      "status": "pass",
+      "observed": {
+        "type": "hass-more-info",
+        "detail": {
+          "entityId": "person.alice"
+        },
+        "bubbles": true,
+        "composed": true
+      }
+    },
+    {
+      "id": "R04",
+      "category": "regression",
+      "contract": "Unavailable geocoding data with retained attributes is identified as unavailable.",
+      "status": "fail",
+      "observed": {
+        "sourceState": "unavailable",
+        "locationReturned": {
+          "city": "Ville Exemple",
+          "detail": "Ville Exemple",
+          "coords": true
+        },
+        "currentPositionLabelPresent": true
+      }
+    },
+    {
+      "id": "R05",
+      "category": "regression",
+      "contract": "Null coordinates do not count as valid GPS coordinates.",
+      "status": "fail",
+      "observed": {
+        "inputCoordinates": {
+          "latitude": null,
+          "longitude": null
+        },
+        "locationReturned": {
+          "city": "Hors zone",
+          "detail": "Position GPS disponible",
+          "coords": true
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "category": "regression",
+      "contract": "Coordinate values outside latitude/longitude ranges are not accepted.",
+      "status": "fail",
+      "observed": {
+        "inputCoordinates": {
+          "latitude": 999,
+          "longitude": 999
+        },
+        "locationReturned": {
+          "city": "Hors zone",
+          "detail": "Position GPS disponible",
+          "coords": true
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "category": "regression",
+      "contract": "A location with no position-specific timestamp is not labeled as a current fix.",
+      "status": "fail",
+      "observed": {
+        "positionTimestampAvailable": false,
+        "stateLastUpdatedAvailable": true,
+        "labelIsCurrentPosition": true,
+        "interpretation": "last_updated timestamps an HA state update; it does not establish the time of a GPS fix."
+      }
+    },
+    {
+      "id": "R08",
+      "category": "regression",
+      "contract": "A supplied GPS accuracy of 1500 m is exposed as location uncertainty.",
+      "status": "fail",
+      "observed": {
+        "suppliedGpsAccuracyMeters": 1500,
+        "precisionExposedInMarkup": false
+      }
+    },
+    {
+      "id": "R09",
+      "category": "regression",
+      "contract": "Unrelated hass updates preserve the focused Person Rich card DOM.",
+      "status": "fail",
+      "observed": {
+        "cardDomReplaced": true,
+        "keyboardFocusPreserved": false
+      }
+    }
+  ]
+}

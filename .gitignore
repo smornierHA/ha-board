@@ -1,0 +1,13 @@
+private/
+private-evidence/
+*.tar
+*.db
+*.db-*
+.env*
+!.env.example
+*.key
+*.pem
+node_modules/
+__pycache__/
+artifacts/
+dist/
