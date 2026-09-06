@@ -1,34 +1,57 @@
-# Étape active — candidat RC.2
+# Roadmap HA-BOARD — base v0.1.0-rc.2
 
-- Import et migration HACS terminés au commit c164258 ; ne pas les rejouer.
-- Corriger la recette en échec : chargement natif à froid, données GPS, éditeurs visuels ; catalogue, titres sans version et bouton HACS.
-- Valider les 28 contrats du bundle puis le SHA intégré ; publier la prérelease avec provenance et empreinte.
-- Installer le candidat via HACS, relever la ressource et le bundle exact, puis réaliser la recette desktop/mobile, thèmes et édition/sauvegarde. Une capture ou une CI ne valide pas tous ces parcours.
-- Reporter les exigences dans project-playbook RC.6 ; ne pas assimiler son gate documentaire/outils à la validation HA.
+La base fonctionnelle à conserver est `v0.1.0-rc.2`, commit `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`. Le présent lot consolide uniquement la documentation. Aucun code de carte, collecte familiale, fusion, publication ou déploiement.
 
-## Historique (ne constitue pas les prochaines actions)
+## Avant une éventuelle promotion stable
 
-# Roadmap active du POC
+| Priorité | Résultat attendu | Critère de fin |
+|---|---|---|
+| S1 | Version navigateur prouvée | release/SHA exécuté relevé après rechargement complet |
+| S2 | Éditeurs réels vérifiés | ouverture, modification, sauvegarde et réouverture pour les deux cartes |
+| S3 | Matrice visuelle minimale | refresh/navigation desktop + mobile, clair + sombre, résultats consignés |
+| S4 | Retour arrière éprouvé | downgrade HACS exécuté, ou fallback original exécuté et limites motivées |
+| S5 | Décision stable | revue des preuves ; nouveau SHA/tag stable distinct si décision positive |
 
-| ID | Priorité | Action / critère de fin | État |
-|---|---|---|---|
-| P01 | P1 | Collecte exacte + empreintes + rapprochement des références | Terminé localement |
-| P02 | P1 | Dépôt public HA-BOARD expurgé accessible, import sur branche/PR | Baseline commit `59dd43b`, PR #1 draft ; documentation CI verte, baseline applicative rouge attendue |
-| P03 | P1 | Besoin/architecture/fidélité/compatibilité/recette/runbook | Versionnés dans la PR #1 ; actualisation corrective en cours |
-| P04 | P1 | Contrats de régression sur exemples fictifs | Baseline 7/19 ; candidat 21/21 localement, CI corrective à exécuter |
-| P05 | P1 | Rendre CI Livebox exécutable sur HA2026.9.1 | PR Livebox #1 ouverte, commit 196564b ; tests locaux exécutables mais rouges |
-| P06 | P1 | Backup post-intervention avec Recorder + clé et reprise hors Core | À établir avant Core |
-| P07 | P1 | Correctif officiel Core MAP | Bloqué par P05/P06 ; aucun update OS/NAS/serveur Frigate |
-| P08 | P1 | Corriger cycle async/filtres/reconfiguration/DOM après import GitHub | Candidat local vert : génération async, erreur visible, detach, stockage par instance, DOM stable |
-| P09 | P1 | Dernière position connue/indisponibilité/précision | Candidat local vert : coordonnées validées, unavailable explicite, précision et fraîcheur source qualifiées |
-| P10 | P1 | Artefact lié au SHA intégré + déploiement ciblé | À faire après CI/applicatif et recette |
-| P11 | P1 | Recette /map et Personnes sur clients/thèmes/parcours | Non réalisée ; moteur capture HTTP500 |
-| P12 | P2 | Inventorier puis archiver versions obsolètes | Pas de suppression dans ce cycle |
-| P13 | Permanent | Retour d'expérience dans socle + registre adoption | Ajouts documentaires préparés v1.0.0-rc.4 ; maintenance existante inchangée |
-| P14 | P1 | Petite archive indispensable dans project-archives privé, chiffrée côté client, clé hors GitHub et relecture vérifiée | Dépôt privé accessible et initialisé ; original préservé, chiffrement/récupération/transfert à établir ; NAS reporté |
-| P15 | P1 | Livraison HACS Dashboard, release et rollback | Bundle `0.1.0-rc.1` préparé ; publication et recette HA restantes |
+Le retour utilisateur favorable général ne remplit pas automatiquement S1–S4. La stable n’est pas publiée dans ce lot.
 
+## Lots futurs issus de #6
 
-L'amorçage des trois dépôts est prouvé dans `evidence/github-bootstrap-2026-09-06.json`. main contient les README initiaux uniquement ; aucun import complet, CI produit, adoption ou transfert d'archive n'est déduit de ces commits. Les branches ne sont pas protégées et n'imposent aucun check ; HA-BOARD n'a pas de ruleset, et l'offre actuelle refuse cette fonction aux deux dépôts privés.
+### M1 — Maintenance des deux cartes du POC
 
-Étape immédiate du fil de réalisation : terminer la PR corrective au-dessus du commit baseline, obtenir la CI stricte verte, puis intégrer la correction dans la branche d'import avant revue/fusion de PR #1. Il n'y a plus de dépôt à créer. P14 ne réintroduit pas le coffre NAS comme préalable à cet import ; P06 reste une sauvegarde HA exploitable distincte avant toute mise à jour Core. RC.4 est documentaire uniquement, sources applicatives inchangées.
+- Objectif : traiter uniquement les défauts ou améliorations démontrés de Person History Map et Person Rich Card, sans réécrire la base fonctionnelle.
+- Dépendances : `v0.1.0-rc.2`, API frontend native, HACS Dashboard, types YAML existants, composants natifs réellement utilisés.
+- Sources à inventorier au démarrage : issue et captures expurgées, versions Core/frontend/HACS, ressources actives, configuration fictive équivalente, code `src/candidate`, bundle installé, CARDS/ACCEPTANCE, originaux et empreintes.
+- Invariants/recette : historique, filtres multiples et Tous/aucun, couleurs, Memoji, batteries iOS/charge, présence/localisation/précision, navigation, éditeurs, sauvegarde/réouverture, froid/retry, mobile/thèmes et plusieurs instances.
+- Migration/rollback HACS : release SemVer proportionnée depuis le SHA intégré, mise à jour avec ressource unique, version navigateur relue ; downgrade vers RC.2 ou fallback des deux originaux, sans double chargement.
+
+### M2 — Carte(s) météo
+
+- Objectif : inventorier puis intégrer le ou les composants météo réellement visés ; aucune ressource n’est choisie avant cet inventaire.
+- Dépendances : entités/providers météo observés, éventuels composants frontend, licences, assets, services et stratégie de rafraîchissement. Charger les dépendances optionnelles sans pénaliser les cartes Personnes.
+- Sources à inventorier au démarrage : dashboard/configuration expurgés, liste des ressources et versions, dépôts/licences upstream, options visuelles, usages desktop/mobile, commandes éventuelles, original de chaque composant et SHA256.
+- Invariants/recette : informations météo existantes, unités/localisation, prévisions et alertes réellement utilisées, états unavailable, éditeur visuel complet, thèmes, responsive, froid/navigation, absence d’appel ou ressource dupliqué.
+- Migration/rollback HACS : décider un composant ou groupe justifié après inventaire ; conserver les originaux, migrer une ressource à la fois, vérifier le bundle installé et permettre downgrade/fallback par composant.
+
+### M3 — Carte portail
+
+- Objectif : intégrer la carte portail en préservant affichage et commandes existantes, sans déclencher d’action physique lors d’une recette documentaire.
+- Dépendances : composant actuel, entités et scripts HA, SIP/appel, webhook `answered_by`, navigation et droits de service ; endpoints/identifiants restent hors Git.
+- Sources à inventorier au démarrage : code/original/SHA256, YAML expurgé, liste des entités/services/automatisations consommateurs, versions HA/HACS, dépendances SIP, procédures de commande manuelle et preuves privées ciblées.
+- Invariants/recette : boutons d’appel permanents, destinataires/configuration fictifs, statut/retour d’appel, confirmation et erreurs, clavier/tactile, éditeur, thèmes/mobile, commandes mockées puis essai réel séparément autorisé.
+- Migration/rollback HACS : release isolée, configuration/endpoints injectés hors bundle, ressource unique, vérification sans commande réelle puis recette autorisée ; downgrade ou réactivation de l’original avec empreinte.
+
+### M4 — Carte garage
+
+- Objectif : intégrer la carte garage sans altérer les garde-fous des ouvertures ni les retours d’état.
+- Dépendances : composant actuel, entités porte/mouvement/allée, scripts/services, permissions et protections contre double commande.
+- Sources à inventorier au démarrage : original/SHA256, configuration expurgée, consommateurs, états et transitions, icônes/assets/licences, version HA/HACS et procédure de récupération.
+- Invariants/recette : feedback mouvement orange, dernière personne si source fiable, icône allée, états inconnu/indisponible, commandes protégées/idempotentes, éditeur, mobile/thèmes ; tests simulés avant toute commande réelle explicitement autorisée.
+- Migration/rollback HACS : release par composant, une ressource active, vérifier version et transitions ; downgrade ou restauration de l’original/configuration sauvegardée, puis contrôle d’état sans action physique non mandatée.
+
+## Règles communes aux lots
+
+Préserver originaux et SHA256 avant modification, données privées hors Git, exemples fictifs, identités et fonctions existantes. Chaque carte conserve éditeur visuel, catalogue, nom sans version, `documentationURL` et bouton HACS. Tester le bundle réellement installé, les dépendances optionnelles et l’absence de doublons/imports manquants. Release/artefact proviennent du SHA intégré et chaque migration dispose d’un rollback ciblé.
+
+Les lots sont séparés par composant ou groupe justifié. Un ajout de carte appelle normalement une version mineure ; un correctif compatible peut être un patch. La décision finale suit le delta réel. La maintenance mensuelle du socle existe déjà et n’est pas dupliquée.
+
+Le chantier MAP/Core, Livebox (`smornierHA/hass-livebox-component`, branche `livebox-l2.17c`), NAS et Frigate restent séparés.
