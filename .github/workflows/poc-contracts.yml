@@ -38,3 +38,23 @@ jobs:
           git diff --exit-code -- dist/ha-board.js dist/manifest.json
           node --check dist/ha-board.js
           node tests/bundle-smoke.mjs
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          POC_BUNDLE="$PWD/dist/ha-board.js" POC_SOURCE_DIR="$PWD/src/candidate" POC_REPORT_DIR="$PWD/artifacts/bundle" node tests/contracts.mjs
+      - name: Project documentation
+        run: python3 scripts/check_project_docs.py
+  candidate-release:
+    needs: contracts
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Publish candidate from the tested integrated SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_candidate.py

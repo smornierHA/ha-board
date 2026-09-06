@@ -48,3 +48,6 @@ Les fonctions préservées sont vérifiées au niveau contrat : délégation à 
 - Aucune modification du produit, aucun CI distant, merge, publication, déploiement ou contrôle de version réellement chargée n'est établi par ce dossier.
 
 Les sources par défaut sont src/. La sortie par défaut est artifacts/ (ignorée par Git). evidence/ conserve le relevé daté initial, sans réécriture par les futurs tests.
+
+## Régressions RC.2 sur l’artefact distribué
+28 contrats au total : sept ajouts couvrent le composant natif non défini à froid, délai/retry, détachement/remontage, GPS à domicile, séparation géocodage/précision et schémas des deux éditeurs. `POC_BUNDLE="$PWD/dist/ha-board.js" POC_SOURCE_DIR="$PWD/src/candidate" node tests/contracts.mjs` exécute ces contrats sur le bundle HACS. Quatre tests Python refusent publication depuis PR, mauvais SHA, version stable automatique et artefact modifié. Cela ne prouve pas le rendu réel des formulaires HA.

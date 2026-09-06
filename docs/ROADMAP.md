@@ -1,3 +1,13 @@
+# Étape active — candidat RC.2
+
+- Import et migration HACS terminés au commit c164258 ; ne pas les rejouer.
+- Corriger la recette en échec : chargement natif à froid, données GPS, éditeurs visuels ; catalogue, titres sans version et bouton HACS.
+- Valider les 28 contrats du bundle puis le SHA intégré ; publier la prérelease avec provenance et empreinte.
+- Installer le candidat via HACS, relever la ressource et le bundle exact, puis réaliser la recette desktop/mobile, thèmes et édition/sauvegarde. Une capture ou une CI ne valide pas tous ces parcours.
+- Reporter les exigences dans project-playbook RC.6 ; ne pas assimiler son gate documentaire/outils à la validation HA.
+
+## Historique (ne constitue pas les prochaines actions)
+
 # Roadmap active du POC
 
 | ID | Priorité | Action / critère de fin | État |

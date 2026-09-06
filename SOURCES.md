@@ -50,3 +50,10 @@ Les conclusions acquises sur CARTO ne sont pas un nouveau déploiement. Les date
 ## Rafraîchissement ciblé RC.4 — accès GitHub
 
 Les constats initiaux d’inaccessibilité/protections non vérifiables sont historiques. Les trois dépôts sont maintenant accessibles et leurs README/main vérifiés ; tous non protégés, sans check requis. ha-board rulesets vide ; project-playbook et project-archives privés : API rulesets 403 avec exigence GitHub Pro. Preuve : evidence/github-bootstrap-2026-09-06.json. Cette reprise ne rafraîchit pas HA/Livebox/Frigate et ne modifie aucun JS produit.
+
+## Sources ciblées RC.2 produit — 6 septembre 2026
+
+- [Chargement différé natif, frontend 20260729.7](https://github.com/home-assistant/frontend/blob/20260729.7/src/panels/lovelace/create-element/create-element-base.ts) : un élément peut précéder sa méthode setConfig ; whenDefined et upgrade sont nécessaires.
+- [Éditeur natif du même frontend](https://github.com/home-assistant/frontend/blob/20260729.7/src/panels/lovelace/editor/card-editor/hui-card-element-editor.ts) et [API graphique documentée](https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card/#using-the-built-in-form-editor).
+- [Sélecteurs HA](https://www.home-assistant.io/docs/blueprint/selectors/#object-selector) : liste structurée de personnes ; [bouton HACS officiel](https://www.hacs.xyz/docs/use/my/).
+- HA-MCP : le fichier HACS installé correspond octet pour octet au bundle du commit c164258 ; une seule ressource active. Les captures utilisateur montrent un échec de recette. Seul ce constat expurgé est public.

@@ -1,3 +1,13 @@
+# Point courant — recette HACS et candidat RC.2
+
+Cette section prime sur les notes historiques ci-dessous. Le 6 septembre 2026, main `c164258e78daa85c5b3200cb7d57db2814f0f060` est installé via HACS : bundle SHA256 `bdb4eaa334febba2ce126200056067789e9605973633203ed263d7685b74c086`, relu identique. Une seule ressource active. La recette utilisateur est **en échec** : carte intermittente et éditeur absent ; présence à domicile masquant les données GPS.
+
+Le candidat `0.1.0-rc.2` (History 1.4.2, Rich 3.4.5) attend la définition native, borne et annule le chargement, propose Réessayer, ajoute les deux formulaires visuels, les noms sans version et le catalogue/bouton HACS. Présence, coordonnées/précision et adresse géocodée sont séparées. 28 contrats simulés sur sources et bundle ; la preuve CI et la livraison figurent dans la PR correspondante. La recette HA RC.2 reste à réaliser. Le pipeline main ne publie que des préreleases après le gate du SHA intégré, jamais de version stable automatique.
+
+Originaux `src/` conservés pour le retour arrière. Core observé 2026.8.3 ; aucun update système inclus. L’archive privée reste distincte.
+
+## Historique conservé (statuts remplacés par le point courant)
+
 # État vérifiable — 6 septembre 2026
 
 | Étape | État | Preuve |
