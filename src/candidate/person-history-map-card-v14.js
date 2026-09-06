@@ -3,8 +3,8 @@ class PersonHistoryMapCardV14 extends HTMLElement{
   static getConfigForm(){
     const text=name=>({name,selector:{text:{}}});
     return {schema:[text('title'),text('subtitle'),{name:'persons',required:true,selector:{object:{multiple:true,label_field:'name',description_field:'entity',fields:{
-      entity:{name:'Personne / source de l’historique',required:true,selector:{entity:{filter:{domain:['person','device_tracker']}}}},
-      name:{name:'Nom affiché',selector:{text:{}}},color:{name:'Couleur CSS (ex. #4269d0)',selector:{text:{}}}
+      entity:{label:'Personne / source de l’historique',required:true,selector:{entity:{filter:{domain:['person','device_tracker']}}}},
+      name:{label:'Nom affiché',selector:{text:{}}},color:{label:'Couleur CSS (ex. #4269d0)',selector:{text:{}}}
     }}}},{name:'hours_to_show',selector:{number:{min:1,max:168,step:1,mode:'box'}}},text('aspect_ratio'),
     {name:'auto_fit',selector:{boolean:{}}},{name:'fit_zones',selector:{boolean:{}}},
     {name:'zone_entity',selector:{entity:{filter:{domain:'zone'}}}},text('storage_key')],
