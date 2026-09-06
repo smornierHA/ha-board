@@ -2,8 +2,8 @@
   "exceptions": [],
   "package_sha256": null,
   "profile": "home-assistant",
-  "release_commit": null,
+  "release_commit": "34d99317a6bc1906ab6597aa9f19a3b8e10c39c6",
   "repository": "smornierHA/project-playbook",
-  "status": "prepared-not-adopted",
-  "version": "1.0.0-rc.4"
+  "status": "partially-adopted-ha-requirements",
+  "version": "1.0.0-rc.6"
 }

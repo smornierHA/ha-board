@@ -1,46 +1,23 @@
-# Point courant — recette HACS et candidat RC.2
+# État courant — 6 septembre 2026
 
-Cette section prime sur les notes historiques ci-dessous. Le 6 septembre 2026, main `c164258e78daa85c5b3200cb7d57db2814f0f060` est installé via HACS : bundle SHA256 `bdb4eaa334febba2ce126200056067789e9605973633203ed263d7685b74c086`, relu identique. Une seule ressource active. La recette utilisateur est **en échec** : carte intermittente et éditeur absent ; présence à domicile masquant les données GPS.
+La première version HACS est fonctionnelle selon le retour général de l’utilisateur. Cette appréciation conserve `v0.1.0-rc.2` comme base ; elle ne valide pas implicitement chaque essai mobile, thème, éditeur ou retour arrière.
 
-Le candidat `0.1.0-rc.2` (History 1.4.2, Rich 3.4.5) attend la définition native, borne et annule le chargement, propose Réessayer, ajoute les deux formulaires visuels, les noms sans version et le catalogue/bouton HACS. Présence, coordonnées/précision et adresse géocodée sont séparées. 28 contrats simulés sur sources et bundle ; la preuve CI et la livraison figurent dans la PR correspondante. La recette HA RC.2 reste à réaliser. Le pipeline main ne publie que des préreleases après le gate du SHA intégré, jamais de version stable automatique.
-
-Originaux `src/` conservés pour le retour arrière. Core observé 2026.8.3 ; aucun update système inclus. L’archive privée reste distincte.
-
-## Historique conservé (statuts remplacés par le point courant)
-
-# État vérifiable — 6 septembre 2026
-
-| Étape | État | Preuve |
+| Étape | État prouvé | Référence |
 |---|---|---|
-| Sources de départ lues, archive extraite | Terminé | analyse-map-socle et candidate-original ; MANIFEST/SHA256 contrôlés |
-| Collecte POC | Terminé | source-manifest.json : 6 877 et 13 553 octets, SHA256 ; 8 cartes, 42 ressources, vue Personnes |
-| Import expurgé POC | Commit baseline GitHub créé, PR #1 draft | `59dd43b4e46a6ac3e78ecdb2e54c7e4d63e441d3` ; originaux `src/` intacts, exemples fictifs |
-| Tests baseline originaux | Exécutés localement et en CI, en échec attendu | 7/19 passent, 12 défauts ; run applicatif import `34035457379` rouge, intégrité/syntaxe réussies |
-| GitHub : accès et amorçage | Terminé pour les trois dépôts | evidence/github-bootstrap-2026-09-06.json ; main README uniquement, SHAs relus |
-| Import HA-BOARD / PR / CI | PR #1 draft ouverte ; non fusionnée | Documents run `34035457401` réussi ; baseline applicative rouge attendue ; `main` inchangé |
-| Protections GitHub | Absentes au contrôle | protected:false et checks requis vides ; HA-BOARD rulesets vides ; privés rulesets HTTP 403 lié à l’offre |
-| Archive privée du POC | Original conservé, non envoyé sur GitHub | 19 964 octets ; SHA256 dans docs/PRIVATE-STORAGE.md ; chiffrement et récupération de clé hors GitHub à établir |
-| Correctifs cartes | Candidat 1.4.1 / 3.4.4 testé localement, non déployé | `src/candidate/`; 21/21 contrats stricts verts ; originaux `src/` et SHA baseline inchangés |
-| Frigate HA | 5.15.6 déjà chargé | Référence Frigate R2.6 + préconditions actuelles ; ne pas rejouer |
-| Livebox | Fork 2.5.7 chargé | Témoin identique au head f5554bb ; PR #1 (196564b) répare le harness : 77/84 tests locaux, 7 échecs et couverture insuffisante |
-| Core MAP | 2026.8.3 ; 2026.9.1 non installé ici | Compatibilité Livebox cible et reprise indépendante non prouvées |
-| Recette production | Non réalisée | Candidat non chargé dans HA ; /map, Personnes, refresh, mobile/desktop et thèmes restent à vérifier |
+| Code intégré | Fusionné sur `main` | `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`, arbre `537ce93b8d97e2586530c5418fb846137992c441` |
+| Contrats | CI intégrée réussie | run `34044344961` ; 28/28 sur sources et bundle, quatre gates publication, intégrité/syntaxe/docs |
+| Candidate | Publiée | prérelease `v0.1.0-rc.2` sur le SHA intégré |
+| Artefact | Relu | `ha-board.js`, 32 195 octets, SHA256 `79df079bdc2c752956e808df2c492791213eaebe36fe854f60bfecb0061160c8` |
+| Installation HACS | Déployée et relue | `installed_version=v0.1.0-rc.2`, `pending_upgrade=false`; fichier HA identique à l’artefact |
+| Ressource frontend | Unique | `/hacsfiles/ha-board/ha-board.js?hacstag=13590703610102`; aucune inscription `/local` concurrente |
+| Originaux | Préservés | History SHA256 `5f7eafddc9ad338e71030d759e373d51bfc6bf384e291b26cd11e5708031c0a4`; Rich SHA256 `9b89f12c630750fe67000434b2ee9a9b92efab76413e83babad6a6ce17a18477` |
+| Retour utilisateur | Favorable général | première version HACS jugée fonctionnelle et conservée comme base |
+| Stable | Non promue | preuves ciblées restantes dans ACCEPTANCE ; aucune publication stable demandée |
 
-Les observations pré-déploiement ne prouvent pas une livraison. Le code d'origine est conservé intact et la baseline rouge est intentionnellement exposée, sans masquer ses échecs.
+Le passage de `c164258` à `v0.1.0-rc.2` a été exécuté via HACS. Le fallback par réactivation des deux ressources originales est documenté et les fichiers sont préservés ; le downgrade vers une release HACS antérieure n’a pas été exécuté.
 
-CI Livebox réellement exécutée dans le même cycle : run 34027960512, révision de combinaison 11554c1d6daea15fd95ff2819fbf9de0c5793a93, 77 tests réussis/7 échecs, couverture 56,78%/85. HACS/Hassfest/statique et assertion des versions réussis ; pytest et lint restent en échec. PR #1 en brouillon, ni fusion ni déploiement. Preuve : evidence/livebox-ci-2026-09-06.json.
+Les contrats simulés et la CI ne prouvent pas le rendu Home Assistant. Les résultats détaillés non fournis par l’utilisateur restent « non établis », notamment version exécutée par le navigateur, édition/sauvegarde/réouverture pour les deux cartes, refresh/navigation à froid répétés, mobile/desktop, clair/sombre et downgrade HACS.
 
-RC.2 historique, remplacée pour la conservation par RC.4 : HA-BOARD public avec données privées hors Git, socle privé, notifications de sources uniquement si nécessaires et prompt copiable avec destination/niveau. Canal de sauvegarde Volume 3 non accessible : procédure prête, aucune écriture NAS. Les résultats produit ci-dessus restent ceux du cycle initial ; ils ne sont pas requalifiés par les contrôles documentaires RC.2.
+HA-BOARD applique les exigences HA de RC.6 (éditeurs visuels, catalogue, noms sans version, bouton et livraison HACS). Cela constitue une adoption partielle bornée, pas l’adoption complète de toutes les règles du socle.
 
-RC.3 historique : préférence PowerShell ajoutée et assistant de configuration du coffre préparé. Cette voie NAS est désormais reportée pour les petites archives ; ne pas demander de la relancer. Aucune copie NAS ni nouvelle preuve applicative n’est revendiquée.
-
-
-RC.4 : le 6 septembre 2026, project-playbook privé, ha-board public et project-archives privé sont accessibles avec droits d'administration et d'écriture. Leurs branches main contiennent uniquement les README initiaux, aux SHA relus `55a06a66dd0a4f058bee21dbda331e13f91a4a04`, `ff9cd91848ad8548be0b5ef6b70add8d45f56669` et `bce2c851355af670eb5e5aa62b41e1c5c4267684`. La création n'est plus une action utilisateur attendue. Les protections disponibles sont consignées dans la preuve d'amorçage ; l'initialisation ne prouve aucune CI produit ni adoption.
-
-La conservation des petites archives indispensables passe par project-archives privé, après chiffrement côté client de l'archive familiale et conservation de la clé hors GitHub. L'archive originale reste identique ; aucune enveloppe chiffrée n'a été envoyée. La sauvegarde HA exploitable reste distincte et exigée avant Core. RC.4 modifie uniquement les documents : les sources app et résultats applicatifs du cycle initial ne sont pas requalifiés.
-
-Prochaine étape côté assistant dans le fil de réalisation : importer les préparatifs expurgés sur branches et PR depuis les main vérifiées, puis poursuivre les contrôles et corrections accessibles. Aucune création GitHub ni configuration NAS n'est nécessaire pour cet import.
-
-## Correctif candidat au-dessus de la baseline
-
-Le commit baseline `59dd43b` reste la référence immuable des sources v1.4.0/v3.4.3. La branche `fix/geolocation-reliability` est prévue au-dessus de ce commit : le candidat conserve les tags/classes `v14`/`v34` pour éviter une migration de configuration, mais porte des versions de ressource `1.4.1` et `3.4.4`. Les SHA256 candidats sont dans `candidate-manifest.json`. Les 21 contrats locaux couvrent les 12 défauts initiaux plus deux cas de fraîcheur (position ancienne avec horodatage source explicite et horodatage futur non fiable). Cette preuve reste un harnais Node simulé, pas une recette HA.
+Aucun changement Core, OS, NAS, Livebox ou Frigate n’appartient à ce lot. Les états d’import RC.4 et de RC.1 en échec sont historiques et ne remplacent pas ce point courant.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "candidate-pending-ci-and-ha-acceptance",
+  "status": "released-installed-candidate-pending-detailed-ha-acceptance",
   "base_commit": "c164258e78daa85c5b3200cb7d57db2814f0f060",
   "sources": [
     {
