@@ -10,4 +10,6 @@ private-evidence/
 node_modules/
 __pycache__/
 artifacts/
-dist/
+dist/*
+!dist/ha-board.js
+!dist/manifest.json

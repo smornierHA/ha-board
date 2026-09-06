@@ -32,3 +32,9 @@ jobs:
           POC_SOURCE_DIR: ${{ github.workspace }}/src/candidate
           POC_REPORT_DIR: ${{ github.workspace }}/artifacts
         run: node tests/contracts.mjs
+      - name: Build and test HACS entrypoint
+        run: |
+          python3 scripts/build_hacs.py
+          git diff --exit-code -- dist/ha-board.js dist/manifest.json
+          node --check dist/ha-board.js
+          node tests/bundle-smoke.mjs
