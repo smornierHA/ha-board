@@ -57,3 +57,11 @@ Les constats initiaux d’inaccessibilité/protections non vérifiables sont his
 - [Éditeur natif du même frontend](https://github.com/home-assistant/frontend/blob/20260729.7/src/panels/lovelace/editor/card-editor/hui-card-element-editor.ts) et [API graphique documentée](https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card/#using-the-built-in-form-editor).
 - [Sélecteurs HA](https://www.home-assistant.io/docs/blueprint/selectors/#object-selector) : liste structurée de personnes ; [bouton HACS officiel](https://www.hacs.xyz/docs/use/my/).
 - HA-MCP : le fichier HACS installé correspond octet pour octet au bundle du commit c164258 ; une seule ressource active. Les captures utilisateur montrent un échec de recette. Seul ce constat expurgé est public.
+
+## Sources ciblées #8 — 7 septembre 2026
+
+- [Type et flux historiques, frontend `20260729.7`](https://github.com/home-assistant/frontend/blob/20260729.7/src/data/history.ts) : `person` et `device_tracker` conservent les attributs dans les états compressés ; `lu` reste une mise à jour HA, pas une date GPS démontrée.
+- [`hui-map-card` du même frontend](https://github.com/home-assistant/frontend/blob/20260729.7/src/panels/lovelace/cards/hui-map-card.ts) : l’historique est réduit à `point` et `timestamp` avant transmission au composant cartographique.
+- [`ha-map` du même frontend](https://github.com/home-assistant/frontend/blob/20260729.7/src/components/map/ha-map.ts) : `HaMapPathPoint` n’expose pas d’adresse et la bulle est calculée en interne avec nom et heure, sans callback public.
+
+Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6ed5de4`, sont ajoutées parce qu’elles déterminent directement la faisabilité de U3. Elles remplacent toute supposition selon laquelle le wrapper pourrait enrichir la bulle native par une simple option. Aucun changement de source n’est requis pour U1/U2.

@@ -1,11 +1,12 @@
-# HA-BOARD 0.1.0-rc.2
+# HA-BOARD 0.1.1-rc.1
 
 Candidat de recette, pas une version stable.
 
-- Corrige le chargement à froid du composant map natif : attente de définition, délai borné, annulation et Réessayer.
-- Ajoute l’éditeur visuel natif aux deux cartes, les liens de documentation et les noms sans version.
-- Sépare présence HA, coordonnées/précision du tracker et adresse géocodée. La fraîcheur inconnue reste explicitement inconnue.
-- Documente toutes les cartes et fournit le bouton d’ouverture HACS depuis GitHub.
-- Conserve les types YAML, originaux, filtres, couleurs, Memoji, batteries iOS, charge et navigation.
+- Affiche la zone HA nommée, sinon une ville structurée ou extraite prudemment, dans Person Rich compact et détail.
+- Ne transforme plus la durée hors domicile en temps passé dans la ville affichée.
+- Allège « Dernière position connue » : zone/ville et adresse en principal ; coordonnées, précision, source et fraîcheur dans un détail accessible.
+- Sépare les adresses explicitement anciennes ou incohérentes au lieu de les fusionner avec la position.
+- Ajoute les options visuelles de date propre et de seuil d’ancienneté de l’adresse géocodée.
+- Conserve les types YAML, originaux, historique natif, filtres, couleurs, Memoji, batteries iOS, charge et navigation.
 
-28 contrats simulés passent sur les sources et sur le bundle ; recette HA mobile/desktop, thèmes, sauvegarde/réouverture des éditeurs et mise à jour/retour arrière restent à prouver. Aucun update Core, OS, NAS, Livebox ou serveur Frigate n’est inclus.
+L’adresse des points historiques n’est pas incluse : le frontend ciblé n’expose pas de point d’extension public pour enrichir ces bulles. Un adaptateur borné, dédupliqué et annulable est testé séparément sur données fictives, sans appel réseau. La recette HA mobile/desktop, thèmes, détail, sauvegarde/réouverture des éditeurs et mise à jour/retour arrière reste à prouver. Aucun update Core, OS, NAS, Livebox ou serveur Frigate n’est inclus.

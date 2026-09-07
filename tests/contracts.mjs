@@ -189,7 +189,7 @@ await test('R11', 'freshness', 'A future source-fix timestamp is flagged as unre
   card.setConfig(richConfig({ position_timestamp_attribute: 'fix_time' }));
   card.hass = richHass({ 'device_tracker.alice_example': entity('not_home', { latitude: 0, longitude: 0, fix_time: futureFix }) });
   const markup = card.shadowRoot.innerHTML;
-  return { ok: markup.includes('fraîcheur non fiable'), observed: { futureTimestampFlagged: markup.includes('fraîcheur non fiable') } };
+  return { ok: markup.includes('Date non fiable') && markup.includes('Horodatage de position futur'), observed: { futureTimestampFlagged: markup.includes('Date non fiable') } };
 });
 
 await test('H11', 'cold-load', 'An initially unupgraded native map waits for its definition and receives latest filters and hass.', async()=>{
@@ -224,13 +224,65 @@ await test('R12', 'location', 'Home presence retains GPS accuracy and a separate
   const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode'}));
   card.hass=richHass({'person.alice':entity('home'),'sensor.example_gps':entity('Maison'),'sensor.example_geocode':entity('Ville Exemple'),'device_tracker.alice_example':entity('home',{latitude:0,longitude:0,gps_accuracy:17})});
   const l=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
-  return {ok:l.coords&&l.precision===17&&l.geocode==='Ville Exemple'&&l.city==='Maison'&&html.includes('source distincte')&&html.includes('Dernière position connue'),observed:{coords:l.coords,precision:l.precision,presence:l.presence}};
+  return {ok:l.coords&&l.precision===17&&l.geocode==='Ville Exemple'&&l.city==='Maison'&&html.includes('Ville Exemple')&&html.includes('Dernière position connue'),observed:{coords:l.coords,precision:l.precision,presence:l.presence}};
 });
 await test('R13', 'location', 'A text sensor does not hide tracker accuracy or lend its date to geocoding.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time'}));
   card.hass=richHass({'sensor.example_gps':entity('Ville Exemple'),'sensor.example_geocode':entity('Adresse Exemple'),'device_tracker.alice_example':entity('not_home',{latitude:0,longitude:0,gps_accuracy:1500,fix_time:'2026-09-05T10:00:00Z'})});
   const l=card.location(card.e('person.alice'));
   return {ok:l.coords&&l.precision===1500&&l.timestamp===Date.parse('2026-09-05T10:00:00Z')&&l.geocode==='Adresse Exemple',observed:{coords:l.coords,precision:l.precision,sourceTimestamp:l.timestamp}};
+});
+await test('R14', 'location', 'A named HA zone wins over city and address candidates in compact and detail headers.', async()=>{
+  const env=harness(),compact=env.rich();compact.setConfig(richConfig({mode:'compact',geocoded_location:'sensor.example_geocode'}));
+  compact.hass=richHass({'person.alice':entity('Bureau 2',{friendly_name:'Alice Exemple'}),'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,city:'Ville Tracker'}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Géocodée, France')});
+  const location=compact.location(compact.e('person.alice')),compactHtml=compact.shadowRoot.innerHTML;
+  const detail=env.rich();detail.setConfig(richConfig({geocoded_location:'sensor.example_geocode'}));detail.hass=compact.h;
+  return {ok:location.city==='Bureau 2'&&compactHtml.includes('Bureau 2')&&detail.shadowRoot.innerHTML.includes('Bureau 2'),observed:{city:location.city,compactHeader:compactHtml.includes('Bureau 2'),detailHeader:detail.shadowRoot.innerHTML.includes('Bureau 2')}};
+});
+await test('R15', 'location', 'A structured geocoded city replaces the old Hors zone fallback when tracker coordinates exist.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({mode:'compact',geocoded_location:'sensor.example_geocode'}));
+  card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Texte, France',{city:'Ville Structurée'})});
+  const location=card.location(card.e('person.alice'));
+  return {ok:location.city==='Ville Structurée'&&!card.shadowRoot.innerHTML.includes('Hors zone'),observed:{city:location.city,oldFallbackVisible:card.shadowRoot.innerHTML.includes('Hors zone')}};
+});
+await test('R16', 'location', 'City extraction is conservative and never returns a street, country or coordinates.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig());
+  const values={address:card.city('10 rue Exemple, 75001 Ville Exemple, France'),street:card.city('10 rue Exemple'),country:card.city('France'),coordinates:card.city('48.50000, 2.30000')};
+  return {ok:values.address==='Ville Exemple'&&values.street===null&&values.country===null&&values.coordinates===null,observed:values};
+});
+await test('R17', 'location', 'Away-from-home duration is not presented as time spent in the displayed city.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({mode:'compact',duration:'sensor.example_duration',geocoded_location:'sensor.example_geocode'}));
+  card.hass=richHass({'sensor.example_duration':entity('depuis 2 h'),'sensor.example_geocode':entity('75001 Ville Exemple'),'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3})});
+  return {ok:card.location(card.e('person.alice')).city==='Ville Exemple'&&!card.shadowRoot.innerHTML.includes('2 h'),observed:{markupContainsAwayDuration:card.shadowRoot.innerHTML.includes('2 h')}};
+});
+await test('R18', 'location-detail', 'The regular last-position view shows city and address; coordinates and quality stay in native details.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode'}));
+  card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,gps_accuracy:12,city:'Ville Exemple'}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Exemple, France',{city:'Ville Exemple'})});
+  const html=card.shadowRoot.innerHTML,regular=html.split('<details class="quality">')[0];
+  return {ok:regular.includes('Ville Exemple')&&regular.includes('10 rue Exemple')&&!regular.includes('48.50000')&&html.includes('<details class="quality">')&&html.includes('48.50000')&&html.includes('Précision ±12 m'),observed:{regularCoordinatesVisible:regular.includes('48.50000'),detailsPresent:html.includes('<details class="quality">')}};
+});
+await test('R19', 'location-detail', 'An explicitly older geocoded address is not merged with a newer position.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time',geocoded_timestamp_attribute:'address_time'}));
+  card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,city:'Ville Exemple',fix_time:'2026-09-07T10:00:00Z'}),'sensor.example_geocode':entity('10 rue Ancienne, 75001 Ville Exemple, France',{city:'Ville Exemple',address_time:'2026-09-07T09:00:00Z'})});
+  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML,regular=html.split('<details class="quality">')[0];
+  return {ok:location.addressSeparated&&location.separationReason.includes('plus ancienne')&&regular.includes('Adresse non rapprochée')&&!regular.includes('10 rue Ancienne')&&html.includes('10 rue Ancienne'),observed:{addressSeparated:location.addressSeparated,reason:location.separationReason}};
+});
+await test('R20', 'location-detail', 'Unknown and unavailable sources yield a sober unavailable location without retained attributes.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode'}));
+  card.hass=richHass({'person.alice':entity('unknown'),'device_tracker.alice_example':entity('unavailable',{latitude:48.5,longitude:2.3,city:'Ville Retenue'}),'sensor.example_geocode':entity('unavailable',{formatted_address:'Adresse Retenue'})});
+  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
+  return {ok:location.status==='unavailable'&&location.city==='Localisation inconnue'&&!html.includes('Ville Retenue')&&!html.includes('Adresse Retenue')&&html.includes('Indisponible'),observed:{status:location.status,city:location.city}};
+});
+await test('R21', 'location-detail', 'Geocoded timestamp options are visually editable and the quality disclosure is keyboard-native.', async()=>{
+  const env=harness(),card=env.rich();card.setConfig(richConfig());card.hass=richHass();
+  const names=new Set(card.constructor.getConfigForm().schema.map(item=>item.name)),html=card.shadowRoot.innerHTML;
+  return {ok:names.has('geocoded_timestamp_entity')&&names.has('geocoded_timestamp_attribute')&&names.has('geocoded_stale_after_minutes')&&html.includes('<details class="quality">')&&html.includes('<summary>Qualité'),observed:{editorFields:[...names].filter(name=>name.startsWith('geocoded_')),nativeDetails:html.includes('<details class="quality">')}};
+});
+await test('R22', 'location-detail', 'A dated old address stays separate from a current named zone even without a GPS timestamp.', async()=>{
+  const env=harness(),card=env.rich(),oldAddress=new Date(Date.now()-120*60000).toISOString();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',geocoded_timestamp_attribute:'address_time',geocoded_stale_after_minutes:30}));
+  card.hass=richHass({'person.alice':entity('Bureau 2',{friendly_name:'Alice Exemple'}),'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3}),'sensor.example_geocode':entity('10 rue Ancienne, 75001 Ville Exemple, France',{address_time:oldAddress})});
+  const location=card.location(card.e('person.alice'));
+  return {ok:location.city==='Bureau 2'&&location.addressSeparated&&location.separationReason.includes('zone actuelle'),observed:{city:location.city,addressSeparated:location.addressSeparated,reason:location.separationReason}};
 });
 await test('E01', 'visual-editor', 'Both discoverable cards provide native form editors and unversioned names with documentation links.', async()=>{
   const env=harness();const cards=[env.history(),env.rich()];
@@ -242,7 +294,7 @@ await test('E02', 'visual-editor', 'History uses editable person rows; Rich expo
   const env=harness(),history=env.history().constructor.getConfigForm(),rich=env.rich().constructor.getConfigForm();
   const people=history.schema.find(s=>s.name==='persons').selector.object;
   const names=new Set(rich.schema.map(s=>s.name));
-  const required=['entity','mode','tracker','gps','geocoded_location','battery','battery_state','tablet_tracker','position_timestamp_entity','position_timestamp_attribute','position_stale_after_minutes','navigation_path','location_entities'];
+  const required=['entity','mode','tracker','gps','geocoded_location','battery','battery_state','tablet_tracker','position_timestamp_entity','position_timestamp_attribute','position_stale_after_minutes','geocoded_timestamp_entity','geocoded_timestamp_attribute','geocoded_stale_after_minutes','navigation_path','location_entities'];
   return {ok:people.multiple&&people.fields.entity.required&&people.fields.name&&people.fields.color&&required.every(x=>names.has(x)),observed:{multiplePersonRows:people.multiple,missingRichFields:required.filter(x=>!names.has(x))}};
 });
 

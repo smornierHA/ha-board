@@ -1,4 +1,4 @@
-# État courant — 6 septembre 2026
+# État courant — 7 septembre 2026
 
 La première version HACS est fonctionnelle selon le retour général de l’utilisateur. Cette appréciation conserve `v0.1.0-rc.2` comme base ; elle ne valide pas implicitement chaque essai mobile, thème, éditeur ou retour arrière.
 
@@ -19,5 +19,17 @@ Le passage de `c164258` à `v0.1.0-rc.2` a été exécuté via HACS. Le fallback
 Les contrats simulés et la CI ne prouvent pas le rendu Home Assistant. Les résultats détaillés non fournis par l’utilisateur restent « non établis », notamment version exécutée par le navigateur, édition/sauvegarde/réouverture pour les deux cartes, refresh/navigation à froid répétés, mobile/desktop, clair/sombre et downgrade HACS.
 
 HA-BOARD applique les exigences HA de RC.6 (éditeurs visuels, catalogue, noms sans version, bouton et livraison HACS). Cela constitue une adoption partielle bornée, pas l’adoption complète de toutes les règles du socle.
+
+## Lot #8 en PR
+
+Base de travail vérifiée : `main` `1213ef428568448373ade92f1aa2969100c62e2b`, qui contient la consolidation documentaire #7. La distribution de référence et son empreinte restent inchangées tant que la PR n’est pas fusionnée et qu’aucune release n’est publiée.
+
+| Besoin | État du candidat `0.1.1-rc.1` | Limite |
+|---|---|---|
+| U1 — zone/ville | Implémenté dans Person Rich compact et détail ; priorité zone → ville structurée → extraction prudente ; durée hors domicile séparée | Contrats Node seulement ; rendu HA à recetter |
+| U2 — position lisible | Implémenté ; zone/ville et adresse en principal, qualité/coordonnées dans un détail natif ; adresses incohérentes séparées | Clavier/tactile, mobile/desktop et thèmes à recetter dans HA |
+| U3 — adresse des points historiques | Point d’extension officiel vérifié et adaptateur de données testé sur exemples fictifs | Non raccordé et non livré : l’API native ne permet pas d’enrichir la bulle sans renderer encapsulé ou évolution HA |
+
+Les sources originales et leurs empreintes sont inchangées. Le candidat ne contient aucune donnée familiale, ne change pas les types YAML et ne modifie ni Core, OS, NAS, Livebox ni Frigate. Il n’est ni fusionné, ni publié, ni installé.
 
 Aucun changement Core, OS, NAS, Livebox ou Frigate n’appartient à ce lot. Les états d’import RC.4 et de RC.1 en échec sont historiques et ne remplacent pas ce point courant.

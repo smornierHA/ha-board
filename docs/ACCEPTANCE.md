@@ -30,4 +30,20 @@ Une éventuelle version stable exige une décision explicite après :
 5. absence de régression sur les fonctions déclarées dans CARDS.md, avec une seule ressource active ;
 6. release stable issue d’un nouveau SHA intégré et testé, sans déplacer ni écraser `v0.1.0-rc.2`.
 
-Ces contrôles ne sont pas demandés dans la PR documentaire actuelle. Les captures familiales et configurations réelles restent hors Git.
+Ces contrôles restent nécessaires avant une stable ; le lot #8 ne les exécute pas sur l’installation HA. Les captures familiales et configurations réelles restent hors Git.
+
+## Recette ciblée du lot #8
+
+Les contrats Node s’exécutent sur les sources maintenues puis sur le bundle reconstruit ; les contrats de l’adaptateur U3 sont séparés puisque cet adaptateur n’est pas livré. Ils ne cochent aucune case HA réelle.
+
+| Besoin / invariant | Simulation attendue | Recette HA restant à exécuter après éventuelle publication |
+|---|---|---|
+| Zone puis ville | domicile, zone nommée, ville structurée, adresse seule, ville absente ; rue/pays/coordonnées refusés | compact + détail, quatre personnes fictives ou données privées non publiées |
+| Durée | durée visible avec Maison, absente de la ligne ville hors domicile | vérifier le sens du capteur de durée réel |
+| Dernière position connue | adresse lisible ; coordonnées/précision/source/date dans **Qualité** | ouvrir/fermer au clavier et au toucher, puis navigation et rechargement froid |
+| Fidélité | `unknown`/`unavailable`, adresse ancienne, ville incohérente, timestamp futur, coordonnées distinctes | confirmer les libellés avec les sources réelles sans capture publique |
+| Éditeur | date d’adresse et seuil d’ancienneté présents dans `getConfigForm` | modifier, sauvegarder, rouvrir ; vérifier conservation des clés YAML non éditées |
+| Invariants | historique natif, filtres multiples/Tous-aucun, couleurs, Memoji, batteries/charge, navigation | desktop/mobile, clair/sombre, plusieurs instances |
+| U3 | adaptateur : deux points/deux adresses, absence, cache, déduplication, réponse tardive, reconfiguration, détachement | non recettable tant que le renderer ou le point d’extension n’est pas décidé |
+
+Rollback du futur candidat : dans HACS, retélécharger explicitement `v0.1.0-rc.2`, recharger complètement le navigateur, vérifier la version exécutée et la ressource unique, puis reprendre la recette des deux cartes. Le fallback vers les originaux reste la seconde voie, sans chargement simultané.

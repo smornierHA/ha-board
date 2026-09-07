@@ -13,7 +13,7 @@ Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargemen
 
 [Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 
-Le candidat `0.1.0-rc.2` traite le chargement natif à froid et l’affichage des données GPS, ajoute les éditeurs et conserve les types YAML existants. La recette familiale de `0.1.0-rc.1` a révélé une panne intermittente : installation HACS réussie ne signifie pas fonctionnement validé. Aucun correctif du fournisseur de tuiles n’est inclus ; le chantier Core reste distinct.
+La distribution de référence reste `v0.1.0-rc.2`. Le candidat de maintenance `0.1.1-rc.1` améliore la ville hors zone et allège « Dernière position connue » ; il n’est ni fusionné, ni publié, ni installé tant que la PR #8 n’est pas relue. L’adresse des points historiques reste un besoin distinct, préparé mais non livré faute de point d’extension natif public. Aucun correctif du fournisseur de tuiles n’est inclus ; le chantier Core reste distinct.
 
 Pour contribuer : [AGENTS.md](AGENTS.md), [projet](PROJECT.md), [architecture](docs/ARCHITECTURE.md), [CI](docs/CI-CONTRACT.md), [roadmap](docs/ROADMAP.md). Le socle central est privé ; ses règles applicables sont disponibles ici dans AGENTS.md. Les originaux immuables restent dans `src/`, les sources maintenues dans `src/candidate/`, le bundle HACS dans `dist/`.
 

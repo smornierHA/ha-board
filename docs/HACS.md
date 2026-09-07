@@ -27,9 +27,11 @@ Les types restent `custom:person-history-map-card-v14` et `custom:person-rich-ca
 
 Noter release installée, SHA/empreinte, ressource et résultats de recette. Installer la nouvelle release issue du SHA intégré testé, recharger complètement, vérifier la version exécutée, l’absence de double ressource, puis exécuter la recette ciblée et les invariants des cartes existantes. Une CI verte ne prouve pas cette étape.
 
+Pour le candidat #8, la version préparée est `0.1.1-rc.1`. Elle ne doit apparaître dans HACS qu’après fusion, CI du SHA intégré et publication explicite hors de ce mandat. Sa portée livrable est U1/U2 ; l’adaptateur U3 n’est pas dans le bundle. La migration devra partir de `v0.1.0-rc.2`, conserver la même ressource et les mêmes types YAML, puis exécuter la recette ciblée de ACCEPTANCE.md.
+
 ## Retour arrière
 
-Voie HACS à qualifier avant stable : ouvrir HA-BOARD, **Retélécharger**, sélectionner la release précédente, recharger, vérifier la version exécutée et refaire la recette ciblée.
+Voie HACS à qualifier avant stable : ouvrir HA-BOARD, **Retélécharger**, sélectionner explicitement `v0.1.0-rc.2`, recharger, vérifier la version exécutée et refaire la recette ciblée.
 
 Fallback conservé : désactiver la ressource HACS, réinscrire exactement les deux ressources originales sauvegardées, puis recharger. Ne jamais charger simultanément bundle HACS et originaux. Vérifier les empreintes indiquées dans STATUS.md avant usage.
 

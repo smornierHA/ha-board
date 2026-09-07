@@ -1,6 +1,6 @@
 # Roadmap HA-BOARD — base v0.1.0-rc.2
 
-La base fonctionnelle à conserver est `v0.1.0-rc.2`, commit `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`. Le présent lot consolide uniquement la documentation. Aucun code de carte, collecte familiale, fusion, publication ou déploiement.
+La base fonctionnelle à conserver est `v0.1.0-rc.2`, commit `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`. Le lot #8 prépare `0.1.1-rc.1` depuis `main` `1213ef428568448373ade92f1aa2969100c62e2b` : aucune collecte familiale, fusion, publication ou installation dans ce mandat.
 
 ## Avant une éventuelle promotion stable
 
@@ -23,6 +23,8 @@ Le retour utilisateur favorable général ne remplit pas automatiquement S1–S4
 - Sources à inventorier au démarrage : issue et captures expurgées, versions Core/frontend/HACS, ressources actives, configuration fictive équivalente, code `src/candidate`, bundle installé, CARDS/ACCEPTANCE, originaux et empreintes.
 - Invariants/recette : historique, filtres multiples et Tous/aucun, couleurs, Memoji, batteries iOS/charge, présence/localisation/précision, navigation, éditeurs, sauvegarde/réouverture, froid/retry, mobile/thèmes et plusieurs instances.
 - Migration/rollback HACS : release SemVer proportionnée depuis le SHA intégré, mise à jour avec ressource unique, version navigateur relue ; downgrade vers RC.2 ou fallback des deux originaux, sans double chargement.
+
+État #8 : U1 (zone/ville) et U2 (position allégée) sont implémentés dans le candidat et restent à recetter dans HA. U3 n’est pas livré : le frontend ciblé ne fournit aucun point d’extension public pour l’adresse de la bulle historique. L’adaptateur de données est prêt ; le raccordement devient un sous-lot distinct après décision entre évolution HA et renderer encapsulé, inventaire des adresses historiques et éventuel consentement à un fournisseur de géocodage inverse.
 
 ### M2 — Carte(s) météo
 
