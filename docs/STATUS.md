@@ -20,7 +20,7 @@ Les contrats simulés et la CI ne prouvent pas le rendu Home Assistant. Les rés
 
 HA-BOARD applique les exigences HA de RC.6 (éditeurs visuels, catalogue, noms sans version, bouton et livraison HACS). Cela constitue une adoption partielle bornée, pas l’adoption complète de toutes les règles du socle.
 
-## Lot #8 en PR
+## Lot [#8](https://github.com/smornierHA/ha-board/issues/8) — PR [#9](https://github.com/smornierHA/ha-board/pull/9) en draft
 
 Base de travail vérifiée : `main` `1213ef428568448373ade92f1aa2969100c62e2b`, qui contient la consolidation documentaire #7. La distribution de référence et son empreinte restent inchangées tant que la PR n’est pas fusionnée et qu’aucune release n’est publiée.
 
@@ -28,7 +28,9 @@ Base de travail vérifiée : `main` `1213ef428568448373ade92f1aa2969100c62e2b`, 
 |---|---|---|
 | U1 — zone/ville | Implémenté dans Person Rich compact et détail ; priorité zone → ville structurée → extraction prudente ; durée hors domicile séparée | Contrats Node seulement ; rendu HA à recetter |
 | U2 — position lisible | Implémenté ; zone/ville et adresse en principal, qualité/coordonnées/sources/dates dans un détail natif ; adresses antérieures ou incohérentes séparées | Clavier/tactile, mobile/desktop et thèmes à recetter dans HA |
-| U3 — adresse des points historiques | Point d’extension officiel vérifié et adaptateur de données testé sur exemples fictifs | Non raccordé et non livré : l’API native ne permet pas d’enrichir la bulle sans renderer encapsulé ou évolution HA |
+| U3 — adresse des points historiques | La révision frontend étudiée ne fournit pas de point d’extension public adapté permettant d’enrichir les bulles historiques natives ; adaptateur de données testé sur exemples fictifs | Non raccordé et non livré ; remplacer le renderer n’est pas autorisé dans le mandat actuel. Un renderer encapsulé propre à HA-BOARD reste seulement une option d’architecture future soumise à décision explicite et à un nouveau lot |
+
+U3 reste une décision à prendre : aucun renderer n’est développé, l’adaptateur n’est pas raccordé, aucun géocodage inverse n’est exécuté et aucune coordonnée n’est envoyée à un service dans ce lot.
 
 Les sources originales et leurs empreintes sont inchangées. Le candidat ne contient aucune donnée familiale, ne change pas les types YAML et ne modifie ni Core, OS, NAS, Livebox ni Frigate. Il n’est ni fusionné, ni publié, ni installé.
 
