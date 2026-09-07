@@ -27,7 +27,7 @@ Base de travail vérifiée : `main` `1213ef428568448373ade92f1aa2969100c62e2b`, 
 | Besoin | État du candidat `0.1.1-rc.1` | Limite |
 |---|---|---|
 | U1 — zone/ville | Implémenté dans Person Rich compact et détail ; priorité zone → ville structurée → extraction prudente ; durée hors domicile séparée | Contrats Node seulement ; rendu HA à recetter |
-| U2 — position lisible | Implémenté ; zone/ville et adresse en principal, qualité/coordonnées dans un détail natif ; adresses incohérentes séparées | Clavier/tactile, mobile/desktop et thèmes à recetter dans HA |
+| U2 — position lisible | Implémenté ; zone/ville et adresse en principal, qualité/coordonnées/sources/dates dans un détail natif ; adresses antérieures ou incohérentes séparées | Clavier/tactile, mobile/desktop et thèmes à recetter dans HA |
 | U3 — adresse des points historiques | Point d’extension officiel vérifié et adaptateur de données testé sur exemples fictifs | Non raccordé et non livré : l’API native ne permet pas d’enrichir la bulle sans renderer encapsulé ou évolution HA |
 
 Les sources originales et leurs empreintes sont inchangées. Le candidat ne contient aucune donnée familiale, ne change pas les types YAML et ne modifie ni Core, OS, NAS, Livebox ni Frigate. Il n’est ni fusionné, ni publié, ni installé.

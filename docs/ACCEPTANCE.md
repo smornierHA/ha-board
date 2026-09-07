@@ -40,8 +40,8 @@ Les contrats Node s’exécutent sur les sources maintenues puis sur le bundle r
 |---|---|---|
 | Zone puis ville | domicile, zone nommée, ville structurée, adresse seule, ville absente ; rue/pays/coordonnées refusés | compact + détail, quatre personnes fictives ou données privées non publiées |
 | Durée | durée visible avec Maison, absente de la ligne ville hors domicile | vérifier le sens du capteur de durée réel |
-| Dernière position connue | adresse lisible ; coordonnées/précision/source/date dans **Qualité** | ouvrir/fermer au clavier et au toucher, puis navigation et rechargement froid |
-| Fidélité | `unknown`/`unavailable`, adresse ancienne, ville incohérente, timestamp futur, coordonnées distinctes | confirmer les libellés avec les sources réelles sans capture publique |
+| Dernière position connue | adresse lisible ; coordonnées/précision et sources/dates distinctes de position, adresse et zone dans **Qualité** | ouvrir/fermer au clavier et au toucher, puis navigation et rechargement froid |
+| Fidélité | `unknown`/`unavailable`, « Hors zone », adresse antérieure à l’entrée dans la zone, ville incohérente, timestamp futur, coordonnées distinctes | confirmer les libellés avec les sources réelles sans capture publique |
 | Éditeur | date d’adresse et seuil d’ancienneté présents dans `getConfigForm` | modifier, sauvegarder, rouvrir ; vérifier conservation des clés YAML non éditées |
 | Invariants | historique natif, filtres multiples/Tous-aucun, couleurs, Memoji, batteries/charge, navigation | desktop/mobile, clair/sombre, plusieurs instances |
 | U3 | adaptateur : deux points/deux adresses, absence, cache, déduplication, réponse tardive, reconfiguration, détachement | non recettable tant que le renderer ou le point d’extension n’est pas décidé |

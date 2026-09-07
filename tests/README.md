@@ -54,7 +54,7 @@ Les sources par défaut sont src/. La sortie par défaut est artifacts/ (ignoré
 
 ## Lot #8
 
-Le harnais strict compte désormais 37 contrats sur les sources et le bundle. Les nouveaux cas couvrent zone nommée, ville structurée/adresse, refus rue-pays-coordonnées, durée hors domicile, affichage courant allégé, détail qualité, adresse ancienne avec ou sans date GPS et états inconnus/indisponibles. L’adaptateur U3 non livré dispose de trois contrats séparés :
+Le harnais strict compte désormais 39 contrats sur les sources et le bundle. Les nouveaux cas couvrent zone nommée, ville structurée/adresse, refus rue-pays-coordonnées/libellés techniques, durée hors domicile, affichage courant allégé, sources et dates dans le détail qualité, adresse ancienne avec ou sans date GPS, adresse antérieure à l’entrée dans la zone et états inconnus/indisponibles. L’adaptateur U3 non livré dispose de trois contrats séparés :
 
 ```bash
 node tests/history-address-adapter.mjs

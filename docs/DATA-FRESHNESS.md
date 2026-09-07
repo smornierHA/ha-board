@@ -30,10 +30,10 @@ Le candidat n'utilise toujours pas `last_updated` comme heure de mesure GPS. San
 ## Candidat 0.1.1-rc.1 — rapprochement lisible
 
 - La zone HA nommée prime, puis les attributs structurés `city`, `locality`, `postal_town`, `municipality`, `town`, `village` ou `sub_locality`, puis une extraction d’adresse conservatrice.
-- Rue, pays seul, coordonnées, valeur technique et état `not_home` ne sont pas acceptés comme ville. `unknown` et `unavailable` ne réutilisent pas leurs anciens attributs.
+- Rue, pays seul, coordonnées, valeur technique, état `not_home` et libellé « Hors zone » ne sont pas acceptés comme ville. `unknown` et `unavailable` ne réutilisent pas leurs anciens attributs.
 - L’adresse géocodée peut fournir sa propre date par `geocoded_timestamp_entity` ou `geocoded_timestamp_attribute`. Cette date reste distincte de la mesure GPS et de `last_updated` ; `geocoded_stale_after_minutes` fournit un seuil explicite, sans ancienneté inventée par défaut.
-- Une adresse d’une autre ville, plus ancienne que la position ou munie de coordonnées distinctes n’est pas assemblée à la zone/position comme un même fait.
-- Le panneau courant ne montre plus les coordonnées et le texte technique long. Le détail **Qualité** conserve coordonnées, précision, source et fraîcheur ; une indication courte reste visible lorsque les données sont anciennes, non fiables ou indisponibles.
+- Une adresse d’une autre ville, plus ancienne que la position, antérieure à l’entrée HA dans la zone actuelle ou munie de coordonnées distinctes n’est pas assemblée à la zone/position comme un même fait. `last_changed` sert uniquement à dater l’entrée dans la zone, jamais à inventer une mesure GPS.
+- Le panneau courant ne montre plus les coordonnées et le texte technique long. Le détail **Qualité** conserve coordonnées, précision, sources et dates distinctes de position/adresse/zone ; une indication courte reste visible lorsque les données sont anciennes, non fiables ou indisponibles.
 - La durée de présence est affichée avec « Maison » seulement ; aucune durée hors domicile n’est attribuée à la ville extraite.
 
 Pour l’historique, l’API frontend conserve les attributs `a` des états `person`/`device_tracker`, mais `hui-map-card` ne transmet à `ha-map` que coordonnées et instant. Ce constat ne permet pas d’associer une adresse sans une seconde source historique et un point d’affichage encapsulé. Voir HISTORY-ADDRESS-ADAPTER.md.

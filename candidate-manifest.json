@@ -17,8 +17,8 @@
     {
       "path": "src/candidate/person-rich-card-v34.js",
       "version": "3.4.6",
-      "bytes": 26755,
-      "sha256": "8bf9102d16f2f099ff413c0f29f4760869595281f450a03b61d23b50c82a0a12"
+      "bytes": 28615,
+      "sha256": "44dcea14221a442e7777fc89aa5b2e42dfc8b2e09a9a553501081681417995e1"
     },
     {
       "path": "src/candidate/history-address-adapter.mjs",
