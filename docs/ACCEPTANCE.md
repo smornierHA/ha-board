@@ -30,4 +30,35 @@ Une éventuelle version stable exige une décision explicite après :
 5. absence de régression sur les fonctions déclarées dans CARDS.md, avec une seule ressource active ;
 6. release stable issue d’un nouveau SHA intégré et testé, sans déplacer ni écraser `v0.1.0-rc.2`.
 
-Ces contrôles ne sont pas demandés dans la PR documentaire actuelle. Les captures familiales et configurations réelles restent hors Git.
+Ces contrôles restent nécessaires avant une stable ; le lot #8 ne les exécute pas sur l’installation HA. Les captures familiales et configurations réelles restent hors Git.
+
+## Séquencement du candidat issue #8 / PR #9 — décisions séparées
+
+Le candidat `0.1.1-rc.1` est actuellement préparé et contrôlé statiquement ; aucune étape ci-dessous ne constitue une autorisation. Les passages futurs sont distincts et doivent conserver leurs preuves propres :
+
+1. **Candidat préparé et contrôlé statiquement** : sources/bundle déjà couverts par les preuves CI acquises ; U3 reste non livré.
+2. **Décision éventuelle d’autoriser une recette isolée** : décision séparée, non prise dans ce lot.
+3. **Recette isolée** : uniquement si elle reçoit un mandat séparé et si son environnement et ses préconditions sont établis. Aucun environnement isolé de recette ni mécanisme de chargement isolé du candidat n’est prouvé à ce stade ; la version frontend/navigateur, la procédure de retour arrière applicable à cet environnement et le protocole de preuve devront être établis avant exécution.
+4. **Revue de supervision** : relire les preuves de la recette isolée si elle a été autorisée et exécutée ; ne déduire aucune autorisation de livraison de cette revue.
+5. **Décision distincte de fusion/publication** : seulement après revue, par mandat explicite ; aucune fusion ou release automatique.
+6. **Éventuelle installation HACS** : opération séparément autorisée, distincte de la publication et de la recette isolée.
+7. **Recette après installation** : vérifier alors la version réellement chargée, la ressource unique, les fonctions du lot et le retour arrière selon la matrice ci-dessous.
+8. **Décision éventuelle de promotion ultérieure** : seulement à partir des preuves précédentes ; elle reste indépendante de la PR candidate.
+
+La PR #9 reste draft. Aucune recette HA réelle du candidat, fusion, publication, installation HACS ou promotion n’est autorisée par ce document.
+
+## Recette ciblée du lot #8 / PR #9
+
+Les contrats Node s’exécutent sur les sources maintenues puis sur le bundle reconstruit ; les contrats de l’adaptateur U3 sont séparés puisque cet adaptateur n’est pas livré. Ils ne cochent aucune case HA réelle.
+
+| Besoin / invariant | Simulation attendue | Recette HA future — uniquement sous mandat séparé |
+|---|---|---|
+| Zone puis ville | domicile, zone nommée, ville structurée, adresse seule, ville absente ; rue/pays/coordonnées refusés | compact + détail, quatre personnes fictives ou données privées non publiées |
+| Durée | durée visible avec Maison, absente de la ligne ville hors domicile | vérifier le sens du capteur de durée réel |
+| Dernière position connue | adresse lisible ; coordonnées/précision et sources/dates distinctes de position, adresse et zone dans **Qualité** | ouvrir/fermer au clavier et au toucher, puis navigation et rechargement froid |
+| Fidélité | `unknown`/`unavailable`, « Hors zone », adresse antérieure à l’entrée dans la zone, ville incohérente, timestamp futur, coordonnées distinctes | confirmer les libellés avec les sources réelles sans capture publique |
+| Éditeur | date d’adresse et seuil d’ancienneté présents dans `getConfigForm` | modifier, sauvegarder, rouvrir ; vérifier conservation des clés YAML non éditées |
+| Invariants | historique natif, filtres multiples/Tous-aucun, couleurs, Memoji, batteries/charge, navigation | desktop/mobile, clair/sombre, plusieurs instances |
+| U3 | adaptateur : deux points/deux adresses, absence, cache, déduplication, réponse tardive, reconfiguration, détachement | non recettable dans ce lot ; U3 reste non livré et le remplacement du renderer n’est pas autorisé sans décision explicite et nouveau lot |
+
+Rollback du futur candidat : dans HACS, retélécharger explicitement `v0.1.0-rc.2`, recharger complètement le navigateur, vérifier la version exécutée et la ressource unique, puis reprendre la recette des deux cartes. Le fallback vers les originaux reste la seconde voie, sans chargement simultané.

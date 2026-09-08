@@ -51,3 +51,13 @@ Les sources par défaut sont src/. La sortie par défaut est artifacts/ (ignoré
 
 ## Régressions RC.2 sur l’artefact distribué
 28 contrats au total : sept ajouts couvrent le composant natif non défini à froid, délai/retry, détachement/remontage, GPS à domicile, séparation géocodage/précision et schémas des deux éditeurs. `POC_BUNDLE="$PWD/dist/ha-board.js" POC_SOURCE_DIR="$PWD/src/candidate" node tests/contracts.mjs` exécute ces contrats sur le bundle HACS. Quatre tests Python refusent publication depuis PR, mauvais SHA, version stable automatique et artefact modifié. Cela ne prouve pas le rendu réel des formulaires HA.
+
+## Lot #8
+
+Le harnais strict compte désormais 39 contrats sur les sources et le bundle. Les nouveaux cas couvrent zone nommée, ville structurée/adresse, refus rue-pays-coordonnées/libellés techniques, durée hors domicile, affichage courant allégé, sources et dates dans le détail qualité, adresse ancienne avec ou sans date GPS, adresse antérieure à l’entrée dans la zone et états inconnus/indisponibles. L’adaptateur U3 non livré dispose de trois contrats séparés :
+
+```bash
+node tests/history-address-adapter.mjs
+```
+
+Ils couvrent deux points à deux adresses, absence d’adresse, cache borné, déduplication, réponse tardive, reconfiguration et détachement. Ils ne prouvent ni l’accès à une source historique réelle ni une bulle HA, car le frontend ciblé n’expose pas le point d’extension nécessaire.

@@ -1,7 +1,12 @@
 {
   "schema_version": 1,
-  "status": "released-installed-candidate-pending-detailed-ha-acceptance",
-  "base_commit": "c164258e78daa85c5b3200cb7d57db2814f0f060",
+  "status": "draft-u1-u2-tested-u3-adapter-prepared-ha-acceptance-pending",
+  "base_commit": "1213ef428568448373ade92f1aa2969100c62e2b",
+  "reference_release": {
+    "version": "0.1.0-rc.2",
+    "commit": "eeb56c9b66346b90275820a6d6fb4ca0fb94cebe",
+    "sha256": "79df079bdc2c752956e808df2c492791213eaebe36fe854f60bfecb0061160c8"
+  },
   "sources": [
     {
       "path": "src/candidate/person-history-map-card-v14.js",
@@ -11,9 +16,16 @@
     },
     {
       "path": "src/candidate/person-rich-card-v34.js",
-      "version": "3.4.5",
-      "bytes": 20952,
-      "sha256": "66e57da3d8e2510fae625c8954f63fd2e2284246c3ba635f68080c1709a7562e"
+      "version": "3.4.6",
+      "bytes": 30606,
+      "sha256": "7ee1259cc6070edf1f5bdf43d0c601044d68ed12d0575202962d72e079a28910"
+    },
+    {
+      "path": "src/candidate/history-address-adapter.mjs",
+      "version": "prepared-1",
+      "bytes": 3563,
+      "sha256": "03b0a94a1ab289592c1ca1353f21cf741897e01ab34e58887a35061e42c448e1",
+      "distribution": "not-bundled"
     }
   ]
 }

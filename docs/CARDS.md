@@ -37,6 +37,8 @@ persons:
 
 Au chargement, la carte attend l’activation du composant natif (10 secondes maximum). En cas d’échec, **Réessayer** recommence sans recharger tout le dashboard. Les filtres modifiés pendant l’attente sont appliqués. L’état vide signifie qu’aucune personne n’est sélectionnée, pas une panne réseau. Les positions passées restent des données historiques ; HA-BOARD ne modifie ni les tuiles ni les états transmis à HA.
 
+Sur le frontend ciblé `20260729.7`, les bulles historiques natives affichent seulement personne et heure. Les attributs historiques sont disponibles en amont, mais la carte native les réduit à coordonnées et instant avant de créer la bulle. L’adaptateur borné de rapprochement d’adresses est préparé et testé sur données fictives ; il n’est pas raccordé au bundle. Voir [l’analyse U3](HISTORY-ADDRESS-ADAPTER.md).
+
 ## Person Rich Card
 
 Profil personnel avec Memoji provenant de l’entité HA, présence, dernière position connue, batteries iOS et charge. Présentations **Compact** et **Détail** dans l’éditeur visuel. Type conservé : `custom:person-rich-card-v34`.
@@ -51,6 +53,9 @@ Profil personnel avec Memoji provenant de l’entité HA, présence, dernière p
 | `position_timestamp_entity` | Capteur fournissant une date ISO de **mesure GPS vérifiée**, prioritaire sur l’attribut |
 | `position_timestamp_attribute` | Attribut de date ISO sur l’entité qui fournit les coordonnées |
 | `position_stale_after_minutes` | Seuil optionnel pour signaler une position ancienne ; aucun seuil implicite |
+| `geocoded_timestamp_entity` | Capteur optionnel fournissant une date propre à l’adresse géocodée |
+| `geocoded_timestamp_attribute` | Attribut optionnel de date propre à l’adresse ; jamais remplacé par `last_updated` |
+| `geocoded_stale_after_minutes` | Seuil explicite optionnel pour séparer une adresse datée trop ancienne de la zone actuelle |
 | `duration` | Capteur de durée de présence ; cette durée n’est pas l’âge de la position |
 | `battery`, `battery_state` | Niveau et charge du téléphone |
 | `phone_label`, `connection`, `activity`, `focus` | Libellé téléphone, réseau, activité et focus |
@@ -69,7 +74,9 @@ battery: sensor.alice_example_battery
 battery_state: sensor.alice_example_charge
 ```
 
-La présence « Maison » ne supprime plus les coordonnées disponibles. Sans date de mesure fournie, la fraîcheur GPS reste non établie ; `last_updated` HA n’est jamais substitué. Les sources `unknown`/`unavailable` et les coordonnées invalides sont ignorées comme position valide. Une adresse et des coordonnées provenant de sources différentes restent explicitement distinctes. Entrée/Espace activent la navigation en compact et le dialogue de l’entité en détail.
+La ligne compacte et l’en-tête détaillé affichent d’abord la zone HA nommée, sinon une ville structurée, sinon une ville extraite prudemment de l’adresse. Une rue, un pays seul, des coordonnées et `not_home` ne deviennent jamais une ville. La durée n’est accolée qu’à « Maison » : une durée hors domicile n’est pas présentée comme du temps passé dans la ville.
+
+« Dernière position connue » montre la zone/ville et l’adresse rapprochée. Les coordonnées, la précision, les sources et les dates distinctes de la position, de l’adresse et de l’entrée dans la zone sont repliées dans **Qualité**, un détail natif accessible au clavier et au toucher. Une adresse explicitement plus ancienne, antérieure à l’entrée dans la zone, située ailleurs ou associée à une autre ville est indiquée comme non rapprochée et consultable dans ce détail, jamais fusionnée à la position courante. Sans date de mesure fournie, la fraîcheur GPS reste non établie ; `last_updated` HA n’est jamais substitué. Les sources `unknown`/`unavailable`, les libellés techniques tels que `not_home`/« Hors zone » et les coordonnées invalides sont ignorés. Entrée/Espace activent la navigation en compact et le dialogue de l’entité en détail.
 
 ## Installation et validation
 

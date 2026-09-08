@@ -9,7 +9,7 @@
 | Conservation privée | project-archives privé ; petite archive familiale à chiffrer côté client, clé hors GitHub ; aucun envoi effectué |
 | Coffre NAS | Volume 3 reporté pour les petites archives ; sauvegarde HA réelle distincte toujours requise avant Core |
 | Profil | Home Assistant ; complément MCP pour livraison assistée |
-| Socle | Adoption de 1.0.0-rc.4 préparée ; import complet et intégration via PR à faire |
+| Socle | Exigences HA de RC.6 partiellement adoptées ; RC.7 disponible sur `4c20e6361dbe6320f17c380fff050010ef7a7a40`, sans adoption complète revendiquée |
 | Responsable | Propriétaire du dépôt |
 | Produit | Cartes frontend locales et configuration Lovelace expurgée |
 | Base observée au cycle initial | Core 2026.8.3 ; Person History 1.4.0 ; Person Rich 3.4.3 |
@@ -19,4 +19,4 @@
 
 Preuve d'amorçage : `evidence/github-bootstrap-2026-09-06.json`. Le socle est dans project-playbook privé ; project-archives est également privé. Leur accès ne prouve ni l'import des préparatifs ni la disponibilité d'une sauvegarde.
 
-Une version de socle préparée n'est pas adoptée tant que sa PR projet n'est pas intégrée. La révision RC.4 est documentaire uniquement ; les sources applicatives restent identiques. La maintenance mensuelle existante n'est pas dupliquée.
+Une version de socle disponible ou préparée n'est pas adoptée tant que son diff projet n'est pas intégré. La révision RC.4 reste historique et n’est pas réimportée. La maintenance mensuelle existante n'est pas dupliquée.

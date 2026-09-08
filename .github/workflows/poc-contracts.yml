@@ -25,6 +25,7 @@ jobs:
           node --check src/person-rich-card-v34.js
           node --check src/candidate/person-history-map-card-v14.js
           node --check src/candidate/person-rich-card-v34.js
+          node --check src/candidate/history-address-adapter.mjs
           python3 scripts/check_import.py
           python3 scripts/check_candidate.py
       - name: Strict behavioral contracts on candidate
@@ -32,6 +33,8 @@ jobs:
           POC_SOURCE_DIR: ${{ github.workspace }}/src/candidate
           POC_REPORT_DIR: ${{ github.workspace }}/artifacts
         run: node tests/contracts.mjs
+      - name: Historical address adapter contracts
+        run: node tests/history-address-adapter.mjs
       - name: Build and test HACS entrypoint
         run: |
           python3 scripts/build_hacs.py
