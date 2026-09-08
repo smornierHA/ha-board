@@ -1,37 +1,30 @@
-# État courant — 7 septembre 2026
+# État courant — 8 septembre 2026
 
-La première version HACS est fonctionnelle selon le retour général de l’utilisateur. Cette appréciation conserve `v0.1.0-rc.2` comme base ; elle ne valide pas implicitement chaque essai mobile, thème, éditeur ou retour arrière.
+La prérelease `v0.1.1-rc.1` est publiée depuis `main` `d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8` et l’utilisateur confirme son installation. Ce retour visuel ne constitue pas une recette Home Assistant complète ni une validation stable.
 
 | Étape | État prouvé | Référence |
 |---|---|---|
-| Code intégré | Fusionné sur `main` | `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`, arbre `537ce93b8d97e2586530c5418fb846137992c441` |
-| Contrats | CI intégrée réussie | run `34044344961` ; 28/28 sur sources et bundle, quatre gates publication, intégrité/syntaxe/docs |
-| Candidate | Publiée | prérelease `v0.1.0-rc.2` sur le SHA intégré |
-| Artefact | Relu | `ha-board.js`, 32 195 octets, SHA256 `79df079bdc2c752956e808df2c492791213eaebe36fe854f60bfecb0061160c8` |
-| Installation HACS | Déployée et relue | `installed_version=v0.1.0-rc.2`, `pending_upgrade=false`; fichier HA identique à l’artefact |
-| Ressource frontend | Unique | `/hacsfiles/ha-board/ha-board.js?hacstag=13590703610102`; aucune inscription `/local` concurrente |
-| Originaux | Préservés | History SHA256 `5f7eafddc9ad338e71030d759e373d51bfc6bf384e291b26cd11e5708031c0a4`; Rich SHA256 `9b89f12c630750fe67000434b2ee9a9b92efab76413e83babad6a6ce17a18477` |
-| Retour utilisateur | Favorable général | première version HACS jugée fonctionnelle et conservée comme base |
-| Stable | Non promue | preuves ciblées restantes dans ACCEPTANCE ; aucune publication stable demandée |
+| Code `v0.1.1-rc.1` | Fusionné sur `main` | `d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8`, arbre `0e54864d4cab95586be9055d840be7eaf30143b3` |
+| Candidate installée | Publiée et installation confirmée par l’utilisateur | `v0.1.1-rc.1` |
+| Artefact publié | Identifié | `ha-board.js`, 41 849 octets, SHA256 `f86b7409a54aaa0e4ba4bb9f9d61a9ade90366f6193b41a8ff964f712d17d2c9` |
+| Retour utilisateur | Correctif visuel demandé | décision #8 du 8 septembre 2026 |
+| Candidate suivante | Préparée sur branche corrective | `0.1.2-rc.1`, non fusionnée, non publiée, non installée |
+| Stable | Non promue | recette HA complète et décision explicite toujours requises |
 
-Le passage de `c164258` à `v0.1.0-rc.2` a été exécuté via HACS. Le fallback par réactivation des deux ressources originales est documenté et les fichiers sont préservés ; le downgrade vers une release HACS antérieure n’a pas été exécuté.
+## Correctif visuel suivant
 
-Les contrats simulés et la CI ne prouvent pas le rendu Home Assistant. Les résultats détaillés non fournis par l’utilisateur restent « non établis », notamment version exécutée par le navigateur, édition/sauvegarde/réouverture pour les deux cartes, refresh/navigation à froid répétés, mobile/desktop, clair/sombre et downgrade HACS.
+`0.1.2-rc.1` conserve les contrôles internes de provenance, date, cohérence des sources et séparation d’adresse, mais retire de l’affichage Person Rich :
 
-HA-BOARD applique les exigences HA de RC.6 (éditeurs visuels, catalogue, noms sans version, bouton et livraison HACS). Cela constitue une adoption partielle bornée, pas l’adoption complète de toutes les règles du socle.
+- le bandeau de présence / dernière position ;
+- le dépliant de qualité et tout son contenu ;
+- la note de fraîcheur sous Proximité / Trajet / Destination.
 
-## Lot [#8](https://github.com/smornierHA/ha-board/issues/8) — PR [#9](https://github.com/smornierHA/ha-board/pull/9) en draft
+Le libellé compact et détaillé utilise la zone HA nommée en priorité, sinon le nom de ville seul. Une rue, un code postal, un pays ou une donnée future/incohérente ne deviennent pas le libellé courant. La ligne d’adresse distincte reste affichée lorsqu’elle est rapprochable. La durée n’est accolée qu’à `Maison`, jamais à une ville hors domicile.
 
-Base de travail vérifiée : `main` `1213ef428568448373ade92f1aa2969100c62e2b`, qui contient la consolidation documentaire #7. La distribution de référence et son empreinte restent inchangées tant que la PR n’est pas fusionnée et qu’aucune release n’est publiée.
+Les originaux dans `src/`, les types YAML, Person History Map, Memoji, batteries, équipements, navigation et blocs de trajet sont préservés.
 
-| Besoin | État du candidat `0.1.1-rc.1` | Limite |
-|---|---|---|
-| U1 — zone/ville | Implémenté dans Person Rich compact et détail ; priorité zone → ville structurée → extraction prudente ; durée hors domicile séparée | Contrats Node seulement ; rendu HA à recetter |
-| U2 — position lisible | Implémenté ; zone/ville et adresse en principal, qualité/coordonnées/sources/dates dans un détail natif ; adresses antérieures ou incohérentes séparées | Clavier/tactile, mobile/desktop et thèmes à recetter dans HA |
-| U3 — adresse des points historiques | La révision frontend étudiée ne fournit pas de point d’extension public adapté permettant d’enrichir les bulles historiques natives ; adaptateur de données testé sur exemples fictifs | Non raccordé et non livré ; remplacer le renderer n’est pas autorisé dans le mandat actuel. Un renderer encapsulé propre à HA-BOARD reste seulement une option d’architecture future soumise à décision explicite et à un nouveau lot |
+## U3
 
-U3 reste une décision à prendre : aucun renderer n’est développé, l’adaptateur n’est pas raccordé, aucun géocodage inverse n’est exécuté et aucune coordonnée n’est envoyée à un service dans ce lot.
+L’ancien U3 « adresse dans les bulles historiques natives » est **écarté par décision utilisateur et non livré**. Aucun prototype supplémentaire n’est lancé. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique durée + position dans chaque vignette Person Rich. Ce backlog n’est pas développé dans le correctif visuel.
 
-Les sources originales et leurs empreintes sont inchangées. Le candidat ne contient aucune donnée familiale, ne change pas les types YAML et ne modifie ni Core, OS, NAS, Livebox ni Frigate. Il n’est ni fusionné, ni publié, ni installé.
-
-Aucun changement Core, OS, NAS, Livebox ou Frigate n’appartient à ce lot. Les états d’import RC.4 et de RC.1 en échec sont historiques et ne remplacent pas ce point courant.
+Aucune fusion, publication de `0.1.2-rc.1`, installation HACS ou intervention Home Assistant/Core/OS/NAS/Livebox/Frigate n’est établie par cette préparation.

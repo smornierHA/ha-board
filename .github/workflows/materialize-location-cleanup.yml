@@ -1,0 +1,33 @@
+name: Materialize location cleanup
+on:
+  push:
+    branches: [fix/person-rich-location-cleanup-8]
+    paths:
+      - .github/workflows/materialize-location-cleanup.yml
+permissions:
+  contents: write
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: true
+      - name: Materialize validated tests and bundle
+        run: |
+          cat .materialize/contracts/*.b64 | base64 -d | gzip -d > tests/contracts.mjs
+          test "$(git hash-object tests/contracts.mjs)" = "30e17028612e69fcb83c32a4a7eec7f4e81ce07a"
+          node --check src/candidate/person-rich-card-v34.js
+          python3 scripts/check_candidate.py
+          POC_SOURCE_DIR="$PWD/src/candidate" POC_REPORT_DIR="$PWD/artifacts" node tests/contracts.mjs
+          python3 scripts/build_hacs.py
+          test "$(git hash-object dist/ha-board.js)" = "4ac3c780a25e44c25e3b2e846a289f9ca1729aec"
+          node --check dist/ha-board.js
+          node tests/bundle-smoke.mjs
+          POC_BUNDLE="$PWD/dist/ha-board.js" POC_SOURCE_DIR="$PWD/src/candidate" POC_REPORT_DIR="$PWD/artifacts/bundle" node tests/contracts.mjs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/contracts.mjs dist/ha-board.js dist/manifest.json
+          git commit -m "chore: materialize validated cleanup artifacts"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
