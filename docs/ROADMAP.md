@@ -1,6 +1,6 @@
-# Roadmap HA-BOARD — base v0.1.0-rc.2
+# Roadmap HA-BOARD — base installée v0.1.1-rc.1
 
-La base fonctionnelle à conserver est `v0.1.0-rc.2`, commit `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`. Le lot #8 prépare `0.1.1-rc.1` depuis `main` `1213ef428568448373ade92f1aa2969100c62e2b` : aucune collecte familiale, fusion, publication ou installation dans ce mandat.
+La base installée confirmée par l’utilisateur est `v0.1.1-rc.1`, publiée depuis `main` `d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8`. Le correctif visuel immédiat prépare `0.1.2-rc.1` depuis cette base : aucune collecte familiale, fusion, publication ou installation dans ce mandat.
 
 ## Avant une éventuelle promotion stable
 
@@ -12,19 +12,21 @@ La base fonctionnelle à conserver est `v0.1.0-rc.2`, commit `eeb56c9b66346b9027
 | S4 | Retour arrière éprouvé | downgrade HACS exécuté, ou fallback original exécuté et limites motivées |
 | S5 | Décision stable | revue des preuves ; nouveau SHA/tag stable distinct si décision positive |
 
-Le retour utilisateur favorable général ne remplit pas automatiquement S1–S4. La stable n’est pas publiée dans ce lot.
+Le retour utilisateur après installation de `v0.1.1-rc.1` prouve l’installation et motive le correctif visuel ; il ne remplit pas automatiquement S1–S4. La stable n’est pas publiée dans ce lot.
 
 ## Lots futurs issus de #6
 
 ### M1 — Maintenance des deux cartes du POC
 
 - Objectif : traiter uniquement les défauts ou améliorations démontrés de Person History Map et Person Rich Card, sans réécrire la base fonctionnelle.
-- Dépendances : `v0.1.0-rc.2`, API frontend native, HACS Dashboard, types YAML existants, composants natifs réellement utilisés.
+- Dépendances : `v0.1.1-rc.1`, API frontend native, HACS Dashboard, types YAML existants, composants natifs réellement utilisés.
 - Sources à inventorier au démarrage : issue et captures expurgées, versions Core/frontend/HACS, ressources actives, configuration fictive équivalente, code `src/candidate`, bundle installé, CARDS/ACCEPTANCE, originaux et empreintes.
-- Invariants/recette : historique, filtres multiples et Tous/aucun, couleurs, Memoji, batteries iOS/charge, présence/localisation/précision, navigation, éditeurs, sauvegarde/réouverture, froid/retry, mobile/thèmes et plusieurs instances.
-- Migration/rollback HACS : release SemVer proportionnée depuis le SHA intégré, mise à jour avec ressource unique, version navigateur relue ; downgrade vers RC.2 ou fallback des deux originaux, sans double chargement.
+- Invariants/recette : historique, filtres multiples et Tous/aucun, couleurs, Memoji, batteries iOS/charge, localisation, navigation, éditeurs, sauvegarde/réouverture, froid/retry, mobile/thèmes et plusieurs instances.
+- Migration/rollback HACS : release SemVer proportionnée depuis le SHA intégré, mise à jour avec ressource unique, version navigateur relue ; downgrade vers `v0.1.1-rc.1` ou fallback des deux originaux, sans double chargement.
 
-État issue #8 / PR #9 : U1 (zone/ville) et U2 (position allégée) sont implémentés dans le candidat et restent à recetter dans HA sous mandat distinct. U3 n’est pas livré : la révision frontend étudiée ne fournit pas de point d’extension public adapté permettant d’enrichir les bulles historiques natives. Le remplacement du renderer n’est pas autorisé dans le mandat actuel et l’adaptateur ne doit pas être raccordé. U3 reste une décision à prendre ; dans un nouveau lot seulement, les options d’architecture pourront être soit d’attendre une évolution HA exposant un point d’extension adapté, soit d’évaluer, après décision explicite, un renderer cartographique encapsulé propre à HA-BOARD. Aucun géocodage inverse ni envoi de coordonnées à un service n’appartient à la PR #9.
+État du correctif post-installation : `0.1.2-rc.1` retire de Person Rich les trois éléments techniques signalés par l’utilisateur, conserve zone → ville seule comme libellé, garde l’adresse distincte lorsqu’elle est cohérente et préserve les contrôles temporels internes sans avertissement visible. Person History Map reste inchangée.
+
+L’ancien U3 de #8 (« adresse dans les bulles historiques natives ») est **écarté par décision utilisateur, sans être déclaré livré**. Aucun prototype supplémentaire n’est à lancer. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique combinant durée et position (zone ou adresse historique) dans chaque vignette Person Rich. #10 reste un lot séparé et n’est pas développé dans `0.1.2-rc.1`.
 
 ### M2 — Carte(s) météo
 

@@ -37,11 +37,11 @@ persons:
 
 Au chargement, la carte attend l’activation du composant natif (10 secondes maximum). En cas d’échec, **Réessayer** recommence sans recharger tout le dashboard. Les filtres modifiés pendant l’attente sont appliqués. L’état vide signifie qu’aucune personne n’est sélectionnée, pas une panne réseau. Les positions passées restent des données historiques ; HA-BOARD ne modifie ni les tuiles ni les états transmis à HA.
 
-Sur le frontend ciblé `20260729.7`, les bulles historiques natives affichent seulement personne et heure. Les attributs historiques sont disponibles en amont, mais la carte native les réduit à coordonnées et instant avant de créer la bulle. L’adaptateur borné de rapprochement d’adresses est préparé et testé sur données fictives ; il n’est pas raccordé au bundle. Voir [l’analyse U3](HISTORY-ADDRESS-ADAPTER.md).
+L’ancien U3 de #8, qui visait l’adresse dans les bulles historiques natives, est écarté par décision utilisateur et n’est pas déclaré livré. Aucun prototype supplémentaire de cette voie n’est prévu. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10), distinct de ce correctif : graphe historique durée + position dans chaque vignette Person Rich.
 
 ## Person Rich Card
 
-Profil personnel avec Memoji provenant de l’entité HA, présence, dernière position connue, batteries iOS et charge. Présentations **Compact** et **Détail** dans l’éditeur visuel. Type conservé : `custom:person-rich-card-v34`.
+Profil personnel avec Memoji provenant de l’entité HA, localisation lisible, batteries iOS et charge. Présentations **Compact** et **Détail** dans l’éditeur visuel. Type conservé : `custom:person-rich-card-v34`.
 
 | Options | Rôle |
 |---|---|
@@ -52,7 +52,7 @@ Profil personnel avec Memoji provenant de l’entité HA, présence, dernière p
 | `geocoded_location` | Adresse connue séparée : ne reçoit pas la date ou la précision d’un autre capteur |
 | `position_timestamp_entity` | Capteur fournissant une date ISO de **mesure GPS vérifiée**, prioritaire sur l’attribut |
 | `position_timestamp_attribute` | Attribut de date ISO sur l’entité qui fournit les coordonnées |
-| `position_stale_after_minutes` | Seuil optionnel pour signaler une position ancienne ; aucun seuil implicite |
+| `position_stale_after_minutes` | Seuil optionnel utilisé par les contrôles internes de cohérence temporelle |
 | `geocoded_timestamp_entity` | Capteur optionnel fournissant une date propre à l’adresse géocodée |
 | `geocoded_timestamp_attribute` | Attribut optionnel de date propre à l’adresse ; jamais remplacé par `last_updated` |
 | `geocoded_stale_after_minutes` | Seuil explicite optionnel pour séparer une adresse datée trop ancienne de la zone actuelle |
@@ -60,7 +60,7 @@ Profil personnel avec Memoji provenant de l’entité HA, présence, dernière p
 | `battery`, `battery_state` | Niveau et charge du téléphone |
 | `phone_label`, `connection`, `activity`, `focus` | Libellé téléphone, réseau, activité et focus |
 | `tablet_battery`, `tablet_battery_state`, `tablet_tracker` | Bloc tablette facultatif, activé par `tablet_battery` |
-| `proximity`, `route`, `destination` | Dernières valeurs disponibles des capteurs de trajet ; leur fraîcheur n’est pas déduite du GPS |
+| `proximity`, `route`, `destination` | Dernières valeurs disponibles des capteurs de trajet |
 | `navigation_path` | Chemin au clic en compact ; par défaut `/lovelace/Personnes` |
 | `grid_options` | Disposition gérée par Home Assistant |
 
@@ -74,12 +74,14 @@ battery: sensor.alice_example_battery
 battery_state: sensor.alice_example_charge
 ```
 
-La ligne compacte et l’en-tête détaillé affichent d’abord la zone HA nommée, sinon une ville structurée, sinon une ville extraite prudemment de l’adresse. Une rue, un pays seul, des coordonnées et `not_home` ne deviennent jamais une ville. La durée n’est accolée qu’à « Maison » : une durée hors domicile n’est pas présentée comme du temps passé dans la ville.
+Le libellé compact et l’en-tête détaillé affichent d’abord la zone HA nommée. Sans zone, ils affichent **uniquement le nom de ville** : un pays, une rue, un code postal, des coordonnées, `not_home` ou un libellé technique ne deviennent jamais ce libellé. Une valeur structurée telle que « Ville Exemple, France » est normalisée en « Ville Exemple ». La durée n’est accolée qu’à `Maison` : une durée hors domicile n’est jamais présentée comme du temps passé dans la ville.
 
-« Dernière position connue » montre la zone/ville et l’adresse rapprochée. Les coordonnées, la précision, les sources et les dates distinctes de la position, de l’adresse et de l’entrée dans la zone sont repliées dans **Qualité**, un détail natif accessible au clavier et au toucher. Une adresse explicitement plus ancienne, antérieure à l’entrée dans la zone, située ailleurs ou associée à une autre ville est indiquée comme non rapprochée et consultable dans ce détail, jamais fusionnée à la position courante. Sans date de mesure fournie, la fraîcheur GPS reste non établie ; `last_updated` HA n’est jamais substitué. Les sources `unknown`/`unavailable`, les libellés techniques tels que `not_home`/« Hors zone » et les coordonnées invalides sont ignorés. Entrée/Espace activent la navigation en compact et le dialogue de l’entité en détail.
+En mode détail, la ligne d’adresse reste distincte et peut conserver sa forme complète lorsqu’elle est cohérente avec la localisation. Une adresse future, plus ancienne ou incohérente n’est pas fusionnée à la position présentée. Les contrôles de provenance, dates, précision et cohérence restent internes ; ils ne génèrent plus le bandeau de présence/dernière position, le dépliant **Qualité** ni une note de fraîcheur sous les blocs de trajet. Ces avertissements ne sont pas réintroduits sous une autre forme.
+
+Les blocs **Proximité**, **Trajet** et **Destination**, Memoji, batteries/charge, téléphone, tablette, navigation et éditeur visuel restent inchangés. Les sources `unknown`/`unavailable` et coordonnées invalides restent ignorées. Entrée/Espace activent la navigation en compact et le dialogue de l’entité en détail.
 
 ## Installation et validation
 
 [Installer avec HACS](HACS.md) · [Compatibilité](COMPATIBILITY.md) · [Recette](ACCEPTANCE.md) · [Fidélité des données](DATA-FRESHNESS.md).
 
-Les exemples sont fictifs. Ne jamais publier les captures familiales, positions, identifiants ou images personnelles dans ce dépôt. L’éditeur utilise `getConfigForm` et les sélecteurs natifs, présents dans le frontend `20260729.7` de HA 2026.8.3 ; cette vérification de code ne remplace pas l’essai visuel sur HA.
+Les exemples sont fictifs. Ne jamais publier les captures familiales, positions, identifiants ou images personnelles dans ce dépôt. L’éditeur utilise `getConfigForm` et les sélecteurs natifs ; la validation Node ne remplace pas l’essai visuel sur Home Assistant.

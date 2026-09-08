@@ -163,10 +163,10 @@ await test('R07', 'regression', 'A location with no position-specific timestamp 
   const current = card.shadowRoot.innerHTML.includes('<small>Position actuelle</small>');
   return { ok: !current, observed: { positionTimestampAvailable: false, stateLastUpdatedAvailable: true, labelIsCurrentPosition: current, interpretation: 'last_updated timestamps an HA state update; it does not establish the time of a GPS fix.' } };
 });
-await test('R08', 'regression', 'A supplied GPS accuracy of 1500 m is exposed as location uncertainty.', async () => {
+await test('R08', 'regression', 'GPS accuracy remains available internally without reintroducing a visible technical warning.', async () => {
   const env = harness(), card = env.rich(); card.setConfig(richConfig()); card.hass = richHass({ 'device_tracker.alice_example': entity('not_home', { latitude: 0, longitude: 0, gps_accuracy: 1500 }) });
-  const markup = card.shadowRoot.innerHTML;
-  return { ok: markup.includes('1500') || markup.includes('1,5 km') || markup.includes('1.5 km'), observed: { suppliedGpsAccuracyMeters: 1500, precisionExposedInMarkup: markup.includes('1500') || markup.includes('1,5 km') || markup.includes('1.5 km') } };
+  const location = card.location(card.e('person.alice')), markup = card.shadowRoot.innerHTML;
+  return { ok: location.precision === 1500 && !markup.includes('Précision') && !markup.includes('1500 m') && !markup.includes('1,5 km'), observed: { suppliedGpsAccuracyMeters: 1500, internalPrecision: location.precision, technicalPrecisionVisible: /Précision|1500 m|1,5 km/.test(markup) } };
 });
 await test('R09', 'regression', 'Unrelated hass updates preserve the focused Person Rich card DOM.', async () => {
   const env = harness(), card = env.rich(); card.setConfig(richConfig()); card.hass = richHass();
@@ -175,23 +175,22 @@ await test('R09', 'regression', 'Unrelated hass updates preserve the focused Per
 });
 
 
-await test('R10', 'freshness', 'An explicit old source-fix timestamp can be marked stale without using HA last_updated.', async () => {
+await test('R10', 'freshness', 'An explicit old source-fix timestamp remains detectable internally without a visible freshness warning.', async () => {
   const env = harness(), card = env.rich();
   const oldFix = new Date(Date.now() - 90 * 60 * 1000).toISOString();
   card.setConfig(richConfig({ position_timestamp_attribute: 'fix_time', position_stale_after_minutes: 30 }));
   card.hass = richHass({ 'device_tracker.alice_example': entity('not_home', { latitude: 0, longitude: 0, fix_time: oldFix, gps_accuracy: 12 }) });
-  const markup = card.shadowRoot.innerHTML;
-  return { ok: markup.includes('Position ancienne') && markup.includes('Précision ±12 m'), observed: { staleMarked: markup.includes('Position ancienne'), precisionShown: markup.includes('Précision ±12 m') } };
+  const location=card.location(card.e('person.alice')), freshness=card.freshness(location), markup=card.shadowRoot.innerHTML;
+  return { ok: location.timestamp===Date.parse(oldFix)&&location.precision===12&&freshness.state==='stale'&&!markup.includes('Position ancienne')&&!markup.includes('Précision'), observed: { sourceTimestamp: location.timestamp, internalFreshness: freshness.state, internalPrecision: location.precision, technicalWarningVisible: markup.includes('Position ancienne')||markup.includes('Précision') } };
 });
-await test('R11', 'freshness', 'A future source-fix timestamp is flagged as unreliable rather than fresh.', async () => {
+await test('R11', 'freshness', 'A future source-fix timestamp remains flagged internally without a visible technical warning.', async () => {
   const env = harness(), card = env.rich();
   const futureFix = new Date(Date.now() + 10 * 60 * 1000).toISOString();
   card.setConfig(richConfig({ position_timestamp_attribute: 'fix_time' }));
   card.hass = richHass({ 'device_tracker.alice_example': entity('not_home', { latitude: 0, longitude: 0, fix_time: futureFix }) });
-  const markup = card.shadowRoot.innerHTML;
-  return { ok: markup.includes('Date non fiable') && markup.includes('Horodatage de position futur'), observed: { futureTimestampFlagged: markup.includes('Date non fiable') } };
+  const location=card.location(card.e('person.alice')), freshness=card.freshness(location), markup=card.shadowRoot.innerHTML;
+  return { ok: freshness.state==='future'&&!markup.includes('Date non fiable')&&!markup.includes('Horodatage de position futur'), observed: { internalFreshness: freshness.state, visibleWarning: markup.includes('Date non fiable')||markup.includes('Horodatage de position futur') } };
 });
-
 await test('H11', 'cold-load', 'An initially unupgraded native map waits for its definition and receives latest filters and hass.', async()=>{
   const ready=deferred(),native={localName:'hui-map-card'};
   const env=harness({loader:async()=>({createCardElement:()=>native})});
@@ -220,11 +219,11 @@ await test('H13', 'cold-load', 'Detaching cancels pending timeout and remounting
   const cancelled=cleared>0;card.connectedCallback();await tick();
   return {ok:cancelled&&!!card.map,observed:{cancelled,mapAfterReconnect:!!card.map}};
 });
-await test('R12', 'location', 'Home presence retains GPS accuracy and a separately labelled geocoded address.', async()=>{
+await test('R12', 'location', 'Home presence retains GPS accuracy and a distinct geocoded address without the removed presence banner.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode'}));
   card.hass=richHass({'person.alice':entity('home'),'sensor.example_gps':entity('Maison'),'sensor.example_geocode':entity('Ville Exemple'),'device_tracker.alice_example':entity('home',{latitude:0,longitude:0,gps_accuracy:17})});
   const l=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
-  return {ok:l.coords&&l.precision===17&&l.geocode==='Ville Exemple'&&l.city==='Maison'&&html.includes('Ville Exemple')&&html.includes('Dernière position connue'),observed:{coords:l.coords,precision:l.precision,presence:l.presence}};
+  return {ok:l.coords&&l.precision===17&&l.geocode==='Ville Exemple'&&l.city==='Maison'&&html.includes('Maison')&&html.includes('Ville Exemple')&&!html.includes('Présence HA')&&!html.includes('Dernière position connue'),observed:{coords:l.coords,precision:l.precision,presence:l.presence,removedBannerVisible:html.includes('Présence HA')||html.includes('Dernière position connue')}};
 });
 await test('R13', 'location', 'A text sensor does not hide tracker accuracy or lend its date to geocoding.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time'}));
@@ -255,17 +254,19 @@ await test('R17', 'location', 'Away-from-home duration is not presented as time 
   card.hass=richHass({'sensor.example_duration':entity('depuis 2 h'),'sensor.example_geocode':entity('75001 Ville Exemple'),'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3})});
   return {ok:card.location(card.e('person.alice')).city==='Ville Exemple'&&!card.shadowRoot.innerHTML.includes('2 h'),observed:{markupContainsAwayDuration:card.shadowRoot.innerHTML.includes('2 h')}};
 });
-await test('R18', 'location-detail', 'The regular last-position view shows city and address; coordinates and quality stay in native details.', async()=>{
+await test('R18', 'location-detail', 'Detail renders the city-only label and keeps the distinct full address while hiding technical quality metadata.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time',geocoded_timestamp_attribute:'address_time'}));
-  card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,gps_accuracy:12,city:'Ville Exemple',fix_time:'2026-09-07T10:00:00Z'}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Exemple, France',{city:'Ville Exemple',address_time:'2026-09-07T10:00:00Z'})});
-  const html=card.shadowRoot.innerHTML,regular=html.split('<details class="quality">')[0];
-  return {ok:regular.includes('Ville Exemple')&&regular.includes('10 rue Exemple')&&!regular.includes('48.50000')&&html.includes('<details class="quality">')&&html.includes('48.50000')&&html.includes('Précision ±12 m')&&html.includes('Source position</b>device_tracker.alice_example')&&html.includes('Date position')&&html.includes('Source adresse</b>sensor.example_geocode')&&html.includes('Date adresse'),observed:{regularCoordinatesVisible:regular.includes('48.50000'),detailsPresent:html.includes('<details class="quality">'),positionAndAddressProvenance:html.includes('Source position')&&html.includes('Source adresse'),positionAndAddressDates:html.includes('Date position')&&html.includes('Date adresse')}};
+  card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,gps_accuracy:12,city:'Ville Exemple',fix_time:'2026-09-07T10:00:00Z'}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Exemple, France',{city:'Ville Exemple, France',address_time:'2026-09-07T10:00:00Z'})});
+  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
+  const cityOnly=html.includes('<b>Ville Exemple</b>')&&html.includes('>Ville Exemple</span>'),addressKept=html.includes('10 rue Exemple, 75001 Ville Exemple, France');
+  const technicalVisible=html.includes('<details')||html.includes('Qualité')||html.includes('Précision')||html.includes('Source position')||html.includes('Date position')||html.includes('48.50000');
+  return {ok:location.city==='Ville Exemple'&&location.precision===12&&location.positionSource==='device_tracker.alice_example'&&location.timestamp===Date.parse('2026-09-07T10:00:00Z')&&cityOnly&&addressKept&&!technicalVisible,observed:{city:location.city,cityOnly,addressKept,technicalVisible,internalPrecision:location.precision,internalPositionSource:location.positionSource}};
 });
-await test('R19', 'location-detail', 'An explicitly older geocoded address is not merged with a newer position.', async()=>{
+await test('R19', 'location-detail', 'An explicitly older geocoded address remains separated internally and is not exposed as the current address or a warning.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time',geocoded_timestamp_attribute:'address_time'}));
   card.hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,city:'Ville Exemple',fix_time:'2026-09-07T10:00:00Z'}),'sensor.example_geocode':entity('10 rue Ancienne, 75001 Ville Exemple, France',{city:'Ville Exemple',address_time:'2026-09-07T09:00:00Z'})});
-  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML,regular=html.split('<details class="quality">')[0];
-  return {ok:location.addressSeparated&&location.separationReason.includes('plus ancienne')&&regular.includes('Adresse non rapprochée')&&!regular.includes('10 rue Ancienne')&&html.includes('10 rue Ancienne'),observed:{addressSeparated:location.addressSeparated,reason:location.separationReason}};
+  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
+  return {ok:location.addressSeparated&&location.separationReason.includes('plus ancienne')&&!html.includes('10 rue Ancienne')&&!html.includes('Adresse non rapprochée')&&!html.includes('Adresse séparée')&&!html.includes('<details'),observed:{addressSeparated:location.addressSeparated,reason:location.separationReason,oldAddressVisible:html.includes('10 rue Ancienne'),warningVisible:html.includes('Adresse non rapprochée')||html.includes('Adresse séparée')}};
 });
 await test('R20', 'location-detail', 'Unknown and unavailable sources yield a sober unavailable location without retained attributes.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode'}));
@@ -273,10 +274,10 @@ await test('R20', 'location-detail', 'Unknown and unavailable sources yield a so
   const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
   return {ok:location.status==='unavailable'&&location.city==='Localisation inconnue'&&!html.includes('Ville Retenue')&&!html.includes('Adresse Retenue')&&html.includes('Indisponible'),observed:{status:location.status,city:location.city}};
 });
-await test('R21', 'location-detail', 'Geocoded timestamp options are visually editable and the quality disclosure is keyboard-native.', async()=>{
+await test('R21', 'location-detail', 'Geocoded timestamp options remain editable while the user-facing quality disclosure stays removed.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig());card.hass=richHass();
   const names=new Set(card.constructor.getConfigForm().schema.map(item=>item.name)),html=card.shadowRoot.innerHTML;
-  return {ok:names.has('geocoded_timestamp_entity')&&names.has('geocoded_timestamp_attribute')&&names.has('geocoded_stale_after_minutes')&&html.includes('<details class="quality">')&&html.includes('<summary>Qualité'),observed:{editorFields:[...names].filter(name=>name.startsWith('geocoded_')),nativeDetails:html.includes('<details class="quality">')}};
+  return {ok:names.has('geocoded_timestamp_entity')&&names.has('geocoded_timestamp_attribute')&&names.has('geocoded_stale_after_minutes')&&!html.includes('<details class="quality">')&&!html.includes('<summary>Qualité'),observed:{editorFields:[...names].filter(name=>name.startsWith('geocoded_')),qualityDisclosureVisible:html.includes('Qualité')}};
 });
 await test('R22', 'location-detail', 'A dated old address stays separate from a current named zone even without a GPS timestamp.', async()=>{
   const env=harness(),card=env.rich(),oldAddress=new Date(Date.now()-120*60000).toISOString();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',geocoded_timestamp_attribute:'address_time',geocoded_stale_after_minutes:30}));
@@ -284,11 +285,11 @@ await test('R22', 'location-detail', 'A dated old address stays separate from a 
   const location=card.location(card.e('person.alice'));
   return {ok:location.city==='Bureau 2'&&location.addressSeparated&&location.separationReason.includes('zone actuelle'),observed:{city:location.city,addressSeparated:location.addressSeparated,reason:location.separationReason}};
 });
-await test('R23', 'location-detail', 'An address recorded before entry into the current zone stays separate even without coordinates or a configured age threshold.', async()=>{
+await test('R23', 'location-detail', 'An address recorded before the current zone remains separated internally without exposing the old address or technical warning.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({geocoded_location:'sensor.example_geocode',geocoded_timestamp_attribute:'address_time'}));
   card.hass=richHass({'person.alice':entity('Bureau 2',{friendly_name:'Alice Exemple'},{last_changed:'2026-09-07T10:00:00Z'}),'device_tracker.alice_example':entity('unavailable'),'sensor.example_geocode':entity('10 rue Ancienne, 75001 Ville Exemple, France',{address_time:'2026-09-07T09:00:00Z'})});
-  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML,regular=html.split('<details class="quality">')[0];
-  return {ok:location.city==='Bureau 2'&&location.addressSeparated&&location.separationReason.includes('antérieure à la zone actuelle')&&regular.includes('Adresse non rapprochée')&&!regular.includes('10 rue Ancienne')&&html.includes('Zone depuis')&&html.includes('10 rue Ancienne'),observed:{city:location.city,addressSeparated:location.addressSeparated,reason:location.separationReason,zoneDateInDetails:html.includes('Zone depuis')}};
+  const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
+  return {ok:location.city==='Bureau 2'&&location.addressSeparated&&location.separationReason.includes('antérieure à la zone actuelle')&&!html.includes('10 rue Ancienne')&&!html.includes('Adresse non rapprochée')&&!html.includes('Zone depuis')&&!html.includes('<details'),observed:{city:location.city,addressSeparated:location.addressSeparated,reason:location.separationReason,oldAddressVisible:html.includes('10 rue Ancienne'),technicalZoneDateVisible:html.includes('Zone depuis')}};
 });
 await test('R24', 'location', 'Technical away labels and long error states are never exposed as a city or current address.', async()=>{
   const env=harness(),card=env.rich();card.setConfig(richConfig({gps:'sensor.example_gps',geocoded_location:'sensor.example_geocode'}));
@@ -296,19 +297,19 @@ await test('R24', 'location', 'Technical away labels and long error states are n
   const location=card.location(card.e('person.alice')),html=card.shadowRoot.innerHTML;
   return {ok:location.city==='Localisation inconnue'&&location.address===null&&!html.includes('API key required')&&!html.includes('Hors zone'),observed:{city:location.city,address:location.address,technicalTextVisible:html.includes('API key required')||html.includes('Hors zone')}};
 });
-await test('R25', 'city-freshness', 'An older geocoded city is labelled as the last known city in compact and detail while retaining its source and date.', async()=>{
+await test('R25', 'city-freshness', 'An older geocoded city keeps its provenance internally but renders only the city name in compact and detail.', async()=>{
   const env=harness(),card=env.rich(),fixTime=new Date().toISOString(),cityTime=new Date(Date.now()-120*60000).toISOString();
   const config=richConfig({mode:'compact',geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time',geocoded_timestamp_attribute:'address_time'}),hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,fix_time:fixTime}),'sensor.example_geocode':entity('10 rue Ancienne, 75001 Ville Exemple, France',{city:'Ville Exemple',address_time:cityTime})});
   card.setConfig(config);card.hass=hass;const location=card.location(card.e('person.alice')),compact=card.shadowRoot.innerHTML;
-  const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const detailRegular=detail.shadowRoot.innerHTML.split('<details class="quality">')[0];
-  return {ok:location.city==='Ville Exemple'&&location.cityDisplay==='Ville Exemple · dernière ville connue'&&location.cityLastKnown&&location.citySource==='sensor.example_geocode'&&location.cityTimestamp===Date.parse(cityTime)&&compact.includes('Ville Exemple · dernière ville connue')&&detailRegular.includes('Ville Exemple · dernière ville connue'),observed:{city:location.city,cityDisplay:location.cityDisplay,citySource:location.citySource,cityTimestamp:location.cityTimestamp,compactQualified:compact.includes('dernière ville connue'),detailQualified:detailRegular.includes('dernière ville connue')}};
+  const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const detailHtml=detail.shadowRoot.innerHTML;
+  return {ok:location.city==='Ville Exemple'&&location.cityDisplay==='Ville Exemple'&&location.cityLastKnown&&location.citySource==='sensor.example_geocode'&&location.cityTimestamp===Date.parse(cityTime)&&compact.includes('Ville Exemple')&&detailHtml.includes('Ville Exemple')&&!compact.includes('dernière ville connue')&&!detailHtml.includes('dernière ville connue'),observed:{city:location.city,cityDisplay:location.cityDisplay,cityLastKnown:location.cityLastKnown,citySource:location.citySource,cityTimestamp:location.cityTimestamp,visibleQualification:compact.includes('dernière ville connue')||detailHtml.includes('dernière ville connue')}};
 });
-await test('R26', 'city-freshness', 'An undated geocoded city is labelled as the last known city rather than presented as current.', async()=>{
+await test('R26', 'city-freshness', 'An undated geocoded city keeps its unknown freshness internally but renders only the city name.', async()=>{
   const env=harness(),card=env.rich(),fixTime=new Date().toISOString();
   const config=richConfig({mode:'compact',geocoded_location:'sensor.example_geocode',position_timestamp_attribute:'fix_time',geocoded_timestamp_attribute:'address_time'}),hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,fix_time:fixTime}),'sensor.example_geocode':entity('75001 Ville Exemple',{city:'Ville Exemple'})});
   card.setConfig(config);card.hass=hass;const location=card.location(card.e('person.alice')),compact=card.shadowRoot.innerHTML;
-  const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const detailRegular=detail.shadowRoot.innerHTML.split('<details class="quality">')[0];
-  return {ok:location.city==='Ville Exemple'&&location.cityDisplay==='Ville Exemple · dernière ville connue'&&location.cityLastKnown&&location.citySource==='sensor.example_geocode'&&location.cityTimestamp===null&&compact.includes('Ville Exemple · dernière ville connue')&&detailRegular.includes('Ville Exemple · dernière ville connue'),observed:{city:location.city,cityDisplay:location.cityDisplay,citySource:location.citySource,cityTimestamp:location.cityTimestamp,compactQualified:compact.includes('dernière ville connue'),detailQualified:detailRegular.includes('dernière ville connue')}};
+  const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const detailHtml=detail.shadowRoot.innerHTML;
+  return {ok:location.city==='Ville Exemple'&&location.cityDisplay==='Ville Exemple'&&location.cityLastKnown&&location.citySource==='sensor.example_geocode'&&location.cityTimestamp===null&&compact.includes('Ville Exemple')&&detailHtml.includes('Ville Exemple')&&!compact.includes('dernière ville connue')&&!detailHtml.includes('dernière ville connue')&&!detailHtml.includes('Fraîcheur inconnue'),observed:{city:location.city,cityDisplay:location.cityDisplay,cityLastKnown:location.cityLastKnown,citySource:location.citySource,cityTimestamp:location.cityTimestamp,visibleQualification:compact.includes('dernière ville connue')||detailHtml.includes('dernière ville connue'),freshnessWarningVisible:detailHtml.includes('Fraîcheur inconnue')}};
 });
 await test('R27', 'city-freshness', 'A future geocoded city is excluded from the current compact and detail presentation.', async()=>{
   const env=harness(),card=env.rich(),fixTime=new Date().toISOString(),futureTime=new Date(Date.now()+24*60*60000).toISOString();
@@ -317,6 +318,20 @@ await test('R27', 'city-freshness', 'A future geocoded city is excluded from the
   const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const detailRegular=detail.shadowRoot.innerHTML.split('<details class="quality">')[0];
   return {ok:location.city==='Localisation inconnue'&&location.citySource===null&&!compact.includes('Ville Future')&&!detailRegular.includes('Ville Future'),observed:{city:location.city,citySource:location.citySource,compactShowsFuture:compact.includes('Ville Future'),detailShowsFuture:detailRegular.includes('Ville Future'),addressSeparated:location.addressSeparated,separationReason:location.separationReason}};
 });
+
+await test('R28', 'visual-cleanup', 'The removed technical chrome stays absent while journey blocks, avatar, battery, device facts and address remain present.', async()=>{
+  const env=harness(),compact=env.rich();
+  const config=richConfig({mode:'compact',geocoded_location:'sensor.example_geocode',proximity:'sensor.example_proximity',route:'sensor.example_route',destination:'sensor.example_destination',connection:'sensor.example_connection',activity:'sensor.example_activity',focus:'sensor.example_focus'});
+  const hass=richHass({'device_tracker.alice_example':entity('not_home',{latitude:48.5,longitude:2.3,city:'Ville Exemple'}),'sensor.example_geocode':entity('10 rue Exemple, 75001 Ville Exemple, France',{city:'Ville Exemple'}),'sensor.example_battery':entity('74'),'sensor.example_battery_state':entity('Charging'),'sensor.example_proximity':entity('1,2 km'),'sensor.example_route':entity('8 min'),'sensor.example_destination':entity('Ville Cible'),'sensor.example_connection':entity('Wi-Fi'),'sensor.example_activity':entity('Walking'),'sensor.example_focus':entity('off')});
+  compact.setConfig(config);compact.hass=hass;const compactHtml=compact.shadowRoot.innerHTML;
+  const detail=env.rich();detail.setConfig({...config,mode:'detail'});detail.hass=hass;const html=detail.shadowRoot.innerHTML;
+  const removed=['Présence HA','Dernière position connue','<details class="quality"','Qualité','Fraîcheur inconnue','Dernières valeurs des capteurs · fraîcheur du trajet non établie'];
+  const removedVisible=removed.filter(value=>html.includes(value)||compactHtml.includes(value));
+  const preserved=['/local/example-avatar.svg','iosBattery detailBattery','mdi:lightning-bolt','Proximité','1,2 km','Trajet','8 min','Destination','Ville Cible','10 rue Exemple, 75001 Ville Exemple, France','iPhone','Réseau','Activité','Focus'];
+  const missing=preserved.filter(value=>!html.includes(value));
+  return {ok:removedVisible.length===0&&missing.length===0&&compactHtml.includes('Ville Exemple')&&!compactHtml.includes('France'),observed:{removedVisible,missing,compactCityOnly:compactHtml.includes('Ville Exemple')&&!compactHtml.includes('France')}};
+});
+
 await test('E01', 'visual-editor', 'Both discoverable cards provide native form editors and unversioned names with documentation links.', async()=>{
   const env=harness();const cards=[env.history(),env.rich()];
   const forms=cards.map(c=>c.constructor.getConfigForm());

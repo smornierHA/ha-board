@@ -1,12 +1,14 @@
-# HA-BOARD 0.1.1-rc.1
+# HA-BOARD 0.1.2-rc.1
 
-Candidat de recette, pas une version stable.
+Candidate de correctif visuel, pas une version stable.
 
-- Affiche la zone HA nommée, sinon une ville structurée ou extraite prudemment, dans Person Rich compact et détail.
-- Ne transforme plus la durée hors domicile en temps passé dans la ville affichée.
-- Allège « Dernière position connue » : zone/ville et adresse en principal ; coordonnées, précision, sources et dates distinctes dans un détail accessible.
-- Sépare les adresses explicitement anciennes ou incohérentes au lieu de les fusionner avec la position.
-- Ajoute les options visuelles de date propre et de seuil d’ancienneté de l’adresse géocodée, sépare une adresse antérieure à l’entrée dans la zone et rejette les libellés techniques comme « Hors zone ».
-- Conserve les types YAML, originaux, historique natif, filtres, couleurs, Memoji, batteries iOS, charge et navigation.
+- Retire de Person Rich le bandeau « Présence HA / Dernière position connue », le dépliant Qualité et la note de fraîcheur sous les capteurs de trajet, sans laisser leur espace.
+- Affiche la zone HA nommée en priorité ; sinon le nom de ville seul dans les libellés compact et détail, sans rue, code postal ni pays.
+- Conserve la ligne d’adresse distincte lorsqu’elle est cohérente avec la localisation présentée.
+- Conserve en interne les contrôles de date, provenance, source future/incohérente et séparation d’adresse, sans réafficher ces avertissements techniques.
+- Conserve Person History Map, les types YAML, Memoji, batteries/charge, équipements, Proximité/Trajet/Destination, navigation et éditeurs.
+- Ne transforme toujours pas une durée hors domicile en durée passée dans une ville.
 
-L’adresse des points historiques n’est pas incluse : le frontend ciblé n’expose pas de point d’extension public pour enrichir ces bulles. Un adaptateur borné, dédupliqué et annulable est testé séparément sur données fictives, sans appel réseau. La recette HA mobile/desktop, thèmes, détail, sauvegarde/réouverture des éditeurs et mise à jour/retour arrière reste à prouver. Aucun update Core, OS, NAS, Livebox ou serveur Frigate n’est inclus.
+L’ancien U3 « adresse dans les bulles historiques natives » est écarté par décision utilisateur et n’est pas déclaré livré. Son remplacement est le backlog #10 (graphe historique durée + position dans chaque vignette) ; aucun prototype de ce graphe n’est inclus.
+
+La validation Node/CI ne prouve pas le rendu Home Assistant réel. Mobile/desktop, thèmes, version réellement chargée et éventuel retour arrière restent à recetter sous mandat séparé. Aucune mise à jour Core, OS, NAS, Livebox ou Frigate n’est incluse.
