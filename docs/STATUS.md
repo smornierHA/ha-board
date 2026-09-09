@@ -1,19 +1,24 @@
-# État courant — 8 septembre 2026
+# État courant — 9 septembre 2026
 
-La prérelease `v0.1.1-rc.1` est publiée depuis `main` `d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8` et l’utilisateur confirme son installation. Ce retour visuel ne constitue pas une recette Home Assistant complète ni une validation stable.
+Le lot `v0.1.2-rc.1` est **publié, installé via HACS, chargé dans le navigateur et validé par la recette Home Assistant ciblée de l’utilisateur**. La [clôture de supervision](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) consolide les preuves techniques et la confirmation reçue le 9 septembre après rafraîchissement de la vue Personnes.
 
 | Étape | État prouvé | Référence |
 |---|---|---|
-| Code `v0.1.1-rc.1` | Fusionné sur `main` | `d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8`, arbre `0e54864d4cab95586be9055d840be7eaf30143b3` |
-| Candidate installée | Publiée et installation confirmée par l’utilisateur | `v0.1.1-rc.1` |
-| Artefact publié | Identifié | `ha-board.js`, 41 849 octets, SHA256 `f86b7409a54aaa0e4ba4bb9f9d61a9ade90366f6193b41a8ff964f712d17d2c9` |
-| Retour utilisateur | Correctif visuel demandé | décision #8 du 8 septembre 2026 |
-| Candidate suivante | Préparée sur branche corrective | `0.1.2-rc.1`, non fusionnée, non publiée, non installée |
-| Stable | Non promue | recette HA complète et décision explicite toujours requises |
+| Code | Fusionné sur `main` par la [PR #11](https://github.com/smornierHA/ha-board/pull/11) | `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, arbre `c6148511137da9ddef61d34384df3de052fe0d1b` |
+| CI intégrée | Réussie ; 43/43 contrats sources et bundle, régression ville incluse | [run 34258176907](https://github.com/smornierHA/ha-board/actions/runs/34258176907) |
+| Publication | Candidate publiée | [v0.1.2-rc.1](https://github.com/smornierHA/ha-board/releases/tag/v0.1.2-rc.1), [preuves de livraison](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5589311573) |
+| Artefact | Bundle identifié | `ha-board.js`, 38 462 octets, SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6` |
+| Installation HACS | `v0.1.2-rc.1`, aucune mise à jour en attente | [contrôles techniques](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216) |
+| Chargement navigateur | Confirmé par l’utilisateur après rafraîchissement forcé | [confirmation du 9 septembre](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) |
+| Recette HA ciblée | Compact/détail et navigation confirmés par l’utilisateur, sans anomalie signalée | [confirmation du 9 septembre](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) |
+| Retour arrière | `v0.1.1-rc.1` reste disponible ; downgrade non rejoué dans ce lot | [procédure HACS](HACS.md) |
+| Stable | Non promue | critères S2–S4 et décision S5 de la [roadmap](ROADMAP.md) distincts |
 
-## Correctif visuel suivant
+Composants livrés : Person Rich 3.4.7 et Person History Map 1.4.2. La réserve du banc de capture automatique Puppet ne remet pas en cause la vérification effectuée dans le navigateur utilisateur authentifié. Elle ne constitue pas non plus une preuve de campagne visuelle automatisée complète.
 
-`0.1.2-rc.1` conserve les contrôles internes de provenance, date, cohérence des sources et séparation d’adresse, mais retire de l’affichage Person Rich :
+## Résultat du correctif visuel
+
+`v0.1.2-rc.1` conserve les contrôles internes de provenance, date, cohérence des sources et séparation d’adresse, mais retire de l’affichage Person Rich :
 
 - le bandeau de présence / dernière position ;
 - le dépliant de qualité et tout son contenu ;
@@ -23,8 +28,8 @@ Le libellé compact et détaillé utilise la zone HA nommée en priorité, sinon
 
 Les originaux dans `src/`, les types YAML, Person History Map, Memoji, batteries, équipements, navigation et blocs de trajet sont préservés.
 
-## U3
+## U3 et suites
 
-L’ancien U3 « adresse dans les bulles historiques natives » est **écarté par décision utilisateur et non livré**. Aucun prototype supplémentaire n’est lancé. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique durée + position dans chaque vignette Person Rich. Ce backlog n’est pas développé dans le correctif visuel.
+L’ancien U3 « adresse dans les bulles historiques natives » est **écarté par décision utilisateur et non livré**. Aucun prototype supplémentaire n’est lancé. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique durée + position dans chaque vignette Person Rich. Ce backlog reste séparé.
 
-Aucune fusion, publication de `0.1.2-rc.1`, installation HACS ou intervention Home Assistant/Core/OS/NAS/Livebox/Frigate n’est établie par cette préparation.
+Le lot localisation [#8](https://github.com/smornierHA/ha-board/issues/8) est clos sur ce périmètre. Les futures cartes météo, portail et garage relèvent des lots M2–M4 de la [roadmap](ROADMAP.md), sans nouvelle installation ni modification Core/OS/NAS/Livebox/Frigate dans cette clôture documentaire.
