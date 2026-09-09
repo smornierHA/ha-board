@@ -10,6 +10,17 @@ errors = [p for p in required if not (root / p).is_file() or not (root / p).read
 manifest = json.loads((root / 'source-manifest.json').read_text(encoding='utf-8'))
 if not manifest.get('sources'):
     errors.append('source-manifest.json: sources manquantes')
+distribution = json.loads((root / 'dist/manifest.json').read_text(encoding='utf-8'))
+readme = (root / 'README.md').read_text(encoding='utf-8')
+version = distribution['package_version']
+if f'/releases/tag/v{version})' not in readme:
+    errors.append('README.md: lien de release absent pour la version du manifeste')
+for artifact in distribution.get('artifacts', []):
+    if f"/hacsfiles/ha-board/{artifact['file']}" not in readme:
+        errors.append(f"README.md: ressource distribuée absente: {artifact['file']}")
+notes = (root / 'docs/RELEASE-NOTES.md').read_text(encoding='utf-8')
+if notes.splitlines()[0] != f'# HA-BOARD {version}':
+    errors.append('docs/RELEASE-NOTES.md: titre courant différent de la version du manifeste')
 if errors:
     raise SystemExit('Documents incomplets: ' + ', '.join(errors))
-print('Documents présents et manifeste JSON lisible. Ceci ne valide pas le produit.')
+print('Documents présents ; README HACS, modules et notes alignés au manifeste. Ceci ne valide ni le produit ni le cache HACS.')

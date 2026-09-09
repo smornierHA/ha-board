@@ -20,3 +20,5 @@ Une fusion, même documentaire, déclenche le job candidate sur `main`. Pour une
 ## Contrôles météo #12
 
 Le même workflow de PR contrôle les empreintes météo, les valeurs effectives et allers-retours de l’éditeur, la méthode HACS installée sur ressources fictives, les contrats sources/distribution, les 43 contrats Personnes et le rendu Chrome sur données fictives. Pas de workflow produit supplémentaire doublonnant push/PR. Les captures de la simulation sont jointes au run avec rétention 14 jours, nommées par le SHA réellement checkouté. Le fichier météo ne dépend d’aucun module JS externe. Le publisher vérifie tous les artefacts et notices ; la provenance `verified` doit rester reliée aux notices manifestées.
+
+Le contrôle léger `scripts/check_project_docs.py` confronte aussi `dist/manifest.json` au README destiné à HACS (version de release et modules distribués) et au titre courant des notes de livraison. Il ne prouve ni fraîcheur du cache HACS ni installation ; la vérification après déploiement reste décrite dans [HACS](HACS.md#documentation-à-chaque-livraison).

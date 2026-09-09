@@ -1,6 +1,6 @@
 # Cartes disponibles
 
-Les deux cartes s’installent ensemble depuis HACS, avec une seule ressource `ha-board.js`. Dans **Modifier le tableau de bord → Ajouter une carte**, rechercher le nom ci-dessous. Chaque carte propose l’éditeur visuel natif HA et un lien vers cette documentation. Les numéros restent dans le manifeste de livraison, jamais dans les noms du catalogue.
+HACS distribue trois cartes : les deux cartes Personnes partagent `ha-board.js`, la météo utilise `weather-combined-forecast-card.js` avec sa propre ressource module (voir [HACS](HACS.md)). Dans **Modifier le tableau de bord → Ajouter une carte**, rechercher le nom ci-dessous. Chaque carte propose l’éditeur visuel natif HA et un lien vers cette documentation. Les numéros restent dans le manifeste de livraison, jamais dans les noms du catalogue.
 
 ## Person History Map
 
@@ -88,7 +88,7 @@ Les exemples sont fictifs. Ne jamais publier les captures familiales, positions,
 
 ## Weather Combined Forecast
 
-**Pilote #12 préparé, non publié.** Type conservé `custom:weather-combined-forecast-card`. Fichier dédié `weather-combined-forecast-card.js`, à activer seulement lors de la [bascule contrôlée](HACS.md#pilote-météo-020-rc1--préparation-seulement). Le bundle Personnes ne charge pas cette carte.
+**Disponible depuis `v0.2.0-rc.1`, recette HA ciblée confirmée le 9 septembre 2026.** Type conservé `custom:weather-combined-forecast-card`. Fichier dédié `weather-combined-forecast-card.js`, avec une ressource distincte selon la [bascule contrôlée](HACS.md#migration-météo-020-rc1). Le bundle Personnes ne charge pas cette carte.
 
 Météo actuelle, min/max du jour depuis la prévision daily, graphe horaire température/pluie, probabilité rapprochée dans le temps, vent/rafales/orientation, soleil et risques. Le mode `weather_alert_pills` intégré conserve ses attributions ; aucune autre carte météo n’est importée. [Options complètes](WEATHER-OPTIONS.md) · [Provenance](WEATHER-PROVENANCE.md) · [Démonstration fictive](../examples/weather-demo.html).
 
