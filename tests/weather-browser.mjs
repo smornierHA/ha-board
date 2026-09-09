@@ -42,4 +42,14 @@ try{
   proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light']});
  }
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({chrome:execFileSync(chrome,['--version'],{encoding:'utf8'}).trim(),checks:proof,errors,ha_acceptance:false},null,2)+'\n');console.log(JSON.stringify(proof));
-}finally{ws?.close();processChrome.kill();server.close();fs.rmSync(profile,{recursive:true,force:true});}
+}finally{
+ ws?.close();
+ await new Promise(resolve=>{
+  if(processChrome.exitCode!==null){resolve();return;}
+  const timer=setTimeout(resolve,5000);
+  processChrome.once('exit',()=>{clearTimeout(timer);resolve();});
+  processChrome.kill();
+ });
+ server.close();
+ fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});
+}
