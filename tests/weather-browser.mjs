@@ -9,7 +9,7 @@ if(!chrome)throw Error('No Chrome/Chromium executable available; browser verific
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'weather-chrome-'));
 const server=createServer((req,res)=>{const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);const p=path.resolve(root,'.'+pathname);if(!p.startsWith(root+path.sep)){res.writeHead(403).end();return;}try{res.setHeader('Content-Type',p.endsWith('.html')?'text/html; charset=utf-8':p.endsWith('.js')?'text/javascript; charset=utf-8':'text/plain');res.end(fs.readFileSync(p));}catch{res.writeHead(404).end();}});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
-const processChrome=spawn(chrome,['--headless=new','--no-sandbox','--disable-gpu','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
+const processChrome=spawn(chrome,['--headless=new','--no-sandbox','--disable-gpu','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe'],detached:process.platform!=='win32'});
 let ws;
 try{
  const endpoint=await new Promise((resolve,reject)=>{let buffer='';const timer=setTimeout(()=>reject(Error('Chrome startup timeout')),20000);processChrome.on('error',reject);processChrome.stderr.on('data',data=>{buffer+=data;const match=buffer.match(/DevTools listening on (ws:\/\/\S+)/);if(match){clearTimeout(timer);resolve(match[1]);}});});
@@ -43,13 +43,14 @@ try{
  }
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({chrome:execFileSync(chrome,['--version'],{encoding:'utf8'}).trim(),checks:proof,errors,ha_acceptance:false},null,2)+'\n');console.log(JSON.stringify(proof));
 }finally{
- ws?.close();
+ try{ws?.send(JSON.stringify({id:2147483647,method:'Browser.close'}));}catch{}
  await new Promise(resolve=>{
   if(processChrome.exitCode!==null){resolve();return;}
-  const timer=setTimeout(resolve,5000);
-  processChrome.once('exit',()=>{clearTimeout(timer);resolve();});
-  processChrome.kill();
+  const forceTimer=setTimeout(()=>{try{if(process.platform!=='win32')process.kill(-processChrome.pid,'SIGKILL');else processChrome.kill('SIGKILL');}catch{}},4000);
+  const giveUpTimer=setTimeout(resolve,6000);
+  processChrome.once('exit',()=>{clearTimeout(forceTimer);clearTimeout(giveUpTimer);resolve();});
  });
+ ws?.close();
  server.close();
- fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});
+ fs.rmSync(profile,{recursive:true,force:true,maxRetries:10,retryDelay:100});
 }
