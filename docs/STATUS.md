@@ -1,6 +1,8 @@
 # État courant — 9 septembre 2026
 
-**Distribution courante : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
+**Distribution installée : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
+
+**Candidat Garage : `v0.3.0-rc.1`, préparation de #13.** Source 1.0.1 relue sans dérive via HA-MCP ; export public expurgé et source maintenue 1.1.0 distincts. Le candidat corrige G1 et les réponses tardives, incorpore Lit, ajoute l’éditeur natif et prépare une bascule/rollback Garage seuls. Les contrats Node sont simulés ; la comparaison Chrome doit être rattachée à la CI exacte de la PR. État : préparé et testé localement hors navigateur ; non accepté, non fusionné, non publié, non installé, non chargé, non recetté dans HA. Aucun service réel n’a été appelé.
 
 | Étape météo | État prouvé | Référence |
 |---|---|---|
@@ -14,7 +16,7 @@ Météo distribuée/installée : **142 577 octets**, SHA256 `f853e1d46c887209ed3
 
 La remarque mineure sur la documentation HACS conduit à aligner README/catalogue/état et à contrôler la documentation avant publication puis après déploiement. Aucune anomalie fonctionnelle nouvelle signalée ; aucune matrice exhaustive éditeurs/thèmes/mobile ni promotion stable n’est déduite de la recette ciblée. Le banc de capture indisponible ne remet pas en cause les essais natifs de l’utilisateur.
 
-**Prochaine étape : préparation Garage #13**, puis Portail #14. Historique #10 séparé. La maintenance du socle RC.8 ne bloque pas ces lots et son adoption complète n’est pas revendiquée.
+**Prochaine étape : revue consolidée de la PR draft Garage #13**, puis décision séparée de fusion/publication. Portail #14 et historique #10 restent séparés. La maintenance du socle RC.8 ne bloque pas ces lots et son adoption complète n’est pas revendiquée.
 
 ## Historique clos : Personnes `v0.1.2-rc.1`
 

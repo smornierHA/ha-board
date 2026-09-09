@@ -22,3 +22,11 @@ Une fusion, même documentaire, déclenche le job candidate sur `main`. Pour une
 Le même workflow de PR contrôle les empreintes météo, les valeurs effectives et allers-retours de l’éditeur, la méthode HACS installée sur ressources fictives, les contrats sources/distribution, les 43 contrats Personnes et le rendu Chrome sur données fictives. Pas de workflow produit supplémentaire doublonnant push/PR. Les captures de la simulation sont jointes au run avec rétention 14 jours, nommées par le SHA réellement checkouté. Le fichier météo ne dépend d’aucun module JS externe. Le publisher vérifie tous les artefacts et notices ; la provenance `verified` doit rester reliée aux notices manifestées.
 
 Le contrôle léger `scripts/check_project_docs.py` confronte aussi `dist/manifest.json` au README destiné à HACS (version de release et modules distribués) et au titre courant des notes de livraison. Il ne prouve ni fraîcheur du cache HACS ni installation ; la vérification après déploiement reste décrite dans [HACS](HACS.md#documentation-à-chaque-livraison).
+
+## Contrôles Garage #13
+
+Le workflow installe strictement `package-lock.json`, construit Garage avec `lit-element@4.2.0` incorporé, refuse un CDN/import runtime et vérifie les empreintes original public/export/candidat/distribution. Les contrats couvrent G1, réponse tardive après détachement/reconfiguration, double commande, modes pulse/stateful/cover, confirmation physique/expiration, inconnus/indisponibles, caméra A/B/A, nettoyage, plusieurs instances et éditeur (`false`, `0`, objets et clés inconnues). Tous les services sont des doubles.
+
+Le banc Chrome compare l’export original, la source construite et le module distribué sur données/images fictives, produit les captures et exerce le cycle tardif du bundle. L’égalité visuelle du banc n’est pas une recette native HA. Les tests Python rejouent la méthode HACS installée sur trois ressources HA-BOARD fictives, une mise à jour ultérieure et le rollback Garage seul, sans rejouer la migration météo réelle.
+
+Les contrôles Personnes et météo restent exécutés. `scripts/check_garage.py` exige leurs tailles et SHA256 inchangés avant d’accepter la distribution Garage.

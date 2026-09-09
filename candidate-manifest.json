@@ -1,11 +1,14 @@
 {
   "schema_version": 1,
-  "status": "draft-weather-migration-12-not-published",
-  "base_commit": "5ed7fae658a326e5520b5a62031f11c02571e539",
+  "status": "draft-garage-migration-13-not-published",
+  "base_commit": "89637463121bf9d88e17ae1939bc9c02f47f6552",
   "reference_release": {
-    "version": "0.1.2-rc.1",
-    "commit": "21c8212f8ae47fb3ff7d86131dd7c821c688b46e",
-    "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6"
+    "version": "0.2.0-rc.1",
+    "commit": "a9c885419cea031fb307623076100b04feb78e98",
+    "artifacts": {
+      "ha-board.js": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6",
+      "weather-combined-forecast-card.js": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"
+    }
   },
   "sources": [
     {
@@ -32,6 +35,13 @@
       "bytes": 142577,
       "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093",
       "version": "0.2.0-rc.1"
+    },
+    {
+      "path": "src/candidate/garage-control-card.js",
+      "bytes": 70163,
+      "sha256": "00511ff7ae78183e4c54cb8dbcffe81d25d55949dd92ab64c4ba38cf8fa336da",
+      "version": "1.1.0",
+      "distribution": "dist/garage-control-card.js"
     }
   ]
 }

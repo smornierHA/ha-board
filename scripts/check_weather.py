@@ -18,11 +18,11 @@ for path in [root/p[k]['path'] for k in ['public_export','candidate','distributi
  assert not re.search(r'\b(?:192\.168\.|10\.\d+\.\d+\.|172\.(?:1[6-9]|2\d|3[01])\.)',text),path
  assert '/api/image/serve/' not in text,path
 m=json.loads((root/'dist/manifest.json').read_text())
-assert {a['file'] for a in m['artifacts']}=={'ha-board.js','weather-combined-forecast-card.js'}
+assert {'ha-board.js','weather-combined-forecast-card.js'} <= {a['file'] for a in m['artifacts']}
 for a in m['artifacts']:
  data=(root/'dist'/a['file']).read_bytes()
  assert hashlib.sha256(data).hexdigest()==a['sha256'] and len(data)==a['bytes']
-assert {a['file'] for a in m['notices']}=={'THIRD-PARTY-NOTICES.md','home-assistant-frontend-Apache-2.0.txt'}
+assert {'THIRD-PARTY-NOTICES.md','home-assistant-frontend-Apache-2.0.txt'} <= {a['file'] for a in m['notices']}
 for a in m['notices']:
  data=(root/'dist'/a['file']).read_bytes()
  assert hashlib.sha256(data).hexdigest()==a['sha256'] and len(data)==a['bytes']
@@ -33,7 +33,7 @@ weather_icons=candidate[candidate.index('  _weatherIconSvg('):candidate.index(' 
 assert len(re.findall(r'<path class=',weather_icons))==16
 assert 'Home Assistant frontend weather icon paths are provided under Apache-2.0' in candidate
 assert p['license_review']=='verified'
-assert p['license_evidence']['distributed_notices']==[a['file'] for a in m['notices']]
+assert set(p['license_evidence']['distributed_notices']) <= {a['file'] for a in m['notices']}
 review=json.loads((root/p['license_evidence']['review']).read_text())
 assert review['home_assistant_frontend']['commit']=='18f79dfc919e2019102c4fde0606fdb449f4cc15'
 assert review['home_assistant_frontend']['source_sha256']=='42b4defdb2c27aa38c3d9e0651c66ed3bd5de757b44e5a5d4b3b6eedc3437eb2'

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Garage Control — démonstration fictive</title>
+<style>
+  :root { --primary-text-color:#f7f7f7; --secondary-text-color:#bbc2ca; --ha-card-background:#20252b; --card-background-color:#20252b; color-scheme:dark; }
+  body { margin:0; padding:28px; min-height:100vh; background:#101419; font:14px Arial,sans-serif; }
+  #host { width:min(760px,calc(100vw - 56px)); margin:auto; }
+  ha-card { display:block; }
+  ha-icon { display:inline-grid; place-items:center; width:24px; height:24px; font-size:0; }
+  ha-icon::after { content:"●"; font-size:14px; }
+  picture-entity-demo { display:block; width:100%; min-height:240px; background:linear-gradient(145deg,#273e52,#151b22); }
+  picture-entity-demo::after { content:"Flux caméra fictif"; min-height:240px; display:grid; place-items:center; color:#dceeff; font-weight:700; }
+</style>
+<div id="host"></div>
+<script type="module">
+  class HaCard extends HTMLElement {} customElements.define("ha-card", HaCard);
+  class HaIcon extends HTMLElement {} customElements.define("ha-icon", HaIcon);
+  class PictureDemo extends HTMLElement {} customElements.define("picture-entity-demo", PictureDemo);
+  class HaForm extends HTMLElement {} customElements.define("ha-form", HaForm);
+  window.serviceCalls = [];
+  window.pendingServices = [];
+  window.loadCardHelpers = async () => ({
+    createCardElement: async config => {
+      const element = document.createElement("picture-entity-demo");
+      element.config = config;
+      return element;
+    },
+  });
+  const source = new URL(location.href).searchParams.get("source") || "bundle";
+  const modules = {
+    original: "/artifacts/garage-original-test.js",
+    candidate: "/artifacts/garage-source-test.js",
+    bundle: "/dist/garage-control-card.js",
+  };
+  await import(modules[source]);
+  const makeState = (state, attributes={}) => ({state,attributes,last_changed:"2026-09-09T10:00:00Z",last_updated:"2026-09-09T10:00:00Z"});
+  const states = {
+    "switch.example_garage_command": makeState("off"),
+    "binary_sensor.example_garage_open": makeState("off"),
+    "camera.example_garage": makeState("idle",{friendly_name:"Garage"}),
+    "camera.example_driveway": makeState("idle",{friendly_name:"Allée"}),
+    "binary_sensor.example_motion": makeState("on"),
+    "binary_sensor.example_person": makeState("on"),
+    "binary_sensor.example_vehicle_a": makeState("on"),
+    "binary_sensor.example_vehicle_b": makeState("off"),
+    "image.example_last_person": makeState("2026-09-09T09:58:00Z",{entity_picture:"/examples/garage-event-person.svg"}),
+    "image.example_last_car": makeState("2026-09-09T09:55:00Z",{entity_picture:"/examples/garage-event-car.svg"}),
+  };
+  const hass = {states,callService(...args){
+    window.serviceCalls.push(args);
+    return new Promise((resolve,reject)=>window.pendingServices.push({resolve,reject,args}));
+  }};
+  const config = {
+    type:"custom:garage-control-card",name:"Garage",icon:"mdi:garage",popup_hash:"#example-garage",
+    garage_entity:"switch.example_garage_command",garage_service:"switch.toggle",garage_command_mode:"pulse",
+    garage_state_entity:"binary_sensor.example_garage_open",garage_open_state:"on",garage_closed_state:"off",
+    camera_entities:[
+      {entity:"camera.example_garage",name:"Garage",icon:"mdi:garage",camera_view:"live"},
+      {entity:"camera.example_driveway",name:"Allée",icon:"mdi:road-variant",camera_view:"live"},
+    ],
+    motion_entity:"binary_sensor.example_motion",person_entity:"binary_sensor.example_person",
+    show_motion_badge:false,show_person_badge:true,
+    vehicle_entities:[
+      {key:"vehicle_a",name:"Véhicule A",entity:"binary_sensor.example_vehicle_a",icon:"mdi:car",present_state:"on",present_label:"Présent",absent_label:"Absent",unavailable_label:"Indisponible",detection_message:"Véhicule A détecté"},
+      {key:"vehicle_b",name:"Véhicule B",entity:"binary_sensor.example_vehicle_b",icon:"mdi:car-side",present_state:"on",present_label:"Présent",absent_label:"Absent",unavailable_label:"Indisponible",detection_message:"Véhicule B détecté"},
+    ],
+    event_entities:[
+      {key:"last_person",name:"Dernière personne",entity:"image.example_last_person",icon:"mdi:account-clock"},
+      {key:"last_car",name:"Dernier véhicule",entity:"image.example_last_car",icon:"mdi:car-clock"},
+    ],show_snapshots:true,show_empty_events:false,show_debug:false,action_feedback:true,
+    action_lock_ms:2000,feedback_duration_ms:2400,state_confirmation_timeout_ms:25000,event_message_duration_ms:12000,
+  };
+  const card = document.createElement("garage-control-card"); card.setConfig(config); card.hass=hass;
+  document.querySelector("#host").append(card);
+  card._openDialog(true);
+  await card.updateComplete;
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  window.demo={source,card,hass,config}; window.demoReady=true;
+</script>
+</html>

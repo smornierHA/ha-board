@@ -1,6 +1,6 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
-La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est le prochain lot**, puis Portail #14.
+La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
 
 ## Avant une éventuelle promotion stable
 
@@ -53,6 +53,8 @@ L’ancien U3 de #8 (« adresse dans les bulles historiques natives ») est **é
 - Sources à inventorier au démarrage : original/SHA256, configuration expurgée, consommateurs, états et transitions, icônes/assets/licences, version HA/HACS et procédure de récupération.
 - Invariants/recette : préservation de `show_motion_badge` configuré (`false` observé) et du feedback mouvement lorsque l’option est activée, dernière personne si source fiable, icône allée, états inconnu/indisponible, commandes protégées/idempotentes, éditeur, mobile/thèmes ; tests simulés avant toute commande réelle explicitement autorisée.
 - Migration/rollback HACS : release par composant, une ressource active, vérifier version et transitions ; downgrade ou restauration de l’original/configuration sauvegardée, puis contrôle d’état sans action physique non mandatée.
+
+État de préparation #13 : candidat `0.3.0-rc.1` / composant 1.1.0 sur PR draft dédiée. G1, réponses tardives, Lit incorporé, éditeur, tests simulés, comparaison visuelle fictive et plan trois modules sont inclus. La ressource Garage locale doit être replacée après Personnes avant son activation HACS afin que Personnes reste la première ressource du namespace lors des mises à jour futures. Aucune fusion, publication, installation, ressource HA ou commande physique n’est incluse dans cette étape.
 
 ## Règles communes aux lots
 

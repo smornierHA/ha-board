@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#32452e"/>
+  <path d="M135 235l42-88h275l53 88v58H135z" fill="#f7b955"/>
+  <circle cx="210" cy="292" r="30" fill="#182018"/><circle cx="430" cy="292" r="30" fill="#182018"/>
+  <text x="24" y="42" fill="#fff" font-family="sans-serif" font-size="24">Événement fictif — véhicule</text>
+</svg>

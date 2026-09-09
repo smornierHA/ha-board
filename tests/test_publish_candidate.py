@@ -43,6 +43,7 @@ class WeatherPublication(unittest.TestCase):
         upload=next(c for c in commands if c[:3]==('gh','release','create'))
         for artifact in manifest['artifacts']:self.assertIn('dist/'+artifact['file'],upload)
         for notice in manifest['notices']:self.assertIn('dist/'+notice['file'],upload)
+        for metadata in manifest.get('metadata',[]):self.assertIn('dist/'+metadata['file'],upload)
         self.assertIn('dist/manifest.json',upload)
         self.assertTrue(any(str(x).endswith('/provenance.json') for x in upload))
     def test_license_reserve_blocks_release_before_network(self):
@@ -64,6 +65,15 @@ class WeatherPublication(unittest.TestCase):
         with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40),patch.object(Path,'read_bytes',read):
             with self.assertRaisesRegex(SystemExit,'Notice digest mismatch'):m.main()
 
+    def test_garage_provenance_reserve_blocks_before_network(self):
+        original=Path.read_text
+        def read(p,*a,**kw):
+            if p.name=='garage-provenance.json':return '{"dependency_review":{"status":"pending"},"privacy_review":"verified-fictitious-only"}'
+            return original(p,*a,**kw)
+        with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40) as command,patch.object(Path,'read_text',read):
+            with self.assertRaisesRegex(SystemExit,'Garage dependency/privacy provenance review pending'):m.main()
+            self.assertFalse(any(c.args[0]=='gh' for c in command.call_args_list))
+
     def test_existing_release_verifies_all_assets_and_never_overwrites(self):
         self._existing_release('identical')
     def test_existing_release_rejects_changed_weather(self):
@@ -83,7 +93,7 @@ class WeatherPublication(unittest.TestCase):
             if args[:2]==('gh','api'):return json.dumps({'object':{'type':'commit','sha':'b'*40}})
             if args[:3]==('gh','release','download'):
                 folder=Path(args[args.index('--dir')+1])
-                for name in [item['file'] for item in manifest['artifacts']+manifest['notices']]+['manifest.json']:
+                for name in [item['file'] for item in manifest['artifacts']+manifest['notices']+manifest.get('metadata',[])]+['manifest.json']:
                     if scenario=='missing' and name.startswith('weather-'):continue
                     if scenario=='missing-notice' and name=='THIRD-PARTY-NOTICES.md':continue
                     data=Path('dist',name).read_bytes()

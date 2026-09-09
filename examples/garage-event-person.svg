@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#203548"/>
+  <circle cx="320" cy="135" r="58" fill="#7fc8f8"/>
+  <path d="M205 320c10-90 62-132 115-132s105 42 115 132" fill="#7fc8f8"/>
+  <text x="24" y="42" fill="#fff" font-family="sans-serif" font-size="24">Événement fictif — personne</text>
+</svg>

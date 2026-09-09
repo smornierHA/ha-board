@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-09",
+  "component": "garage-control-card",
+  "original": {
+    "location": "Private Home Assistant www/garage-control-card.js",
+    "version": "1.0.1",
+    "bytes": 59336,
+    "sha256": "5edd41a20a51f76998e282c9974cff211f631c7c31ea4c771d2cd173ae3c2f48",
+    "stored_in_public_git": false
+  },
+  "public_export": {
+    "path": "src/garage-control-card.js",
+    "bytes": 59332,
+    "sha256": "dcd51397e8e6f68a43679f337a18470868a99efc2e6ff726a502db69b46cfc07",
+    "transformation": "Two project-local vehicle alias keys and labels were replaced by fictional A/B aliases; no entity, URL, image or dashboard configuration was copied."
+  },
+  "candidate_source": {
+    "path": "src/candidate/garage-control-card.js",
+    "version": "1.1.0",
+    "bytes": 70163,
+    "sha256": "00511ff7ae78183e4c54cb8dbcffe81d25d55949dd92ab64c4ba38cf8fa336da"
+  },
+  "distribution": {
+    "path": "dist/garage-control-card.js",
+    "bytes": 91044,
+    "sha256": "e86c3bd86a7bfa69866da5712af69519717ea6fc234b93ca84ecc720b7b2bba3",
+    "runtime_imports": 0
+  },
+  "dependency_review": {
+    "status": "verified",
+    "direct": "lit-element@4.2.0",
+    "resolved": ["lit-element@4.2.0", "lit-html@3.3.3", "@lit/reactive-element@2.1.2"],
+    "lockfile": "package-lock.json",
+    "license": "BSD-3-Clause",
+    "notice": "THIRD-PARTY-NOTICES.md",
+    "license_file": "third_party/lit-BSD-3-Clause.txt",
+    "distributed_notices": ["THIRD-PARTY-NOTICES.md", "home-assistant-frontend-Apache-2.0.txt", "lit-BSD-3-Clause.txt"]
+  },
+  "privacy_review": "verified-fictitious-only",
+  "scope": "Garage only; Portail, SIP, identities, internal URLs, actual entity IDs and images excluded."
+}
