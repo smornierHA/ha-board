@@ -6,18 +6,17 @@ HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une 
 
 ## État réellement atteint
 
-- `v0.1.0-rc.2` est publiée sur `eeb56c9b66346b90275820a6d6fb4ca0fb94cebe`.
-- La mise à jour depuis l’installation `c164258` a été exécutée par HACS.
-- HACS relu : `installed_version=v0.1.0-rc.2`, `pending_upgrade=false`.
-- Le fichier installé est identique à l’artefact publié (SHA256 `79df079bdc2c752956e808df2c492791213eaebe36fe854f60bfecb0061160c8`).
-- Une seule ressource est active sous `/hacsfiles/ha-board/ha-board.js`; aucune double inscription `/local`.
-- Le downgrade HACS vers une version antérieure n’a pas été testé. Le fallback vers les originaux est prêt mais non rejoué.
+- [`v0.1.2-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.1.2-rc.1) est publiée sur `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`.
+- [HACS et bundle contrôlés](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216) : version installée `v0.1.2-rc.1`, sans mise à jour en attente ; bundle de 38 462 octets, SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`.
+- Une seule ressource est active sous `/hacsfiles/ha-board/ha-board.js` ; aucune double inscription `/local`.
+- Le chargement navigateur après rafraîchissement forcé et la recette HA ciblée ont été [confirmés par l’utilisateur le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326).
+- Le rollback `v0.1.1-rc.1` reste disponible. Aucun downgrade n’a été rejoué dans ce lot ; le fallback original reste distinct.
 
 ## Installer
 
 1. Dans HACS, ouvrir ⋮ puis **Dépôts personnalisés**.
 2. Ajouter `https://github.com/smornierHA/ha-board`, catégorie **Dashboard**.
-3. Activer l’affichage des préreleases si nécessaire, sélectionner explicitement `v0.1.0-rc.2`, télécharger et recharger complètement le navigateur.
+3. Activer l’affichage des préreleases si nécessaire, sélectionner explicitement `v0.1.2-rc.1`, télécharger et recharger complètement le navigateur.
 4. Vérifier la version réellement exécutée et qu’une seule ressource existe sous `/hacsfiles/ha-board/ha-board.js`.
 5. Exécuter les contrôles applicables de ACCEPTANCE.md.
 
@@ -27,14 +26,18 @@ Les types restent `custom:person-history-map-card-v14` et `custom:person-rich-ca
 
 Noter release installée, SHA/empreinte, ressource et résultats de recette. Installer la nouvelle release issue du SHA intégré testé, recharger complètement, vérifier la version exécutée, l’absence de double ressource, puis exécuter la recette ciblée et les invariants des cartes existantes. Une CI verte ne prouve pas cette étape.
 
-Pour le candidat #8, la version préparée est `0.1.1-rc.1`. Elle ne doit apparaître dans HACS qu’après fusion, CI du SHA intégré et publication explicite hors de ce mandat. Sa portée livrable est U1/U2 ; l’adaptateur U3 n’est pas dans le bundle. La migration devra partir de `v0.1.0-rc.2`, conserver la même ressource et les mêmes types YAML, puis exécuter la recette ciblée de ACCEPTANCE.md.
+Le lot localisation #8 est clos avec `v0.1.2-rc.1` et la recette ciblée publiée. L’ancien U3 n’est pas livré : il a été écarté au profit du backlog #10. Les lots suivants partent de cette base validée, conservent les types YAML existants et prévoient la migration de chaque ressource avant toute installation.
 
 ## Retour arrière
 
-Voie HACS à qualifier avant stable : ouvrir HA-BOARD, **Retélécharger**, sélectionner explicitement `v0.1.0-rc.2`, recharger, vérifier la version exécutée et refaire la recette ciblée.
+Voie HACS à qualifier avant stable : ouvrir HA-BOARD, **Retélécharger**, sélectionner explicitement `v0.1.1-rc.1`, recharger, vérifier la version exécutée et refaire la recette ciblée.
 
-Fallback conservé : désactiver la ressource HACS, réinscrire exactement les deux ressources originales sauvegardées, puis recharger. Ne jamais charger simultanément bundle HACS et originaux. Vérifier les empreintes indiquées dans STATUS.md avant usage.
+Fallback conservé : désactiver la ressource HACS, réinscrire exactement les deux ressources originales sauvegardées, puis recharger. Ne jamais charger simultanément bundle HACS et originaux. Vérifier les empreintes indiquées dans `source-manifest.json` avant usage.
 
 ## Règles pour les futures cartes
 
 Chaque lot inventorie son ou ses composants avant de choisir une ressource. Préserver l’original et son SHA256, utiliser des exemples fictifs, éviter les dépendances globales, maintenir éditeur visuel/catalogue/noms sans version/bouton HACS, construire depuis le SHA intégré et documenter migration et rollback par composant. Une nouvelle carte ne doit pas alourdir ou casser les deux cartes déjà installées.
+
+## Effet d’une fusion documentaire
+
+Le workflow `poc-contracts.yml` exécute aussi `candidate-release` après un push sur `main`, même documentaire. `publish_candidate.py` vérifie alors que le tag existant est un ancêtre du SHA intégré et que le bundle publié est identique : dans ce cas il termine sans créer de release ni écraser un tag ou un asset. Un échec de lecture ou des octets différents arrêtent la publication. Une mise à jour documentaire sans changement d’artefact ne justifie donc pas une nouvelle version ; toute fusion reste une décision explicite et son run doit être vérifié.

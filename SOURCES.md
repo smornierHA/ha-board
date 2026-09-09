@@ -65,3 +65,11 @@ Les constats initiaux d’inaccessibilité/protections non vérifiables sont his
 - [`ha-map` du même frontend](https://github.com/home-assistant/frontend/blob/20260729.7/src/components/map/ha-map.ts) : `HaMapPathPoint` n’expose pas d’adresse et la bulle est calculée en interne avec nom et heure, sans callback public.
 
 Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6ed5de4`, sont ajoutées parce qu’elles déterminent directement la faisabilité de U3. Elles remplacent toute supposition selon laquelle le wrapper pourrait enrichir la bulle native par une simple option. Aucun changement de source n’est requis pour U1/U2.
+
+## Clôture ciblée localisation — 9 septembre 2026
+
+- [PR #11 et décision d’acceptation](https://github.com/smornierHA/ha-board/pull/11#pullrequestreview-5145024626) : correctif ville sans virgules accepté et nettoyages visuels conformes.
+- [Livraison v0.1.2-rc.1](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5589311573) : commit intégré `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, bundle 38 462 octets, SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`.
+- [Installation HACS et contrôles techniques](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216), puis [confirmation utilisateur et clôture de supervision](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) : publié, installé, chargé après rafraîchissement et recette HA ciblée confirmée. La réserve du banc Puppet ne bloque plus la vérification faite dans le navigateur utilisateur authentifié.
+- Les constats de versions installées et de recette en attente ci-dessus sont historiques. Cette clôture ne promeut pas une stable et ne prouve pas une campagne complète éditeurs/thèmes/mobile/rollback.
+- L’ancien U3 est écarté par décision utilisateur ; les sources frontend de sa faisabilité restent historiques. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10), sans développement inclus.
