@@ -14,12 +14,23 @@ manifest = {"package_version":"0.1.2-rc.1","entrypoint":"dist/ha-board.js","sha2
 # Independent opt-in resource. Never import/register weather from ha-board.js.
 weather = (root / 'src/candidate/weather-combined-forecast-card.js').read_bytes()
 (root / 'dist/weather-combined-forecast-card.js').write_bytes(weather)
+notice_sources = {
+    'THIRD-PARTY-NOTICES.md': root / 'THIRD-PARTY-NOTICES.md',
+    'home-assistant-frontend-Apache-2.0.txt': root / 'third_party/home-assistant-frontend-Apache-2.0.txt',
+}
+for name, source in notice_sources.items():
+    (root / 'dist' / name).write_bytes(source.read_bytes())
 manifest['package_version'] = '0.2.0-rc.1'
 manifest['components']['weather-combined-forecast-card'] = '0.2.0-rc.1'
 manifest['artifacts'] = [
     {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),
      'sha256': hashlib.sha256((root/'dist'/name).read_bytes()).hexdigest()}
     for name in ['ha-board.js', 'weather-combined-forecast-card.js']
+]
+manifest['notices'] = [
+    {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),
+     'sha256': hashlib.sha256((root/'dist'/name).read_bytes()).hexdigest()}
+    for name in notice_sources
 ]
 manifest['persons_distribution_version'] = '0.1.2-rc.1'
 manifest['weather_opt_in'] = True

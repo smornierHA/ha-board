@@ -14,6 +14,6 @@ Les deux composants sont autonomes. Les autres 40 ressources Lovelace ne doivent
 
 ## Pilote météo #12
 
-La météo est un Web Component autonome, avec entrée dédiée et aucun import runtime. `build_hacs.py` préserve les octets Personnes et construit `weather-combined-forecast-card.js` séparément. Le manifeste recense les deux artefacts et le publisher les joint à une même release ; seule la ressource dédiée active le type météo. L’éditeur conserve une copie de la configuration YAML et applique uniquement les champs émis par `ha-form`.
+La météo est un Web Component autonome, avec entrée dédiée et aucun import runtime. `build_hacs.py` préserve les octets Personnes et construit `weather-combined-forecast-card.js` séparément. Le manifeste recense les deux artefacts et les notices ; le publisher les joint à une même release. Seule la ressource dédiée active le type météo. L’éditeur conserve la configuration YAML brute, présente les valeurs effectives depuis l’unique définition des défauts et ne modifie que les champs de son schéma émis par `ha-form`.
 
 Chaque abonnement quotidien capture une génération, l’entité et la connexion. Le détachement, le changement d’entité/connexion et la reconnexion invalident cette génération ; un résultat périmé libère immédiatement son abonnement et n’écrit plus de données. Listeners, frames et temporisations sont propres à l’instance et nettoyés. Les risques restent intégrés à la carte et attribués ; aucune dépendance au garage, au portail ou à #10.

@@ -1,4 +1,7 @@
-/* HA-BOARD weather candidate 0.2.0-rc.1; see docs/WEATHER-PROVENANCE.md */
+/* HA-BOARD weather candidate 0.2.0-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
+ * Modified from the private project source: lifecycle, editor, validation and packaging changes.
+ * Home Assistant frontend weather icon paths are provided under Apache-2.0; notice distributed alongside this file.
+ */
 
 // weather-combined-forecast-card-v1.17.10.js
 // HA-Carte météo — Weather Forecast Combined V1.9.4.2.10
@@ -64,7 +67,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
     this._timers = new Set();
   }
 
-  static getStubConfig() {
+  static getDefaultConfig() {
     return {
       title: "Prévisions météo",
       show_title: true,
@@ -107,8 +110,57 @@ class WeatherCombinedForecastCard extends HTMLElement {
       probability_window_hours: 3,
       bearing_reference_mode: "house",
       bearing_rotation: -50,
+      include_past_current_slot: true,
+      highlight_day_changes: true,
+      show_sun_markers: true,
+      solar_marker_tolerance_minutes: 75,
+      datetime_key: "datetime",
+      temperature_key: "temperature",
+      precipitation_key: "precipitation",
+      primary_probability_key: "precipitation_probability",
+      wind_speed_key: "wind_speed",
+      wind_gust_speed_key: "wind_gust_speed",
+      wind_bearing_key: "wind_bearing",
+      show_temperature: true,
+      show_rain: true,
+      show_probability: "auto",
+      probability_datetime_key: "datetime",
+      probability_value_key: "rain_probability_3h",
+      probability_max_delta_hours: 3,
+      secondary_sources: {
+        probability: {
+          entity: "sensor.example_rain_probability",
+          attribute: "forecast",
+          datetime_key: "datetime",
+          value_key: "rain_probability_3h",
+          match_mode: "window",
+          window_hours: 3,
+          max_delta_hours: 3,
+        },
+      },
+      bearing_house_rotation: -50,
+      bearing_arrow_mode: "travel",
+      wind_reference_threshold_entity: "input_number.example_wind_threshold",
+      wind_reference_threshold_fallback: 35,
+      gust_reference_threshold_entity: "input_number.example_gust_threshold",
+      gust_reference_threshold_fallback: 45,
+      intensity_close_ratio: 1.10,
+      intensity_strong_ratio: 1.30,
+      item_width: 68,
+      chart_height: 80,
+      forecast_icon_size: 28,
+      wind_row_height: 44,
+      precipitation_unit: "mm",
+      temperature_unit: "°C",
+      wind_unit: "km/h",
+      highlight_current: true,
+      weather_background_opacity: 0.58,
+      weather_background_speed: 0.9,
+      empty_label: "Aucune prévision disponible",
     };
   }
+
+  static getStubConfig() { return this.getDefaultConfig(); }
 
   static getConfigElement() { return document.createElement("weather-combined-forecast-editor"); }
 
@@ -505,24 +557,6 @@ class WeatherCombinedForecastCard extends HTMLElement {
         }
       },
       {
-        "name": "precipitation_unit",
-        "selector": {
-          "text": {}
-        }
-      },
-      {
-        "name": "temperature_unit",
-        "selector": {
-          "text": {}
-        }
-      },
-      {
-        "name": "wind_unit",
-        "selector": {
-          "text": {}
-        }
-      },
-      {
         "name": "weather_background_opacity",
         "selector": {
           "number": {
@@ -619,7 +653,10 @@ class WeatherCombinedForecastCard extends HTMLElement {
           wind_reference_threshold_entity: "Seuil référence vent",
           gust_reference_threshold_entity: "Seuil référence rafales",
         };
-        return labels[schema.name] || schema.label || schema.name;
+        const fallback = String(schema.name || "Option")
+          .replaceAll("_", " ")
+          .replace(/^./, char => char.toUpperCase());
+        return labels[schema.name] || schema.label || fallback;
       },
     };
   }
@@ -636,103 +673,14 @@ class WeatherCombinedForecastCard extends HTMLElement {
       max_delta_hours: incoming.probability_max_delta_hours,
     };
 
-    const baseSecondarySources = {
-      probability: {
-        entity: "sensor.example_rain_probability",
-        attribute: "forecast",
-        datetime_key: "datetime",
-        value_key: "rain_probability_3h",
-        match_mode: "window",
-        window_hours: 3,
-        max_delta_hours: 3,
-      },
-    };
-
+    const defaults = WeatherCombinedForecastCard.getDefaultConfig();
     this.config = {
-      title: "Prévisions météo",
-      show_title: true,
-      show_header: true,
-      header_mode: "compact",
-      show_header_title: true,
-      show_current_weather_icon: true,
-      show_current_temperature: true,
-      show_current_summary: true,
-      show_header_temperature_range: true,
-      show_header_metrics: false,
-      show_current_risk_pills: true,
-      show_header_risk_pills: true,
-      show_alerts_footer: true,
-      alerts_footer_position: "bottom",
-      alerts_footer_align: "start",
-      alerts_footer_scroll: true,
-      risk_display_mode: "footer",
-      header_risk_sub_buttons_show_label: false,
-      header_risk_sub_buttons_show_icon: true,
-      header_risk_sub_buttons_max_items: 4,
-      header_risk_sub_buttons: { show_label: false, show_tooltip: true, size: 36, gap: 8 },
-      secondary_line_scroll_speed: "bubble",
-      main_header_tap_action: { action: "navigate", navigation_path: "#meteo" },
-      risk_entities: [],
-      current_risk_entities: [],
-      current_temperature_entity: "",
-      current_min_temperature_entity: "",
-      current_max_temperature_entity: "",
-      current_summary_entity: "",
-      forecast_entity: "sensor.example_hourly",
-      forecast_attribute: "forecast",
-      weather_entity: "weather.example",
-      sun_entity: "sun.sun",
-      hours_to_show: 12,
-      show_current: true,
-      include_past_current_slot: true,
-      highlight_day_changes: true,
-      show_sun_markers: true,
-      solar_marker_tolerance_minutes: 75,
-      datetime_key: "datetime",
-      temperature_key: "temperature",
-      precipitation_key: "precipitation",
-      primary_probability_key: "precipitation_probability",
-      wind_speed_key: "wind_speed",
-      wind_gust_speed_key: "wind_gust_speed",
-      wind_bearing_key: "wind_bearing",
-      show_temperature: true,
-      show_rain: true,
-      show_probability: "auto",
-      show_wind: true,
-      probability_entity: "sensor.example_rain_probability",
-      probability_attribute: "forecast",
-      probability_datetime_key: "datetime",
-      probability_value_key: "rain_probability_3h",
-      probability_match_mode: "window",
-      probability_window_hours: 3,
-      probability_max_delta_hours: 3,
-      secondary_sources: baseSecondarySources,
-      bearing_reference_mode: "house",
-      bearing_rotation: -50,
-      bearing_house_rotation: -50,
-      bearing_arrow_mode: "travel", // travel = sens de déplacement du vent ; source = provenance
-      wind_reference_threshold_entity: "input_number.example_wind_threshold",
-      wind_reference_threshold_fallback: 35,
-      gust_reference_threshold_entity: "input_number.example_gust_threshold",
-      gust_reference_threshold_fallback: 45,
-      intensity_close_ratio: 1.10,
-      intensity_strong_ratio: 1.30,
-      item_width: 68,
-      chart_height: 80,
-      forecast_icon_size: 28,
-      wind_row_height: 44,
-      precipitation_unit: "mm",
-      temperature_unit: "°C",
-      wind_unit: "km/h",
-      highlight_current: true,
-      weather_background_opacity: 0.58,
-      weather_background_speed: 0.9,
-      empty_label: "Aucune prévision disponible",
+      ...defaults,
       ...incoming,
     };
 
     this.config.secondary_sources = this._mergeSecondarySources(
-      baseSecondarySources,
+      defaults.secondary_sources,
       this.config.secondary_sources,
       legacyProbabilitySource,
     );
@@ -3073,13 +3021,45 @@ class WeatherCombinedForecastEditor extends HTMLElement {
     this._form.hass = this._hass;
     this._form.schema = schema;
     this._form.computeLabel = computeLabel;
-    this._form.data = structuredClone(this._config || {});
+    this._formData = {
+      ...WeatherCombinedForecastCard.getDefaultConfig(),
+      ...structuredClone(this._config || {}),
+    };
+    this._form.data = structuredClone(this._formData);
   }
   _valueChanged(event) {
     event.stopPropagation();
     const data = event.detail?.value;
     if (!data || typeof data !== 'object' || Array.isArray(data)) return;
-    this._config = {...this._config, ...structuredClone(data)};
+    const {schema} = WeatherCombinedForecastCard.getConfigForm();
+    const editable = new Set();
+    const collect = items => items.forEach(item => {
+      if (item.selector) editable.add(item.name);
+      if (item.schema) collect(item.schema);
+    });
+    collect(schema);
+    const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+    const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+    const defaults = WeatherCombinedForecastCard.getDefaultConfig();
+    const previous = this._formData || {...defaults, ...this._config};
+    const editableValues = Object.keys(data).filter(key => editable.has(key));
+    const fullSnapshot = editableValues.length > 1;
+    const next = structuredClone(this._config || {});
+
+    for (const key of editable) {
+      if (own(data, key)) {
+        if (same(data[key], previous[key])) continue;
+        if (data[key] === undefined || (own(defaults, key) && same(data[key], defaults[key]))) {
+          delete next[key];
+        } else {
+          next[key] = structuredClone(data[key]);
+        }
+      } else if (fullSnapshot && own(previous, key) && own(next, key)) {
+        delete next[key];
+      }
+    }
+
+    this._config = next;
     this.dispatchEvent(new CustomEvent('config-changed', {
       detail:{config:structuredClone(this._config)}, bubbles:true, composed:true,
     }));

@@ -66,6 +66,6 @@ Le chantier MAP/Core, Livebox (`smornierHA/hass-livebox-component`, branche `liv
 
 - Préparation sur `feat/migrate-weather-combined-12` : export expurgé, W1, éditeur/catalogue, fichier autonome et extension publisher/manifeste.
 - Contrats sources/distribution et invariants Personnes vérifiés localement ; rendu fictif et CI exacte à consigner sur la PR draft.
-- Revue consolidée avant livraison. Réserve réelle : provenance/licence historique à qualifier avant release ; recette native HA et rollback réel restent ultérieurs et soumis au mandat.
+- Revue consolidée avant livraison. Provenance ciblée et notices distribuées préparées ; recette native HA et rollback réel restent ultérieurs et soumis au mandat.
 - Bascule/rollback ciblés : [HACS](HACS.md#pilote-météo-020-rc1--préparation-seulement). Ne pas réinstaller Personnes et ne pas charger les deux ressources météo simultanément.
 - Ordre inchangé : #12 → #13 Garage → #14 Portail. #10 reste au backlog ; aucune adoption complète du socle RC.8.

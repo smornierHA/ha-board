@@ -64,6 +64,6 @@ Ils couvrent deux points à deux adresses, absence d’adresse, cache borné, d�
 
 ## Pilote météo
 
-`node tests/weather-contracts.mjs`, puis `WEATHER_SOURCE=dist/weather-combined-forecast-card.js node tests/weather-contracts.mjs` exécutent les contrats sur les deux fichiers. `python3 scripts/check_weather.py` vérifie intégrité, fermeture de distribution et bundle Personnes inchangé.
+`node tests/weather-contracts.mjs`, puis `WEATHER_SOURCE=dist/weather-combined-forecast-card.js node tests/weather-contracts.mjs` exécutent 22 contrats sur les deux fichiers, dont valeurs implicites, `false`/`0`, modification ciblée, retour au défaut et réouverture de l’éditeur. `python3 scripts/check_weather.py` vérifie intégrité, fermeture de distribution, notices et bundle Personnes inchangé. `python3 -m unittest tests/test_weather_resource_migration.py -v` exécute la méthode HACS installée sur ressources fictives dans les deux ordres et après une mise à jour suivante.
 
 `node --experimental-websocket tests/weather-browser.mjs` utilise Chrome déjà installé (`CHROME_BIN` peut préciser son exécutable), Node avec WebSocket natif et zéro dépendance npm produit. Captures et rapport fictifs dans `artifacts/weather-browser/`. L’échec de disponibilité de Chrome arrête ce contrôle, sans prétendre vérifier le rendu. Servir la racine du dépôt avec `python3 -m http.server 8000 --bind 127.0.0.1`, puis ouvrir `/examples/weather-demo.html` pour une démonstration locale sans HA.

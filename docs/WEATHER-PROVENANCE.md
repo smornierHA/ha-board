@@ -9,17 +9,21 @@ Collecte en lecture seule le **9 septembre 2026**, via HA-MCP exécuté avec suc
 | Original privé | Octets exacts + seule configuration de la carte, conservés hors Git dans une archive privée ; aucune modification HA |
 | Export public immuable | `src/weather-combined-forecast-card.js` ; huit identifiants d’entités remplacés par des références fictives, commentaires compris ; pas un original brut |
 | Candidat maintenu | `src/candidate/weather-combined-forecast-card.js` ; W1, éditeur/catalogue et contrôles ciblés |
-| Distribution préparée | `dist/weather-combined-forecast-card.js`, copie exacte du candidat, version de package `0.2.0-rc.1` ; non publiée |
+| Distribution préparée | `dist/weather-combined-forecast-card.js`, copie exacte du candidat, version de package `0.2.0-rc.1` |
 
 Les empreintes indépendantes, tailles et transformations sont dans `weather-provenance.json`, `source-manifest.json`, `candidate-manifest.json` et `dist/manifest.json`. Aucun export du dashboard familial, alias, adresse, endpoint privé ou capture réelle ne figure dans le dépôt. La conservation privée n’est ni une archive chiffrée transférée dans project-archives, ni une sauvegarde restaurable de HA ; ces opérations ne sont pas revendiquées.
 
 Les options présentes dans la configuration active ont été rapprochées des options de l’éditeur sans exporter leurs valeurs. Les identifiants fictifs des valeurs par défaut doivent être remplacés dans la configuration privée. Le mode maison conserve son angle historique, les valeurs configurées restent prioritaires. La carte ne change aucune entité HA.
 
-## Attribution et réserve de licence
+## Attribution et notices
 
-Le fichier observé ne contient **aucune licence explicite ni identité d’auteur**. Il ne permet pas de déduire une licence MIT ou une autorisation upstream. Aucune licence globale n’est inventée dans ce lot. Le mandat utilisateur autorise la préparation de l’export public et de la PR ; la qualification de redistribution reste ouverte avant une release.
+Le fichier privé observé ne porte aucune licence globale ni identité d’auteur ; aucune licence globale HA-BOARD n’est donc inventée. La revue a isolé les portions effectivement reprises et les simples références fonctionnelles. Son résultat structuré est dans `weather-provenance.json`, `evidence/weather-provenance-review-2026-09-09.json` et `THIRD-PARTY-NOTICES.md`.
 
-Les commentaires attribuent déjà les phénomènes, sévérités, palettes et icônes du mode `weather_alert_pills` à `weather-alert-pills-card-v3.js`. Ils sont conservés. Le fichier d’alertes a également été relu uniquement pour sa provenance : aucune notice de licence ou d’auteur n’y a été trouvée. Aucun import runtime de cette carte ni d’une autre carte météo n’est ajouté. Des commentaires citent aussi les conventions de `weather-wind-forecast-card` et `clock-weather-card` ; les SVG intégrés n’ont pas de notice de licence identifiable dans l’original. La supervision devra obtenir une référence d’auteur/licence pour les portions concernées ou décider leur remplacement avant publication. `license_review: pending` bloque explicitement le publisher, même après une fusion accidentelle.
+Les 16 tracés SVG de conditions météo correspondent à Home Assistant frontend, commit `18f79dfc919e2019102c4fde0606fdb449f4cc15`, `src/data/weather.ts`. Cette source est sous Apache-2.0. Le candidat et le fichier distribué signalent les modifications : assemblage conditionnel dans un SVG inline, classes, couleurs, tailles, groupes de conditions et échappement ajoutés par HA-BOARD. La notice et le texte Apache-2.0 sont des assets distribués, recensés avec taille et SHA256 dans `dist/manifest.json`.
+
+Les phénomènes, sévérités, palettes et icônes de `weather_alert_pills` sont effectivement repris de la carte locale projet `weather-alert-pills-card-v3.js` fournie avec la source privée. Son attribution reste dans le code ; aucun import runtime ni origine tierce n’a été identifié. La comparaison ciblée avec `clock-weather-card` au commit `8fc1415dde5cf8d55d61c86ae2eb4a34b46e7732` ne trouve aucune ligne source non commentée identique d’au moins 40 caractères normalisés : le min/max et le gradient sont une inspiration fonctionnelle, avec fonctions, palette et rendu propres à HA-BOARD. Le fichier de test de la méthode HACS installée est attribué séparément sous MIT et n’entre dans aucun bundle JS.
+
+`license_review: verified` est lié par contrôle automatique à ces preuves et aux deux notices distribuées. Il décrit cette revue ciblée ; il ne déclare pas une licence globale du dépôt.
 
 ## Diff produit proportionné
 

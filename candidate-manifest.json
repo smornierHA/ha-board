@@ -29,8 +29,8 @@
     },
     {
       "path": "src/candidate/weather-combined-forecast-card.js",
-      "bytes": 142765,
-      "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f",
+      "bytes": 142554,
+      "sha256": "347a5bc358a2e2d71fae531b843ab364ad81e425509213627f97776b40e77c44",
       "version": "0.2.0-rc.1"
     }
   ]

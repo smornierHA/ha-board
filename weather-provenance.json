@@ -16,19 +16,20 @@
   },
   "candidate": {
     "path": "src/candidate/weather-combined-forecast-card.js",
-    "bytes": 142765,
-    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+    "bytes": 142554,
+    "sha256": "347a5bc358a2e2d71fae531b843ab364ad81e425509213627f97776b40e77c44"
   },
   "distribution": {
     "path": "dist/weather-combined-forecast-card.js",
-    "bytes": 142765,
-    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+    "bytes": 142554,
+    "sha256": "347a5bc358a2e2d71fae531b843ab364ad81e425509213627f97776b40e77c44"
   },
-  "license_review": "pending",
+  "license_review": "verified",
   "license_findings": [
-    "No explicit license or author notice in the observed source",
-    "Embedded weather_alert_pills mappings attribute weather-alert-pills-card-v3.js; attribution preserved",
-    "Weather SVG artwork and comments referring to clock-weather-card require provenance confirmation before release"
+    "16 inline weather icon paths: Home Assistant frontend commit 18f79dfc919e2019102c4fde0606fdb449f4cc15, src/data/weather.ts; Apache-2.0 license and modification notice distributed",
+    "clock-weather-card commit 8fc1415dde5cf8d55d61c86ae2eb4a34b46e7732: functional comparison only; no copied source/artwork identified by targeted normalized-line comparison",
+    "weather_alert_pills mappings: copied from the project-local weather-alert-pills-card-v3.js supplied with the private source; project-origin, explicit attribution retained, no runtime import or external origin identified",
+    "HACS update_dashboard_resources exact installed method is retained only as an attributed MIT test fixture"
   ],
   "dependencies": {
     "runtime_imports": [],
@@ -39,5 +40,15 @@
     ],
     "future_lit_policy": "Pin an exact version and commit the lockfile; bundle Lit into each required distributed entrypoint; no CDN import"
   },
-  "ha_acceptance": "not-performed"
+  "ha_acceptance": "not-performed",
+  "license_evidence": {
+    "review": "evidence/weather-provenance-review-2026-09-09.json",
+    "notice": "THIRD-PARTY-NOTICES.md",
+    "home_assistant_license": "third_party/home-assistant-frontend-Apache-2.0.txt",
+    "hacs_test_fixture_license": "third_party/hacs-MIT.txt",
+    "distributed_notices": [
+      "THIRD-PARTY-NOTICES.md",
+      "home-assistant-frontend-Apache-2.0.txt"
+    ]
+  }
 }

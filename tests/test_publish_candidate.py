@@ -36,17 +36,21 @@ class WeatherPublication(unittest.TestCase):
             return ''
         original=Path.read_text
         def read(p,*a,**kw):
-            if p.name=='weather-provenance.json':return '{"license_review":"verified"}'
             return original(p,*a,**kw)
         with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40,'GITHUB_REPOSITORY':'example/repo','GITHUB_RUN_ID':'123'}),patch.object(m,'run',side_effect=command),patch.object(Path,'read_text',read):
             import contextlib,io
             with contextlib.redirect_stdout(io.StringIO()):m.main()
         upload=next(c for c in commands if c[:3]==('gh','release','create'))
         for artifact in manifest['artifacts']:self.assertIn('dist/'+artifact['file'],upload)
+        for notice in manifest['notices']:self.assertIn('dist/'+notice['file'],upload)
         self.assertIn('dist/manifest.json',upload)
         self.assertTrue(any(str(x).endswith('/provenance.json') for x in upload))
     def test_license_reserve_blocks_release_before_network(self):
-        with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40) as command:
+        original=Path.read_text
+        def read(p,*a,**kw):
+            if p.name=='weather-provenance.json':return '{"license_review":"pending"}'
+            return original(p,*a,**kw)
+        with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40) as command,patch.object(Path,'read_text',read):
             with self.assertRaisesRegex(SystemExit,'license provenance review pending'):m.main()
             self.assertFalse(any(c.args[0]=='gh' for c in command.call_args_list))
     def test_weather_drift_blocks_release(self):
@@ -54,6 +58,11 @@ class WeatherPublication(unittest.TestCase):
         def read(p):return b'corrupt weather' if p.name=='weather-combined-forecast-card.js' else original(p)
         with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40),patch.object(Path,'read_bytes',read):
             with self.assertRaisesRegex(SystemExit,'Artifact digest mismatch'):m.main()
+    def test_notice_drift_blocks_release(self):
+        original=Path.read_bytes
+        def read(p):return b'corrupt notice' if p.name=='THIRD-PARTY-NOTICES.md' else original(p)
+        with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40}),patch.object(m,'run',return_value='a'*40),patch.object(Path,'read_bytes',read):
+            with self.assertRaisesRegex(SystemExit,'Notice digest mismatch'):m.main()
 
     def test_existing_release_verifies_all_assets_and_never_overwrites(self):
         self._existing_release('identical')
@@ -61,6 +70,8 @@ class WeatherPublication(unittest.TestCase):
         self._existing_release('changed')
     def test_existing_release_missing_weather_is_not_absence(self):
         self._existing_release('missing')
+    def test_existing_release_missing_notice_is_not_absence(self):
+        self._existing_release('missing-notice')
     def _existing_release(self, scenario):
         import json,contextlib,io
         manifest=json.loads(Path('dist/manifest.json').read_text())
@@ -72,8 +83,9 @@ class WeatherPublication(unittest.TestCase):
             if args[:2]==('gh','api'):return json.dumps({'object':{'type':'commit','sha':'b'*40}})
             if args[:3]==('gh','release','download'):
                 folder=Path(args[args.index('--dir')+1])
-                for name in ['ha-board.js','weather-combined-forecast-card.js','manifest.json']:
+                for name in [item['file'] for item in manifest['artifacts']+manifest['notices']]+['manifest.json']:
                     if scenario=='missing' and name.startswith('weather-'):continue
+                    if scenario=='missing-notice' and name=='THIRD-PARTY-NOTICES.md':continue
                     data=Path('dist',name).read_bytes()
                     if scenario=='changed' and name.startswith('weather-'):data+=b'drift'
                     (folder/name).write_bytes(data)
@@ -81,7 +93,6 @@ class WeatherPublication(unittest.TestCase):
             return ''
         original=Path.read_text
         def read(p,*a,**kw):
-            if p.name=='weather-provenance.json':return '{"license_review":"verified"}'
             return original(p,*a,**kw)
         with patch.dict(os.environ,{'GITHUB_EVENT_NAME':'push','GITHUB_REF':'refs/heads/main','GITHUB_SHA':'a'*40,'GITHUB_REPOSITORY':'example/repo'}),patch.object(m,'run',side_effect=command),patch.object(Path,'read_text',read),contextlib.redirect_stdout(io.StringIO()):
             if scenario=='identical':m.main()

@@ -1,6 +1,13 @@
-# HA-BOARD 0.2.0-rc.1 — candidate préparée
+# HA-BOARD 0.2.0-rc.1
 
-Pilote météo #12 : ressource indépendante, type YAML conservé, W1 corrigé, éditeur complet et catalogue. Les octets du bundle Personnes 0.1.2-rc.1 restent inchangés. Aucune publication, installation ni recette HA du candidat. Réserve de licence explicite avant publication ; voir WEATHER-PROVENANCE.md. Bascule et rollback par ressource dans HACS.md. Garage #13, Portail #14 et historique #10 exclus.
+- Ajoute le pilote Weather Combined Forecast comme ressource autonome, avec type YAML et rendu existants conservés.
+- Corrige la libération d’un abonnement météo résolu après détachement et couvre reconnexion, reconfiguration et plusieurs instances.
+- Aligne l’éditeur sur les valeurs effectives d’un YAML minimal, conserve les valeurs explicites et les clés inconnues, et retire des contrôles les trois unités historiques sans effet.
+- Distribue les notices et la licence Apache-2.0 des tracés météo, avec provenance vérifiée et manifeste complet.
+- Prépare une bascule qui place Personnes avant météo et met à jour explicitement la version/cache météo par les API de ressources supportées.
+- Conserve le bundle Personnes 0.1.2-rc.1 octet pour octet. Garage #13, Portail #14 et historique #10 restent hors de cette version.
+
+La recette Home Assistant native et le rollback réel doivent être exécutés après une installation autorisée ; les contrôles de cette candidate utilisent des données et ressources fictives.
 
 ## Historique
 

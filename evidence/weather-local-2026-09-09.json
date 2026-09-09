@@ -6,12 +6,14 @@
   "local_tests": {
     "person_contracts_source": 43,
     "person_contracts_bundle": 43,
-    "weather_contracts_source": 19,
-    "weather_contracts_bundle": 19,
-    "python_tests": 11,
+    "weather_contracts_source": 22,
+    "weather_contracts_bundle": 22,
+    "python_tests": 16,
     "historical_adapter": 3,
     "bundle_registration": "2 Personnes cards only",
-    "browser": "Chromium 152.0.7977.0; source and distribution; desktop dark/mobile light; mock ha-form/icons; see browser evidence"
+    "hacs_resource_order_scenarios": 3,
+    "browser_reused": "Chromium 152.0.7977.0 proof from d4e7e346e80b46ee22dd48e874ae49a1eacb7e4d; weather rendering code unchanged",
+    "browser_current_local_attempt": "failed before launch: No Chrome/Chromium executable available; browser verification not performed."
   },
   "original": {
     "private": true,
@@ -28,13 +30,13 @@
   },
   "candidate": {
     "path": "src/candidate/weather-combined-forecast-card.js",
-    "bytes": 142765,
-    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+    "bytes": 142554,
+    "sha256": "347a5bc358a2e2d71fae531b843ab364ad81e425509213627f97776b40e77c44"
   },
   "distribution": {
     "path": "dist/weather-combined-forecast-card.js",
-    "bytes": 142765,
-    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+    "bytes": 142554,
+    "sha256": "347a5bc358a2e2d71fae531b843ab364ad81e425509213627f97776b40e77c44"
   },
   "person_bundle": {
     "bytes": 38462,
@@ -51,10 +53,10 @@
     }
   ],
   "limitations": [
-    "License provenance pending; publisher explicitly blocks release",
+    "Current local container has no Chrome/Chromium; exact-SHA browser simulation is delegated to normal PR CI, while prior d4e7e346 rendering proof is retained",
     "HA native form/icon rendering and real HACS installation not exercised",
-    "Legacy *_unit options retained but unused by original rendering; metric-only qualification",
-    "HACS auto resource updater selects the first resource in the repository namespace; check order and URLs after future updates"
+    "Legacy *_unit options retained in YAML but not editable and unused by original rendering; metric-only qualification",
+    "HACS resource order and future updates tested with exact installed method on fictitious resources; no HA resource write performed"
   ],
   "stages": {
     "prepared": true,
@@ -65,5 +67,15 @@
     "installed": false,
     "loaded_in_ha": false,
     "ha_acceptance": false
-  }
+  },
+  "distributed_notices": [
+    {
+      "path": "dist/THIRD-PARTY-NOTICES.md",
+      "sha256": "8659f196386780f7590df79ad5363a86dc7aab8cb59b31f0b97e1cf3004fabdf"
+    },
+    {
+      "path": "dist/home-assistant-frontend-Apache-2.0.txt",
+      "sha256": "2e1faa05bb91574fa388220185f57b3607701714053971f704a3b32bceb9851b"
+    }
+  ]
 }
