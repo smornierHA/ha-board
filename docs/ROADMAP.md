@@ -16,6 +16,8 @@ S1 et la recette ciblée du correctif sont confirmés. Les preuves S2–S4 ne so
 
 ## Lots futurs issus de #6
 
+L’inventaire du 9 septembre est consigné dans les tickets dédiés. Ordre de migration retenu : **M2 météo [#12](https://github.com/smornierHA/ha-board/issues/12) → M4 garage [#13](https://github.com/smornierHA/ha-board/issues/13) → M3 portail SIP [#14](https://github.com/smornierHA/ha-board/issues/14)**. Chaque lot reprend son inventaire et préserve les options réellement configurées ; aucune installation ou commande physique n’est déduite de cette préparation.
+
 ### M1 — Maintenance des deux cartes du POC
 
 - Objectif : traiter uniquement les défauts ou améliorations démontrés de Person History Map et Person Rich Card, sans réécrire la base fonctionnelle.
@@ -41,7 +43,7 @@ L’ancien U3 de #8 (« adresse dans les bulles historiques natives ») est **é
 - Objectif : intégrer la carte portail en préservant affichage et commandes existantes, sans déclencher d’action physique lors d’une recette documentaire.
 - Dépendances : composant actuel, entités et scripts HA, SIP/appel, webhook `answered_by`, navigation et droits de service ; endpoints/identifiants restent hors Git.
 - Sources à inventorier au démarrage : code/original/SHA256, YAML expurgé, liste des entités/services/automatisations consommateurs, versions HA/HACS, dépendances SIP, procédures de commande manuelle et preuves privées ciblées.
-- Invariants/recette : boutons d’appel permanents, destinataires/configuration fictifs, statut/retour d’appel, confirmation et erreurs, clavier/tactile, éditeur, thèmes/mobile, commandes mockées puis essai réel séparément autorisé.
+- Invariants/recette : préservation de `call_buttons_mode` configuré (`contextual` observé, `always` disponible), destinataires/configuration fictifs, statut/retour d’appel, confirmation et erreurs, clavier/tactile, éditeur, thèmes/mobile, commandes mockées puis essai réel séparément autorisé.
 - Migration/rollback HACS : release isolée, configuration/endpoints injectés hors bundle, ressource unique, vérification sans commande réelle puis recette autorisée ; downgrade ou réactivation de l’original avec empreinte.
 
 ### M4 — Carte garage
@@ -49,7 +51,7 @@ L’ancien U3 de #8 (« adresse dans les bulles historiques natives ») est **é
 - Objectif : intégrer la carte garage sans altérer les garde-fous des ouvertures ni les retours d’état.
 - Dépendances : composant actuel, entités porte/mouvement/allée, scripts/services, permissions et protections contre double commande.
 - Sources à inventorier au démarrage : original/SHA256, configuration expurgée, consommateurs, états et transitions, icônes/assets/licences, version HA/HACS et procédure de récupération.
-- Invariants/recette : feedback mouvement orange, dernière personne si source fiable, icône allée, états inconnu/indisponible, commandes protégées/idempotentes, éditeur, mobile/thèmes ; tests simulés avant toute commande réelle explicitement autorisée.
+- Invariants/recette : préservation de `show_motion_badge` configuré (`false` observé) et du feedback mouvement lorsque l’option est activée, dernière personne si source fiable, icône allée, états inconnu/indisponible, commandes protégées/idempotentes, éditeur, mobile/thèmes ; tests simulés avant toute commande réelle explicitement autorisée.
 - Migration/rollback HACS : release par composant, une ressource active, vérifier version et transitions ; downgrade ou restauration de l’original/configuration sauvegardée, puis contrôle d’état sans action physique non mandatée.
 
 ## Règles communes aux lots

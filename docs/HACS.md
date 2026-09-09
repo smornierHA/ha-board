@@ -7,7 +7,7 @@ HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une 
 ## État réellement atteint
 
 - [`v0.1.2-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.1.2-rc.1) est publiée sur `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`.
-- [HACS et bundle contrôlés](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216) : version installée `v0.1.2-rc.1`, sans mise à jour en attente ; bundle de 38 462 octets, SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`.
+- [HACS et bundle contrôlés](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216) : version installée `v0.1.2-rc.1`, sans mise à jour en attente ; bundle relevé de 38 462 octets. Empreinte attendue du bundle publié : SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`. L’empreinte déclarée est cohérente avec cette référence ; le rapport d’installation n’a pas recalculé le hash des octets installés.
 - Une seule ressource est active sous `/hacsfiles/ha-board/ha-board.js` ; aucune double inscription `/local`.
 - Le chargement navigateur après rafraîchissement forcé et la recette HA ciblée ont été [confirmés par l’utilisateur le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326).
 - Le rollback `v0.1.1-rc.1` reste disponible. Aucun downgrade n’a été rejoué dans ce lot ; le fallback original reste distinct.
