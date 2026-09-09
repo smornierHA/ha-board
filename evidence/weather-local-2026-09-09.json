@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-09",
+  "base": "5ed7fae658a326e5520b5a62031f11c02571e539",
+  "branch": "feat/migrate-weather-combined-12",
+  "candidate_version": "0.2.0-rc.1",
+  "local_tests": {
+    "person_contracts_source": 43,
+    "person_contracts_bundle": 43,
+    "weather_contracts_source": 19,
+    "weather_contracts_bundle": 19,
+    "python_tests": 11,
+    "historical_adapter": 3,
+    "bundle_registration": "2 Personnes cards only",
+    "browser": "Chromium 152.0.7977.0; source and distribution; desktop dark/mobile light; mock ha-form/icons; see browser evidence"
+  },
+  "original": {
+    "private": true,
+    "bytes": 129967,
+    "sha256": "da5a13fce2b78fe7109394918a1fb80861955ff9d2319d22be1f66197df74f1b",
+    "observed_header": "V1.9.4.2.10",
+    "observed_filename": "weather-combined-forecast-card-v1.17.10.js",
+    "preserved_outside_git": true
+  },
+  "public_export": {
+    "path": "src/weather-combined-forecast-card.js",
+    "bytes": 129877,
+    "sha256": "1156a9ec5a2128f0990b0db2847cd1a34b3a22da0e55b029b3c3797e310a6712"
+  },
+  "candidate": {
+    "path": "src/candidate/weather-combined-forecast-card.js",
+    "bytes": 142765,
+    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+  },
+  "distribution": {
+    "path": "dist/weather-combined-forecast-card.js",
+    "bytes": 142765,
+    "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+  },
+  "person_bundle": {
+    "bytes": 38462,
+    "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6"
+  },
+  "previews": [
+    {
+      "path": "docs/previews/weather-mobile-light.png",
+      "sha256": "f614d9c79ba845083660d1830651389d0238a92236e9429cadfda697b189a266"
+    },
+    {
+      "path": "docs/previews/weather-desktop-dark.png",
+      "sha256": "f9a189d6b36b1bd9f810eead0467ef8683c3b72e418a86cf27c403ebb2c0677a"
+    }
+  ],
+  "limitations": [
+    "License provenance pending; publisher explicitly blocks release",
+    "HA native form/icon rendering and real HACS installation not exercised",
+    "Legacy *_unit options retained but unused by original rendering; metric-only qualification",
+    "HACS auto resource updater selects the first resource in the repository namespace; check order and URLs after future updates"
+  ],
+  "stages": {
+    "prepared": true,
+    "locally_tested": true,
+    "supervision_accepted": false,
+    "merged": false,
+    "published": false,
+    "installed": false,
+    "loaded_in_ha": false,
+    "ha_acceptance": false
+  }
+}

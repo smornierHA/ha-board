@@ -1,0 +1,23 @@
+{
+  "observed_at": "2026-09-09",
+  "source": "HA-MCP read-only installed HACS Python files",
+  "source_hashes": {
+    "hacs-plugin.py": "6e6ff3a9ccee66479ee6d66a170561996f78eeb21bb3b9aa582dab7073e6395f",
+    "hacs-base.py": "17aeee13aa48153f17c0de654ce6d4cd03495f21be3c57a218bf1909fefc4d2e"
+  },
+  "methods_executed": [
+    "update_filenames",
+    "release_contents",
+    "download_content"
+  ],
+  "data": "fictitious release assets and mocked download queue",
+  "remote": "release",
+  "auto_entry": "ha-board.js",
+  "downloaded": [
+    "ha-board.js",
+    "weather-combined-forecast-card.js",
+    "manifest.json",
+    "provenance.json"
+  ],
+  "ha_installation": false
+}

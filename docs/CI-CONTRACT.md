@@ -16,3 +16,7 @@ Le [recadrage du 8 septembre 2026](https://github.com/smornierHA/ha-board/pull/9
 Concurrence par PR, annulation des runs dépassés, timeouts explicites. Précondition KO = arrêt avant déploiement, sans attente de plusieurs minutes. Mesurer durée/jobs/runs par révision sans confondre durée et facturation. Actions épinglées par SHA vérifié, permissions minimales, aucun secret/runner production pour PR. Les protections et possibilités de bypass sont à rafraîchir avant une livraison qui en dépend ; les droits admin d’autres dépôts n’en prouvent pas l’existence.
 
 Une fusion, même documentaire, déclenche le job candidate sur `main`. Pour une version déjà publiée, le script vérifie l’ascendance du tag et l’identité du bundle, puis ne republie rien si ces conditions sont remplies ; voir [HACS](HACS.md#effet-dune-fusion-documentaire). Les promotions stables, installations et commandes HA restent des décisions distinctes.
+
+## Contrôles météo #12
+
+Le même workflow de PR contrôle désormais les empreintes météo, les contrats sources et distribution, les 43 contrats Personnes et le rendu Chrome sur données fictives. Pas de workflow produit supplémentaire doublonnant push/PR. Les captures de la simulation sont jointes au run avec rétention 14 jours, nommées par le SHA réellement checkouté. Le fichier météo ne dépend d’aucun module JS externe. Le publisher vérifie tous les artefacts ; la réserve de licence historique empêche sa publication tant qu’elle reste `pending`.

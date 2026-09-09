@@ -1,9 +1,24 @@
 {
-  "package_version": "0.1.2-rc.1",
+  "package_version": "0.2.0-rc.1",
   "entrypoint": "dist/ha-board.js",
   "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6",
   "components": {
     "person-history-map-card-v14": "1.4.2",
-    "person-rich-card-v34": "3.4.7"
-  }
+    "person-rich-card-v34": "3.4.7",
+    "weather-combined-forecast-card": "0.2.0-rc.1"
+  },
+  "artifacts": [
+    {
+      "file": "ha-board.js",
+      "bytes": 38462,
+      "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6"
+    },
+    {
+      "file": "weather-combined-forecast-card.js",
+      "bytes": 142765,
+      "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f"
+    }
+  ],
+  "persons_distribution_version": "0.1.2-rc.1",
+  "weather_opt_in": true
 }

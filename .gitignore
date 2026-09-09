@@ -13,3 +13,4 @@ artifacts/
 dist/*
 !dist/ha-board.js
 !dist/manifest.json
+!dist/weather-combined-forecast-card.js

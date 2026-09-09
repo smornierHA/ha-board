@@ -28,6 +28,9 @@ jobs:
           node --check src/candidate/history-address-adapter.mjs
           python3 scripts/check_import.py
           python3 scripts/check_candidate.py
+          python3 scripts/check_weather.py
+          node --check src/candidate/weather-combined-forecast-card.js
+          node tests/weather-contracts.mjs
       - name: Strict behavioral contracts on candidate
         env:
           POC_SOURCE_DIR: ${{ github.workspace }}/src/candidate
@@ -38,11 +41,22 @@ jobs:
       - name: Build and test HACS entrypoint
         run: |
           python3 scripts/build_hacs.py
-          git diff --exit-code -- dist/ha-board.js dist/manifest.json
+          git diff --exit-code -- dist
           node --check dist/ha-board.js
           node tests/bundle-smoke.mjs
+          WEATHER_SOURCE=dist/weather-combined-forecast-card.js node tests/weather-contracts.mjs
           python3 -m unittest discover -s tests -p 'test_*.py' -v
           POC_BUNDLE="$PWD/dist/ha-board.js" POC_SOURCE_DIR="$PWD/src/candidate" POC_REPORT_DIR="$PWD/artifacts/bundle" node tests/contracts.mjs
+      - name: Fictitious weather browser contracts
+        run: node --experimental-websocket tests/weather-browser.mjs
+      - name: Save fictitious browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: weather-browser-${{ github.sha }}
+          path: artifacts/weather-browser/
+          if-no-files-found: error
+          retention-days: 14
       - name: Project documentation
         run: python3 scripts/check_project_docs.py
   candidate-release:

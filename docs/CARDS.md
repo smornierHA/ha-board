@@ -85,3 +85,33 @@ Les blocs **Proximité**, **Trajet** et **Destination**, Memoji, batteries/charg
 [Installer avec HACS](HACS.md) · [Compatibilité](COMPATIBILITY.md) · [Recette](ACCEPTANCE.md) · [Fidélité des données](DATA-FRESHNESS.md).
 
 Les exemples sont fictifs. Ne jamais publier les captures familiales, positions, identifiants ou images personnelles dans ce dépôt. L’éditeur utilise `getConfigForm` et les sélecteurs natifs ; la validation Node ne remplace pas l’essai visuel sur Home Assistant.
+
+## Weather Combined Forecast
+
+**Pilote #12 préparé, non publié.** Type conservé `custom:weather-combined-forecast-card`. Fichier dédié `weather-combined-forecast-card.js`, à activer seulement lors de la [bascule contrôlée](HACS.md#pilote-météo-020-rc1--préparation-seulement). Le bundle Personnes ne charge pas cette carte.
+
+Météo actuelle, min/max du jour depuis la prévision daily, graphe horaire température/pluie, probabilité rapprochée dans le temps, vent/rafales/orientation, soleil et risques. Le mode `weather_alert_pills` intégré conserve ses attributions ; aucune autre carte météo n’est importée. [Options complètes](WEATHER-OPTIONS.md) · [Provenance](WEATHER-PROVENANCE.md) · [Démonstration fictive](../examples/weather-demo.html).
+
+L’éditeur propose les groupes Prévisions, Probabilité pluie, Vent, En-tête/actions, Risques et Options avancées. Les listes de risques et actions utilisent le sélecteur objet natif HA pour conserver leurs clés imbriquées. Les champs inconnus et `grid_options` sont préservés lors d’une modification ciblée. Les actions proposées restent celles du composant existant : navigation, more-info, URL, call-service, fire-dom-event, none. Les tests ne commandent aucun appareil.
+
+```yaml
+type: custom:weather-combined-forecast-card
+title: Station exemple
+forecast_entity: sensor.example_hourly
+forecast_attribute: forecast
+weather_entity: weather.example
+sun_entity: sun.sun
+hours_to_show: 12
+bearing_reference_mode: standard
+risk_entities:
+  - mode: weather_alert_pills
+    entity: sensor.example_alert
+    tap_action:
+      action: more-info
+      entity: sensor.example_alert
+main_header_tap_action:
+  action: navigate
+  navigation_path: '#example-weather'
+```
+
+Les prévisions horaires sont fournies par le capteur configuré ; les prévisions quotidiennes utilisent l’abonnement HA et le repli legacy existant. Une donnée absente ne devient pas zéro ; zéro valide reste une mesure, même si les libellés de pluie nulle sont masqués comme auparavant. Aucune conversion d’unité n’est introduite. Limite héritée : les options `precipitation_unit`, `temperature_unit` et `wind_unit` sont conservées mais ne pilotent pas les libellés du rendu original (pluie suffixée `mm`, températures en `°`, vitesses sans suffixe). Ce pilote est qualifié sur les sources métriques fictives et la configuration existante ; ne pas en déduire un support impérial. La connexion est libérée au détachement, y compris si la réponse d’abonnement arrive plus tard.

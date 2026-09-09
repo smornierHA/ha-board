@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "status": "draft-location-cleanup-u3-replaced-by-10-ha-acceptance-pending",
-  "base_commit": "d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8",
+  "status": "draft-weather-migration-12-not-published",
+  "base_commit": "5ed7fae658a326e5520b5a62031f11c02571e539",
   "reference_release": {
-    "version": "0.1.1-rc.1",
-    "commit": "d71e66ac3e6c1b6f8df728c248c0e7f32b5dd4e8",
-    "sha256": "f86b7409a54aaa0e4ba4bb9f9d61a9ade90366f6193b41a8ff964f712d17d2c9"
+    "version": "0.1.2-rc.1",
+    "commit": "21c8212f8ae47fb3ff7d86131dd7c821c688b46e",
+    "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6"
   },
   "sources": [
     {
@@ -26,6 +26,12 @@
       "bytes": 3563,
       "sha256": "03b0a94a1ab289592c1ca1353f21cf741897e01ab34e58887a35061e42c448e1",
       "distribution": "not-bundled"
+    },
+    {
+      "path": "src/candidate/weather-combined-forecast-card.js",
+      "bytes": 142765,
+      "sha256": "5d2db89a30cc5aab7b0fd2853ec1638d09bb2c4efb5d362d0280896413e4fb4f",
+      "version": "0.2.0-rc.1"
     }
   ]
 }

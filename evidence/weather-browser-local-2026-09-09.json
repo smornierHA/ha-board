@@ -1,0 +1,29 @@
+{
+  "chrome": "Chromium 152.0.7977.0",
+  "checks": [
+    {
+      "source": "candidate",
+      "render": true,
+      "editor": "mock ha-form round-trip",
+      "navigation": true,
+      "reconnection": true,
+      "viewports": [
+        "desktop-dark",
+        "mobile-light"
+      ]
+    },
+    {
+      "source": "bundle",
+      "render": true,
+      "editor": "mock ha-form round-trip",
+      "navigation": true,
+      "reconnection": true,
+      "viewports": [
+        "desktop-dark",
+        "mobile-light"
+      ]
+    }
+  ],
+  "errors": [],
+  "ha_acceptance": false
+}

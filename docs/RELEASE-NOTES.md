@@ -1,3 +1,9 @@
+# HA-BOARD 0.2.0-rc.1 — candidate préparée
+
+Pilote météo #12 : ressource indépendante, type YAML conservé, W1 corrigé, éditeur complet et catalogue. Les octets du bundle Personnes 0.1.2-rc.1 restent inchangés. Aucune publication, installation ni recette HA du candidat. Réserve de licence explicite avant publication ; voir WEATHER-PROVENANCE.md. Bascule et rollback par ressource dans HACS.md. Garage #13, Portail #14 et historique #10 exclus.
+
+## Historique
+
 # HA-BOARD 0.1.2-rc.1
 
 Candidate de correctif visuel, pas une version stable.

@@ -20,3 +20,7 @@
 Preuve d'amorçage : `evidence/github-bootstrap-2026-09-06.json`. Le socle est dans project-playbook privé ; project-archives est également privé. Leur accès ne prouve ni l'import des préparatifs ni la disponibilité d'une sauvegarde.
 
 Une version de socle disponible ou préparée n'est pas adoptée tant que son diff projet n'est pas intégré. La révision RC.4 reste historique et n’est pas réimportée. La maintenance mensuelle existante n'est pas dupliquée.
+
+## Cycle pilote météo #12
+
+Le 9 septembre, le dépôt public est relu via GitHub avec droits push/admin ; la préparation reste sur branche dédiée. Sources privées météo et configuration ciblée conservées hors Git ; seules les références expurgées et données fictives sont admises ici. Le profil HA et la coordination RC.8 ont été relus et appliqués aux parties concernées, sans adoption complète. Candidate de package 0.2.0-rc.1 préparée, Personnes 0.1.2-rc.1 inchangé ; statut et limites dans STATUS et WEATHER-PROVENANCE.

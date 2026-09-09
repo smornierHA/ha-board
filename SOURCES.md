@@ -73,3 +73,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - [Installation HACS et contrôles techniques](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597510216), puis [confirmation utilisateur et clôture de supervision](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) : publié, installé, chargé après rafraîchissement et recette HA ciblée confirmée. La réserve du banc Puppet ne bloque plus la vérification faite dans le navigateur utilisateur authentifié.
 - Les constats de versions installées et de recette en attente ci-dessus sont historiques. Cette clôture ne promeut pas une stable et ne prouve pas une campagne complète éditeurs/thèmes/mobile/rollback.
 - L’ancien U3 est écarté par décision utilisateur ; les sources frontend de sa faisabilité restent historiques. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10), sans développement inclus.
+
+## Pilote météo #12 — 9 septembre 2026
+
+- [Ticket météo](https://github.com/smornierHA/ha-board/issues/12) et [coordination #6](https://github.com/smornierHA/ha-board/issues/6), relus ; aucune autre branche/PR du pilote trouvée au démarrage.
+- HA-MCP : ressource et configuration ciblée relues, original inchangé. Provenance et expurgation : `weather-provenance.json` et `docs/WEATHER-PROVENANCE.md`.
+- [HACS Dashboard](https://www.hacs.xyz/docs/publish/plugin/) et [manifeste HACS](https://www.hacs.xyz/docs/publish/start/), consultés le 9 septembre. Le mécanisme ZIP n’est pas retenu pour un plugin.
+- Code HACS installé, `repositories/plugin.py` / `repositories/base.py`, lu via HA-MCP : choix d’entrée et téléchargement de tous les assets. Trois méthodes réelles exécutées localement avec transport simulé ; empreintes et résultats dans `evidence/weather-hacs-path-2026-09-09.json`. Cela ne prouve pas une installation HA.
+- [Profil HA RC.8](https://github.com/smornierHA/project-playbook/blob/463d9fadd58cbb4a558e9224c336a4ed4e182053/profiles/home-assistant.md) et [coordination RC.8](https://github.com/smornierHA/project-playbook/blob/463d9fadd58cbb4a558e9224c336a4ed4e182053/docs/COORDINATION-SUPERVISION.md) lus ; le chemin initial demandé en majuscules a retourné HTTP 404, puis le chemin canonique lowercase du README a été lu avec succès. Aucune adoption complète du socle ni release de celui-ci revendiquée.
+- `actions/upload-artifact` vérifiée au commit `ea165f8d65b6e75b540449e92b4886f43607fa02` pour les seules captures fictives du banc.
