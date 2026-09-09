@@ -38,8 +38,8 @@
     },
     {
       "path": "src/candidate/garage-control-card.js",
-      "bytes": 70163,
-      "sha256": "00511ff7ae78183e4c54cb8dbcffe81d25d55949dd92ab64c4ba38cf8fa336da",
+      "bytes": 71208,
+      "sha256": "1669bb74e444ff497acd0ac09a28b9986268308b9b1a0de5120b7456fff821ad",
       "version": "1.1.0",
       "distribution": "dist/garage-control-card.js"
     }

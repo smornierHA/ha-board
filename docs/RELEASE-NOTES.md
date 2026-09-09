@@ -5,7 +5,7 @@
 - Corrige G1 : détachement ou reconfiguration annule le cycle de commande, réinitialise le verrou et ignore toute réponse de service devenue tardive ; l’anti-double clic reste actif.
 - Distingue commande envoyée, confirmation par le capteur physique et expiration sans confirmation ; un succès de service seul n’est jamais affiché comme action physique réussie.
 - Ajoute l’éditeur visuel natif complet, en conservant `false`, `0`, objets structurés, clés inconnues et sauvegarde/réouverture.
-- Préserve les modes pulse/stateful/cover, états inconnus/indisponibles, caméras `picture-entity`, navigation/hash/Escape, détections, véhicules, images et plusieurs instances.
+- Préserve les modes pulse/stateful/cover, états inconnus/indisponibles, caméras `picture-entity`, navigation/hash/Escape, détections, véhicules, images et plusieurs instances ; restaure une caméra sélectionnée unique après reconnexion et invalide les chargements caméra dépassés.
 - Ajoute la bascule et le rollback Garage seuls ; Personnes reste la première ressource du namespace lors d’une mise à jour HACS ultérieure.
 - Conserve Personnes et météo octet pour octet. Portail #14, historique #10 et tout essai physique restent hors de cette version.
 

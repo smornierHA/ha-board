@@ -106,8 +106,50 @@ try {
     screenshots.set(source, png);
 
     let asyncLifecycle = "historical baseline only";
+    let cameraLifecycle = "historical baseline retains the inherited reconnect defect";
     let editor = "historical baseline has no native editor";
     if (source !== "original") {
+      const cameraResult = await evaluate(`(async()=>{
+        const card=demo.card;
+        card._setActiveCamera(1);
+        for(let i=0;i<40 && card._cameraCardEntity!=='camera.example_driveway';i++) await new Promise(r=>setTimeout(r,10));
+        const before={dialog:card._dialogOpen,entity:card._cameraCardEntity,index:card._activeCameraIndex,hash:location.hash,visible:card.shadowRoot.querySelectorAll('picture-entity-demo').length,creates:cameraCreates.length};
+        card.remove();
+        const detached={dialog:card._dialogOpen,card:card._cameraCard,entity:card._cameraCardEntity,hash:location.hash};
+        document.querySelector('#host').append(card); await card.updateComplete;
+        for(let i=0;i<40 && card._cameraCardEntity!=='camera.example_driveway';i++) await new Promise(r=>setTimeout(r,10));
+        await card.updateComplete;
+        const reconnected={dialog:card._dialogOpen,entity:card._cameraCardEntity,index:card._activeCameraIndex,hash:location.hash,visible:card.shadowRoot.querySelectorAll('picture-entity-demo').length,creates:cameraCreates.length};
+
+        deferCameraCreates=true;
+        const stale=card._ensureCameraCard(true);
+        for(let i=0;i<40 && pendingCameraCreates.length<1;i++) await Promise.resolve();
+        const createsBeforeConfig=cameraCreates.length;
+        card.setConfig({...demo.config,name:'Garage reconfiguré',show_motion_badge:false});
+        card.remove();
+        await Promise.resolve(); await Promise.resolve();
+        const afterImmediateDetach={attached:card._attached,dialog:card._dialogOpen,card:card._cameraCard,entity:card._cameraCardEntity,error:card._error,newCreates:cameraCreates.length-createsBeforeConfig,pending:pendingCameraCreates.length};
+        pendingCameraCreates.shift().reject(new Error('obsolete camera failure')); await stale;
+        const afterLateFailure={attached:card._attached,card:card._cameraCard,entity:card._cameraCardEntity,error:card._error};
+        deferCameraCreates=false;
+        document.querySelector('#host').append(card); await card.updateComplete;
+        for(let i=0;i<40 && card._cameraCardEntity!=='camera.example_driveway';i++) await new Promise(r=>setTimeout(r,10));
+        await card.updateComplete;
+        const finalReconnect={dialog:card._dialogOpen,entity:card._cameraCardEntity,index:card._activeCameraIndex,hash:location.hash,visible:card.shadowRoot.querySelectorAll('picture-entity-demo').length};
+        return {before,detached,reconnected,afterImmediateDetach,afterLateFailure,finalReconnect};
+      })()`);
+      assert.equal(cameraResult.before.dialog, true); assert.equal(cameraResult.before.entity, "camera.example_driveway");
+      assert.equal(cameraResult.before.index, 1); assert.equal(cameraResult.before.hash, "#example-garage");
+      assert.equal(cameraResult.before.visible, 1); assert(cameraResult.before.creates >= 2);
+      assert.deepEqual(cameraResult.detached, { dialog: true, card: null, entity: null, hash: "#example-garage" });
+      assert.equal(cameraResult.reconnected.dialog, true); assert.equal(cameraResult.reconnected.entity, "camera.example_driveway");
+      assert.equal(cameraResult.reconnected.index, 1); assert.equal(cameraResult.reconnected.hash, "#example-garage");
+      assert.equal(cameraResult.reconnected.visible, 1); assert.equal(cameraResult.reconnected.creates, cameraResult.before.creates + 1);
+      assert.deepEqual(cameraResult.afterImmediateDetach, { attached: false, dialog: true, card: null, entity: null, error: "", newCreates: 0, pending: 1 });
+      assert.deepEqual(cameraResult.afterLateFailure, { attached: false, card: null, entity: null, error: "" });
+      assert.deepEqual(cameraResult.finalReconnect, { dialog: true, entity: "camera.example_driveway", index: 1, hash: "#example-garage", visible: 1 });
+      cameraLifecycle = "open-dialog reconnect restores one selected camera; detached/reconfigured stale work ignored";
+
       const result = await evaluate(`(async()=>{
         const card=demo.card; card._closeDialog(false);
         const pending=card._runGarageAction();
@@ -133,7 +175,7 @@ try {
     assert.equal(await evaluate(`history.replaceState(null,'','#other');dispatchEvent(new HashChangeEvent('hashchange'));demo.card._dialogOpen`), false);
     assert.equal(await evaluate(`history.replaceState(null,'','#example-garage');dispatchEvent(new HashChangeEvent('hashchange'));demo.card._dialogOpen`), true);
     assert.equal(await evaluate(`dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));demo.card._dialogOpen`), false);
-    proofs.push({ source, render: true, visual: "fictitious desktop dark", asyncLifecycle, editor, services: source === "original" ? 0 : 1 });
+    proofs.push({ source, render: true, visual: "fictitious desktop dark", asyncLifecycle, cameraLifecycle, editor, services: source === "original" ? 0 : 1 });
   }
   assert(screenshots.get("original").equals(screenshots.get("candidate")), "candidate visual rendering drifted from the expurgated original");
   assert(screenshots.get("candidate").equals(screenshots.get("bundle")), "built Garage module drifted from candidate rendering");

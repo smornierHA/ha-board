@@ -21,8 +21,8 @@
     },
     {
       "file": "garage-control-card.js",
-      "bytes": 91044,
-      "sha256": "e86c3bd86a7bfa69866da5712af69519717ea6fc234b93ca84ecc720b7b2bba3"
+      "bytes": 91977,
+      "sha256": "6f7b151883a607b26ae146f18a1e2d30633698f152ddfd5d9dac6db5c1fefa4d"
     }
   ],
   "notices": [
@@ -49,7 +49,7 @@
     {
       "file": "garage-provenance.json",
       "bytes": 1707,
-      "sha256": "44d882da2f5c3b9979ca0a6883ceee70a4f3693485f33c2567547cbc2a883e84"
+      "sha256": "6dee4b0eec4bff9785e2945c2decc94dd5a443f64bb9090269710d54e4239e77"
     }
   ]
 }

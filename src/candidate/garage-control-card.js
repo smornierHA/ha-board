@@ -803,6 +803,7 @@ class GarageControlCard extends LitElement {
     this._cameraCard = null;
     this._cameraCardEntity = null;
     this._cameraLoadToken = 0;
+    this._cameraGeneration = 0;
     this._activeCameraIndex = 0;
     this._garageBusy = false;
     this._garageFeedback = null;
@@ -831,13 +832,23 @@ class GarageControlCard extends LitElement {
     const popupHash = String(config.popup_hash || "#popup_garage");
     if (this._config) this._invalidateCommandCycle(true);
 
+    const cameraGeneration = ++this._cameraGeneration;
     this._config = {
       ...GarageControlCard.getDefaultConfig(),
       ...config,
       popup_hash: popupHash.startsWith("#") ? popupHash : `#${popupHash}`,
     };
     this._destroyCameraCard();
-    if (this._dialogOpen && this._attached) queueMicrotask(() => this._ensureCameraCard(true));
+    if (this._dialogOpen && this._attached) {
+      queueMicrotask(() => {
+        if (
+          !this._attached ||
+          !this._dialogOpen ||
+          cameraGeneration !== this._cameraGeneration
+        ) return;
+        this._ensureCameraCard(true, cameraGeneration);
+      });
+    }
     this.requestUpdate();
   }
 
@@ -845,13 +856,22 @@ class GarageControlCard extends LitElement {
     super.connectedCallback();
     this._attached = true;
     this._commandGeneration += 1;
+    const cameraGeneration = ++this._cameraGeneration;
+    const dialogWasOpen = this._dialogOpen;
     window.addEventListener("hashchange", this._handleHashChange);
     window.addEventListener("keydown", this._handleKeyDown);
-    queueMicrotask(() => this._handleHashChange());
+    queueMicrotask(() => {
+      if (!this._attached || cameraGeneration !== this._cameraGeneration) return;
+      this._handleHashChange();
+      if (dialogWasOpen && this._dialogOpen) {
+        this._ensureCameraCard(false, cameraGeneration);
+      }
+    });
   }
 
   disconnectedCallback() {
     this._attached = false;
+    this._cameraGeneration += 1;
     window.removeEventListener("hashchange", this._handleHashChange);
     window.removeEventListener("keydown", this._handleKeyDown);
     this._invalidateCommandCycle(true);
@@ -1056,9 +1076,10 @@ class GarageControlCard extends LitElement {
     return cameras[safeIndex];
   }
 
-  async _ensureCameraCard(force = false) {
-    if (!this._dialogOpen) return;
+  async _ensureCameraCard(force = false, cameraGeneration = this._cameraGeneration) {
+    if (!this._attached || !this._dialogOpen || cameraGeneration !== this._cameraGeneration) return;
 
+    const config = this._config;
     const camera = this._activeCamera();
     if (!camera?.entity) return;
     if (!force && this._cameraCard && this._cameraCardEntity === camera.entity) return;
@@ -1083,7 +1104,10 @@ class GarageControlCard extends LitElement {
 
       if (
         loadToken !== this._cameraLoadToken ||
+        !this._attached ||
         !this._dialogOpen ||
+        cameraGeneration !== this._cameraGeneration ||
+        config !== this._config ||
         this._activeCamera()?.entity !== camera.entity
       ) {
         return;
@@ -1094,7 +1118,13 @@ class GarageControlCard extends LitElement {
       this._cameraCardEntity = camera.entity;
       this.requestUpdate();
     } catch (error) {
-      if (loadToken !== this._cameraLoadToken) return;
+      if (
+        loadToken !== this._cameraLoadToken ||
+        !this._attached ||
+        !this._dialogOpen ||
+        cameraGeneration !== this._cameraGeneration ||
+        config !== this._config
+      ) return;
       this._error = `Impossible de charger la caméra ${camera.entity} : ${error?.message || error}`;
       this.requestUpdate();
     }

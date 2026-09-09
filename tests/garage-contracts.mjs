@@ -215,6 +215,70 @@ await test("camera A/B/A ignores stale async loads", async () => {
   windowMock.loadCardHelpers = async () => ({ createCardElement: async (config) => ({ config, hass: null }) });
 });
 
+await test("open dialog reconnect recreates one selected camera", async () => {
+  const requests = [];
+  windowMock.loadCardHelpers = async () => ({ createCardElement: (config) => {
+    const item = deferred(); requests.push({ ...item, config }); return item.promise;
+  } });
+  const card = makeCard();
+  card._dialogOpen = true;
+  windowMock.location.hash = card._config.popup_hash;
+  card._setActiveCamera(1);
+  await tick();
+  assert.equal(requests.length, 1);
+  requests[0].resolve({ marker: "selected-B" });
+  await tick();
+  assert.equal(card._cameraCard.marker, "selected-B");
+  assert.equal(card._cameraCardEntity, "camera.example_driveway");
+
+  detach(card);
+  assert.equal(card._dialogOpen, true);
+  assert.equal(card._cameraCard, null);
+  card.connectedCallback();
+  await tick();
+  assert.equal(requests.length, 2);
+  assert.equal(requests[1].config.entity, "camera.example_driveway");
+  requests[1].resolve({ marker: "reconnected-B" });
+  await tick();
+  assert.equal(card._cameraCard.marker, "reconnected-B");
+  assert.equal(card._cameraCardEntity, "camera.example_driveway");
+  assert.equal(requests.length, 2);
+  detach(card);
+  windowMock.location.hash = "";
+  windowMock.loadCardHelpers = async () => ({ createCardElement: async (config) => ({ config, hass: null }) });
+});
+
+await test("immediate detach cancels reconfiguration camera task and stale failure", async () => {
+  const requests = [];
+  windowMock.loadCardHelpers = async () => ({ createCardElement: (config) => {
+    const item = deferred(); requests.push({ ...item, config }); return item.promise;
+  } });
+  const card = makeCard();
+  card._dialogOpen = true;
+  windowMock.location.hash = card._config.popup_hash;
+  const initial = card._ensureCameraCard(true);
+  await tick();
+  requests[0].resolve({ marker: "ready-A" });
+  await initial;
+  assert.equal(card._cameraCard.marker, "ready-A");
+
+  const stale = card._ensureCameraCard(true);
+  await tick();
+  assert.equal(requests.length, 2);
+  card.setConfig({ ...baseConfig, name: "Garage reconfiguré" });
+  detach(card);
+  await tick();
+  assert.equal(requests.length, 2);
+  requests[1].reject(new Error("obsolete camera failure"));
+  await stale;
+  assert.equal(card._attached, false);
+  assert.equal(card._cameraCard, null);
+  assert.equal(card._cameraCardEntity, null);
+  assert.equal(card._error, "");
+  windowMock.location.hash = "";
+  windowMock.loadCardHelpers = async () => ({ createCardElement: async (config) => ({ config, hass: null }) });
+});
+
 await test("several instances keep command locks isolated", async () => {
   const aService = deferred(); let aCalls = 0; let bCalls = 0;
   const a = makeCard({}, () => { aCalls += 1; return aService.promise; });
