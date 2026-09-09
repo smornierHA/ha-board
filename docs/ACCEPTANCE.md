@@ -1,6 +1,6 @@
 # Recette et critères avant une éventuelle stable
 
-La CI et les contrats simulés ne constituent pas une recette Home Assistant réelle. `v0.1.2-rc.1` est publiée depuis `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, installée via HACS et chargée dans le navigateur ; l’utilisateur a confirmé sa recette HA ciblée le 9 septembre 2026. Cette clôture ne vaut pas promotion stable.
+La distribution courante est `v0.2.0-rc.1` ; la [recette HA météo ciblée du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067) est confirmée par l’utilisateur après installation contrôlée. Les sections Personnes ci-dessous conservent la preuve du lot précédent. La CI et les contrats simulés ne constituent pas une recette Home Assistant réelle. `v0.1.2-rc.1` est publiée depuis `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, installée via HACS et chargée dans le navigateur ; l’utilisateur a confirmé sa recette HA ciblée le 9 septembre 2026. Cette clôture ne vaut pas promotion stable.
 
 ## Correctif visuel `v0.1.2-rc.1`
 
@@ -43,10 +43,12 @@ L’ancien U3 d’adresse dans les bulles historiques natives est écarté par d
 
 Aucune capture familiale ni donnée réelle n’est nécessaire ou autorisée dans GitHub. Une PR/CI verte ne vaut ni fusion, ni publication, ni installation HACS, ni recette Home Assistant.
 
-## Pilote météo #12 — préparation de 0.2.0-rc.1
+## Météo #12 — v0.2.0-rc.1, recette ciblée close
 
 Les 43 contrats Personnes doivent passer sur source et bundle, et le SHA256 Personnes rester `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`. Les 22 contrats météo exécutent séparément source et fichier construit : abonnement tardif, A/B/A, détachement/reconnexion, connexion remplacée, événements ready/disconnected, erreurs tardives, plusieurs instances, zéro/données absentes, périodes, pluie, orientation, risques et actions simulées. Pour l’éditeur, ils couvrent YAML minimal et valeurs effectives, `false`/`0`, modification ciblée, retour/suppression au défaut, sauvegarde/réouverture, objets, types, clés inconnues et unités héritées conservées hors contrôles.
 
 La démo `examples/weather-demo.html` utilise exclusivement des données fictives et une horloge figée. `tests/weather-browser.mjs` vérifie les deux fichiers dans Chrome : desktop sombre/mobile clair, navigation, reconnexion, risques footer/header, formulaire simulé et conservation des options. Ses captures ne sont pas des captures HA. Le formulaire et les icônes de simulation ne prouvent pas le rendu natif de `ha-form`/`ha-icon`.
 
-Le test R2 exécute le corps exact de `update_dashboard_resources` lu dans HACS installé sur des ressources fictives : ordre météo/Personnes, ordre Personnes/météo, téléchargement suivant et mise à jour ultérieure. Avant recette HA sous mandat distinct : établir Personnes avant météo selon `HACS.md`, vérifier le téléchargement de tous les assets et notices, actualiser explicitement l’URL/version/cache météo, vérifier une ressource météo unique, fichier réellement chargé, configuration privée conservée, rendu existant, éditeur natif (ouvrir/modifier/sauver/rouvrir), thèmes et navigation. Le rollback météo seul doit rester disponible. Aucune commande réelle n’est exécutée par le banc.
+Le test R2 exécute le corps exact de `update_dashboard_resources` lu dans HACS installé sur des ressources fictives : ordre météo/Personnes, ordre Personnes/météo, téléchargement suivant et mise à jour ultérieure. La préparation de la recette demandait d’établir Personnes avant météo selon `HACS.md`, vérifier le téléchargement de tous les assets et notices, actualiser explicitement l’URL/version/cache météo, vérifier une ressource météo unique, fichier réellement chargé, configuration privée conservée, rendu existant, éditeur natif (ouvrir/modifier/sauver/rouvrir), thèmes et navigation. Le rollback météo seul doit rester disponible. Aucune commande réelle n’est exécutée par le banc.
+
+L’[installation réelle](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602574417) a ensuite contrôlé les six fichiers, la conservation de la configuration et la bascule unique météo. L’utilisateur confirme les essais natifs globalement concluants : [clôture](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Ce retour clôt le lot ciblé ; il ne documente pas séparément chaque contrôle d’éditeur/thème/mobile ni un rollback exécuté. La seule remarque restante porte sur la documentation HACS ; son alignement fait désormais partie du [parcours de livraison](HACS.md#documentation-à-chaque-livraison).

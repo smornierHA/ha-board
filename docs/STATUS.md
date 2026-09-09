@@ -1,5 +1,23 @@
 # État courant — 9 septembre 2026
 
+**Distribution courante : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
+
+| Étape météo | État prouvé | Référence |
+|---|---|---|
+| Préparé, testé, accepté | PR #16 ; 22 contrats météo et 43 Personnes sur sources et distributions, 16 tests Python et rendu fictif | [Revue finale](https://github.com/smornierHA/ha-board/pull/16#pullrequestreview-5154581535) |
+| Fusionné et publié | `v0.2.0-rc.1`, SHA `a9c885419cea031fb307623076100b04feb78e98` | [CI intégrée réussie](https://github.com/smornierHA/ha-board/actions/runs/34354484728), [release](https://github.com/smornierHA/ha-board/releases/tag/v0.2.0-rc.1) |
+| Installé | HACS `v0.2.0-rc.1`, aucune mise à jour en attente ; fichiers et ressources contrôlés | [Preuve d’installation](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602574417) |
+| Chargé et recette HA ciblée | Confirmation utilisateur du 9 septembre, tests globalement concluants | [Clôture](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067) |
+| Rollback météo | Original et procédure disponibles ; non exécuté | [Procédure ciblée](HACS.md#rollback-météo-seul-non-exécuté) |
+
+Météo distribuée/installée : **142 577 octets**, SHA256 `f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`. Personnes : **38 462 octets**, SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`, inchangé depuis `v0.1.2-rc.1` (Person Rich 3.4.7, Person History Map 1.4.2). Les empreintes des fichiers installés ont été recalculées lors de l’installation météo.
+
+La remarque mineure sur la documentation HACS conduit à aligner README/catalogue/état et à contrôler la documentation avant publication puis après déploiement. Aucune anomalie fonctionnelle nouvelle signalée ; aucune matrice exhaustive éditeurs/thèmes/mobile ni promotion stable n’est déduite de la recette ciblée. Le banc de capture indisponible ne remet pas en cause les essais natifs de l’utilisateur.
+
+**Prochaine étape : préparation Garage #13**, puis Portail #14. Historique #10 séparé. La maintenance du socle RC.8 ne bloque pas ces lots et son adoption complète n’est pas revendiquée.
+
+## Historique clos : Personnes `v0.1.2-rc.1`
+
 Le lot `v0.1.2-rc.1` est **publié, installé via HACS, chargé dans le navigateur et validé par la recette Home Assistant ciblée de l’utilisateur**. La [clôture de supervision](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) consolide les preuves techniques et la confirmation reçue le 9 septembre après rafraîchissement de la vue Personnes.
 
 | Étape | État prouvé | Référence |
@@ -32,10 +50,4 @@ Les originaux dans `src/`, les types YAML, Person History Map, Memoji, batteries
 
 L’ancien U3 « adresse dans les bulles historiques natives » est **écarté par décision utilisateur et non livré**. Aucun prototype supplémentaire n’est lancé. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique durée + position dans chaque vignette Person Rich. Ce backlog reste séparé.
 
-Le lot localisation [#8](https://github.com/smornierHA/ha-board/issues/8) est clos sur ce périmètre. Les futures cartes météo, portail et garage relèvent des lots M2–M4 de la [roadmap](ROADMAP.md), sans nouvelle installation ni modification Core/OS/NAS/Livebox/Frigate dans cette clôture documentaire.
-
-## Incrément météo #12 en préparation
-
-Branche `feat/migrate-weather-combined-12`, base `5ed7fae658a326e5520b5a62031f11c02571e539`. Candidate **0.2.0-rc.1**, ressource météo séparée, W1 et éditeur à valeurs effectives traités. Original privé relu sans dérive, export public expurgé et distribution identifiés. Les 43 contrats Personnes passent sur sources/bundle ; bundle 0.1.2-rc.1 inchangé. Les 22 contrats météo passent séparément sur source/distribution. La méthode HACS installée est testée sur ressources fictives dans les deux ordres et après mise à jour ; les notices sont manifestées et contrôlées. La CI du SHA poussé et les preuves de rendu sont consignées sur la PR du lot.
-
-**Préparé/testé localement** ne signifie pas accepté, fusionné, publié, installé, chargé ou recetté dans HA. Le seul produit installé/recetté reste 0.1.2-rc.1 décrit en tête. La revue ciblée de provenance est reliée aux notices distribuées sans attribuer de licence globale au dépôt. Garage #13 puis Portail #14 restent des lots indépendants, non implémentés. Aucune modification HA, commande physique ni appel SIP dans ce cycle.
+Le lot localisation [#8](https://github.com/smornierHA/ha-board/issues/8) est clos sur ce périmètre. Le lot météo #12 est également clos. Garage #13 puis Portail #14 suivent la [roadmap](ROADMAP.md) ; aucune modification Core/OS/NAS/Livebox/Frigate n’est incluse.

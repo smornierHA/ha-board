@@ -1,6 +1,6 @@
-# Roadmap HA-BOARD — base validée v0.1.2-rc.1
+# Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
-La base de référence est `v0.1.2-rc.1`, publiée depuis `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, installée via HACS et chargée dans le navigateur. La [recette HA ciblée du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) est confirmée par l’utilisateur sur les vues compactes/détaillées et la navigation. Le correctif localisation est clos ; les lots M2–M4 restent distincts.
+La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est le prochain lot**, puis Portail #14.
 
 ## Avant une éventuelle promotion stable
 
@@ -14,7 +14,7 @@ La base de référence est `v0.1.2-rc.1`, publiée depuis `21c8212f8ae47fb3ff7d8
 
 S1 et la recette ciblée du correctif sont confirmés. Les preuves S2–S4 ne sont pas déduites de ce seul retour ; elles restent à compléter avant une éventuelle décision S5. Aucune promotion stable n’est incluse dans cette clôture.
 
-## Lots futurs issus de #6
+## Lots issus de #6
 
 L’inventaire du 9 septembre est consigné dans les tickets dédiés. Ordre de migration retenu : **M2 météo [#12](https://github.com/smornierHA/ha-board/issues/12) → M4 garage [#13](https://github.com/smornierHA/ha-board/issues/13) → M3 portail SIP [#14](https://github.com/smornierHA/ha-board/issues/14)**. Chaque lot reprend son inventaire et préserve les options réellement configurées ; aucune installation ou commande physique n’est déduite de cette préparation.
 
@@ -30,7 +30,7 @@ L’inventaire du 9 septembre est consigné dans les tickets dédiés. Ordre de 
 
 L’ancien U3 de #8 (« adresse dans les bulles historiques natives ») est **écarté par décision utilisateur, sans être déclaré livré**. Aucun prototype supplémentaire n’est à lancer. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique combinant durée et position (zone ou adresse historique) dans chaque vignette Person Rich. #10 reste un lot séparé et n’est pas développé dans `0.1.2-rc.1`.
 
-### M2 — Carte(s) météo
+### M2 — Carte(s) météo — #12 clos
 
 - Objectif : inventorier puis intégrer le ou les composants météo réellement visés ; aucune ressource n’est choisie avant cet inventaire.
 - Dépendances : entités/providers météo observés, éventuels composants frontend, licences, assets, services et stratégie de rafraîchissement. Charger les dépendances optionnelles sans pénaliser les cartes Personnes.
@@ -62,10 +62,10 @@ Les lots sont séparés par composant ou groupe justifié. Un ajout de carte app
 
 Le chantier MAP/Core, Livebox (`smornierHA/hass-livebox-component`, branche `livebox-l2.17c`), NAS et Frigate restent séparés.
 
-## Incrément pilote météo #12 — 9 septembre 2026
+## Clôture du pilote météo #12 — 9 septembre 2026
 
-- Préparation sur `feat/migrate-weather-combined-12` : export expurgé, W1, éditeur/catalogue, fichier autonome et extension publisher/manifeste.
-- Contrats sources/distribution et invariants Personnes vérifiés localement ; rendu fictif et CI exacte à consigner sur la PR draft.
-- Revue consolidée avant livraison. Provenance ciblée et notices distribuées préparées ; recette native HA et rollback réel restent ultérieurs et soumis au mandat.
-- Bascule/rollback ciblés : [HACS](HACS.md#pilote-météo-020-rc1--préparation-seulement). Ne pas réinstaller Personnes et ne pas charger les deux ressources météo simultanément.
-- Ordre inchangé : #12 → #13 Garage → #14 Portail. #10 reste au backlog ; aucune adoption complète du socle RC.8.
+- PR #16 fusionnée ; `v0.2.0-rc.1` publiée depuis `a9c885419cea031fb307623076100b04feb78e98`, CI intégrée réussie.
+- HACS et bascule exécutés ; [recette native ciblée confirmée](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). W1, éditeur, provenance et notices traités ; bundle Personnes inchangé.
+- [Migration et rollback ciblés](HACS.md#migration-météo-020-rc1) : conserver Personnes avant météo, une ressource par module. Rollback disponible, non exécuté.
+- Documentation de distribution à aligner avant publication ; informations HACS et recette à relire après déploiement selon [HACS.md](HACS.md#documentation-à-chaque-livraison).
+- Suite : #13 Garage puis #14 Portail. #10 reste au backlog ; aucune adoption complète du socle RC.8.

@@ -10,11 +10,18 @@ Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargemen
 |---|---|---|
 | [Person History Map](docs/CARDS.md#person-history-map) | Historique des déplacements, filtres individuels/multiples, Tous/aucun et couleurs | Éditeur visuel natif HA ou YAML |
 | [Person Rich Card](docs/CARDS.md#person-rich-card) | Zone ou ville lisible, adresse distincte, Memoji, batteries et charge ; compact/détail | Éditeur visuel natif HA ou YAML |
-| [Weather Combined Forecast](docs/CARDS.md#weather-combined-forecast) | Pilote #12 : météo, prévisions, pluie, vent et risques ; ressource séparée, non publiée | Éditeur visuel et YAML |
+| [Weather Combined Forecast](docs/CARDS.md#weather-combined-forecast) | Météo, prévisions, pluie, vent et risques ; ressource autonome | Éditeur visuel et YAML |
 
 [Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 
-La distribution de référence est [`v0.1.2-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.1.2-rc.1), publiée depuis `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, installée via HACS et chargée dans le navigateur. La [recette HA ciblée confirmée par l’utilisateur le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/11#issuecomment-5597988326) clôt le correctif visuel : les trois éléments techniques sont retirés et le libellé de localisation conserve la zone HA nommée, sinon la ville seule. Cette validation ne constitue pas une promotion stable. L’ancien U3 « adresse dans les bulles natives » est écarté par décision utilisateur, sans être déclaré livré ; son remplacement reste au backlog [#10](https://github.com/smornierHA/ha-board/issues/10). Aucun correctif du fournisseur de tuiles n’est inclus ; le chantier Core reste distinct.
+La distribution candidate disponible est [`v0.2.0-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.2.0-rc.1). Elle ajoute Weather Combined Forecast et conserve les deux cartes Personnes de `v0.1.2-rc.1` sans modification de leur bundle. [Publication, installation et recette HA ciblée confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067) ; cette recette ne constitue pas une promotion stable.
+
+| Ressource Lovelace (type module) | Cartes |
+|---|---|
+| `/hacsfiles/ha-board/ha-board.js` | Person History Map et Person Rich Card |
+| `/hacsfiles/ha-board/weather-combined-forecast-card.js?v=0.2.0-rc.1` | Weather Combined Forecast |
+
+HACS télécharge les deux modules ; la ressource météo se configure séparément selon le [guide de migration](docs/HACS.md#migration-météo-020-rc1). Conserver une seule ressource par module. Les libellés Person Rich privilégient la zone HA nommée, sinon la ville seule. Le graphe historique durée + position reste au backlog [#10](https://github.com/smornierHA/ha-board/issues/10) ; l’ancienne demande U3 de bulles natives a été écartée sans être livrée.
 
 Pour contribuer : [AGENTS.md](AGENTS.md), [projet](PROJECT.md), [architecture](docs/ARCHITECTURE.md), [CI](docs/CI-CONTRACT.md), [roadmap](docs/ROADMAP.md). Le socle central est privé ; ses règles applicables sont disponibles ici dans AGENTS.md. Les originaux immuables restent dans `src/`, les sources maintenues dans `src/candidate/`, le bundle HACS dans `dist/`.
 
