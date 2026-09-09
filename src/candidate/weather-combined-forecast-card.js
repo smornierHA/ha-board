@@ -122,6 +122,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
       wind_gust_speed_key: "wind_gust_speed",
       wind_bearing_key: "wind_bearing",
       show_temperature: true,
+      show_wind: true,
       show_rain: true,
       show_probability: "auto",
       probability_datetime_key: "datetime",
