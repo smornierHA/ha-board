@@ -33,3 +33,9 @@ Les originaux dans `src/`, les types YAML, Person History Map, Memoji, batteries
 L’ancien U3 « adresse dans les bulles historiques natives » est **écarté par décision utilisateur et non livré**. Aucun prototype supplémentaire n’est lancé. Son remplacement est le backlog [#10](https://github.com/smornierHA/ha-board/issues/10) : graphe historique durée + position dans chaque vignette Person Rich. Ce backlog reste séparé.
 
 Le lot localisation [#8](https://github.com/smornierHA/ha-board/issues/8) est clos sur ce périmètre. Les futures cartes météo, portail et garage relèvent des lots M2–M4 de la [roadmap](ROADMAP.md), sans nouvelle installation ni modification Core/OS/NAS/Livebox/Frigate dans cette clôture documentaire.
+
+## Incrément météo #12 en préparation
+
+Branche `feat/migrate-weather-combined-12`, base `5ed7fae658a326e5520b5a62031f11c02571e539`. Candidate **0.2.0-rc.1**, ressource météo séparée, W1 et éditeur à valeurs effectives traités. Original privé relu sans dérive, export public expurgé et distribution identifiés. Les 43 contrats Personnes passent sur sources/bundle ; bundle 0.1.2-rc.1 inchangé. Les 22 contrats météo passent séparément sur source/distribution. La méthode HACS installée est testée sur ressources fictives dans les deux ordres et après mise à jour ; les notices sont manifestées et contrôlées. La CI du SHA poussé et les preuves de rendu sont consignées sur la PR du lot.
+
+**Préparé/testé localement** ne signifie pas accepté, fusionné, publié, installé, chargé ou recetté dans HA. Le seul produit installé/recetté reste 0.1.2-rc.1 décrit en tête. La revue ciblée de provenance est reliée aux notices distribuées sans attribuer de licence globale au dépôt. Garage #13 puis Portail #14 restent des lots indépendants, non implémentés. Aucune modification HA, commande physique ni appel SIP dans ce cycle.

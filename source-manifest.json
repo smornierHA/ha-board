@@ -2,10 +2,36 @@
   "schema_version": 1,
   "captured_at_utc": "2026-09-06T10:20:42.477913+00:00",
   "sources": [
-    {"path":"src/person-history-map-card-v14.js","origin":"HA www/person-history-map-card-v14.js","bytes":6877,"sha256":"5f7eafddc9ad338e71030d759e373d51bfc6bf384e291b26cd11e5708031c0a4","transformation":"none; UTF-8 bytes match file size reported by HA-MCP","status":"original-preserved-not-fixed"},
-    {"path":"src/person-rich-card-v34.js","origin":"HA www/person-rich-card-v34.js","bytes":13553,"sha256":"9b89f12c630750fe67000434b2ee9a9b92efab76413e83babad6a6ce17a18477","transformation":"none; UTF-8 bytes match file size reported by HA-MCP","status":"original-preserved-not-fixed"}
+    {
+      "path": "src/person-history-map-card-v14.js",
+      "origin": "HA www/person-history-map-card-v14.js",
+      "bytes": 6877,
+      "sha256": "5f7eafddc9ad338e71030d759e373d51bfc6bf384e291b26cd11e5708031c0a4",
+      "transformation": "none; UTF-8 bytes match file size reported by HA-MCP",
+      "status": "original-preserved-not-fixed"
+    },
+    {
+      "path": "src/person-rich-card-v34.js",
+      "origin": "HA www/person-rich-card-v34.js",
+      "bytes": 13553,
+      "sha256": "9b89f12c630750fe67000434b2ee9a9b92efab76413e83babad6a6ce17a18477",
+      "transformation": "none; UTF-8 bytes match file size reported by HA-MCP",
+      "status": "original-preserved-not-fixed"
+    },
+    {
+      "path": "src/weather-combined-forecast-card.js",
+      "bytes": 129877,
+      "sha256": "1156a9ec5a2128f0990b0db2847cd1a34b3a22da0e55b029b3c3797e310a6712",
+      "origin": "Private HA original, SHA256 da5a13fce2b78fe7109394918a1fb80861955ff9d2319d22be1f66197df74f1b",
+      "transformation": "8 private entity identifiers replaced with fictional defaults, including comments; UTF-8 otherwise preserved",
+      "status": "immutable-public-export-not-raw-original"
+    }
   ],
   "privacy": "No person names, entity inventories, coordinates, histories, backups or actual Memoji in Git candidate. Examples structurally pseudonymized; do not deploy examples.",
-  "artwork":{"retrieved_private":1,"referenced_in_ha_image_storage_not_downloaded":3,"in_git":0},
-  "revision_status":"local-import-prepared-github-repository-not-accessible"
+  "artwork": {
+    "retrieved_private": 1,
+    "referenced_in_ha_image_storage_not_downloaded": 3,
+    "in_git": 0
+  },
+  "revision_status": "local-import-prepared-github-repository-not-accessible"
 }

@@ -1,0 +1,52 @@
+{
+  "observed_at": "2026-09-09",
+  "source": "HA-MCP read-only installed HACS Python files",
+  "source_hashes": {
+    "hacs-plugin.py": "6e6ff3a9ccee66479ee6d66a170561996f78eeb21bb3b9aa582dab7073e6395f",
+    "hacs-base.py": "17aeee13aa48153f17c0de654ce6d4cd03495f21be3c57a218bf1909fefc4d2e"
+  },
+  "methods_executed": [
+    "update_filenames",
+    "release_contents",
+    "download_content"
+  ],
+  "data": "fictitious release assets and mocked download queue",
+  "remote": "release",
+  "auto_entry": "ha-board.js",
+  "ha_installation": false,
+  "resource_order_observed_read_only": {
+    "total_resources": 41,
+    "weather_index_zero_based": 35,
+    "people_index_zero_based": 40,
+    "weather_url": "/local/weather-combined-forecast-card-v1.17.10.js",
+    "people_url": "/hacsfiles/ha-board/ha-board.js?hacstag=<redacted-version-token>",
+    "resource_ids_published": false,
+    "ha_write_performed": false
+  },
+  "update_dashboard_resources": {
+    "installed_method_test_fixture": "tests/fixtures/hacs_plugin_update_dashboard_resources.py",
+    "fixture_sha256": "3781e7fdc25b63e8e872b389b1c141b3bb9d2ee7799287e0d3a93af69c2b7bb0",
+    "scenarios": [
+      "weather-before-people",
+      "people-before-weather",
+      "subsequent-HACS-update",
+      "resume-after-weather-delete"
+    ],
+    "transport": "fictitious in-memory resources",
+    "ha_execution": false
+  },
+  "simulated_download_queue_earlier_increment": [
+    "ha-board.js",
+    "weather-combined-forecast-card.js",
+    "manifest.json",
+    "provenance.json"
+  ],
+  "candidate_release_assets_expected_from_observed_all_assets_behavior": [
+    "ha-board.js",
+    "weather-combined-forecast-card.js",
+    "manifest.json",
+    "provenance.json",
+    "THIRD-PARTY-NOTICES.md",
+    "home-assistant-frontend-Apache-2.0.txt"
+  ]
+}

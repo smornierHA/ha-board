@@ -1,0 +1,31 @@
+{
+  "reviewed_at": "2026-09-09",
+  "home_assistant_frontend": {
+    "commit": "18f79dfc919e2019102c4fde0606fdb449f4cc15",
+    "source": "src/data/weather.ts",
+    "source_git_blob": "3f72034577698af270c629184ac3ef4e088d2dd4",
+    "source_bytes": 23427,
+    "source_sha256": "42b4defdb2c27aa38c3d9e0651c66ed3bd5de757b44e5a5d4b3b6eedc3437eb2"
+  },
+  "clock_weather_card": {
+    "commit": "8fc1415dde5cf8d55d61c86ae2eb4a34b46e7732",
+    "source": "src/clock-weather-card.ts",
+    "source_bytes": 32147,
+    "source_sha256": "ba076c5c06f8bd892fb97b22d906d55b4ff95d5b37638f5cc5355c57297d1aee",
+    "license": "MIT",
+    "license_sha256": "556cdaba0b6cd02e5a864d5611ab11a548e794c7b5767994c4267868cdeb5c23",
+    "normalized_identical_non_comment_lines_min_40_chars": 0,
+    "finding": "functional inspiration; no copied source or artwork identified"
+  },
+  "weather_alert_adapter": {
+    "source": "private project-local weather-alert-pills-card-v3.js",
+    "copied_portions": ["phenomenon list", "severity mapping", "palette mapping", "icon mapping"],
+    "external_origin_identified": false,
+    "runtime_import": false,
+    "finding": "project-origin adapter authorized for this public migration; attribution retained"
+  },
+  "distributed_notice_files": [
+    "THIRD-PARTY-NOTICES.md",
+    "home-assistant-frontend-Apache-2.0.txt"
+  ]
+}

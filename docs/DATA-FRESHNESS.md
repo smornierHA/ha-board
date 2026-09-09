@@ -35,3 +35,9 @@ Si l’adresse est d’une autre ville, plus ancienne que la position, antérieu
 Person History Map continue de déléguer l’historique au composant natif et n’est pas modifiée par ce correctif. L’ancien U3 d’adresse dans les bulles natives est écarté par décision utilisateur, sans être déclaré livré. Son remplacement est le backlog #10, graphe durée + position par vignette, hors périmètre de `0.1.2-rc.1`.
 
 Les tests utilisent uniquement des noms, identifiants, villes, adresses et coordonnées fictifs. Aucun état de position familial n’est nécessaire pour démontrer ces contrats.
+
+## Pilote météo : données absentes et périodes
+
+Les prévisions horaires et probabilités conservent leur source, leurs clés et leur mode de rapprochement configurés. Les dates invalides sont ignorées ; les lignes valides sont triées. Le min/max du header provient de la prévision daily du jour ou d’une surcharge explicite, jamais du seul intervalle horaire visible. Les conventions horaires locales existantes sont conservées.
+
+Zéro est une mesure valide (température, pluie, probabilité, vent). Les champs nulls/vides, booléens, objets, `unknown`, `unavailable` ou malformés ne sont pas convertis en zéro. Aucune conversion d’unité n’est effectuée. Les trois options historiques `*_unit` sont conservées, mais restent sans effet sur le rendu comme dans la source : pluie en `mm`, températures en `°`, vent sans suffixe. Les fixtures et la recette préparée couvrent les sources métriques ; un autre système d’unités nécessitera un lot explicite. Les callbacks périmés après déconnexion/reconfiguration ne remplacent pas les prévisions de la nouvelle instance. Le repli legacy reste celui du composant importé ; il ne prouve pas la fraîcheur d’un provider indisponible.

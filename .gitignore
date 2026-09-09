@@ -13,3 +13,6 @@ artifacts/
 dist/*
 !dist/ha-board.js
 !dist/manifest.json
+!dist/weather-combined-forecast-card.js
+!dist/THIRD-PARTY-NOTICES.md
+!dist/home-assistant-frontend-Apache-2.0.txt

@@ -10,6 +10,7 @@ Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargemen
 |---|---|---|
 | [Person History Map](docs/CARDS.md#person-history-map) | Historique des déplacements, filtres individuels/multiples, Tous/aucun et couleurs | Éditeur visuel natif HA ou YAML |
 | [Person Rich Card](docs/CARDS.md#person-rich-card) | Zone ou ville lisible, adresse distincte, Memoji, batteries et charge ; compact/détail | Éditeur visuel natif HA ou YAML |
+| [Weather Combined Forecast](docs/CARDS.md#weather-combined-forecast) | Pilote #12 : météo, prévisions, pluie, vent et risques ; ressource séparée, non publiée | Éditeur visuel et YAML |
 
 [Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 
