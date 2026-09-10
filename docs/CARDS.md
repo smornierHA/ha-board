@@ -1,6 +1,6 @@
 # Cartes disponibles
 
-HACS distribue trois cartes : les deux cartes Personnes partagent `ha-board.js`, la météo utilise `weather-combined-forecast-card.js` avec sa propre ressource module (voir [HACS](HACS.md)). Dans **Modifier le tableau de bord → Ajouter une carte**, rechercher le nom ci-dessous. Chaque carte propose l’éditeur visuel natif HA et un lien vers cette documentation. Les numéros restent dans le manifeste de livraison, jamais dans les noms du catalogue.
+HACS distribue quatre cartes : les deux cartes Personnes partagent `ha-board.js`, la météo et Garage utilisent chacune leur propre ressource module (voir [HACS](HACS.md)). Dans **Modifier le tableau de bord → Ajouter une carte**, rechercher le nom ci-dessous. Chaque carte propose l’éditeur visuel natif HA et un lien vers cette documentation. Les numéros restent dans le manifeste de livraison, jamais dans les noms du catalogue.
 
 ## Person History Map
 
@@ -115,3 +115,48 @@ main_header_tap_action:
 ```
 
 Les prévisions horaires sont fournies par le capteur configuré ; les prévisions quotidiennes utilisent l’abonnement HA et le repli legacy existant. Une donnée absente ne devient pas zéro ; zéro valide reste une mesure, même si les libellés de pluie nulle sont masqués comme auparavant. Aucune conversion d’unité n’est introduite. Limite héritée : les options `precipitation_unit`, `temperature_unit` et `wind_unit` sont conservées mais ne pilotent pas les libellés du rendu original (pluie suffixée `mm`, températures en `°`, vitesses sans suffixe). Ce pilote est qualifié sur les sources métriques fictives et la configuration existante ; ne pas en déduire un support impérial. La connexion est libérée au détachement, y compris si la réponse d’abonnement arrive plus tard.
+
+## Garage Control Card
+
+Type conservé : `custom:garage-control-card`. Le module autonome `garage-control-card.js` incorpore `lit-element@4.2.0` et ses dépendances verrouillées ; il n’importe aucun CDN au runtime et ne dépend ni du bundle Personnes, ni de la météo, ni de SIP.
+
+La carte conserve les modes `pulse`, `stateful` et `cover`, un capteur d’état physique distinct, la caméra native `picture-entity`, la navigation par hash et Escape, les détections, véhicules, images d’événements et plusieurs instances. Une réponse réussie du service est présentée comme **commande envoyée** ; seul le capteur configuré peut confirmer **Garage ouvert/fermé**. L’expiration reste explicitement **état non confirmé**. Le verrou anti-double commande est réinitialisé au détachement ou à la reconfiguration et une réponse asynchrone devenue obsolète est ignorée.
+
+```yaml
+type: custom:garage-control-card
+name: Garage exemple
+icon: mdi:garage
+popup_hash: '#example-garage'
+garage_entity: switch.example_garage_command
+garage_service: switch.toggle
+garage_command_mode: pulse
+garage_state_entity: binary_sensor.example_garage_open
+garage_open_state: 'on'
+garage_closed_state: 'off'
+camera_entities:
+  - entity: camera.example_garage
+    name: Garage
+    icon: mdi:garage
+    camera_view: live
+  - entity: camera.example_driveway
+    name: Allée
+    icon: mdi:road-variant
+    camera_view: live
+motion_entity: binary_sensor.example_garage_motion
+person_entity: binary_sensor.example_garage_person
+show_motion_badge: false
+show_person_badge: true
+vehicle_entities:
+  - key: vehicle_a
+    name: Véhicule A
+    entity: binary_sensor.example_vehicle_a
+event_entities:
+  - key: last_person
+    name: Dernière personne
+    entity: image.example_last_person
+show_snapshots: true
+action_lock_ms: 2000
+state_confirmation_timeout_ms: 25000
+```
+
+L’éditeur natif couvre Carte/navigation, Commande/état, Caméras, Détections/événements et Protection/retours. Il affiche les valeurs effectives, conserve `false`, `0`, objets imbriqués, `grid_options` et clés inconnues lors d’une modification ciblée, puis les restitue après sauvegarde/réouverture. Les listes structurées `camera_entities`, `vehicle_entities` et `event_entities` utilisent le sélecteur objet natif : leur structure interne reste volontairement libre pour préserver les options avancées, sans validation métier champ par champ dans le formulaire. [Options détaillées](GARAGE-OPTIONS.md) · [Provenance](GARAGE-PROVENANCE.md) · [Démonstration fictive](../examples/garage-demo.html).

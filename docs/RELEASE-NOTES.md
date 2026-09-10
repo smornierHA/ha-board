@@ -1,3 +1,18 @@
+# HA-BOARD 0.3.0-rc.1
+
+- Ajoute Garage Control Card 1.1.0 comme troisième module autonome, sans import dans le bundle Personnes.
+- Remplace l’import Lit CDN de l’original par `lit-element@4.2.0` et ses dépendances exactes verrouillées, incorporées au fichier distribué avec licence BSD-3-Clause.
+- Corrige G1 : détachement ou reconfiguration annule le cycle de commande, réinitialise le verrou et ignore toute réponse de service devenue tardive ; l’anti-double clic reste actif.
+- Distingue commande envoyée, confirmation par le capteur physique et expiration sans confirmation ; un succès de service seul n’est jamais affiché comme action physique réussie.
+- Ajoute l’éditeur visuel natif complet, en conservant `false`, `0`, objets structurés, clés inconnues et sauvegarde/réouverture.
+- Préserve les modes pulse/stateful/cover, états inconnus/indisponibles, caméras `picture-entity`, navigation/hash/Escape, détections, véhicules, images et plusieurs instances ; restaure une caméra sélectionnée unique après reconnexion et invalide les chargements caméra dépassés.
+- Ajoute la bascule et le rollback Garage seuls ; Personnes reste la première ressource du namespace lors d’une mise à jour HACS ultérieure.
+- Conserve Personnes et météo octet pour octet. Portail #14, historique #10 et tout essai physique restent hors de cette version.
+
+Les tests utilisent exclusivement des services, entités, ressources et images fictifs. L’état daté de publication, installation, chargement et recette Home Assistant est maintenu dans `docs/STATUS.md` et dans les preuves de PR ; les présentes notes ne les déduisent pas de la version.
+
+## Historique
+
 # HA-BOARD 0.2.0-rc.1
 
 - Ajoute le pilote Weather Combined Forecast comme ressource autonome, avec type YAML et rendu existants conservés.
@@ -8,8 +23,6 @@
 - Conserve le bundle Personnes 0.1.2-rc.1 octet pour octet. Garage #13, Portail #14 et historique #10 restent hors de cette version.
 
 Publiée le 9 septembre 2026 depuis `a9c885419cea031fb307623076100b04feb78e98`, installée via HACS ; [chargement et recette HA ciblée confirmés](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Les contrôles CI utilisent des données fictives. Le rollback météo reste disponible et non exécuté ; aucune promotion stable. Les notes enregistrées lors de la publication restent la photographie de cette étape, complétée par cette preuve de recette.
-
-## Historique
 
 # HA-BOARD 0.1.2-rc.1
 

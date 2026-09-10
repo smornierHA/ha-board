@@ -4,7 +4,7 @@ HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une 
 
 [![Ouvrir dans HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=smornierHA&repository=ha-board&category=plugin)
 
-## État réellement atteint — v0.2.0-rc.1
+## État réellement atteint avant la livraison Garage
 
 - [`v0.2.0-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.2.0-rc.1) est publiée depuis `a9c885419cea031fb307623076100b04feb78e98`, installée via HACS sans mise à jour en attente.
 - Les [six fichiers téléchargés ont été contrôlés](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602574417) : deux JS, deux notices, manifeste et provenance. Météo : SHA256 `f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`. Personnes : SHA256 `80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6`, identique au bundle `v0.1.2-rc.1`.
@@ -16,9 +16,9 @@ HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une 
 
 1. Dans HACS, ouvrir ⋮ puis **Dépôts personnalisés**.
 2. Ajouter `https://github.com/smornierHA/ha-board`, catégorie **Dashboard**.
-3. Activer l’affichage des préreleases si nécessaire, sélectionner explicitement `v0.2.0-rc.1`, télécharger et recharger complètement le navigateur.
+3. Activer l’affichage des préreleases si nécessaire, sélectionner explicitement la version candidate examinée (contenu courant : `v0.3.0-rc.1`), télécharger et recharger complètement le navigateur.
 4. Vérifier la version réellement exécutée et qu’une seule ressource existe sous `/hacsfiles/ha-board/ha-board.js`.
-5. Pour ajouter la météo, suivre la [migration par ressource](#migration-météo-020-rc1) ; son module est téléchargé mais sa ressource distincte doit être configurée explicitement.
+5. Pour ajouter la météo ou Garage, suivre leur migration par ressource ; leurs modules sont téléchargés mais leurs ressources distinctes doivent être configurées explicitement.
 6. Exécuter les contrôles applicables de ACCEPTANCE.md puis vérifier la [documentation de livraison](#documentation-à-chaque-livraison).
 
 Les types restent `custom:person-history-map-card-v14` et `custom:person-rich-card-v34`; la version est portée par la release et le diagnostic, pas par le nom affiché.
@@ -70,6 +70,26 @@ Après activation, mettre à jour par identifiant cette même ressource vers `/l
 À chaque future version, vérifier Personnes avant météo **avant** la mise à jour HACS. Après téléchargement et contrôle du nouvel asset météo, mettre à jour explicitement le jeton de version/cache de son URL (`?v=<version>`). HACS n’automatise que l’URL Personnes. La bascule initiale a été exécutée et contrôlée dans HA le 9 septembre. Le cas d’une future mise à jour HACS reste testé sur ressources fictives ; il ne prouve pas une nouvelle mise à jour réelle.
 
 Pour les futurs lots Lit : version exacte + lockfile committé et dépendance incorporée aux fichiers distribués. Aucune dépendance CDN implicite ni nécessité de charger une autre carte pour obtenir Lit.
+
+## Migration Garage 0.3.0-rc.1
+
+`hacs.json` garde `filename: ha-board.js` : Personnes reste l’entrée et doit rester la première ressource du namespace `/hacsfiles/ha-board`. Le package contient trois JS autonomes. Personnes et météo conservent respectivement **38 462** et **142 577 octets**, avec leurs SHA256 déjà validés. Garage ajoute `garage-control-card.js` et sa licence Lit ; il n’est importé par aucun autre module.
+
+Le relevé en lecture seule du 9 septembre montre la ressource Garage locale placée avant Personnes, puis la météo HACS après Personnes. Cette position ne gêne pas tant que Garage reste sous `/local`, mais elle ferait de Garage la première ressource du namespace après son activation HACS et détournerait les mises à jour automatiques suivantes. La bascule commence donc par déplacer **Garage seul**, encore sur son URL originale, après les ressources HA-BOARD. Le plan reproductible est produit par `scripts/garage_resource_migration.py` depuis `examples/resources-garage-candidate.json`.
+
+### Bascule Garage seule — à exécuter uniquement après autorisation
+
+1. Relister les ressources. Exiger exactement une Personnes HACS, une météo HACS et une Garage locale, toutes `module`. Vérifier l’original Garage : 59 336 octets, SHA256 `5edd41a20a51f76998e282c9974cff211f631c7c31ea4c771d2cd173ae3c2f48`. Conserver identifiants, URLs et ordre complet.
+2. Tant que Garage précède Personnes, supprimer **uniquement** sa ressource, puis la recréer immédiatement avec son URL originale `/local/garage-control-card.js?v=1.0.1`. Elle est ainsi ajoutée après Personnes/météo. Relister : Personnes doit être la première ressource du namespace, les trois ressources doivent être uniques et l’ordre relatif de toutes les ressources étrangères inchangé. En cas d’interruption après suppression, la seule reprise autorisée est de recréer cette même URL originale puis de relister.
+3. Télécharger par HACS la release issue du SHA intégré et testé. Vérifier `ha-board.js`, `weather-combined-forecast-card.js`, `garage-control-card.js`, manifeste, provenance et notices contre `dist/manifest.json`. Relister et vérifier que HACS a changé uniquement l’entrée Personnes ; météo et Garage doivent encore conserver leurs URLs précédentes.
+4. Relire l’identifiant Garage obtenu après l’étape 2, puis mettre à jour **cette seule ressource** vers `/hacsfiles/ha-board/garage-control-card.js?v=0.3.0-rc.1` avec `ha_config_set_dashboard_resource`. Relister et exiger Personnes première dans le namespace, trois modules uniques, météo inchangée et aucune variation d’ordre étrangère.
+5. Recharger complètement le navigateur et vérifier le fichier réellement chargé, sa version et son empreinte. Recetter affichage, caméra A/B/A, hash/Escape, badges selon configuration (`show_motion_badge: false` reste faux), véhicules, images, état inconnu/indisponible et éditeur. Toute commande réelle ou ouverture physique reste exclue sans mandat spécifique.
+
+Les tests exécutent la méthode HACS installée sur trois modules fictifs, y compris une mise à jour ultérieure : seul Personnes est mis à jour automatiquement. Ils ne modifient aucune ressource réelle et ne prouvent pas une installation HA.
+
+### Rollback Garage seul — non exécuté
+
+Après vérification de l’original, mettre à jour par identifiant la seule ressource Garage vers `/local/garage-control-card.js?v=1.0.1`. Relister, conserver Personnes en première position et la météo inchangée, recharger complètement, contrôler version/empreinte et vérifier l’affichage sans commande physique. Aucun downgrade HACS ni réinstallation Personnes/météo n’est requis. Si l’original actif n’est plus disponible ou dérive, arrêter avant le changement d’URL et restaurer sa copie exacte privée par le canal autorisé.
 
 ## Documentation à chaque livraison
 

@@ -1,0 +1,16 @@
+{
+  "name": "ha-board",
+  "version": "0.3.0-rc.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:garage": "node scripts/build_garage.mjs",
+    "test:garage": "node tests/garage-contracts.mjs"
+  },
+  "dependencies": {
+    "lit-element": "4.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.9"
+  }
+}

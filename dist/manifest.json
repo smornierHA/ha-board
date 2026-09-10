@@ -1,11 +1,12 @@
 {
-  "package_version": "0.2.0-rc.1",
+  "package_version": "0.3.0-rc.1",
   "entrypoint": "dist/ha-board.js",
   "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6",
   "components": {
     "person-history-map-card-v14": "1.4.2",
     "person-rich-card-v34": "3.4.7",
-    "weather-combined-forecast-card": "0.2.0-rc.1"
+    "weather-combined-forecast-card": "0.2.0-rc.1",
+    "garage-control-card": "1.1.0"
   },
   "artifacts": [
     {
@@ -17,20 +18,38 @@
       "file": "weather-combined-forecast-card.js",
       "bytes": 142577,
       "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"
+    },
+    {
+      "file": "garage-control-card.js",
+      "bytes": 91977,
+      "sha256": "6f7b151883a607b26ae146f18a1e2d30633698f152ddfd5d9dac6db5c1fefa4d"
     }
   ],
   "notices": [
     {
       "file": "THIRD-PARTY-NOTICES.md",
-      "bytes": 2628,
-      "sha256": "8659f196386780f7590df79ad5363a86dc7aab8cb59b31f0b97e1cf3004fabdf"
+      "bytes": 4128,
+      "sha256": "b4df5f1c86830c670975e192aa6c50bc9762fcba1a83494f7a943642013105da"
     },
     {
       "file": "home-assistant-frontend-Apache-2.0.txt",
       "bytes": 10480,
       "sha256": "2e1faa05bb91574fa388220185f57b3607701714053971f704a3b32bceb9851b"
+    },
+    {
+      "file": "lit-BSD-3-Clause.txt",
+      "bytes": 1518,
+      "sha256": "2b66f9390afde29edfe4314daff93f01fb182e1178053e228120178987e5db75"
     }
   ],
   "persons_distribution_version": "0.1.2-rc.1",
-  "weather_opt_in": true
+  "weather_opt_in": true,
+  "garage_opt_in": true,
+  "metadata": [
+    {
+      "file": "garage-provenance.json",
+      "bytes": 1707,
+      "sha256": "6dee4b0eec4bff9785e2945c2decc94dd5a443f64bb9090269710d54e4239e77"
+    }
+  ]
 }

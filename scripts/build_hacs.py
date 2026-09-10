@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import hashlib, json
+import hashlib, json, subprocess
 
 root = Path(__file__).resolve().parents[1]
 sources = [root / "src/candidate/person-history-map-card-v14.js", root / "src/candidate/person-rich-card-v34.js"]
@@ -14,18 +14,21 @@ manifest = {"package_version":"0.1.2-rc.1","entrypoint":"dist/ha-board.js","sha2
 # Independent opt-in resource. Never import/register weather from ha-board.js.
 weather = (root / 'src/candidate/weather-combined-forecast-card.js').read_bytes()
 (root / 'dist/weather-combined-forecast-card.js').write_bytes(weather)
+subprocess.run(['node', str(root / 'scripts/build_garage.mjs')], cwd=root, check=True)
 notice_sources = {
     'THIRD-PARTY-NOTICES.md': root / 'THIRD-PARTY-NOTICES.md',
     'home-assistant-frontend-Apache-2.0.txt': root / 'third_party/home-assistant-frontend-Apache-2.0.txt',
+    'lit-BSD-3-Clause.txt': root / 'third_party/lit-BSD-3-Clause.txt',
 }
 for name, source in notice_sources.items():
     (root / 'dist' / name).write_bytes(source.read_bytes())
-manifest['package_version'] = '0.2.0-rc.1'
+manifest['package_version'] = '0.3.0-rc.1'
 manifest['components']['weather-combined-forecast-card'] = '0.2.0-rc.1'
+manifest['components']['garage-control-card'] = '1.1.0'
 manifest['artifacts'] = [
     {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),
      'sha256': hashlib.sha256((root/'dist'/name).read_bytes()).hexdigest()}
-    for name in ['ha-board.js', 'weather-combined-forecast-card.js']
+    for name in ['ha-board.js', 'weather-combined-forecast-card.js', 'garage-control-card.js']
 ]
 manifest['notices'] = [
     {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),
@@ -34,5 +37,11 @@ manifest['notices'] = [
 ]
 manifest['persons_distribution_version'] = '0.1.2-rc.1'
 manifest['weather_opt_in'] = True
+manifest['garage_opt_in'] = True
+(root / 'dist' / 'garage-provenance.json').write_bytes((root / 'garage-provenance.json').read_bytes())
+manifest['metadata'] = [
+    {'file': 'garage-provenance.json', 'bytes': len((root/'dist/garage-provenance.json').read_bytes()),
+     'sha256': hashlib.sha256((root/'dist/garage-provenance.json').read_bytes()).hexdigest()}
+]
 (root / 'dist/manifest.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
 print('Independent weather artifact:', manifest['artifacts'][1])

@@ -1,0 +1,9 @@
+{
+  "resources": [
+    {"id": "other-a", "url": "/local/example-unrelated-a.js", "type": "module"},
+    {"id": "garage", "url": "/local/garage-control-card.js?v=1.0.1", "type": "module"},
+    {"id": "people", "url": "/hacsfiles/ha-board/ha-board.js?hacstag=example", "type": "module"},
+    {"id": "weather", "url": "/hacsfiles/ha-board/weather-combined-forecast-card.js?v=0.2.0-rc.1", "type": "module"},
+    {"id": "other-b", "url": "/local/example-unrelated-b.js", "type": "module"}
+  ]
+}
