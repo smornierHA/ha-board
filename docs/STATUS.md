@@ -1,5 +1,11 @@
 # État courant — 25 octobre 2026
 
+## Maquette météo : hauteur constante, footer et seuils
+
+Référence courante `examples/weather-ios-fixed.fragment.html`. Le nouveau retour retire le bandeau d’alerte supérieur et la variation de taille du graphe. Le footer unique reste coloré selon la gravité, l’icône principale partage la dimension de la température et les pictogrammes ont des cadres d’alignement. Valeurs et courbes utilisent des couleurs de seuil consultables dans les détails.
+
+Le banc confirme une hauteur et une position du footer identiques entre Météo/Pluie/Vent et entre états important/critique/faible/zéro ; à 390 px, 365,375 px pour le wrapper, 52 px pour le footer. Les trois largeurs 320/390/736 et deux thèmes passent, ainsi que couleurs, légende, détails, filtres, clavier et conservation de l’heure. **Maquette seulement, données fictives, source/bundle et HA inchangés.** Preuve : `evidence/weather-ios-fixed-2026-10-25.json`.
+
 ## Maquette météo : pictogrammes, jauge, graphe du vent et gravité
 
 La direction précédente est appréciée. La nouvelle référence `examples/weather-ios-refined.fragment.html` applique les quatre demandes du 25 octobre : pictogrammes colorés inspirés d’iOS, icône à côté de la température et jauge mini/maxi, graphe vent/rafales visible dans la vue Vent, bandeau orange/rouge pour les alertes importantes/critiques. Le footer, le volet filtré et les cinq risques restent présents. L’alerte orange affichée est simulée.

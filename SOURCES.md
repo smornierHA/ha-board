@@ -101,6 +101,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Hauteur constante et footer de la maquette météo — 25 octobre 2026
+
+- Nouveau retour utilisateur : dimension de l’icône liée aux degrés, alertes exclusivement dans le footer, alignements, couleurs au-delà des seuils et wrapper constant entre les vues.
+- Code local maintenu `_intensityLevel`, `_combinedWindLevel` et `_tempColor` relu : références vent/rafales et ratios 1,10/1,30 réutilisés pour le rendu de démonstration. Les plages pluie et température de la proposition sont décrites dans `docs/WEATHER-IOS-PREVIEW.md` ; aucune règle HA n’est modifiée.
+- Référence courante `examples/weather-ios-fixed.fragment.html` et preuve `evidence/weather-ios-fixed-2026-10-25.json` : mesures de géométrie, couleurs et statuts accessibles sur données fictives ; aucune donnée domestique ou ressource tierce ajoutée.
+
 # Ajustements de la maquette météo — 25 octobre 2026
 
 - Retour utilisateur sur la proposition à trois vues : pictogrammes iPhone-like, graphe dans la vue Vent, jauge mini/maxi, icône principale près des degrés et alertes importantes visibles.

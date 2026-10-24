@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Hauteur stable et footer météo — 25 octobre 2026
+
+`weather-ios-fixed.fragment.html` devient la référence de maquette : icône de la taille des degrés, alignements communs, toutes les alertes dans le footer, couleurs de seuil et géométrie constante entre vues. Dépôt public et droits d’écriture reconfirmés ; exemple et mesures fictifs uniquement sur la branche de #19. Aucun changement de runtime, de package ou de configuration HA.
+
 ## Ajustements de la maquette météo — 25 octobre 2026
 
 Dépôt public et droits d’écriture reconfirmés. La proposition à trois vues reste la base demandée ; `weather-ios-refined.fragment.html` ajoute des pictogrammes colorés, le graphe du vent, la jauge mini/maxi et la mise en évidence des alertes importantes. Données et alertes sont fictives. Seuls l’exemple et ses références/preuves évoluent sur la branche de #19 ; aucun delta runtime, package ou HA.

@@ -1,6 +1,18 @@
 # Proposition météo iOS fine
 
-## Révision pictogrammes, vent et alertes — 25 octobre 2026, proposition courante
+## Révision alignement et hauteur stable — 25 octobre 2026, proposition courante
+
+Référence courante : `examples/weather-ios-fixed.fragment.html`. Cette révision remplace le bandeau supérieur et la croissance du graphe de la proposition précédente, conformément au nouveau retour utilisateur.
+
+- Icône principale et température partagent la même dimension responsive : 44 px à 320 px, 48 px à 390 px, 52 px dans le banc large, avec centres verticaux identiques. Les pictogrammes horaires ont un cadre commun ; les petites flèches ont leur propre cadre centré.
+- Toutes les alertes restent dans le footer de 52 px. Les niveaux important/critique modifient sa teinte et son libellé, sans ajouter de bandeau ni de hauteur. Le volet conserve le tri par gravité, les alertes actives et l’accès à tous les états.
+- La même trame horaire réserve 48 px au pictogramme ou au graphe, dans les trois vues. Le graphe vent/rafales utilise cette zone ; hauteur du wrapper et position du footer restent identiques lors des changements de vue et de gravité.
+- Valeurs et courbes du vent partagent les couleurs de seuil. La maquette reprend les références 35 km/h pour le vent et 45 km/h pour les rafales, avec les ratios 1,10/1,30 du composant existant : orange au-delà de 38,5/49,5 km/h et rouge au-delà de 45,5/58,5 km/h. Le trait plein/pointillé continue de distinguer vent et rafales.
+- Repères visuels complémentaires : température bleue à 5 °C ou moins, orange au-dessus de 20 °C, rouge au-dessus de 27 °C ; cumul horaire de pluie orange dès 2 mm, rouge dès 5 mm. Ces plages servent à la proposition visuelle ; elles ne créent pas de règle d’alerte HA. Les seuils et statuts textuels sont consultables dans les détails, sans ajouter de ligne à la carte.
+
+Vérification : trois vues × 320/390/736 px × clair/sombre, valeurs non coupées, graphes et détails, légende, clavier, position horaire et filtres. Le banc mesure la même hauteur entre les vues et les quatre niveaux d’alerte ; sur 390 px : wrapper 365,375 px, footer 52 px. Les valeurs orange/rouges sont distinctes et leur statut figure aussi dans le libellé accessible. Preuve : `evidence/weather-ios-fixed-2026-10-25.json`. Maquette et valeurs fictives uniquement ; source, bundle, version et instance HA inchangés.
+
+## Révision pictogrammes, vent et alertes — 25 octobre 2026, référence précédente
 
 La direction à trois vues est appréciée. La référence courante devient `examples/weather-ios-refined.fragment.html`, qui applique les quatre nouvelles remarques :
 

@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Géométrie constante et alertes dans le footer — 25 octobre 2026
+
+Utiliser désormais `weather-ios-fixed.fragment.html` comme proposition courante : même hauteur entre vues, graphe dans l’espace réservé, icône principale proportionnée aux degrés, couleurs de seuil et toutes les alertes dans le footer. Le bandeau supérieur de la révision précédente est écarté par le nouveau retour utilisateur. La maquette ne vaut toujours pas intégration ou déploiement HA.
+
 ## Ajustements de la proposition météo — 25 octobre 2026
 
 Référence courante pour examen : `weather-ios-refined.fragment.html`. Conserver les trois vues appréciées, les pictogrammes colorés, la jauge et l’icône près des degrés, le graphe vent/rafales et la distinction footer / alerte importante / critique. Une éventuelle intégration utilisera les données et niveaux normalisés réels, sans conserver les valeurs de démonstration ; aucun changement du composant installé dans ce lot de maquette.
