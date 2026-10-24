@@ -1,4 +1,10 @@
-# État courant — 24 octobre 2026
+# État courant — 25 octobre 2026
+
+## Maquette météo : pictogrammes, jauge, graphe du vent et gravité
+
+La direction précédente est appréciée. La nouvelle référence `examples/weather-ios-refined.fragment.html` applique les quatre demandes du 25 octobre : pictogrammes colorés inspirés d’iOS, icône à côté de la température et jauge mini/maxi, graphe vent/rafales visible dans la vue Vent, bandeau orange/rouge pour les alertes importantes/critiques. Le footer, le volet filtré et les cinq risques restent présents. L’alerte orange affichée est simulée.
+
+Vérifications ciblées : 320/390/736 px clair/sombre tactile, trois vues, deux séries du graphe et leur alignement, jauge, position horaire, détails, clavier, filtres, scénarios critique/faible/zéro. Les hauteurs varient selon le bandeau et la présence du graphe ; cette évolution remplace le critère de hauteur identique de la proposition précédente. **Pas de déploiement, de publication ni de modification de source ou distribution HA.** Preuve : `evidence/weather-ios-refined-2026-10-25.json`. Le candidat de défilement installé reste inchangé.
 
 ## Maquette météo : lisibilité et données à la demande
 

@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Ajustements de la maquette météo — 25 octobre 2026
+
+Dépôt public et droits d’écriture reconfirmés. La proposition à trois vues reste la base demandée ; `weather-ios-refined.fragment.html` ajoute des pictogrammes colorés, le graphe du vent, la jauge mini/maxi et la mise en évidence des alertes importantes. Données et alertes sont fictives. Seuls l’exemple et ses références/preuves évoluent sur la branche de #19 ; aucun delta runtime, package ou HA.
+
 ## Révision de maquette météo — 24 octobre 2026
 
 Le retour utilisateur remplace la proposition initiale, trop dense, par un aperçu à trois vues Météo/Pluie/Vent inspiré du guide Apple iOS 27 actuel. Dépôt public et droits d’écriture reconfirmés ; branche existante de #19. Seuls l’exemple fictif, ses références et sa preuve évoluent. Le code distribué et l’instance HA ne sont pas modifiés dans cette révision.

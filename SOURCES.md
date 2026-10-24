@@ -101,6 +101,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Ajustements de la maquette météo — 25 octobre 2026
+
+- Retour utilisateur sur la proposition à trois vues : pictogrammes iPhone-like, graphe dans la vue Vent, jauge mini/maxi, icône principale près des degrés et alertes importantes visibles.
+- Pictogrammes Lucide fournis par l’hôte de prévisualisation (runtime local observé 1.8.0, licence ISC) : composition de symboles existants et styles propres au projet, sans nouveau tracé d’icône ou artwork Apple. Aucun import ou asset ajouté au bundle réel.
+- Référence `examples/weather-ios-refined.fragment.html` ; profil météo et alertes fictifs ; preuve `evidence/weather-ios-refined-2026-10-25.json`. Les captures Apple consultées la veille restent des références de conception, pas des ressources embarquées.
+
 # Révision lisibilité de la maquette météo — 24 octobre 2026
 
 - [Guide Météo iOS 27](https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios), texte et deux captures officielles consultés : bascule conditions/précipitations/vent, graphiques détaillés au toucher. Captures consultées uniquement, sans copie dans le projet ou le prototype.

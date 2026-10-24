@@ -1,6 +1,19 @@
 # Proposition météo iOS fine
 
-## Révision lisibilité — proposition courante
+## Révision pictogrammes, vent et alertes — 25 octobre 2026, proposition courante
+
+La direction à trois vues est appréciée. La référence courante devient `examples/weather-ios-refined.fragment.html`, qui applique les quatre nouvelles remarques :
+
+- Pictogrammes météo pleins et colorés : nuages clairs, pluie bleue, soleil doré et lune douce. Composition et style à partir des icônes Lucide fournies par l’hôte ; aucun SF Symbol ni artwork Apple embarqué.
+- Graphe directement dans la vue Vent : vent moyen en trait plein, rafales en pointillés, alignés sur les 25 positions horaires du même rail natif. Vitesse, rafales et direction relative à la maison restent accessibles ; les détails au toucher sont conservés.
+- Icône météo principale immédiatement à gauche de la température ; jauge mini/maxi graduée de 9 à 17 °C avec un repère à 14 °C sur la fixture.
+- Footer et volet des risques conservés. Les alertes importantes ou critiques obtiennent un bandeau directement visible : orange ou rouge, texte de gravité explicite pour le critique et noms des alertes concernées. Les risques du volet sont triés par gravité. Un niveau faible conserve seulement le footer ; zéro alerte reste zéro et le bouton Tout permet de consulter les états normaux.
+
+L’exemple contient une **alerte orange simulée**, cohérente avec un profil fictif de rafales culminant à 72 km/h ; aucune alarme domestique réelle n’a été consultée ou modifiée. Le bandeau et son détail sont conditionnels à la gravité. Le graphe augmente uniquement la vue Vent de 41 px ; le bandeau s’ajoute seulement lorsqu’une alerte importante existe. La vérification distingue donc les hauteurs selon la situation, sans reprendre l’ancienne promesse de hauteur identique entre les trois vues.
+
+Vérifié en Chromium, pointeur tactile, 320/390/736 px en clair/sombre : icône adjacente, jauge accessible, deux séries du graphe non coupées, conservation de l’heure, détails, clavier, footer et filtres. Scénarios complémentaires : critique rouge, risques faibles sans bandeau, zéro alerte avec cinq états encore consultables. Preuve : `evidence/weather-ios-refined-2026-10-25.json`. **Maquette uniquement : aucun changement du bundle ou de l’instance HA**. La source et la distribution installées restent `0.3.1-rc.2` ; la recette native iPhone reste distincte.
+
+## Révision lisibilité — référence précédente
 
 La première maquette a été jugée trop dense : températures, courbe, cumuls, probabilités, vent, rafales et cinq risques se superposaient dans le même espace. La proposition courante est désormais `examples/weather-ios-readable.fragment.html`. La première reste une référence historique, pas un design accepté.
 
