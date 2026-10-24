@@ -1,5 +1,15 @@
 # État courant — 24 octobre 2026
 
+## Défilement météo `0.3.1-rc.2` et maquette iOS
+
+L’utilisateur juge le nouveau décor satisfaisant, puis signale un défilement vertical bloqué sur la carte. Le banc tactile reproduit le défaut sur le candidat précédent : un geste vertical de 100 px laisse la page à 750 px. Cause vérifiée dans le code : `touch-action: pan-x` sur trois rails, capture des pointeurs tactiles par le drag personnalisé et conversion de la molette verticale en défilement horizontal.
+
+Le correctif rend le défilement tactile au navigateur, autorise les deux axes et le zoom, conserve le glisser à la souris et libère l’état d’interaction sur `touchcancel`. Les tests avec entrées tactiles CDP vérifient les deux sens verticaux sur le graphique et le footer, les boutons de risques en en-tête, le swipe horizontal, la molette et l’annulation du toucher, sur source et distribution. Les contrôles de rendu, atmosphère et éditeur restent actifs. Cette preuve Chromium ne constitue pas une recette Safari/iPhone.
+
+La proposition visuelle `examples/weather-ios-fine.fragment.html` est indépendante du bundle : typographie plus légère, courbe fine, précipitations, probabilités, vent orienté et rafales, repères solaires, alertes cliquables et détails simulés. Vérifiée à 320, 390 et 736 px, en clair et sombre. Aucune modification des options ou de la disposition du dashboard réel pour cette maquette. Voir `docs/WEATHER-IOS-PREVIEW.md` et `evidence/weather-scroll-ios-2026-10-24.json` pour le statut de déploiement et les limites.
+
+**Correctif seul installé et relu identique** : module de 155 264 octets, SHA256 `7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6`. La ressource météo existante pointe sur le nouveau fichier candidat versionné ; elle reste unique. Les autres ressources et leur ordre sont identiques, le hash du dashboard est inchangé. Pas de redémarrage, pas de publication HACS, pas de bascule de la maquette. Chargement et geste natif à confirmer après rechargement de l’application utilisateur.
+
 ## Atmosphère météo `0.3.1-rc.1`
 
 La source maintenue et le module autonome remplacent les barres de pluie par des gouttes, impacts, reflets et nuages procéduraux. Base `0a46049e784f4cf8a1484272e8474d0b20a872a6` ; branche `feat/weather-atmosphere-20261024`. Le fichier météo observé dans HA avant intervention correspond exactement au module historique de 142 577 octets, SHA256 `f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`. HACS annonce désormais le package `v0.3.0-rc.1` installé ; la météo reste sur son asset `0.2.0-rc.1`. Cette observation actualise uniquement l’état utile au lot météo.

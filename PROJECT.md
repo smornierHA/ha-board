@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Incrément gestes et maquette météo — 24 octobre 2026
+
+Dépôt public et droits push/admin reconfirmés. La branche `feat/weather-atmosphere-20261024` et la PR draft #19 accueillent le correctif de défilement `0.3.1-rc.2`, puis une maquette iOS distincte du composant installé. Seuls du code et des données fictives sont versionnés ; aucun export HA réel ni capture privée. La production conserve son interface existante ; la nouvelle disposition reste une proposition à examiner.
+
 ## Incrément atmosphère météo — 24 octobre 2026
 
 Dépôt `smornierHA/ha-board` confirmé public, avec droits d’écriture. Cette visibilité reste adaptée au code frontend et aux exemples fictifs. Configuration domestique, noms/entités réels, URLs internes et captures de l’instance restent exclus du dépôt. Base locale `0a46049e784f4cf8a1484272e8474d0b20a872a6`, branche `feat/weather-atmosphere-20261024` ; seul le composant météo évolue. Les sources `src/` d’import restent intactes. Le détail testé/déployé est maintenu dans STATUS et dans la preuve de cet incrément.

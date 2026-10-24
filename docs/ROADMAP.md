@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Défilement et proposition iOS — 24 octobre 2026
+
+Corriger le blocage vertical du composant météo sans modifier ses options ni son rendu courant. Le candidat `0.3.1-rc.2` prolonge l’atmosphère de #19. La maquette iOS fine est proposée séparément ; son éventuelle intégration reprendra les mêmes données, seuils, unités, actions et options de l’éditeur. Une approbation de la maquette et une recette native restent distinctes du correctif de geste.
+
 ## Incrément actif — atmosphère météo, 24 octobre 2026
 
 Demande utilisateur : pluie fine avec gouttes, rebonds, nuages et reflets. Le candidat `0.3.1-rc.1` remplace uniquement les décors météo, conserve Personnes/Garage, et fait l’objet d’une vérification navigateur sur données fictives puis d’une installation candidate ciblée. Le compteur de recette native reste séparé de ces contrôles : publication HACS et acceptation iPhone ne sont pas déduites de l’écriture des fichiers. Les lots historiques ci-dessous ne sont pas relancés.

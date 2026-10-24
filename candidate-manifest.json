@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "weather-atmosphere-candidate-installed-not-published",
+  "status": "weather-scroll-candidate-installed-with-separate-ios-mockup-not-published",
   "base_commit": "0a46049e784f4cf8a1484272e8474d0b20a872a6",
   "reference_release": {
     "version": "0.2.0-rc.1",
@@ -32,9 +32,9 @@
     },
     {
       "path": "src/candidate/weather-combined-forecast-card.js",
-      "bytes": 156267,
-      "sha256": "3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7",
-      "version": "0.3.1-rc.1"
+      "bytes": 155264,
+      "sha256": "7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6",
+      "version": "0.3.1-rc.2"
     },
     {
       "path": "src/candidate/garage-control-card.js",

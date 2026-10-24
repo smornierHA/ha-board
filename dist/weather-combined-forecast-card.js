@@ -1,4 +1,4 @@
-/* HA-BOARD weather atmosphere candidate 0.3.1-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
+/* HA-BOARD weather atmosphere candidate 0.3.1-rc.2; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
  * Modified from the private project source: lifecycle, editor, validation and packaging changes.
  * Home Assistant frontend weather icon paths are provided under Apache-2.0; notice distributed alongside this file.
  */
@@ -2650,42 +2650,8 @@ class WeatherCombinedForecastCard extends HTMLElement {
       if (!container || container.dataset.riskBound === "true") return;
       container.dataset.riskBound = "true";
 
-      let startX = 0;
-      let startY = 0;
-      let horizontal = false;
-
-      container.addEventListener("touchstart", (event) => {
-        const t = event.touches?.[0];
-        if (!t) return;
-        startX = t.clientX;
-        startY = t.clientY;
-        horizontal = false;
-        event.stopPropagation();
-      }, { passive: true });
-
-      container.addEventListener("touchmove", (event) => {
-        const t = event.touches?.[0];
-        if (!t) return;
-        const dx = Math.abs(t.clientX - startX);
-        const dy = Math.abs(t.clientY - startY);
-        if (dx > 4 && dx > dy) {
-          horizontal = true;
-          event.stopPropagation();
-        }
-      }, { passive: true });
-
-      container.addEventListener("touchend", (event) => {
-        if (horizontal) event.stopPropagation();
-        horizontal = false;
-      }, { passive: true });
-
-      container.addEventListener("wheel", (event) => {
-        if (Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
-          container.scrollLeft += event.deltaY;
-          event.preventDefault();
-          event.stopPropagation();
-        }
-      }, { passive: false });
+      // Native overflow chooses the gesture axis. Vertical touches and wheel
+      // input must remain available to the enclosing dashboard (also on iOS).
 
       container.querySelectorAll("[data-more-info]").forEach((el) => {
         const open = () => this._openMoreInfo(el.dataset.moreInfo);
@@ -2826,14 +2792,6 @@ class WeatherCombinedForecastCard extends HTMLElement {
 
     rail.addEventListener("scroll", () => { this._scrollLeft = rail.scrollLeft; }, { passive: true });
 
-    rail.addEventListener("wheel", (event) => {
-      if (!event.shiftKey && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-        rail.scrollLeft += event.deltaY;
-        this._scrollLeft = rail.scrollLeft;
-        event.preventDefault();
-      }
-    }, { passive: false });
-
     rail.addEventListener("touchstart", () => {
       this._isInteracting = true;
       this._scrollLeft = rail.scrollLeft;
@@ -2843,7 +2801,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
       this._scrollLeft = rail.scrollLeft;
     }, { passive: true });
 
-    rail.addEventListener("touchend", () => {
+    const finishTouch = () => {
       this._scrollLeft = rail.scrollLeft;
       this._queueTimeout(() => {
         this._isInteracting = false;
@@ -2852,10 +2810,14 @@ class WeatherCombinedForecastCard extends HTMLElement {
           this.renderCard(true);
         }
       }, 180);
-    }, { passive: true });
+    };
+    rail.addEventListener("touchend", finishTouch, { passive: true });
+    rail.addEventListener("touchcancel", finishTouch, { passive: true });
 
     rail.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
+      // Touch/pen are handled by native scrolling, including momentum and
+      // cancellation. Pointer capture here is only for desktop mouse dragging.
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
       this._isInteracting = true;
       this._dragState = { pointerId: event.pointerId, startX: event.clientX, startScrollLeft: rail.scrollLeft, moved: false };
       rail.setPointerCapture?.(event.pointerId);
@@ -3089,7 +3051,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
         -ms-overflow-style: none;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-x: contain;
-        touch-action: pan-x;
+        touch-action: auto;
         padding: 0 0 1px;
       }
       .risk-pills-slider::-webkit-scrollbar, .header-risk-subbuttons::-webkit-scrollbar { display: none; }
@@ -3173,7 +3135,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
         -ms-overflow-style: none;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-x: contain;
-        touch-action: pan-x;
+        touch-action: auto;
         padding: 0;
       }
       .risk-sub-button {
@@ -3224,7 +3186,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
         padding: 1px 1px 3px;
         scrollbar-width: none;
         overscroll-behavior-x: contain;
-        touch-action: pan-x;
+        touch-action: auto;
         cursor: grab;
         user-select: none;
         -webkit-overflow-scrolling: touch;

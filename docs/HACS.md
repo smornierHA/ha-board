@@ -103,6 +103,8 @@ Le 9 septembre, la méthode `get_documentation` du HACS installé a confirmé la
 Origine de ce contrôle : [retour de recette du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Cette règle locale de livraison n’ajoute aucun audit global ni dépendance à une nouvelle version du playbook.
 # Installation candidate atmosphère météo — 0.3.1-rc.1
 
+**Mise à jour ciblée `0.3.1-rc.2` :** même procédure avec un nouveau fichier `www/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js` et l’URL `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js?v=0.3.1-rc.2`, en réutilisant la ressource météo existante. La maquette iOS n’est pas dans le bundle et n’est pas activée par cette mise à jour. Le candidat précédent reste disponible pour revenir au décor accepté avant le correctif de geste, sans toucher aux autres composants. Aucun redémarrage HA.
+
 Cet incrément peut être essayé indépendamment d’une publication HACS. Construire et tester l’arbre candidat ; conserver le module météo distribué par `v0.3.0-rc.1` comme référence de retour arrière. Placer les octets vérifiés du nouveau `dist/weather-combined-forecast-card.js` dans `www/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js`.
 
 Relire les ressources et modifier **par son identifiant existant** la seule ressource météo vers `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js?v=0.3.1-rc.1`. Ne pas ajouter une deuxième ressource définissant le même composant. Personnes reste la première ressource du namespace HACS ; les autres URLs et leur ordre sont conservés. Aucune modification des entités, alertes ou options de la carte n’est requise.

@@ -83,7 +83,29 @@ try{
   await evaluate('twin.remove()');
   assert.equal(await evaluate('twin._atmosphere'),null);
   assert.equal(await evaluate('Boolean(demo.card._atmosphere.host?.isConnected)'),true);
-  proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light'],atmosphere,reduced_motion:true,offscreen_pause:true,canvas_cleanup:true,separate_instances:true});
+  // Real trusted touch input, rather than synthetic DOM events: a horizontal
+  // forecast must not trap the vertical page gesture, in either direction.
+  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
+  await evaluate(`(()=>{demo.card.setConfig({...demo.card.config,risk_display_mode:'footer'});const top=document.createElement('div');top.id='gesture-top';top.style.height='650px';document.body.prepend(top);const bottom=document.createElement('div');bottom.id='gesture-bottom';bottom.style.height='1800px';document.body.append(bottom);document.documentElement.style.scrollBehavior='auto';})()`);
+  const resetViewport=async()=>{await evaluate('window.scrollTo(0,document.querySelector("#gesture-top").getBoundingClientRect().height+100)');await evaluate('new Promise(r=>setTimeout(r,120))');};
+  const rect=selector=>evaluate(`(()=>{const r=demo.card.shadowRoot.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.left+Math.min(r.width*.5,180),y:r.top+r.height*.5}})()`);
+  const swipe=async(point,dx,dy)=>{
+   await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:point.x,y:point.y}]});
+   for(let n=1;n<=10;n++){await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:point.x+dx*n/10,y:point.y+dy*n/10}]});await new Promise(r=>setTimeout(r,25));}
+   await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await new Promise(r=>setTimeout(r,350));
+  };
+  const gestures=[];
+  for(const selector of ['.combined-scroll','.risk-pills-slider']){
+   for(const dy of [-100,100]){await resetViewport();const point=await rect(selector);const before=await evaluate('window.scrollY');await swipe(point,0,dy);const after=await evaluate('window.scrollY');assert.ok((before-after)*dy>30,`${source} ${selector} vertical ${dy} trapped: ${before} -> ${after}`);gestures.push({selector,dy,vertical_page_scroll:true});}
+  }
+  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const p=await rect('.combined-scroll'),beforeY=await evaluate('window.scrollY');await swipe(p,-130,0);assert.ok(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft > 50'),'native horizontal forecast swipe');assert.ok(Math.abs((await evaluate('window.scrollY'))-beforeY)<4,'horizontal swipe must leave page still');
+  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const wp=await rect('.combined-scroll'),wy=await evaluate('window.scrollY');await call('Input.dispatchMouseEvent',{type:'mouseWheel',x:wp.x,y:wp.y,deltaX:0,deltaY:120});await new Promise(r=>setTimeout(r,300));assert.ok((await evaluate('window.scrollY'))>wy+40,'vertical wheel must scroll page');assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft'),0,'vertical wheel must not move forecast');
+  await evaluate('demo.card.setConfig({...demo.card.config,risk_display_mode:"header_sub_buttons"})');await resetViewport();const hp=await rect('.header-risk-subbuttons'),hy=await evaluate('window.scrollY');await swipe(hp,0,100);assert.ok((await evaluate('window.scrollY'))<hy-30,'header risk buttons must allow vertical page scroll');
+  await resetViewport();const cp=await rect('.combined-scroll');await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:cp.x,y:cp.y}]});await call('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await waitFor('demo.card._isInteracting === false');
+  await evaluate('document.querySelector("#gesture-top").remove();document.querySelector("#gesture-bottom").remove();window.scrollTo(0,0)');
+  await call('Emulation.setTouchEmulationEnabled',{enabled:false});
+  proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light'],atmosphere,reduced_motion:true,offscreen_pause:true,canvas_cleanup:true,separate_instances:true,gestures,native_horizontal_swipe:true,vertical_wheel:true,header_risk_vertical_swipe:true,touch_cancel_recovers:true});
  }
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({chrome:execFileSync(chrome,['--version'],{encoding:'utf8'}).trim(),checks:proof,errors,ha_acceptance:false},null,2)+'\n');console.log(JSON.stringify(proof));
 }finally{

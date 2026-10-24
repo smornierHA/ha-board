@@ -1,4 +1,10 @@
-# HA-BOARD 0.3.1-rc.1
+# HA-BOARD 0.3.1-rc.2
+
+- Corrige le blocage des gestes verticaux sur les prévisions et les rails de risques : les gestes tactiles restent natifs, le glisser personnalisé ne concerne que la souris.
+- Rend la molette verticale à la page et gère aussi l’annulation d’un toucher ; le swipe horizontal et la conservation de sa position restent disponibles.
+- Ajoute une maquette iOS fine sur données fictives, indépendante de la présentation installée. Aucun changement des options ou actions du dashboard.
+
+## Atmosphère conservée de 0.3.1-rc.1
 
 - Remplace le motif de pluie en barres par des gouttes individuelles de profondeur et vitesse variables, légèrement inclinées par le vent.
 - Ajoute de petits rebonds balistiques, des ondulations qui s’effacent et des reflets diffus dans le bas de la carte.

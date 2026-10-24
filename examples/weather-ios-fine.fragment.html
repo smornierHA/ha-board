@@ -1,0 +1,150 @@
+<div id="weather-ios-fine" class="viz-dotted-background">
+  <style>
+    #weather-ios-fine { --wf-ink: light-dark(#213747,#edf3fa); --wf-muted: light-dark(#4c6576,#b8c7d6); --wf-surface: light-dark(#e5edf3,#1b2b3d); --wf-line: light-dark(#496b8a,#d1e5f5); --wf-hairline: light-dark(#24445b20,#e0efff21); --wf-glass: light-dark(#ffffff5c,#e2efff0b); --wf-rain: light-dark(#1473ac,#84c9f0); --wf-warm: light-dark(#bb8431,#e5bd7d); --wf-ok: light-dark(#357566,#8dbfb0); --wf-sheet: light-dark(#eff4f8,#243448); color:var(--wf-ink); padding:52px 12px 28px; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif; }
+    #weather-ios-fine * { box-sizing:border-box; }
+    #weather-ios-fine button { font:inherit; color:inherit; -webkit-tap-highlight-color:transparent; }
+    #weather-ios-fine .wf-shell { position:relative; max-width:712px; margin:0 auto; }
+    #weather-ios-fine .wf-weather { position:relative; isolation:isolate; overflow:hidden; border-radius:27px; background:var(--wf-surface); box-shadow:0 12px 40px light-dark(#17334e14,#00000022),inset 0 1px 0 light-dark(#ffffff9c,#ecf5ff25); }
+    #weather-ios-fine .wf-weather::before { content:""; position:absolute; z-index:-1; inset:0; background:radial-gradient(ellipse at 20% -10%,light-dark(#ffffff9c,#bccdd727),transparent 65%),linear-gradient(150deg,light-dark(#c9dbe8,#283e53),transparent 72%); }
+    #weather-ios-fine .wf-sky { position:absolute; z-index:-1; inset:0; width:100%; height:100%; pointer-events:none; opacity:.54; }
+    #weather-ios-fine .wf-head { display:flex; align-items:center; gap:12px; width:100%; background:none; border:0; text-align:left; padding:15px 20px 10px; min-height:68px; }
+    #weather-ios-fine .wf-current-icon { flex:0 0 34px; color:var(--wf-line); }
+    #weather-ios-fine .wf-current-icon svg { width:34px; height:34px; stroke-width:1.25; }
+    #weather-ios-fine .wf-head-copy { flex:1; min-width:0; }
+    #weather-ios-fine .wf-title { display:block; font-size:12px; letter-spacing:.025em; color:var(--wf-muted); font-weight:500; }
+    #weather-ios-fine .wf-condition { display:block; font-size:17px; letter-spacing:-.04em; line-height:1.4; font-weight:400; }
+    #weather-ios-fine .wf-current { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+    #weather-ios-fine .wf-degrees { font-size:38px; font-weight:400; letter-spacing:-.075em; line-height:1; }
+    #weather-ios-fine .wf-range { display:grid; gap:5px; font-size:11px; color:var(--wf-muted); font-variant-numeric:tabular-nums; }
+    #weather-ios-fine .wf-range-track { width:52px; height:3px; position:relative; border-radius:3px; background:linear-gradient(90deg,#81a5c1,#c6a975); }
+    #weather-ios-fine .wf-range-track::after { content:""; position:absolute; left:62%; top:-1px; width:5px; height:5px; border-radius:50%; background:var(--wf-ink); }
+    #weather-ios-fine .wf-chevron { color:var(--wf-muted); width:14px; height:14px; }
+    #weather-ios-fine .wf-section-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 18px; padding:8px 0 6px; border-top:1px solid var(--wf-hairline); font-size:11px; color:var(--wf-muted); }
+    #weather-ios-fine .wf-section-top span { display:flex; align-items:center; gap:5px; }
+    #weather-ios-fine .wf-section-top svg { width:12px; height:12px; stroke-width:1.5; }
+    #weather-ios-fine .wf-step { min-width:30px; min-height:30px; margin:-6px -4px; padding:6px; border:0; background:transparent; display:grid; place-items:center; }
+    #weather-ios-fine .wf-step svg { width:16px; height:16px; }
+    #weather-ios-fine .wf-rail { overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; touch-action:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-behavior:smooth; padding:0 12px; }
+    #weather-ios-fine .wf-rail::-webkit-scrollbar { display:none; }
+    #weather-ios-fine .wf-track { display:grid; width:max-content; grid-auto-flow:column; grid-auto-columns:57px; position:relative; }
+    #weather-ios-fine .wf-hour { position:relative; display:grid; grid-template-rows:21px 23px 44px 29px 40px; align-items:center; justify-items:center; font-size:12px; font-variant-numeric:tabular-nums; padding-bottom:2px; }
+    #weather-ios-fine .wf-hour.wf-now::before { content:""; position:absolute; inset:0 3px 3px; border-radius:14px; background:var(--wf-glass); z-index:-1; }
+    #weather-ios-fine .wf-hour-label { font-size:11px; color:var(--wf-muted); }
+    #weather-ios-fine .wf-now .wf-hour-label { color:var(--wf-ink); font-weight:500; }
+    #weather-ios-fine .wf-hour-icon { width:21px; height:21px; color:var(--wf-muted); stroke-width:1.25; }
+    #weather-ios-fine .wf-solar .wf-hour-icon { color:var(--wf-warm); }
+    #weather-ios-fine .wf-plot { position:absolute; pointer-events:none; left:0; top:44px; width:100%; height:44px; overflow:visible; }
+    #weather-ios-fine .wf-temp { transform:translateY(var(--wf-y)); align-self:start; font-weight:500; line-height:1; }
+    #weather-ios-fine .wf-rain-data { position:relative; display:grid; gap:2px; text-align:center; align-self:end; padding-bottom:5px; color:var(--wf-rain); font-size:11px; line-height:1.05; }
+    #weather-ios-fine .wf-rain-data .wf-prob { color:var(--wf-muted); font-size:11px; }
+    #weather-ios-fine .wf-wind { align-self:stretch; width:100%; display:grid; justify-items:center; align-content:center; gap:4px; border-top:1px solid var(--wf-hairline); font-size:11px; line-height:1; }
+    #weather-ios-fine .wf-wind-main { display:flex; align-items:center; gap:3px; }
+    #weather-ios-fine .wf-wind-main svg { width:13px; height:13px; stroke-width:1.3; transform:rotate(var(--wf-bearing)); }
+    #weather-ios-fine .wf-gust { color:var(--wf-muted); font-size:11px; }
+    #weather-ios-fine .wf-gust.wf-near { color:var(--wf-warm); }
+    #weather-ios-fine .wf-next-day::after { content:""; position:absolute; left:0; top:4px; bottom:9px; width:1px; background:var(--wf-hairline); }
+    #weather-ios-fine .wf-footer { display:flex; gap:6px; overflow-x:auto; overflow-y:hidden; touch-action:auto; overscroll-behavior-x:contain; scrollbar-width:none; padding:9px 18px 14px; }
+    #weather-ios-fine .wf-footer::-webkit-scrollbar { display:none; }
+    #weather-ios-fine .wf-risk { display:flex; align-items:center; gap:7px; flex:1 0 auto; min-width:103px; min-height:40px; background:var(--wf-glass); border:0; border-radius:13px; padding:6px 9px; text-align:left; }
+    #weather-ios-fine .wf-risk svg { flex-shrink:0; width:17px; height:17px; stroke-width:1.4; color:var(--wf-muted); }
+    #weather-ios-fine .wf-risk.wf-caution svg { color:var(--wf-warm); }
+    #weather-ios-fine .wf-risk-copy { display:grid; gap:3px; font-size:11px; line-height:1.15; }
+    #weather-ios-fine .wf-risk-copy strong { font-weight:500; }
+    #weather-ios-fine .wf-risk-copy small { font-size:11px; color:var(--wf-muted); white-space:nowrap; }
+    #weather-ios-fine .wf-more { margin:0; border:0; padding:9px 13px; border-radius:12px; background:var(--wf-glass); min-height:44px; }
+    #weather-ios-fine .wf-dialog { position:absolute; z-index:5; inset:10px; border-radius:22px; padding:18px; background:var(--wf-sheet); box-shadow:0 12px 32px light-dark(#22384c30,#00000055); overflow-y:auto; color:var(--wf-ink); }
+    #weather-ios-fine .wf-dialog[hidden] { display:none; }
+    #weather-ios-fine .wf-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    #weather-ios-fine .wf-dialog h3 { font-size:17px; font-weight:500; margin:0; }
+    #weather-ios-fine .wf-close { border:0; background:var(--wf-glass); width:44px; height:44px; display:grid; place-items:center; border-radius:50%; }
+    #weather-ios-fine .wf-close svg { width:18px; height:18px; }
+    #weather-ios-fine .wf-detail-list { margin:12px 0 0; display:grid; }
+    #weather-ios-fine .wf-detail-list div { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--wf-hairline); font-size:13px; }
+    #weather-ios-fine .wf-detail-list dt { color:var(--wf-muted); }
+    #weather-ios-fine .wf-detail-list dd { margin:0; text-align:right; }
+    #weather-ios-fine .wf-status { min-height:18px; margin:10px 6px 0; text-align:center; font-size:11px; color:var(--wf-muted); }
+    @media(max-width:440px) { #weather-ios-fine { padding-left:4px; padding-right:4px; } #weather-ios-fine .wf-head { padding:15px 15px 11px; gap:9px; } #weather-ios-fine .wf-current { gap:7px; } #weather-ios-fine .wf-degrees { font-size:34px; } #weather-ios-fine .wf-current-icon { flex-basis:29px; } #weather-ios-fine .wf-current-icon svg { width:29px; height:29px; } #weather-ios-fine .wf-range-track { width:40px; } #weather-ios-fine .wf-condition { font-size:15px; } #weather-ios-fine .wf-title { font-size:11px; } #weather-ios-fine .wf-footer { padding-left:15px; padding-right:15px; } #weather-ios-fine .wf-section-top { margin:0 15px; } }
+    @media(pointer:coarse) { #weather-ios-fine .wf-step { min-width:44px; min-height:44px; margin-top:-13px; margin-bottom:-13px; } #weather-ios-fine .wf-risk { min-height:44px; } }
+    @media(prefers-reduced-motion:reduce) { #weather-ios-fine .wf-rail { scroll-behavior:auto; } }
+  </style>
+  <div class="wf-shell">
+    <article class="wf-weather" aria-label="Maquette météo avec données fictives">
+      <canvas class="wf-sky" aria-hidden="true"></canvas>
+      <button type="button" class="wf-head cursor-interaction" aria-label="Ouvrir la vue météo détaillée">
+        <span class="wf-current-icon"><i data-lucide="cloud-drizzle" aria-hidden="true"></i></span>
+        <span class="wf-head-copy"><span class="wf-title">PRÉVISIONS MÉTÉO</span><span class="wf-condition">Pluie légère</span></span>
+        <span class="wf-current"><span class="wf-degrees">14°</span><span class="wf-range"><span>9° · 17°</span><span class="wf-range-track"></span></span></span>
+        <i class="wf-chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
+      <div class="wf-section-top"><span><i data-lucide="clock-3" aria-hidden="true"></i>24 prochaines heures</span><span>°C · mm · km/h <button class="wf-step cursor-interaction" type="button" aria-label="Voir les heures suivantes"><i data-lucide="chevron-right" aria-hidden="true"></i></button></span></div>
+      <div class="wf-rail" role="region" aria-label="Prévisions horaires, pluie et vent">
+        <div class="wf-track"></div>
+      </div>
+      <div class="wf-footer" role="group" aria-label="Risques météo et maison">
+        <button class="wf-risk wf-caution cursor-interaction" type="button" data-risk="vigilance"><i data-lucide="triangle-alert" aria-hidden="true"></i><span class="wf-risk-copy"><strong>Vigilance jaune</strong><small>Vent violent</small></span></button>
+        <button class="wf-risk cursor-interaction" type="button" data-risk="inondation"><i data-lucide="waves" aria-hidden="true"></i><span class="wf-risk-copy"><strong>Inondation</strong><small>Aucune détection</small></span></button>
+        <button class="wf-risk wf-caution cursor-interaction" type="button" data-risk="portail"><i data-lucide="wind" aria-hidden="true"></i><span class="wf-risk-copy"><strong>Portail</strong><small>Rafales · 42 km/h</small></span></button>
+        <button class="wf-risk cursor-interaction" type="button" data-risk="pluie"><i data-lucide="droplets" aria-hidden="true"></i><span class="wf-risk-copy"><strong>Pluie</strong><small>2,8 mm aujourd’hui</small></span></button>
+        <button class="wf-risk cursor-interaction" type="button" data-risk="volets"><i data-lucide="blinds" aria-hidden="true"></i><span class="wf-risk-copy"><strong>Volets</strong><small>Risque faible</small></span></button>
+      </div>
+    </article>
+    <section class="wf-dialog" role="dialog" aria-modal="true" aria-labelledby="wf-detail-title" hidden>
+      <div class="wf-dialog-head"><h3 id="wf-detail-title">Détail météo</h3><button class="wf-close cursor-interaction" type="button" aria-label="Fermer le détail"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <dl class="wf-detail-list"></dl>
+    </section>
+    <p class="wf-status" aria-live="polite">Maquette interactive · données fictives</p>
+  </div>
+  <script>
+    (() => {
+      const root=document.getElementById('weather-ios-fine'), q=s=>root.querySelector(s);
+      const temps=[14,14,15,16,17,17,16,15,14,13,12,11,10,10,9,9,9,10,11,12,13,14,15,15,14];
+      const rain=[.2,.4,.8,.4,.2,0,0,0,0,0,0,0,0,.1,.2,.2,.1,0,0,0,0,0,0,0,0];
+      const probability=[65,75,85,70,45,20,10,10,5,5,5,10,15,30,45,40,25,20,10,10,10,10,15,15,20];
+      const track=q('.wf-track'), width=57, total=temps.length*width;
+      const points=temps.map((t,i)=>[i*width+width/2,16+(17-t)*2.5]);
+      const path=points.map((p,i)=>i?`C ${points[i-1][0]+19} ${points[i-1][1]}, ${p[0]-19} ${p[1]}, ${p[0]} ${p[1]}`:`M ${p[0]} ${p[1]}`).join(' ');
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('wf-plot');svg.setAttribute('viewBox',`0 0 ${total} 49`);svg.setAttribute('role','img');svg.setAttribute('aria-label','Température, de 9 à 17 degrés sur 24 heures');
+      svg.innerHTML=`<defs><linearGradient id="wf-temperature-wash" x1="0" y1="0" x2="0" y2="1"><stop stop-color="var(--wf-line)" stop-opacity=".1"/><stop offset="1" stop-color="var(--wf-line)" stop-opacity="0"/></linearGradient></defs><path d="${path} L ${points.at(-1)[0]} 49 L ${points[0][0]} 49 Z" fill="url(#wf-temperature-wash)"/><path d="${path}" fill="none" stroke="var(--wf-line)" stroke-width="1.15" stroke-linecap="round"/>`;
+      for(let i=0;i<rain.length;i++)if(rain[i]){const bar=document.createElementNS(svg.namespaceURI,'rect'),height=rain[i]/.8*15;bar.setAttribute('x',i*width+width/2-9);bar.setAttribute('y',49-height);bar.setAttribute('width',18);bar.setAttribute('height',height);bar.setAttribute('rx',3);bar.setAttribute('fill','var(--wf-rain)');bar.setAttribute('opacity','.13');svg.insertBefore(bar,svg.lastElementChild);}
+      track.append(svg);
+      for(let i=0;i<temps.length;i++) {
+        const hour=(13+i)%24, sunset=i===6, sunrise=i===19, solar=sunset||sunrise;
+        const cell=document.createElement('div');cell.className='wf-hour'+(i===0?' wf-now':'')+(hour===0?' wf-next-day':'')+(solar?' wf-solar':'');
+        const condition=solar?(sunset?'sunset':'sunrise'):rain[i]?'cloud-drizzle':i>7&&i<18?'cloud-moon':i>3?'cloud-sun':'cloud-rain';
+        const wind=Math.round(16+8*Math.sin(i/3)),gust=Math.round(wind*1.6),bearing=28+i*11;
+        const label=i===0?'Maint.':hour===0?'Dem.':solar?(sunset?'19:14':'08:21'):`${String(hour).padStart(2,'0')} h`;
+        cell.innerHTML=`<span class="wf-hour-label">${label}</span><i class="wf-hour-icon" data-lucide="${condition}" aria-hidden="true"></i><span class="wf-temp" style="--wf-y:${points[i][1]-13}px">${temps[i]}°</span><span class="wf-rain-data"><span>${rain[i]?rain[i].toFixed(1).replace('.',','):'—'}</span><span class="wf-prob">${probability[i]} %</span></span><span class="wf-wind"><span class="wf-wind-main"><i data-lucide="move-up" style="--wf-bearing:${bearing}deg" aria-hidden="true"></i>${wind}</span><span class="wf-gust ${gust>=35?'wf-near':''}">R ${gust}</span></span>`;
+        cell.setAttribute('aria-label',`${i===0?'Maintenant':solar?(sunset?'Coucher du soleil à 19 h 14':'Lever du soleil à 8 h 21'):`${hour} heures`}, ${temps[i]} degrés, pluie ${rain[i]} millimètres, probabilité ${probability[i]} pour cent, vent ${wind}, rafales ${gust} kilomètres par heure, direction relative à la maison`);
+        track.append(cell);
+      }
+      if(globalThis.lucide) lucide.createIcons({attrs:{'stroke-width':1.4}});
+      const rail=q('.wf-rail'), step=q('.wf-step');
+      step.addEventListener('click',()=>rail.scrollTo({left:rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-5?0:rail.scrollLeft+Math.floor(rail.clientWidth/57)*57,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+      rail.addEventListener('scroll',()=>{const end=rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-5;step.setAttribute('aria-label',end?'Revenir à maintenant':'Voir les heures suivantes');q('.wf-status').textContent=rail.scrollLeft>5?'Prévisions horaires · données fictives':'Maquette interactive · données fictives';},{passive:true});
+      const details={
+        weather:['Météo détaillée',[['Actuellement','14 °C · pluie légère'],['Minimum / maximum','9 °C / 17 °C'],['Vent','16 km/h · rafales 26 km/h'],['Pluie aujourd’hui','2,8 mm'],['Coucher / lever du soleil','19:14 / 08:21'],['Direction du vent','Relative à la maison'],['Prévisions','24 h · pluie, probabilités, vent et rafales']]],
+        vigilance:['Vigilance jaune',[['Phénomène','Vent violent'],['Niveau','Jaune'],['Période','Cet après-midi']]],
+        inondation:['Inondation',[['Détection','Aucune fuite'],['État','Normal']]],
+        portail:['Risque pour le portail',[['Niveau','Modéré'],['Rafales prévues','42 km/h'],['Seuil moyen / fort','35 / 45 km/h'],['Orientation','Référence maison']]],
+        pluie:['Pluie',[['Cumul du jour','2,8 mm'],['Prochaine heure','0,2 mm · 65 %'],['Intensité','Faible']]],
+        volets:['Risque pour les volets',[['Niveau','Faible'],['Vent / température','Dans les seuils configurés']]]
+      };
+      const dialog=q('.wf-dialog');let opener=null;
+      function close(){dialog.hidden=true;q('.wf-weather').inert=false;opener?.focus();}
+      function open(id,button){opener=button;const [title,rows]=details[id];q('#wf-detail-title').textContent=title;const dl=q('.wf-detail-list');dl.replaceChildren();for(const [key,value] of rows){const div=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=key;dd.textContent=value;div.append(dt,dd);dl.append(div);}q('.wf-weather').inert=true;dialog.hidden=false;q('.wf-close').focus();}
+      q('.wf-head').addEventListener('click',e=>open('weather',e.currentTarget));root.querySelectorAll('[data-risk]').forEach(button=>button.addEventListener('click',()=>open(button.dataset.risk,button)));q('.wf-close').addEventListener('click',close);dialog.addEventListener('keydown',e=>{if(e.key==='Escape')close();if(e.key==='Tab'){e.preventDefault();q('.wf-close').focus();}});
+      const canvas=q('.wf-sky'),ctx=canvas.getContext('2d');
+      if(ctx){let w=0,h=0,frame=0,last=0,time=0,visible=true;const motion=matchMedia('(prefers-reduced-motion: reduce)'),drops=Array.from({length:32},()=>({x:Math.random(),y:Math.random(),speed:.25+Math.random()*.6,size:.5+Math.random()}));
+        function paint(delta){time+=delta;ctx.clearRect(0,0,w,h);const dark=matchMedia('(prefers-color-scheme: dark)').matches;
+          for(let i=0;i<4;i++){const x=((i*.35+time*.003)%1.5-.25)*w,y=h*(.05+i*.045),radius=w*(.33+i*.03);const cloud=ctx.createRadialGradient(x,y,0,x,y,radius);cloud.addColorStop(0,dark?'rgba(194,211,222,.08)':'rgba(255,255,255,.27)');cloud.addColorStop(1,'rgba(220,234,246,0)');ctx.fillStyle=cloud;ctx.fillRect(0,0,w,h);}
+          const reflection=ctx.createRadialGradient(w*.65,h*1.08,0,w*.65,h*1.08,w*.6);reflection.addColorStop(0,dark?'rgba(176,213,232,.11)':'rgba(255,255,255,.25)');reflection.addColorStop(1,'rgba(220,234,246,0)');ctx.fillStyle=reflection;ctx.fillRect(0,0,w,h);
+          for(const d of drops){d.y+=delta*d.speed;const x=d.x*w-d.y*8,y=d.y*h;ctx.strokeStyle=dark?'rgba(217,237,250,.25)':'rgba(68,114,147,.16)';ctx.lineWidth=.4*d.size;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-1,y+3*d.size);ctx.stroke();if(d.y>1){const a=(d.y-1)*10;if(a<1){ctx.strokeStyle=`rgba(${dark?'217,237,250':'68,114,147'},${(1-a)*.16})`;ctx.beginPath();ctx.ellipse(d.x*w,h-3,1+a*6,.3+a*1.4,0,0,Math.PI*2);ctx.stroke();}else{d.y=-.03;d.x=Math.random();}}}
+        }
+        function loop(stamp){frame=0;if(motion.matches||!visible||document.hidden)return;if(stamp-last>40){paint(last?Math.min((stamp-last)/1000,.06):0);last=stamp;}frame=requestAnimationFrame(loop);}
+        function sync(){cancelAnimationFrame(frame);frame=0;last=0;paint(0);if(!motion.matches&&visible&&!document.hidden)frame=requestAnimationFrame(loop);}
+        new ResizeObserver(()=>{const r=canvas.getBoundingClientRect();w=r.width;h=r.height;canvas.width=Math.round(w*1.5);canvas.height=Math.round(h*1.5);ctx.setTransform(1.5,0,0,1.5,0,0);sync();}).observe(canvas);
+        new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}).observe(canvas);motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+      }
+    })();
+  </script>
+</div>

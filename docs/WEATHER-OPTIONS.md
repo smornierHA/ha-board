@@ -83,7 +83,7 @@ Types et valeurs par défaut du candidat public. Les identifiants `example` sont
 | `weather_background_opacity` | number | `0.58` |
 | `weather_background_speed` | number | `0.9` |
 | `empty_label` | string | `"Aucune prévision disponible"` |
-# Fond atmosphérique — candidat 0.3.1-rc.1
+# Fond atmosphérique — candidat 0.3.1-rc.2
 
 Les types YAML et les options existantes restent compatibles. `weather_background_opacity` règle la discrétion du décor (défaut 0,58) ; `weather_background_speed` règle la vitesse, plafonnée entre 0 et 2 (défaut 0,9). Une vitesse à zéro conserve un décor fixe. L’éditeur visuel expose déjà ces deux options.
 
@@ -94,3 +94,5 @@ Nuages, brume, soleil, nuit et neige utilisent le même rendu procédural local,
 La scène est plafonnée à environ 30 images/s, 160 particules et un ratio de pixels de 1,5. Elle s’arrête hors écran, lorsque l’onglet est masqué, ou si le système demande de réduire les animations ; un fond statique reste visible. Les paramètres de réduction des animations du système ne sont jamais modifiés.
 
 ## Options de la carte
+
+Les prévisions et les rails de risques utilisent le défilement natif : un geste horizontal parcourt les heures/risques, un geste vertical déplace la page et le zoom reste disponible. La molette verticale n’est plus transformée en déplacement horizontal ; utiliser le trackpad horizontal, Maj + molette selon le navigateur, ou glisser à la souris. Aucune option de configuration supplémentaire n’est nécessaire. La maquette iOS reste distincte : `docs/WEATHER-IOS-PREVIEW.md`.

@@ -101,6 +101,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Complément défilement et maquette météo — 24 octobre 2026
+
+- Retour utilisateur : décor satisfaisant et nouveau défaut de geste vertical. Reproduction par entrée tactile Chromium sur fixture, sans appel à une entité ou commande réelle.
+- [MDN `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action), consulté le 24 octobre : gestion native des axes, calcul avec les ancêtres, zoom et annulation des événements pointeur. Diagnostic du blocage corroboré par le code et le test avant/après, sans attribuer tout le comportement de l’application iOS à Chromium.
+- Maquette originale inspirée des conventions visuelles iOS, sans artwork Apple. Icônes Lucide fournies par l’hôte de prévisualisation ; aucune dépendance ou icône ajoutée au bundle météo réel. Référence et limites : `docs/WEATHER-IOS-PREVIEW.md`.
+
 # Complément atmosphère météo — 24 octobre 2026
 
 - Dépôt HA-BOARD public et base `0a46049e784f4cf8a1484272e8474d0b20a872a6` vérifiés ; la source maintenue est `src/candidate/weather-combined-forecast-card.js`.

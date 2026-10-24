@@ -16,13 +16,13 @@
   },
   "candidate": {
     "path": "src/candidate/weather-combined-forecast-card.js",
-    "bytes": 156267,
-    "sha256": "3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7"
+    "bytes": 155264,
+    "sha256": "7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6"
   },
   "distribution": {
     "path": "dist/weather-combined-forecast-card.js",
-    "bytes": 156267,
-    "sha256": "3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7"
+    "bytes": 155264,
+    "sha256": "7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6"
   },
   "license_review": "verified",
   "license_findings": [
@@ -57,5 +57,13 @@
     "base_commit": "0a46049e784f4cf8a1484272e8474d0b20a872a6",
     "method": "Original procedural Canvas2D; no external artwork or runtime dependency",
     "ha_acceptance": "not-performed"
+  },
+  "scroll_revision": {
+    "version": "0.3.1-rc.2",
+    "date": "2026-10-24",
+    "cause": "pan-x on three horizontal rails; vertical wheel remapping; pointer capture also applied to touch",
+    "method": "Native touch/trackpad scrolling; mouse-only pointer dragging; touchcancel cleanup",
+    "user_feedback_previous_atmosphere": "Visually satisfactory; vertical gesture defect reported",
+    "native_ios_scroll_acceptance": "pending"
   }
 }

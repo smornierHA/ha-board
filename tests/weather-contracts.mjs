@@ -55,9 +55,10 @@ await test('original rendering and legacy metric labels preserved',()=>{
   vm.runInContext(fs.readFileSync('src/weather-combined-forecast-card.js','utf8'),baseline);
   const Original=originalRegistry.get('weather-combined-forecast-card');
   const c=card();const o=new Original();o.config=structuredClone(c.config);o._hass=c._hass;
-  // Atmosphere is intentionally replaced; keep every foreground/chart rule.
+  // Atmosphere is intentionally replaced; preserve all foreground/chart rules
+  // except the three rails' deliberate native gesture policy correction.
   const foreground='      .header, .combined-header, .combined-scroll, .empty';
-  assert.equal(c._styles().slice(c._styles().indexOf(foreground)),o._styles().slice(o._styles().indexOf(foreground)));
+  assert.equal(c._styles().slice(c._styles().indexOf(foreground)),o._styles().slice(o._styles().indexOf(foreground)).replaceAll("touch-action: pan-x;", "touch-action: auto;"));
   const entries=[c._normalizeForecastItem({datetime:'2026-01-02T01:00:00Z',temperature:0,precipitation:2,precipitation_probability:30,wind_speed:5,wind_gust_speed:0,wind_bearing:90,condition:'rainy'})];
   for(const method of ['_renderWindLayer','_renderRainInfo','_renderHeader'])assert.equal(c[method](entries),o[method](entries),method);
   c.config.precipitation_unit='cm';c.config.wind_unit='mph';
