@@ -39,7 +39,51 @@ try{
    const {data}=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,source+'-'+mode+'.png'),Buffer.from(data,'base64'));
   }
   await evaluate('document.querySelector("#mode").click()');assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll(".risk-sub-button").length >= 2'),true);
-  proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light']});
+  const atmosphere=[];
+  for(const [condition,night] of [['rainy',false],['pouring',true],['cloudy',false],['clear-night',true],['snowy',false],['fog',false],['sunny',false]]){
+   await evaluate(`(()=>{const h=demo.card._hass;demo.card.hass={...h,states:{...h.states,'weather.example':{...h.states['weather.example'],state:${JSON.stringify(condition)}},'sun.sun':{...h.states['sun.sun'],state:${JSON.stringify(night?'below_horizon':'above_horizon')}}}}})()`);
+   await waitFor('Boolean(demo.card.shadowRoot.querySelector("canvas.weather-atmosphere"))');
+   assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("canvas.weather-atmosphere").length'),1);
+   assert.equal(await evaluate('getComputedStyle(demo.card.shadowRoot.querySelector("canvas")).pointerEvents'),'none');
+   assert.equal(await evaluate('demo.card._atmosphere.options.night'),night);
+   assert.equal(await evaluate('demo.card._atmosphere._particles.length <= 160'),true);
+   if(condition==='rainy'){
+    await waitFor('demo.card._atmosphere._impacts.length > 0');
+    const first=await evaluate('demo.card.shadowRoot.querySelector("canvas").toDataURL()');
+    await evaluate('new Promise(r=>setTimeout(r,100))');
+    assert.notEqual(await evaluate('demo.card.shadowRoot.querySelector("canvas").toDataURL()'),first);
+    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+    await waitFor('demo.card._atmosphere._frame === null');
+    const still=await evaluate('demo.card.shadowRoot.querySelector("canvas").toDataURL()');
+    await evaluate('new Promise(r=>setTimeout(r,100))');
+    assert.equal(await evaluate('demo.card.shadowRoot.querySelector("canvas").toDataURL()'),still);
+    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+    await waitFor('demo.card._atmosphere._frame !== null');
+   }
+   atmosphere.push({condition,night,particles:await evaluate('demo.card._atmosphere._particles.length')});
+  }
+  await evaluate('window.oldAtmosphere=demo.card._atmosphere;demo.card.remove()');
+  assert.equal(await evaluate('oldAtmosphere._frame'),null);
+  assert.equal(await evaluate('oldAtmosphere.host'),null);
+  await evaluate('document.querySelector("#cards").append(demo.card)');
+  await waitFor('demo.card._atmosphere && demo.card._atmosphere !== oldAtmosphere');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("canvas.weather-atmosphere").length'),1);
+  await evaluate('window.spacer=document.createElement("div");spacer.style.height="3000px";document.body.prepend(spacer);window.scrollTo(0,0)');
+  await waitFor('demo.card._atmosphere._frame === null');
+  await evaluate('demo.card.scrollIntoView()');
+  await waitFor('demo.card._atmosphere._frame !== null');
+  await evaluate('spacer.remove();window.scrollTo(0,0)');
+  // Updating HA without replacing foreground DOM keeps the renderer and its phase.
+  const beforeScene=await evaluate('demo.card._atmosphere._time');
+  assert.equal(await evaluate('(()=>{const a=demo.card._atmosphere;demo.card.hass={...demo.card._hass};return a===demo.card._atmosphere})()'),true);
+  assert.equal(await evaluate(`demo.card._atmosphere._time >= ${beforeScene}`),true);
+  await evaluate('window.twin=document.createElement("weather-combined-forecast-card");twin.setConfig({...demo.card.config});twin.hass=demo.card._hass;document.querySelector("#cards").append(twin)');
+  await waitFor('Boolean(twin._atmosphere?.host)');
+  assert.equal(await evaluate('twin._atmosphere !== demo.card._atmosphere && twin._atmosphere.canvas !== demo.card._atmosphere.canvas'),true);
+  await evaluate('twin.remove()');
+  assert.equal(await evaluate('twin._atmosphere'),null);
+  assert.equal(await evaluate('Boolean(demo.card._atmosphere.host?.isConnected)'),true);
+  proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light'],atmosphere,reduced_motion:true,offscreen_pause:true,canvas_cleanup:true,separate_instances:true});
  }
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'result.json'),JSON.stringify({chrome:execFileSync(chrome,['--version'],{encoding:'utf8'}).trim(),checks:proof,errors,ha_acceptance:false},null,2)+'\n');console.log(JSON.stringify(proof));
 }finally{

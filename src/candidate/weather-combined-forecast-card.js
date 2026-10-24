@@ -1,4 +1,4 @@
-/* HA-BOARD weather candidate 0.2.0-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
+/* HA-BOARD weather atmosphere candidate 0.3.1-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
  * Modified from the private project source: lifecycle, editor, validation and packaging changes.
  * Home Assistant frontend weather icon paths are provided under Apache-2.0; notice distributed alongside this file.
  */
@@ -47,6 +47,295 @@
 // - V1.9.4.2.4 : scroll secondaire Bubble-like, centrage icône, mode risk_display_mode footer/header_sub_buttons.
 // - V1.9.4.2.5 : header_sub_buttons réaligné strictement sur la DA SIP/Portail : boutons ronds 36x36, icône seule, actions à droite, mode footer inchangé.
 // - V1.9.4.2.10 : repart strictement de v1.17.5 ; les header_sub_buttons reprennent les couleurs de référence du footer v1.17.5, sans reprendre les palettes v1.17.6–v1.17.9.
+
+// Procedural atmospheric background. Everything is drawn locally; no image,
+// video, network request or shared/global animation state is required.
+class WeatherAtmosphere {
+  constructor() {
+    this.canvas = document.createElement("canvas");
+    this.canvas.className = "weather-atmosphere";
+    this.canvas.setAttribute?.("aria-hidden", "true");
+    this.ctx = this.canvas.getContext?.("2d", { alpha: false });
+    this._frame = null;
+    this._lastTick = 0;
+    this._time = 17;
+    this._visible = true;
+    this._particles = [];
+    this._impacts = [];
+    this._seed = 92731;
+    this._motion = typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
+    this._visibilityChange = () => this._schedule();
+    this._motionChange = () => { this._paint(); this._schedule(); };
+  }
+
+  mount(host, options) {
+    if (!this.ctx || !host) return false;
+    const changed = this.options?.mode !== options.mode || this.options?.night !== options.night;
+    this.options = options;
+    if (host !== this.host) {
+      this._resizeObserver?.disconnect();
+      this._intersectionObserver?.disconnect();
+      this.host = host;
+      host.prepend(this.canvas);
+      this._visible = true;
+      if (typeof ResizeObserver !== "undefined") {
+        this._resizeObserver = new ResizeObserver(() => this._resize());
+        this._resizeObserver.observe(host);
+      }
+      if (typeof IntersectionObserver !== "undefined") {
+        this._intersectionObserver = new IntersectionObserver(entries => {
+          this._visible = entries[0]?.isIntersecting !== false;
+          this._schedule();
+        });
+        this._intersectionObserver.observe(host);
+      }
+    }
+    if (!this._bound) {
+      document.addEventListener("visibilitychange", this._visibilityChange);
+      this._motion?.addEventListener?.("change", this._motionChange);
+      this._bound = true;
+    }
+    this._resize();
+    if (changed) { this._particles = []; this._impacts = []; this._clouds = null; }
+    this._paint();
+    this._schedule();
+    host.dataset.atmosphere = "ready";
+    return true;
+  }
+
+  disconnect() {
+    this._stop();
+    this._resizeObserver?.disconnect();
+    this._intersectionObserver?.disconnect();
+    document.removeEventListener("visibilitychange", this._visibilityChange);
+    this._motion?.removeEventListener?.("change", this._motionChange);
+    this._bound = false;
+    this.host = null;
+    this._clouds = null;
+    this._particles = [];
+    this._impacts = [];
+    this.canvas.remove?.();
+  }
+
+  _random() {
+    this._seed = (Math.imul(this._seed, 1664525) + 1013904223) >>> 0;
+    return this._seed / 4294967296;
+  }
+
+  _resize() {
+    const rect = this.host?.getBoundingClientRect();
+    if (!rect?.width || !rect?.height) return;
+    const width = Math.round(rect.width), height = Math.round(rect.height);
+    const ratio = Math.min(1.5, window.devicePixelRatio || 1);
+    if (width === this.width && height === this.height && ratio === this._ratio) return;
+    this.width = width; this.height = height; this._ratio = ratio;
+    this.canvas.width = Math.round(width * ratio);
+    this.canvas.height = Math.round(height * ratio);
+    this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    this._particles = [];
+    this._impacts = [];
+    this._paint();
+    this._schedule();
+  }
+
+  _stop() {
+    if (this._frame !== null) cancelAnimationFrame(this._frame);
+    this._frame = null;
+    this._lastTick = 0;
+  }
+
+  _schedule() {
+    const allowed = this.host?.isConnected && this.width && this._visible &&
+      !document.hidden && !this._motion?.matches && this.options.speed > 0;
+    if (!allowed) { this._stop(); return; }
+    if (this._frame !== null) return;
+    const tick = timestamp => {
+      this._frame = null;
+      if (!this.host?.isConnected || !this._visible || document.hidden || this._motion?.matches) return;
+      const elapsed = this._lastTick ? timestamp - this._lastTick : 34;
+      if (elapsed >= 32) {
+        this._lastTick = timestamp;
+        const dt = Math.min(0.065, elapsed / 1000) * this.options.speed;
+        this._time += dt;
+        this._step(dt);
+        this._paint();
+      }
+      this._frame = requestAnimationFrame(tick);
+    };
+    this._frame = requestAnimationFrame(tick);
+  }
+
+  _noise(x, y) {
+    const hash = (a, b) => {
+      let n = Math.imul(a, 374761393) + Math.imul(b, 668265263);
+      n = Math.imul(n ^ (n >>> 13), 1274126177);
+      return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+    };
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const smooth = n => n * n * (3 - 2 * n);
+    const a = smooth(x - ix), b = smooth(y - iy);
+    const top = hash(ix, iy) * (1 - a) + hash(ix + 1, iy) * a;
+    const bottom = hash(ix, iy + 1) * (1 - a) + hash(ix + 1, iy + 1) * a;
+    return top * (1 - b) + bottom * b;
+  }
+
+  _cloudSprite(dark = false) {
+    const sprite = document.createElement("canvas");
+    sprite.width = 256; sprite.height = 128;
+    const ctx = sprite.getContext("2d");
+    const image = ctx.createImageData(256, 128);
+    for (let y = 0; y < 128; y++) for (let x = 0; x < 256; x++) {
+      const nx = x / 256, ny = y / 128;
+      const lobe = (cx, cy, rx, ry) => Math.exp(-((nx - cx) ** 2 / rx + (ny - cy) ** 2 / ry));
+      const envelope = Math.min(1, lobe(.24, .55, .038, .075) + lobe(.51, .40, .048, .095) + lobe(.76, .57, .034, .07));
+      const noise = this._noise(x / 46, y / 35) * .57 + this._noise(x / 19 + 31, y / 16) * .29 + this._noise(x / 7, y / 7 + 70) * .14;
+      const density = Math.max(0, Math.min(1, (envelope * (noise + .47) - .18) * 1.45));
+      const light = dark ? 25 + noise * 24 : 188 + noise * 55 - ny * 32;
+      const i = (y * 256 + x) * 4;
+      image.data[i] = light;
+      image.data[i + 1] = light + (dark ? 5 : 7);
+      image.data[i + 2] = light + (dark ? 14 : 17);
+      image.data[i + 3] = density * (dark ? 132 : 155);
+    }
+    ctx.putImageData(image, 0, 0);
+    return sprite;
+  }
+
+  _drop(initial = false, snow = false) {
+    const depth = this._random();
+    const floor = this.height * (.84 + this._random() * .15);
+    return { x: this._random() * (this.width + 60) - 30,
+      y: initial ? this._random() * floor : -15 - this._random() * 50,
+      floor, depth, speed: snow ? 14 + depth * 25 : 200 + depth * 290,
+      length: snow ? 0 : 2.5 + depth * 7, width: snow ? .65 + depth * 1.2 : .36 + depth * .52,
+      phase: this._random() * Math.PI * 2 };
+  }
+
+  _isWet() { return ["rain", "pouring", "storm"].includes(this.options.mode); }
+
+  _ensureParticles() {
+    const snow = this.options.mode === "snow";
+    const count = this._isWet() || snow ? Math.min(160, Math.max(28,
+      Math.round(this.width * this.height / (snow ? 8000 : 3300) * (this.options.mode === "pouring" ? 1.6 : 1)))) : 0;
+    while (this._particles.length < count) this._particles.push(this._drop(true, snow));
+    this._particles.length = count;
+  }
+
+  _step(dt) {
+    this._ensureParticles();
+    const snow = this.options.mode === "snow";
+    for (let i = 0; i < this._particles.length; i++) {
+      const p = this._particles[i];
+      p.y += p.speed * dt;
+      p.x += (this.options.wind * (.35 + p.depth * .65) + (snow ? Math.sin(this._time * .6 + p.phase) * 8 : 0)) * dt;
+      if (p.y >= p.floor || p.x < -70 || p.x > this.width + 70) {
+        if (!snow && p.y >= p.floor && p.depth > .22 && this._impacts.length < 28) {
+          this._impacts.push({x:p.x, y:p.floor, age:0, size:.55 + p.depth * .9, seed:p.phase});
+        }
+        this._particles[i] = this._drop(false, snow);
+      }
+    }
+    for (const impact of this._impacts) impact.age += dt;
+    this._impacts = this._impacts.filter(p => p.age < .68);
+  }
+
+  _glow(x, y, radius, color, alpha = 1) {
+    const ctx = this.ctx;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    g.addColorStop(0, `rgba(${color},${alpha})`);
+    g.addColorStop(.36, `rgba(${color},${alpha * .25})`);
+    g.addColorStop(1, `rgba(${color},0)`);
+    ctx.fillStyle = g; ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+  }
+
+  _paint() {
+    if (!this.ctx || !this.width || !this.options) return;
+    const c = this.ctx, w = this.width, h = this.height, t = this._time;
+    const {mode, night} = this.options;
+    const wet = this._isWet();
+    const palettes = {
+      sunny: ["#316ea2", "#80afd0", "#b7b8aa"], night: ["#121b37", "#23314b", "#2e354a"],
+      partly: ["#3c6d92", "#748eaa", "#a2a9b2"], cloudy: ["#435a72", "#6e7f91", "#8c9aa7"],
+      rain: ["#27384b", "#42576a", "#71818e"], pouring: ["#202e40", "#3a4b60", "#627382"],
+      storm: ["#1b2438", "#344055", "#596879"], snow: ["#687e95", "#9aa9b9", "#b6c1cb"],
+      fog: ["#687787", "#919ca6", "#acb4bb"]
+    };
+    const colors = night && mode !== "night" ? palettes.night : (palettes[mode] || palettes.cloudy);
+    const sky = c.createLinearGradient(0, 0, w * .25, h);
+    colors.forEach((color, i) => sky.addColorStop(i / 2, color));
+    c.fillStyle = sky; c.fillRect(0, 0, w, h);
+    if (["sunny", "partly", "night"].includes(mode)) {
+      const x = w * .79, y = h * .15;
+      this._glow(x, y, Math.max(w * .37, h * .7), night || mode === "night" ? "162,187,230" : "255,226,160", night ? .18 : .48);
+      this._glow(x, y, h * .13, night || mode === "night" ? "215,225,243" : "255,242,200", .65);
+    }
+    if (night && !wet && mode !== "fog" && mode !== "snow") {
+      c.fillStyle = "rgba(223,231,247,.45)";
+      for (let i = 0; i < 17; i++) {
+        const x = ((i * 137.51) % 997) / 997 * w, y = ((i * 71.3) % 97) / 97 * h * .5;
+        c.beginPath(); c.arc(x, y, i % 4 ? .45 : .8, 0, Math.PI * 2); c.fill();
+      }
+    }
+    if (!this._clouds) this._clouds = [this._cloudSprite(false), this._cloudSprite(true)];
+    const cloudy = !["sunny", "night"].includes(mode);
+    if (cloudy || mode === "sunny") {
+      const layers = mode === "fog" ? 4 : cloudy ? 3 : 1;
+      for (let i = 0; i < layers; i++) {
+        const cw = w * (1.25 + i * .17), ch = h * (mode === "fog" ? .64 : .98);
+        const drift = w * ([-.45, .10, -.15, .05][i] + Math.sin(t / (60 + i * 17) + i) * .09);
+        c.globalAlpha = mode === "sunny" ? .16 : mode === "partly" ? .58 : wet ? .65 : .68;
+        const sprite = this._clouds[wet && i === 2 ? 1 : 0];
+        const y = mode === "fog" ? h * (.15 + i * .15) - ch * .35 : h * [-.42, -.18, -.12][i];
+        c.drawImage(sprite, drift, y, cw, ch);
+      }
+      c.globalAlpha = 1;
+    }
+    if (wet) {
+      // A diffuse wet-surface reflection. No horizon line, tiled texture or
+      // bright overlay across the forecast text.
+      c.save(); c.translate(w * .68, h * .97); c.scale(1, .13);
+      this._glow(0, 0, w * .44, "179,207,224", .32);
+      c.restore();
+      const mist = c.createLinearGradient(0, h * .78, 0, h);
+      mist.addColorStop(0, "rgba(164,191,211,0)"); mist.addColorStop(1, "rgba(164,191,211,.10)");
+      c.fillStyle = mist; c.fillRect(0, h * .78, w, h * .22);
+    }
+    this._ensureParticles();
+    for (const p of this._particles) {
+      if (mode === "snow") {
+        c.fillStyle = `rgba(237,243,250,${.20 + p.depth * .44})`;
+        c.beginPath(); c.arc(p.x, p.y, p.width, 0, Math.PI * 2); c.fill();
+      } else {
+        const dx = this.options.wind / p.speed * p.length;
+        const g = c.createLinearGradient(p.x - dx, p.y - p.length, p.x, p.y);
+        g.addColorStop(0, "rgba(192,215,233,0)");
+        g.addColorStop(.65, `rgba(200,222,239,${.16 + p.depth * .29})`);
+        g.addColorStop(1, `rgba(226,239,248,${.26 + p.depth * .29})`);
+        c.strokeStyle = g; c.lineWidth = p.width; c.lineCap = "round";
+        c.beginPath(); c.moveTo(p.x - dx, p.y - p.length); c.lineTo(p.x, p.y); c.stroke();
+      }
+    }
+    for (const p of this._impacts) {
+      const fade = 1 - p.age / .68;
+      // Expanding ellipse and two tiny ballistic beads; different landing
+      // depths avoid the artificial continuous "waterfall on a ledge" look.
+      c.strokeStyle = `rgba(201,224,238,${fade * .25})`; c.lineWidth = .5;
+      c.beginPath(); c.ellipse(p.x, p.y, (.6 + p.age * 14) * p.size, (.2 + p.age * 2.2) * p.size, 0, 0, Math.PI * 2); c.stroke();
+      if (p.age < .34) {
+        for (const side of [-1, 1]) {
+          const x = p.x + side * p.age * (15 + p.size * 8);
+          const y = p.y - 38 * p.size * p.age + 115 * p.age * p.age;
+          c.fillStyle = `rgba(224,239,248,${fade * .42})`;
+          c.beginPath(); c.ellipse(x, y, .45 * p.size, .7 * p.size, side * .45, 0, Math.PI * 2); c.fill();
+        }
+      }
+    }
+    // Darken the centre slightly so icons, graph lines and labels remain crisp.
+    const shade = c.createLinearGradient(0, 0, 0, h);
+    shade.addColorStop(0, "rgba(9,17,30,0)"); shade.addColorStop(.52, "rgba(9,17,30,.09)"); shade.addColorStop(1, "rgba(9,17,30,0)");
+    c.fillStyle = shade; c.fillRect(0, 0, w, h);
+  }
+}
 
 class WeatherCombinedForecastCard extends HTMLElement {
   constructor() {
@@ -702,6 +991,8 @@ class WeatherCombinedForecastCard extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this._atmosphere?.disconnect();
+    this._atmosphere = null;
     this._unbindForecastConnection();
     this._unsubscribeDailyForecast();
     for (const id of this._frames) cancelAnimationFrame(id);
@@ -730,6 +1021,22 @@ class WeatherCombinedForecastCard extends HTMLElement {
   }
 
   getCardSize() { return 5; }
+
+  _syncAtmosphere(mode) {
+    const host = this.shadowRoot?.querySelector("ha-card");
+    if (!host) return;
+    const attrs = this._state(this.config.weather_entity)?.attributes || {};
+    const wind = this._toNumber(attrs.wind_speed, 0);
+    const bearing = this._toNumber(attrs.wind_bearing, 0);
+    const speed = Number(this.config.weather_background_speed ?? .9);
+    this._atmosphere ||= new WeatherAtmosphere();
+    this._atmosphere.mount(host, {
+      mode,
+      night: mode === "night" || this._state(this.config.sun_entity || "sun.sun")?.state === "below_horizon",
+      wind: Math.max(-48, Math.min(48, -Math.sin(bearing * Math.PI / 180) * wind * 1.3)),
+      speed: Number.isFinite(speed) ? Math.max(0, Math.min(2, speed)) : .9,
+    });
+  }
 
   _mergeSecondarySources(baseSources, configuredSources, legacyProbabilitySource) {
     const incomingSources = configuredSources && typeof configuredSources === "object" ? configuredSources : {};
@@ -2618,6 +2925,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
       entries: entries.map((item) => [item.datetimeMs, item.isNowColumn, item.temperature, item.precipitation, item.probability, item.windSpeed, item.windGust, item.windBearing, item.condition]),
     });
     if (!force && renderKey === this._lastRenderKey && this.shadowRoot.querySelector(".combined-scroll")) {
+      this._syncAtmosphere(mode);
       this._queueFrame(() => { this._setupScrollInteractions(); this._setupRiskPillInteractions(); this._setupMainHeaderAction(); });
       return;
     }
@@ -2644,6 +2952,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
         ${alertsFooter}
       </ha-card>
     `;
+    this._syncAtmosphere(mode);
     this._queueFrame(() => { this._setupScrollInteractions(); this._setupRiskPillInteractions(); this._setupMainHeaderAction(); });
   }
 
@@ -2691,6 +3000,18 @@ class WeatherCombinedForecastCard extends HTMLElement {
         animation: weather-ios-bg-shift calc(18s / var(--weather-ios-speed, 1)) ease-in-out infinite alternate;
       }
       .combined-card::after { opacity: calc(var(--weather-ios-opacity, 0.58) * 0.78); mix-blend-mode: screen; }
+      .weather-atmosphere {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        opacity: var(--weather-ios-opacity, 0.58);
+      }
+      .combined-card[data-atmosphere="ready"]::before,
+      .combined-card[data-atmosphere="ready"]::after { display: none; }
       .weather-ios-sunny::before { background: radial-gradient(circle at 82% 18%, rgba(255,220,92,0.85), rgba(255,220,92,0.20) 22%, transparent 40%), linear-gradient(135deg, rgba(72,152,255,0.96), rgba(150,210,255,0.58), rgba(255,220,150,0.48)); }
       .weather-ios-sunny::after { background: radial-gradient(circle at 80% 18%, rgba(255,244,180,0.66), transparent 24%); }
       .weather-ios-night::before { background: radial-gradient(circle at 80% 20%, rgba(230,235,255,0.18), transparent 28%), linear-gradient(135deg, rgba(16,26,62,0.86), rgba(44,42,92,0.45), rgba(20,24,52,0.55)); }
@@ -2698,15 +3019,15 @@ class WeatherCombinedForecastCard extends HTMLElement {
       .weather-ios-partly::before { background: radial-gradient(circle at 82% 16%, rgba(255,220,80,0.70), rgba(255,220,80,0.18) 22%, transparent 36%), radial-gradient(ellipse at 18% 70%, rgba(255,255,255,0.38), transparent 56%), linear-gradient(135deg, rgba(82,156,255,0.78), rgba(150,204,255,0.48), rgba(242,221,180,0.36)); }
       .weather-ios-cloudy::before { background: radial-gradient(ellipse at 20% 40%, rgba(255,255,255,0.32), transparent 40%), radial-gradient(ellipse at 75% 70%, rgba(255,255,255,0.22), transparent 44%), linear-gradient(135deg, rgba(95,118,155,0.56), rgba(148,160,184,0.32), rgba(88,94,124,0.36)); }
       .weather-ios-rain::before, .weather-ios-pouring::before { background: radial-gradient(ellipse at 22% 35%, rgba(255,255,255,0.18), transparent 38%), linear-gradient(135deg, rgba(48,72,112,0.72), rgba(80,100,132,0.38), rgba(42,50,76,0.42)); }
-      .weather-ios-rain::after, .weather-ios-pouring::after { background-image: repeating-linear-gradient(105deg, transparent 0 10px, rgba(120,190,255,0.36) 11px 13px, transparent 14px 28px); background-size: 130px 90px; animation: weather-ios-rain calc(0.9s / var(--weather-ios-speed, 1)) linear infinite; }
+      .weather-ios-rain::after, .weather-ios-pouring::after { background: radial-gradient(ellipse at 60% 100%, rgba(174,204,224,.12), transparent 52%); }
       .weather-ios-snow::before { background: radial-gradient(ellipse at 20% 45%, rgba(255,255,255,0.28), transparent 42%), linear-gradient(135deg, rgba(150,178,210,0.55), rgba(205,218,234,0.34), rgba(144,156,182,0.38)); }
       .weather-ios-fog::before { background: linear-gradient(135deg, rgba(112,122,140,0.42), rgba(155,160,172,0.28), rgba(105,108,124,0.34)); }
       .weather-ios-fog::after { background: linear-gradient(0deg, transparent 0%, rgba(255,255,255,0.18) 28%, transparent 44%), linear-gradient(0deg, transparent 18%, rgba(255,255,255,0.15) 52%, transparent 72%); filter: blur(8px); }
       .weather-ios-storm::before { background: radial-gradient(ellipse at 20% 35%, rgba(255,255,255,0.14), transparent 36%), linear-gradient(135deg, rgba(30,38,70,0.72), rgba(74,66,112,0.38), rgba(30,28,56,0.44)); }
-      .weather-ios-storm::after { background: repeating-linear-gradient(105deg, transparent 0 10px, rgba(120,190,255,0.36) 11px 13px, transparent 14px 28px), radial-gradient(circle at 70% 20%, rgba(255,255,255,0.55), transparent 16%); background-size: 130px 90px, 100% 100%; animation: weather-ios-rain calc(0.85s / var(--weather-ios-speed, 1)) linear infinite; }
+      .weather-ios-storm::after { background: radial-gradient(ellipse at 70% 20%, rgba(194,211,235,.12), transparent 42%); }
 
       @keyframes weather-ios-bg-shift { from { transform: scale(1) translate3d(0,0,0); } to { transform: scale(1.045) translate3d(0,-2%,0); } }
-      @keyframes weather-ios-rain { from { background-position: 0 -30px; } to { background-position: -18px 42px; } }
+      @media (prefers-reduced-motion: reduce) { .combined-card::before, .combined-card::after { animation: none !important; } }
       @keyframes risk-chip-pulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.18); } }
 
       .header, .combined-header, .combined-scroll, .empty { position: relative; z-index: 1; }

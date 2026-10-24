@@ -101,3 +101,14 @@ Après vérification de l’original, mettre à jour par identifiant la seule re
 Le 9 septembre, la méthode `get_documentation` du HACS installé a confirmé la lecture de `installed_version` pour un dépôt installé. Actualiser les informations peut purger le cache ancien mais ne remplace pas le README immuable du tag `v0.2.0-rc.1` par celui de `main`. La correction complète sera donc visible dans HACS avec la prochaine version autorisée ; le README courant et les preuves GitHub sont la référence actualisée.
 
 Origine de ce contrôle : [retour de recette du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Cette règle locale de livraison n’ajoute aucun audit global ni dépendance à une nouvelle version du playbook.
+# Installation candidate atmosphère météo — 0.3.1-rc.1
+
+Cet incrément peut être essayé indépendamment d’une publication HACS. Construire et tester l’arbre candidat ; conserver le module météo distribué par `v0.3.0-rc.1` comme référence de retour arrière. Placer les octets vérifiés du nouveau `dist/weather-combined-forecast-card.js` dans `www/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js`.
+
+Relire les ressources et modifier **par son identifiant existant** la seule ressource météo vers `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js?v=0.3.1-rc.1`. Ne pas ajouter une deuxième ressource définissant le même composant. Personnes reste la première ressource du namespace HACS ; les autres URLs et leur ordre sont conservés. Aucune modification des entités, alertes ou options de la carte n’est requise.
+
+Relire le fichier et comparer SHA256/taille au manifeste, vérifier la ressource unique, puis recharger complètement le frontend. Une écriture ou un HTTP 200 ne prouve pas la recette du navigateur natif. L’installation candidate ne change pas la version du package annoncée par HACS et n’équivaut pas à une release publiée.
+
+Retour arrière ciblé : remettre cette même ressource sur `/hacsfiles/ha-board/weather-combined-forecast-card.js?v=0.2.0-rc.1`, dont le module historique est préservé. Recharger complètement le frontend. Aucune restauration générale HA ni réinstallation des autres cartes n’est nécessaire.
+
+## Distribution HACS

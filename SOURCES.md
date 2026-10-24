@@ -101,3 +101,11 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Complément atmosphère météo — 24 octobre 2026
+
+- Dépôt HA-BOARD public et base `0a46049e784f4cf8a1484272e8474d0b20a872a6` vérifiés ; la source maintenue est `src/candidate/weather-combined-forecast-card.js`.
+- Le module météo observé via HA-MCP correspond exactement aux octets déjà distribués dans Git (`f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`). Aucune configuration ni identité réelle n’est exportée ici.
+- Nouveau décor Canvas2D écrit pour ce projet, sans artwork Apple, image distante, média tiers ou dépendance runtime ajoutée. Les licences existantes des icônes météo et des autres composants restent inchangées.
+- Contrats Node sur source et distribution, cycle de vie et scènes Chromium sur fixtures fictives : `evidence/weather-atmosphere-2026-10-24.json`. Leur portée reste distincte d’une recette native HA/iPhone.
+
+## Sources antérieures

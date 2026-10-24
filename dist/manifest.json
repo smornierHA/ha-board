@@ -1,11 +1,11 @@
 {
-  "package_version": "0.3.0-rc.1",
+  "package_version": "0.3.1-rc.1",
   "entrypoint": "dist/ha-board.js",
   "sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6",
   "components": {
     "person-history-map-card-v14": "1.4.2",
     "person-rich-card-v34": "3.4.7",
-    "weather-combined-forecast-card": "0.2.0-rc.1",
+    "weather-combined-forecast-card": "0.3.1-rc.1",
     "garage-control-card": "1.1.0"
   },
   "artifacts": [
@@ -16,8 +16,8 @@
     },
     {
       "file": "weather-combined-forecast-card.js",
-      "bytes": 142577,
-      "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"
+      "bytes": 156267,
+      "sha256": "3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7"
     },
     {
       "file": "garage-control-card.js",

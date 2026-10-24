@@ -1,4 +1,16 @@
-# État courant — 9 septembre 2026
+# État courant — 24 octobre 2026
+
+## Atmosphère météo `0.3.1-rc.1`
+
+La source maintenue et le module autonome remplacent les barres de pluie par des gouttes, impacts, reflets et nuages procéduraux. Base `0a46049e784f4cf8a1484272e8474d0b20a872a6` ; branche `feat/weather-atmosphere-20261024`. Le fichier météo observé dans HA avant intervention correspond exactement au module historique de 142 577 octets, SHA256 `f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`. HACS annonce désormais le package `v0.3.0-rc.1` installé ; la météo reste sur son asset `0.2.0-rc.1`. Cette observation actualise uniquement l’état utile au lot météo.
+
+Les contrats météo Node passent (22 sur la source et 22 sur la distribution), ainsi que les 43 contrats Personnes sur source et bundle, les 15 contrats Garage, les tests Python et les vérifications d’intégrité/confidentialité/documentation. Chromium vérifie source et module distribué, desktop/mobile clair/sombre, sept conditions, impacts, réduction des animations, détachement/reconnexion, pause hors écran et plusieurs instances. La comparaison visuelle complémentaire couvre huit ambiances ; la moyenne locale de peinture à chaud reste inférieure à 0,5 ms pour une carte de 850 × 347 px. Ce dernier chiffre n’est pas une mesure d’iPhone.
+
+**Installation candidate ciblée effectuée le 24 octobre** depuis le code testé du commit local `208a7b9`. Module autonome : **156 267 octets**, SHA256 `3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7`. Fichier relu identique après écriture ; la ressource météo existante pointe sur ce candidat, reste unique, et toutes les autres ressources conservent leurs valeurs et leur ordre. Les options du dashboard sont inchangées. L’asset HACS précédent est préservé pour le retour arrière.
+
+Ce déploiement candidat ne change pas la version annoncée par HACS et ne constitue pas une publication de `v0.3.1-rc.1`. **Chargement utilisateur et recette native HA/iPhone restent à confirmer après rechargement complet du frontend.** Le moteur de capture HA précédemment indisponible n’est pas assimilé au banc Chromium fictif. Personnes et Garage restent identiques. Preuve : `evidence/weather-atmosphere-2026-10-24.json`.
+
+## Historique — état consolidé du 9 septembre 2026
 
 **Distribution installée : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
 

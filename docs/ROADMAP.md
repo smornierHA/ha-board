@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Incrément actif — atmosphère météo, 24 octobre 2026
+
+Demande utilisateur : pluie fine avec gouttes, rebonds, nuages et reflets. Le candidat `0.3.1-rc.1` remplace uniquement les décors météo, conserve Personnes/Garage, et fait l’objet d’une vérification navigateur sur données fictives puis d’une installation candidate ciblée. Le compteur de recette native reste séparé de ces contrôles : publication HACS et acceptation iPhone ne sont pas déduites de l’écriture des fichiers. Les lots historiques ci-dessous ne sont pas relancés.
+
 La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
 
 ## Avant une éventuelle promotion stable

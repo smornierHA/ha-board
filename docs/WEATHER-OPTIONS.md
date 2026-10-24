@@ -83,3 +83,14 @@ Types et valeurs par défaut du candidat public. Les identifiants `example` sont
 | `weather_background_opacity` | number | `0.58` |
 | `weather_background_speed` | number | `0.9` |
 | `empty_label` | string | `"Aucune prévision disponible"` |
+# Fond atmosphérique — candidat 0.3.1-rc.1
+
+Les types YAML et les options existantes restent compatibles. `weather_background_opacity` règle la discrétion du décor (défaut 0,58) ; `weather_background_speed` règle la vitesse, plafonnée entre 0 et 2 (défaut 0,9). Une vitesse à zéro conserve un décor fixe. L’éditeur visuel expose déjà ces deux options.
+
+La condition de l’entité météo sélectionne le décor ; `sun_entity` distingue le jour et la nuit. Le vent courant incline légèrement les gouttes. La forte pluie augmente leur densité. Les gouttes ont des profondeurs, des tailles et des vitesses différentes. Le bas de carte reçoit des impacts brefs, deux microgouttes en rebond, une ondulation elliptique et une lumière réfléchie diffuse. L’ensemble reste derrière les informations et n’intercepte aucun geste.
+
+Nuages, brume, soleil, nuit et neige utilisent le même rendu procédural local, sans média Apple ni autre artwork copié. Il s’agit d’une ambiance inspirée de la sobriété d’une application météo, pas d’une reproduction de son moteur.
+
+La scène est plafonnée à environ 30 images/s, 160 particules et un ratio de pixels de 1,5. Elle s’arrête hors écran, lorsque l’onglet est masqué, ou si le système demande de réduire les animations ; un fond statique reste visible. Les paramètres de réduction des animations du système ne sont jamais modifiés.
+
+## Options de la carte
