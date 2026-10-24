@@ -1,5 +1,11 @@
 # État courant — 25 octobre 2026
 
+## Maquette météo : dessins alignés et footer plat
+
+Nouvelle référence `examples/weather-ios-optical.fragment.html`. Le retour utilisateur remet en cause la taille apparente de l’icône principale et l’alignement des icônes horaires malgré leurs cadres communs. Le dessin visible est désormais normalisé : nuage partagé de 30 px, base commune à 31 px, couches météo séparées ; l’icône principale suit les contours visibles des chiffres. Le footer coloré plein est remplacé par une ligne de 44 px avec accents de gravité, intitulés et compteur.
+
+Les trois modes, courbes, seuils, jauge, détails, filtres et clavier passent à 320/390/736 px clair/sombre. Le contrôle des contours peints vérifie une hauteur principale égale au texte (33/36/39 px selon le banc), un sommet identique et 23 nuages de largeur/base communes. Wrapper et footer restent identiques entre vues et niveaux d’alerte. **Maquette fictive uniquement, pas de changement ou déploiement HA.** Preuve : `evidence/weather-ios-optical-2026-10-25.json`.
+
 ## Maquette météo : hauteur constante, footer et seuils
 
 Référence courante `examples/weather-ios-fixed.fragment.html`. Le nouveau retour retire le bandeau d’alerte supérieur et la variation de taille du graphe. Le footer unique reste coloré selon la gravité, l’icône principale partage la dimension de la température et les pictogrammes ont des cadres d’alignement. Valeurs et courbes utilisent des couleurs de seuil consultables dans les détails.

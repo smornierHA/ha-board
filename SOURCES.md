@@ -101,6 +101,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Dessins visibles et footer sobre — 25 octobre 2026
+
+- Retour utilisateur : taille principale toujours inadaptée, icônes horaires à agrandir et aligner, footer à revoir. Le critère précédent fondé sur les cadres ne prouvait pas l’alignement des dessins.
+- Composition locale avec les mêmes symboles Lucide fournis par l’hôte, nuage commun et couches météo séparées ; aucun artwork ou tracé Apple incorporé. Les vérifications mesurent les contours SVG avec trait et les métriques visibles de la police réellement rendue.
+- Référence `examples/weather-ios-optical.fragment.html`, preuve `evidence/weather-ios-optical-2026-10-25.json`. Footer plat, accents de gravité, contenu fictif et aucun delta runtime HA.
+
 # Hauteur constante et footer de la maquette météo — 25 octobre 2026
 
 - Nouveau retour utilisateur : dimension de l’icône liée aux degrés, alertes exclusivement dans le footer, alignements, couleurs au-delà des seuils et wrapper constant entre les vues.

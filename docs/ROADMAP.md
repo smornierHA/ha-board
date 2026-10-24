@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Contours visibles et footer sobre — 25 octobre 2026
+
+Référence courante : `weather-ios-optical.fragment.html`. Conserver les pictogrammes horaires agrandis et leur nuage à base commune, le symbole principal lié aux contours des chiffres, le footer plat avec compteur et les acquis de hauteur constante. Le critère des seuls cadres égaux est insuffisant et le footer plein précédent est écarté. La proposition reste à examiner, sans intégration HA dans ce lot.
+
 ## Géométrie constante et alertes dans le footer — 25 octobre 2026
 
 Utiliser désormais `weather-ios-fixed.fragment.html` comme proposition courante : même hauteur entre vues, graphe dans l’espace réservé, icône principale proportionnée aux degrés, couleurs de seuil et toutes les alertes dans le footer. Le bandeau supérieur de la révision précédente est écarté par le nouveau retour utilisateur. La maquette ne vaut toujours pas intégration ou déploiement HA.

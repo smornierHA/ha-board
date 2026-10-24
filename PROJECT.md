@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Dessins météo et footer sobre — 25 octobre 2026
+
+`weather-ios-optical.fragment.html` devient la référence après le retour sur la taille et l’alignement des dessins, et sur le footer. Normalisation de la base et de la taille des nuages visibles, symbole principal lié aux métriques réelles des chiffres, footer réduit à une ligne sobre. Dépôt public et droits d’écriture reconfirmés ; contenu fictif uniquement. Aucun changement de source runtime, package ou HA.
+
 ## Hauteur stable et footer météo — 25 octobre 2026
 
 `weather-ios-fixed.fragment.html` devient la référence de maquette : icône de la taille des degrés, alignements communs, toutes les alertes dans le footer, couleurs de seuil et géométrie constante entre vues. Dépôt public et droits d’écriture reconfirmés ; exemple et mesures fictifs uniquement sur la branche de #19. Aucun changement de runtime, de package ou de configuration HA.

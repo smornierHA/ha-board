@@ -1,6 +1,16 @@
 # Proposition météo iOS fine
 
-## Révision alignement et hauteur stable — 25 octobre 2026, proposition courante
+## Révision des dessins et footer sobre — 25 octobre 2026, proposition courante
+
+Référence courante : `examples/weather-ios-optical.fragment.html`. Le retour utilisateur invalide l’alignement visuel revendiqué par la précédente proposition : des cadres égaux n’assurent pas une taille et une base communes des dessins internes.
+
+Les symboles horaires utilisent désormais le même nuage plein, avec des couches soleil/lune/pluie issues de Lucide. Le nuage visible fait 30 px de large et sa base est placée à 31 px dans la ligne réservée de 48 px, pour pluie, éclaircies et nuit. Le symbole principal est calibré sur la hauteur et le sommet visibles des chiffres, mesurés dans la police réellement rendue, au lieu de prendre le seul corps de police comme taille de dessin. Le recalibrage suit le chargement de police et le redimensionnement. Aucun tracé d’icône ou artwork Apple n’est copié.
+
+Le footer devient une ligne de 44 px avec un séparateur léger, les intitulés, un compteur rond et le chevron. Le panneau coloré plein de la précédente proposition est retiré. La gravité reste portée par des accents orange/rouges et un libellé critique explicite ; le volet filtré, les compteurs actifs et l’accès à tous les états sont conservés. Le libellé accessible distingue le nombre d’alertes du niveau le plus élevé.
+
+Les vues, graphes, jauge, couleurs de seuil et position horaire restent conservés. À 390 px, wrapper 357,375 px et footer 44 px dans les trois modes et les quatre niveaux d’alerte. Le contrôle géométrique porte sur les contours SVG peints avec leur trait et sur les métriques visibles du texte : à 390 px, 36 px de hauteur pour le symbole principal comme pour les chiffres, sommets coïncidents ; 23 nuages contrôlés, base et largeur communes. Contrôles complémentaires 320/736 px, clair/sombre, interactions, clavier et filtres. Preuve : `evidence/weather-ios-optical-2026-10-25.json`. Il s’agit toujours d’une maquette fictive ; aucune modification du runtime ou de l’instance HA et aucune recette Safari/iPhone déduite du banc Chromium.
+
+## Révision alignement et hauteur stable — 25 octobre 2026, référence précédente
 
 Référence courante : `examples/weather-ios-fixed.fragment.html`. Cette révision remplace le bandeau supérieur et la croissance du graphe de la proposition précédente, conformément au nouveau retour utilisateur.
 
