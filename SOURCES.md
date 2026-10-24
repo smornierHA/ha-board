@@ -101,6 +101,13 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Révision lisibilité de la maquette météo — 24 octobre 2026
+
+- [Guide Météo iOS 27](https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios), texte et deux captures officielles consultés : bascule conditions/précipitations/vent, graphiques détaillés au toucher. Captures consultées uniquement, sans copie dans le projet ou le prototype.
+- [Apple HIG Layout](https://developer.apple.com/design/human-interface-guidelines/layout) et [Materials](https://developer.apple.com/design/human-interface-guidelines/materials), consultés pour la hiérarchie, la divulgation progressive et les contrôles distincts du contenu.
+- [Mises à jour Apple](https://support.apple.com/fr-fr/100100), consultées pour distinguer la version courante d’iOS 27 des RC et de la version propre à un autre appareil. La maquette n’est pas présentée comme une app Apple ni comme une reproduction native.
+- Référence courante : `examples/weather-ios-readable.fragment.html`, vérifications fictives dans `evidence/weather-ios-readable-2026-10-24.json`. Aucun delta runtime HA ni dépendance ajoutée.
+
 # Complément défilement et maquette météo — 24 octobre 2026
 
 - Retour utilisateur : décor satisfaisant et nouveau défaut de geste vertical. Reproduction par entrée tactile Chromium sur fixture, sans appel à une entité ou commande réelle.

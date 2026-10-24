@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Révision de lisibilité météo — 24 octobre 2026
+
+La première maquette trop dense est remplacée pour examen par `weather-ios-readable.fragment.html` : une seule donnée horaire à la fois, courbes et valeurs détaillées au toucher, une ligne d’alertes. Reprendre cette référence pour une éventuelle intégration après retour utilisateur. Le rendu proposé ne change pas les options ni le bundle installé et n’est pas une nouvelle livraison HACS.
+
 ## Défilement et proposition iOS — 24 octobre 2026
 
 Corriger le blocage vertical du composant météo sans modifier ses options ni son rendu courant. Le candidat `0.3.1-rc.2` prolonge l’atmosphère de #19. La maquette iOS fine est proposée séparément ; son éventuelle intégration reprendra les mêmes données, seuils, unités, actions et options de l’éditeur. Une approbation de la maquette et une recette native restent distinctes du correctif de geste.

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "scope": "readability mockup only; no runtime/HA changes",
+  "file": "examples/weather-ios-readable.fragment.html",
+  "bytes": 25663,
+  "sha256": "6f080ba700b5f41b266df0924df931a113831660199de6b4744a880512f7d8f3",
+  "previous_proposal": "examples/weather-ios-fine.fragment.html",
+  "decision": "Previous design considered too dense; this proposal uses three local views and progressive detail",
+  "apple_sources": [
+    {
+      "url": "https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios",
+      "verified": "Guide labels iOS 27; conditions/precipitation/wind selector; detail graphs; both official screenshots inspected"
+    },
+    {
+      "url": "https://developer.apple.com/design/human-interface-guidelines/layout",
+      "verified": "Progressive disclosure and hierarchy"
+    },
+    {
+      "url": "https://developer.apple.com/design/human-interface-guidelines/materials",
+      "verified": "Reserve Liquid Glass for controls; avoid overuse"
+    }
+  ],
+  "verification": {
+    "proof": [
+      {
+        "width": 320,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 342.53125,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 342.53125,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 342.53125,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 342.53125,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 343.671875,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 343.671875,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "stable_height": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      }
+    ],
+    "errors": [],
+    "native_ios": false,
+    "production_changed": false
+  },
+  "native_ios_acceptance": false,
+  "deployed": false,
+  "runtime_artifact_sha256_unchanged": "7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6",
+  "remote_ci": "not requested or queried",
+  "privacy": "Only fictitious values; no real HA identifiers, config, credentials or screenshots"
+}

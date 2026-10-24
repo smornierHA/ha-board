@@ -1,0 +1,162 @@
+<div id="weather-ios-readable" class="viz-dotted-background">
+  <style>
+    #weather-ios-readable { --wr-ink:light-dark(#243b4d,#f1f6fb); --wr-muted:light-dark(#516b80,#b9cbdc); --wr-bg:light-dark(#e4edf4,#203449); --wr-rule:light-dark(#284c6b1c,#e3efff1a); --wr-control:light-dark(#698caa1c,#d9eaff0c); --wr-active:light-dark(#ffffffe0,#dbeaff24); --wr-rain:light-dark(#267bae,#9ed8f5); --wr-warm:light-dark(#8d6019,#edc17b); --wr-sheet:light-dark(#f4f7fa,#24394e); --wr-chart:light-dark(#386784,#d5eafa); padding:52px 8px 24px; color:var(--wr-ink); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif; }
+    #weather-ios-readable * { box-sizing:border-box; }
+    #weather-ios-readable button { font:inherit; color:inherit; -webkit-tap-highlight-color:transparent; }
+    #weather-ios-readable .wr-weather { max-width:664px; margin:auto; position:relative; isolation:isolate; overflow:hidden; background:var(--wr-bg); border-radius:28px; box-shadow:0 14px 42px light-dark(#26415b14,#00000026),inset 0 1px 0 light-dark(#ffffffb0,#e6f1ff26); }
+    #weather-ios-readable .wr-weather::before { content:""; position:absolute; z-index:-1; inset:0; background:radial-gradient(ellipse at 20% -20%,light-dark(#ffffffb0,#b4d2eb25),transparent 70%),linear-gradient(125deg,light-dark(#cadde946,#4c72932c),transparent); }
+    #weather-ios-readable .wr-sky { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; opacity:.48; }
+    #weather-ios-readable .wr-hero { display:flex; align-items:center; gap:16px; border:0; width:100%; text-align:left; background:transparent; padding:20px 24px 14px; }
+    #weather-ios-readable .wr-degrees { font-size:55px; line-height:1; letter-spacing:-.075em; font-weight:400; flex-shrink:0; }
+    #weather-ios-readable .wr-now-copy { flex:1; min-width:0; display:grid; gap:4px; }
+    #weather-ios-readable .wr-name { font-size:12px; line-height:1.2; font-weight:400; color:var(--wr-muted); }
+    #weather-ios-readable .wr-condition { font-size:18px; line-height:1.15; letter-spacing:-.035em; font-weight:500; }
+    #weather-ios-readable .wr-range { font-size:12px; line-height:1.3; color:var(--wr-muted); }
+    #weather-ios-readable .wr-current-icon { width:36px; height:36px; stroke-width:1.25; color:var(--wr-chart); flex-shrink:0; }
+    #weather-ios-readable .wr-toolbar { display:flex; gap:8px; margin:0 20px; align-items:center; }
+    #weather-ios-readable .wr-tabs { display:flex; flex:1; padding:3px; background:var(--wr-control); border-radius:16px; backdrop-filter:blur(14px); }
+    #weather-ios-readable .wr-tabs button { border:0; display:flex; align-items:center; justify-content:center; gap:7px; flex:1; min-width:0; min-height:38px; border-radius:13px; background:transparent; font-size:13px; font-weight:400; color:var(--wr-muted); }
+    #weather-ios-readable .wr-tabs button[aria-selected="true"] { background:var(--wr-active); color:var(--wr-ink); box-shadow:0 1px 4px light-dark(#3857730a,#07152215); }
+    #weather-ios-readable .wr-tabs svg { width:16px; height:16px; stroke-width:1.6; }
+    #weather-ios-readable .wr-panel { padding:10px 0 12px; }
+    #weather-ios-readable .wr-context { min-height:24px; padding:0 24px 6px; display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:11px; color:var(--wr-muted); }
+    #weather-ios-readable .wr-next { width:36px; height:44px; flex-shrink:0; margin:0; border:0; background:var(--wr-control); border-radius:15px; display:grid; place-items:center; }
+    #weather-ios-readable .wr-next svg { width:15px; height:15px; stroke-width:1.5; }
+    #weather-ios-readable .wr-rail { overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; touch-action:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; scroll-behavior:smooth; padding:0 16px; }
+    #weather-ios-readable .wr-rail::-webkit-scrollbar { display:none; }
+    #weather-ios-readable .wr-hours { display:flex; width:max-content; }
+    #weather-ios-readable .wr-hour { display:grid; grid-template-rows:21px 35px 40px; gap:0; justify-items:center; align-items:center; width:62px; min-width:62px; border:0; padding:0 0 3px; background:transparent; border-radius:12px; font-variant-numeric:tabular-nums; position:relative; }
+    #weather-ios-readable .wr-hour:active { background:var(--wr-control); }
+    #weather-ios-readable .wr-hour-time { font-size:12px; color:var(--wr-muted); line-height:1; }
+    #weather-ios-readable .wr-now .wr-hour-time { color:var(--wr-ink); font-weight:500; }
+    #weather-ios-readable .wr-hour-icon { width:26px; height:26px; stroke-width:1.35; color:var(--wr-chart); }
+    #weather-ios-readable .wr-solar .wr-hour-icon { color:var(--wr-warm); }
+    #weather-ios-readable .wr-main-value { font-size:19px; font-weight:400; line-height:1.2; letter-spacing:-.035em; }
+    #weather-ios-readable .wr-secondary-value { font-size:11px; line-height:1.2; color:var(--wr-muted); }
+    #weather-ios-readable .wr-hour-extra { display:grid; gap:4px; justify-items:center; }
+    #weather-ios-readable .wr-value-large { font-size:19px; font-weight:400; line-height:1.2; letter-spacing:-.02em; }
+    #weather-ios-readable .wr-wind-arrow { width:26px; height:26px; stroke-width:1.4; transform:rotate(var(--wr-direction)); color:var(--wr-chart); }
+    #weather-ios-readable .wr-precip { height:29px; display:flex; align-items:end; width:18px; }
+    #weather-ios-readable .wr-precip span { width:18px; height:var(--wr-bar); background:var(--wr-rain); border-radius:4px 4px 1px 1px; opacity:.64; min-height:2px; }
+    #weather-ios-readable .wr-alert-row { width:calc(100% - 40px); margin:0 20px 9px; padding:13px 4px 12px; min-height:47px; display:flex; align-items:center; gap:8px; text-align:left; border:0; border-top:1px solid var(--wr-rule); background:transparent; font-size:12px; }
+    #weather-ios-readable .wr-alert-row .wr-alert-icon { width:16px; height:16px; flex-shrink:0; color:var(--wr-warm); stroke-width:1.5; }
+    #weather-ios-readable .wr-alert-count { font-weight:500; white-space:nowrap; }
+    #weather-ios-readable .wr-alert-label { color:var(--wr-muted); flex:1; min-width:0; }
+    #weather-ios-readable .wr-alert-row .wr-chevron { width:14px; height:14px; color:var(--wr-muted); flex-shrink:0; }
+    #weather-ios-readable .wr-caption { margin:11px 0 0; color:var(--wr-muted); text-align:center; font-size:11px; line-height:1.4; }
+    #weather-ios-readable .wr-sheet { color:var(--wr-ink); border:0; padding:0; background:var(--wr-sheet); border-radius:25px; width:calc(100% - 24px); max-width:460px; max-height:calc(100% - 24px); box-shadow:0 20px 70px #07142145; overflow:auto; }
+    #weather-ios-readable .wr-sheet::backdrop { background:#091a2c55; backdrop-filter:blur(4px); }
+    #weather-ios-readable .wr-sheet-top { display:flex; gap:10px; justify-content:space-between; align-items:center; padding:20px 20px 7px; }
+    #weather-ios-readable .wr-sheet h3 { font-size:19px; line-height:1.25; letter-spacing:-.025em; margin:0; font-weight:500; }
+    #weather-ios-readable .wr-close { width:44px; height:44px; border:0; display:grid; place-items:center; background:var(--wr-control); border-radius:50%; flex-shrink:0; }
+    #weather-ios-readable .wr-close svg { width:18px; height:18px; }
+    #weather-ios-readable .wr-sheet-content { padding:0 20px 20px; }
+    #weather-ios-readable .wr-sheet-caption { margin:0 0 10px; font-size:12px; line-height:1.4; color:var(--wr-muted); }
+    #weather-ios-readable .wr-graph { display:block; width:100%; height:105px; color:var(--wr-chart); overflow:visible; }
+    #weather-ios-readable .wr-graph-labels { display:flex; justify-content:space-between; color:var(--wr-muted); font-size:11px; margin:5px 0 18px; }
+    #weather-ios-readable .wr-details { margin:0; }
+    #weather-ios-readable .wr-details div { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--wr-rule); font-size:13px; line-height:1.4; }
+    #weather-ios-readable .wr-details dt { color:var(--wr-muted); }
+    #weather-ios-readable .wr-details dd { margin:0; text-align:right; }
+    #weather-ios-readable .wr-risk-filters { display:flex; gap:8px; margin:4px 0 14px; }
+    #weather-ios-readable .wr-risk-filters button { border:0; border-radius:18px; min-height:36px; background:var(--wr-control); padding:6px 12px; font-size:12px; }
+    #weather-ios-readable .wr-risk-filters [aria-pressed="true"] { background:var(--wr-active); color:var(--wr-ink); }
+    #weather-ios-readable .wr-risk { border:0; border-top:1px solid var(--wr-rule); background:transparent; padding:13px 0; min-height:62px; display:flex; align-items:center; gap:11px; text-align:left; width:100%; }
+    #weather-ios-readable .wr-risk svg { width:21px; height:21px; flex-shrink:0; color:var(--wr-muted); stroke-width:1.4; }
+    #weather-ios-readable .wr-risk[data-active="true"] svg { color:var(--wr-warm); }
+    #weather-ios-readable .wr-risk-copy { display:grid; gap:4px; flex:1; }
+    #weather-ios-readable .wr-risk-copy strong { font-size:14px; font-weight:500; line-height:1.25; }
+    #weather-ios-readable .wr-risk-copy small { font-size:12px; color:var(--wr-muted); line-height:1.3; }
+    #weather-ios-readable .wr-risk .wr-chevron { width:14px; height:14px; }
+    @media(max-width:420px) { #weather-ios-readable { padding-left:4px; padding-right:4px; } #weather-ios-readable .wr-hero { padding:20px 20px 14px; gap:13px; } #weather-ios-readable .wr-degrees { font-size:51px; } #weather-ios-readable .wr-condition { font-size:17px; } #weather-ios-readable .wr-current-icon { width:30px; height:30px; } }
+    @media(pointer:coarse) { #weather-ios-readable .wr-tabs button { min-height:44px; } #weather-ios-readable .wr-next { width:44px; height:44px; } #weather-ios-readable .wr-risk-filters button { min-height:44px; } }
+    @media(prefers-reduced-motion:reduce) { #weather-ios-readable .wr-rail { scroll-behavior:auto; } }
+  </style>
+  <article class="wr-weather" aria-label="Météo, maquette avec données fictives">
+    <canvas class="wr-sky" aria-hidden="true"></canvas>
+    <button class="wr-hero cursor-interaction" type="button" aria-label="Ouvrir les détails de la météo actuelle">
+      <span class="wr-degrees">14°</span>
+      <span class="wr-now-copy"><span class="wr-name">Prévisions météo</span><span class="wr-condition">Pluie légère</span><span class="wr-range">Max. 17° · Min. 9°</span></span>
+      <i class="wr-current-icon" data-lucide="cloud-drizzle" aria-hidden="true"></i>
+    </button>
+    <div class="wr-toolbar"><div class="wr-tabs" role="tablist" aria-label="Donnée des prévisions">
+      <button type="button" class="cursor-interaction" id="wr-tab-weather" role="tab" aria-controls="wr-panel" aria-selected="true" data-mode="weather"><i data-lucide="cloud-sun" aria-hidden="true"></i>Météo</button>
+      <button type="button" class="cursor-interaction" id="wr-tab-rain" role="tab" aria-controls="wr-panel" aria-selected="false" data-mode="rain"><i data-lucide="droplet" aria-hidden="true"></i>Pluie</button>
+      <button type="button" class="cursor-interaction" id="wr-tab-wind" role="tab" aria-controls="wr-panel" aria-selected="false" data-mode="wind"><i data-lucide="wind" aria-hidden="true"></i>Vent</button>
+    </div><button class="wr-next cursor-interaction" type="button" aria-label="Voir les heures suivantes"><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
+    <section class="wr-panel" id="wr-panel" role="tabpanel" aria-labelledby="wr-tab-weather">
+      <div class="wr-context"><span class="wr-context-label">Température · 24 h</span></div>
+      <div class="wr-rail" role="region" aria-label="Prévisions horaires"><div class="wr-hours"></div></div>
+    </section>
+    <button class="wr-alert-row cursor-interaction" type="button" aria-label="Consulter les deux alertes actives et tous les risques">
+      <i class="wr-alert-icon" data-lucide="triangle-alert" aria-hidden="true"></i><span class="wr-alert-count">2 alertes</span><span class="wr-alert-label">Vent et portail</span><i class="wr-chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+    </button>
+  </article>
+  <p class="wr-caption" aria-live="polite">Maquette interactive · données fictives</p>
+  <dialog class="wr-sheet" aria-labelledby="wr-sheet-title">
+    <div class="wr-sheet-top"><h3 id="wr-sheet-title">Détails météo</h3><button class="wr-close cursor-interaction" type="button" aria-label="Fermer les détails"><i data-lucide="x" aria-hidden="true"></i></button></div>
+    <div class="wr-sheet-content"></div>
+  </dialog>
+  <script>
+    (()=>{
+      const root=document.getElementById('weather-ios-readable'),q=s=>root.querySelector(s),rail=q('.wr-rail'),hours=q('.wr-hours');
+      const temperatures=[14,14,15,16,17,17,16,15,14,13,12,11,10,10,9,9,9,10,11,12,13,14,15,15,14];
+      const rain=[.2,.4,.8,.4,.2,0,0,0,0,0,0,0,0,.1,.2,.2,.1,0,0,0,0,0,0,0,0];
+      const probability=[65,75,85,70,45,20,10,10,5,5,5,10,15,30,45,40,25,20,10,10,10,10,15,15,20];
+      const data=temperatures.map((temperature,i)=>{const hour=(13+i)%24,sunset=i===6,sunrise=i===19;return {temperature,rain:rain[i],probability:probability[i],wind:Math.round(16+8*Math.sin(i/3)),gust:Math.round((16+8*Math.sin(i/3))*1.6),direction:28+i*11,time:i===0?'Maint.':sunset?'19:14':sunrise?'08:21':hour===0?'Dem.':`${String(hour).padStart(2,'0')} h`,fullTime:i===0?'Maintenant':sunset?'Coucher du soleil · 19:14':sunrise?'Lever du soleil · 08:21':`${hour} h${i>=11?' demain':''}`,solar:sunset||sunrise,icon:sunset?'sunset':sunrise?'sunrise':rain[i]?'cloud-drizzle':i>7&&i<18?'cloud-moon':i>3?'cloud-sun':'cloud-rain'};});
+      const state={mode:'weather',scroll:0};
+      const format=n=>String(n).replace('.',',');
+      const icons=()=>{if(globalThis.lucide)lucide.createIcons({attrs:{'stroke-width':1.5}});};
+      function render(){
+        root.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.mode===state.mode)));
+        q('.wr-panel').setAttribute('aria-labelledby','wr-tab-'+state.mode);
+        q('.wr-context-label').textContent=state.mode==='weather'?'Température · 24 h':state.mode==='rain'?'Probabilité et cumul · mm':'Vent et rafales · km/h';
+        hours.replaceChildren();
+        for(let i=0;i<data.length;i++){
+          const d=data[i],b=document.createElement('button');b.type='button';b.className='wr-hour cursor-interaction'+(i===0?' wr-now':'')+(d.solar?' wr-solar':'');b.dataset.index=i;
+          const weather=`<i class="wr-hour-icon" data-lucide="${d.icon}" aria-hidden="true"></i><span class="wr-main-value">${d.temperature}°</span>`;
+          const precipitation=`<span class="wr-precip" aria-hidden="true"><span style="--wr-bar:${d.rain/.8*28}px"></span></span><span class="wr-hour-extra"><span class="wr-value-large">${d.probability}<span style="font-size:12px"> %</span></span><span class="wr-secondary-value">${format(d.rain)} mm</span></span>`;
+          const wind=`<i class="wr-wind-arrow" style="--wr-direction:${d.direction}deg" data-lucide="move-up" aria-hidden="true"></i><span class="wr-hour-extra"><span class="wr-value-large">${d.wind}</span><span class="wr-secondary-value">Raf. ${d.gust}</span></span>`;
+          b.innerHTML=`<span class="wr-hour-time">${d.time}</span>${state.mode==='weather'?weather:state.mode==='rain'?precipitation:wind}`;
+          b.setAttribute('aria-label',`${d.fullTime} : ${state.mode==='weather'?`${d.temperature} degrés`:state.mode==='rain'?`${d.probability} pour cent, ${format(d.rain)} millimètres`:`vent ${d.wind}, rafales ${d.gust} kilomètres par heure, direction relative à la maison`}. Ouvrir le détail.`);
+          b.addEventListener('click',()=>openHour(i));hours.append(b);
+        }
+        rail.scrollLeft=state.scroll;icons();
+      }
+      root.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{state.scroll=rail.scrollLeft;state.mode=b.dataset.mode;render();}));
+      q('.wr-tabs').addEventListener('keydown',event=>{const tabs=[...root.querySelectorAll('[data-mode]')],index=tabs.indexOf(document.activeElement);if(index<0)return;const next=event.key==='ArrowRight'?(index+1)%3:event.key==='ArrowLeft'?(index+2)%3:event.key==='Home'?0:event.key==='End'?2:null;if(next!==null){event.preventDefault();tabs[next].focus();tabs[next].click();}});
+      q('.wr-next').addEventListener('click',()=>{const end=rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-5;rail.scrollTo({left:end?0:rail.scrollLeft+Math.max(1,Math.floor(rail.clientWidth/62))*62,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});
+      rail.addEventListener('scroll',()=>{state.scroll=rail.scrollLeft;q('.wr-next').setAttribute('aria-label',rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-5?'Revenir à maintenant':'Voir les heures suivantes');},{passive:true});
+      const dialog=q('.wr-sheet'),content=q('.wr-sheet-content');let opener=null,view=null,allRisks=false;
+      function show(title){opener=document.activeElement;q('#wr-sheet-title').textContent=title;content.replaceChildren();if(!dialog.open)dialog.showModal();q('.wr-close').focus();}
+      function appendText(text){const p=document.createElement('p');p.className='wr-sheet-caption';p.textContent=text;content.append(p);}
+      function appendRows(rows){const list=document.createElement('dl');list.className='wr-details';for(const [label,value] of rows){const item=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;item.append(dt,dd);list.append(item);}content.append(list);}
+      function chart(mode,index){
+        const values=data.map(d=>mode==='weather'?d.temperature:mode==='rain'?d.rain:d.wind),max=Math.max(...values,mode==='wind'?Math.max(...data.map(d=>d.gust)):0),min=mode==='weather'?Math.min(...values)-2:0;
+        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('wr-graph');const width=Math.max(220,content.clientWidth),height=105;svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('role','img');svg.setAttribute('aria-label',mode==='weather'?'Courbe de température sur 24 heures':mode==='rain'?'Cumuls de pluie horaires sur 24 heures':'Courbes de vent et rafales sur 24 heures');
+        const x=i=>8+(width-16)*i/24,y=v=>94-(v-min)/(max-min||1)*76;
+        const pathFor=vs=>vs.map((v,i)=>`${i?'L':'M'} ${x(i)} ${y(v)}`).join(' ');
+        if(mode==='rain'){for(let i=0;i<values.length;i++)if(values[i]){const r=document.createElementNS(svg.namespaceURI,'rect');r.setAttribute('x',x(i)-4);r.setAttribute('y',y(values[i]));r.setAttribute('width',8);r.setAttribute('height',94-y(values[i]));r.setAttribute('rx',2);r.setAttribute('fill','var(--wr-rain)');r.setAttribute('opacity',i===index?'1':'.55');svg.append(r);}}
+        else{const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',pathFor(values));path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');path.setAttribute('stroke-width','1.6');svg.append(path);if(mode==='wind'){const gust=document.createElementNS(svg.namespaceURI,'path');gust.setAttribute('d',pathFor(data.map(d=>d.gust)));gust.setAttribute('fill','none');gust.setAttribute('stroke','currentColor');gust.setAttribute('stroke-width','1');gust.setAttribute('stroke-dasharray','3 4');gust.setAttribute('opacity','.6');svg.append(gust);}const point=document.createElementNS(svg.namespaceURI,'circle');point.setAttribute('cx',x(index));point.setAttribute('cy',y(values[index]));point.setAttribute('r',3);point.setAttribute('fill','currentColor');svg.append(point);}
+        content.append(svg);const labels=document.createElement('div');labels.className='wr-graph-labels';labels.innerHTML='<span>Maintenant</span><span>Demain · 13 h</span>';content.append(labels);
+      }
+      function openHour(i){const d=data[i];view='hour';show(d.fullTime);appendText(state.mode==='weather'?'Température · °C':state.mode==='rain'?'Précipitations · mm':'Vent — trait plein · Rafales — pointillés · km/h');chart(state.mode,i);appendRows([['Température',`${d.temperature} °C`],['Pluie',`${format(d.rain)} mm · ${d.probability} %`],['Vent / rafales',`${d.wind} / ${d.gust} km/h`],['Direction',`${d.direction%360}° · référence maison`]]);icons();}
+      q('.wr-hero').addEventListener('click',()=>{view='current';show('Météo actuelle');appendText('Pluie légère');chart('weather',0);appendRows([['Actuellement','14 °C'],['Minimum / maximum','9 °C / 17 °C'],['Pluie du jour','2,8 mm'],['Lever / coucher du soleil','08:21 / 19:14']]);icons();});
+      const risks=[{id:'vigilance',title:'Vigilance jaune',detail:'Vent violent',icon:'triangle-alert',active:true,rows:[['Phénomène','Vent violent'],['Niveau','Jaune'],['Période','Cet après-midi']]},{id:'portail',title:'Portail',detail:'Rafales prévues à 42 km/h',icon:'wind',active:true,rows:[['Risque','Modéré'],['Rafales prévues','42 km/h'],['Seuil moyen / fort','35 / 45 km/h']]},{id:'inondation',title:'Inondation',detail:'Aucune fuite détectée',icon:'waves',active:false,rows:[['Détection','Aucune fuite'],['État','Normal']]},{id:'pluie',title:'Pluie',detail:'Pluie faible · 2,8 mm dans la journée',icon:'droplets',active:false,rows:[['Cumul du jour','2,8 mm'],['Niveau','Faible']]},{id:'volets',title:'Volets',detail:'Risque faible',icon:'blinds',active:false,rows:[['Niveau','Faible'],['Vent et température','Dans les seuils configurés']]}];
+      function renderRisks(){q('#wr-sheet-title').textContent='Météo et maison';content.replaceChildren();const filters=document.createElement('div');filters.className='wr-risk-filters';filters.setAttribute('role','group');filters.setAttribute('aria-label','Filtrer les risques');for(const [all,label] of [[false,'Alertes (2)'],[true,'Tout (5)']]){const b=document.createElement('button');b.type='button';b.className='cursor-interaction';b.textContent=label;b.setAttribute('aria-pressed',String(allRisks===all));b.addEventListener('click',()=>{allRisks=all;renderRisks();content.querySelector(`.wr-risk-filters button[aria-pressed="true"]`).focus();});filters.append(b);}content.append(filters);for(const r of risks.filter(r=>allRisks||r.active)){const b=document.createElement('button');b.type='button';b.className='wr-risk cursor-interaction';b.dataset.risk=r.id;b.dataset.active=r.active;b.innerHTML=`<i data-lucide="${r.icon}" aria-hidden="true"></i><span class="wr-risk-copy"><strong>${r.title}</strong><small>${r.detail}</small></span><i class="wr-chevron" data-lucide="chevron-right" aria-hidden="true"></i>`;b.addEventListener('click',()=>{content.replaceChildren();q('#wr-sheet-title').textContent=r.title;appendText(r.detail);appendRows(r.rows);const back=document.createElement('button');back.type='button';back.className='wr-risk cursor-interaction';back.textContent='Revenir aux risques';back.addEventListener('click',()=>{renderRisks();content.querySelector(`[data-risk="${r.id}"]`)?.focus();});content.append(back);q('.wr-close').focus();});content.append(b);}icons();}
+      q('.wr-alert-row').addEventListener('click',()=>{view='risks';allRisks=false;show('Météo et maison');renderRisks();});
+      q('.wr-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{opener?.focus();view=null;});dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+      render();
+      const canvas=q('.wr-sky'),ctx=canvas.getContext('2d');
+      if(ctx){let w=0,h=0,frame=0,last=0,time=0,visible=true;const motion=matchMedia('(prefers-reduced-motion: reduce)'),drops=Array.from({length:28},()=>({x:Math.random(),y:Math.random(),speed:.25+Math.random()*.6,size:.5+Math.random()}));
+        function paint(delta){time+=delta;ctx.clearRect(0,0,w,h);const dark=matchMedia('(prefers-color-scheme: dark)').matches;
+          for(let i=0;i<4;i++){const x=((i*.35+time*.003)%1.5-.25)*w,y=h*(.05+i*.045),radius=w*(.33+i*.03),cloud=ctx.createRadialGradient(x,y,0,x,y,radius);cloud.addColorStop(0,dark?'rgba(194,211,222,.08)':'rgba(255,255,255,.27)');cloud.addColorStop(1,'rgba(220,234,246,0)');ctx.fillStyle=cloud;ctx.fillRect(0,0,w,h);}
+          for(const d of drops){d.y+=delta*d.speed;const x=d.x*w-d.y*8,y=d.y*h;ctx.strokeStyle=dark?'rgba(217,237,250,.19)':'rgba(68,114,147,.12)';ctx.lineWidth=.4*d.size;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-1,y+3*d.size);ctx.stroke();if(d.y>1){const a=(d.y-1)*10;if(a<1){ctx.strokeStyle=`rgba(${dark?'217,237,250':'68,114,147'},${(1-a)*.14})`;ctx.beginPath();ctx.ellipse(d.x*w,h-3,1+a*6,.3+a*1.4,0,0,Math.PI*2);ctx.stroke();}else{d.y=-.03;d.x=Math.random();}}}
+        }
+        function loop(stamp){frame=0;if(motion.matches||!visible||document.hidden)return;if(stamp-last>40){paint(last?Math.min((stamp-last)/1000,.06):0);last=stamp;}frame=requestAnimationFrame(loop);}
+        function sync(){cancelAnimationFrame(frame);frame=0;last=0;paint(0);if(!motion.matches&&visible&&!document.hidden)frame=requestAnimationFrame(loop);}
+        new ResizeObserver(()=>{const r=canvas.getBoundingClientRect();w=r.width;h=r.height;canvas.width=Math.round(w*1.5);canvas.height=Math.round(h*1.5);ctx.setTransform(1.5,0,0,1.5,0,0);sync();}).observe(canvas);new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}).observe(canvas);motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+      }
+    })();
+  </script>
+</div>

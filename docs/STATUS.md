@@ -1,5 +1,11 @@
 # État courant — 24 octobre 2026
 
+## Maquette météo : lisibilité et données à la demande
+
+La première proposition n’est pas acceptée : l’utilisateur trouve les informations trop empilées. La révision `examples/weather-ios-readable.fragment.html` reprend la bascule Météo/Pluie/Vent du guide Apple iOS 27 et ouvre les courbes au toucher d’une heure. Le résumé des risques devient une seule ligne donnant accès aux alertes actives puis à tous les états. Les fonctions sont représentées dans des vues dédiées, avec 25 positions horaires et une position conservée lors du changement de vue.
+
+L’aperçu est vérifié à 320, 390 et 736 px, clair/sombre, avec des cibles tactiles, les trois modes, les détails, le clavier, les filtres de risques et l’absence de débordement. Hauteur environ 343–344 px : la révision privilégie l’aération et la lisibilité, pas un écrasement vertical. **Maquette seulement, données fictives, aucune nouvelle écriture HA ni modification du bundle**. Le candidat de défilement ci-dessous reste en place et sa recette iPhone reste distincte. Preuve : `evidence/weather-ios-readable-2026-10-24.json` ; décision et sources dans `docs/WEATHER-IOS-PREVIEW.md`.
+
 ## Défilement météo `0.3.1-rc.2` et maquette iOS
 
 L’utilisateur juge le nouveau décor satisfaisant, puis signale un défilement vertical bloqué sur la carte. Le banc tactile reproduit le défaut sur le candidat précédent : un geste vertical de 100 px laisse la page à 750 px. Cause vérifiée dans le code : `touch-action: pan-x` sur trois rails, capture des pointeurs tactiles par le drag personnalisé et conversion de la molette verticale en défilement horizontal.

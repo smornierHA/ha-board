@@ -1,5 +1,27 @@
 # Proposition météo iOS fine
 
+## Révision lisibilité — proposition courante
+
+La première maquette a été jugée trop dense : températures, courbe, cumuls, probabilités, vent, rafales et cinq risques se superposaient dans le même espace. La proposition courante est désormais `examples/weather-ios-readable.fragment.html`. La première reste une référence historique, pas un design accepté.
+
+La référence consultée est le [guide Météo iOS 27 d’Apple](https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios), ainsi que ses deux captures officielles (météo principale et détails). Le guide décrit une bascule conditions/précipitations/vent et l’ouverture des graphiques au toucher. Les [principes de mise en page](https://developer.apple.com/design/human-interface-guidelines/layout) et les [matériaux](https://developer.apple.com/design/human-interface-guidelines/materials) motivent la divulgation progressive et la retenue des effets de verre. Aucun artwork Apple n’est incorporé à la maquette. La liste des versions de sécurité distingue iOS 27.0.1 courant de la version propre à l’iPhone Duo et des RC développeur ; aucune fonction n’est déduite d’une RC.
+
+| Accès | Proposition courante |
+|---|---|
+| Immédiat | Température actuelle, condition, mini/maxi et chronologie météo simple |
+| Trois boutons nommés | Météo / Pluie / Vent ; une seule famille de données visible à la fois |
+| Pluie | Barres de cumul, probabilités et valeurs en mm |
+| Vent | Direction relative à la maison, moyenne et rafales en km/h |
+| Toucher une heure | Courbe dédiée et valeurs météo, pluie, vent/rafales de l’heure |
+| Toucher l’en-tête | Météo actuelle, courbe et repères solaires |
+| Une ligne d’alertes | Deux alertes fictives actives regroupées ; détail et bouton Tout pour les cinq risques |
+
+Les 25 positions restent disponibles. Le passage d’une donnée à une autre conserve l’heure affichée et la hauteur de la carte. Les courbes passent dans le détail : elles sont conservées sans être toutes permanentes. Les icônes et polices sont plus grandes que dans la première proposition ; la hauteur de 343–344 px ne constitue pas une réduction de hauteur. Le gain recherché est la lecture, grâce à moins de valeurs et de traitements graphiques simultanés.
+
+Vérification ciblée Chromium sur pointeur tactile : 320/390/736 px en clair/sombre, trois vues, valeurs non coupées, détails et courbes, position horaire conservée, filtres de risques, clavier et fermeture modale. Aucune modification de source, distribution, version ou configuration HA ; le correctif de défilement `0.3.1-rc.2` reste identique. L’aperçu ne vaut pas recette native Safari/iPhone ni intégration de la nouvelle disposition. Preuve : `evidence/weather-ios-readable-2026-10-24.json`.
+
+## Première proposition — historique
+
 Maquette du 24 octobre 2026 : `examples/weather-ios-fine.fragment.html`. Fragment autonome pour la prévisualisation de la conversation, qui fournit Lucide. Ce fichier n’est pas une nouvelle carte HA, n’est pas importé par le composant réel et n’est pas un package à installer. Aucun appel réseau, service HA, identifiant réel ou donnée domestique. Les textes et valeurs sont fictifs ; le runtime du composant et l’éditeur restent inchangés hors correction de défilement.
 
 | Fonction actuelle | Présentation proposée |

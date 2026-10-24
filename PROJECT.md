@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Révision de maquette météo — 24 octobre 2026
+
+Le retour utilisateur remplace la proposition initiale, trop dense, par un aperçu à trois vues Météo/Pluie/Vent inspiré du guide Apple iOS 27 actuel. Dépôt public et droits d’écriture reconfirmés ; branche existante de #19. Seuls l’exemple fictif, ses références et sa preuve évoluent. Le code distribué et l’instance HA ne sont pas modifiés dans cette révision.
+
 ## Incrément gestes et maquette météo — 24 octobre 2026
 
 Dépôt public et droits push/admin reconfirmés. La branche `feat/weather-atmosphere-20261024` et la PR draft #19 accueillent le correctif de défilement `0.3.1-rc.2`, puis une maquette iOS distincte du composant installé. Seuls du code et des données fictives sont versionnés ; aucun export HA réel ni capture privée. La production conserve son interface existante ; la nouvelle disposition reste une proposition à examiner.
