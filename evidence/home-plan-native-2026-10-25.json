@@ -3,7 +3,7 @@
   "version": "0.1.0-rc.2",
   "status": "standalone-candidate-installed-config-and-assets-read-back-native-acceptance-pending",
   "bundle": {
-    "path": "dist/home-plan-card.js",
+    "path": "candidates/home-plan/home-plan-card.js",
     "bytes": 91363,
     "sha256": "17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75",
     "ha_exact_readback": true
@@ -103,5 +103,10 @@
     "initial_run": 40217361946,
     "failure": "Shared notice differed from its immutable HACS distribution copy.",
     "fix": "Restore original shared notice; keep standalone Home Plan notice separate. Installed bundle unchanged."
+  },
+  "ci_artifact_correction": {
+    "initial_run": 40217750099,
+    "failure": "Standalone candidate files were intentionally not in the frozen HACS manifest; the publisher correctly refused them in dist.",
+    "fix": "Place standalone artifacts under candidates/home-plan, outside the HACS distribution. Preserve the publisher gate and the installed bundle."
   }
 }

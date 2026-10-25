@@ -21,7 +21,7 @@ const states={
 Object.entries(states).forEach(([id,s])=>s.entity_id=id);
 const server=http.createServer((req,res)=>{
  const url=new URL(req.url,'http://localhost');
- if(url.pathname==='/bundle.js'){res.setHeader('Content-Type','text/javascript');res.end(fs.readFileSync(path.join(root,'dist/home-plan-card.js')));return;}
+ if(url.pathname==='/bundle.js'){res.setHeader('Content-Type','text/javascript');res.end(fs.readFileSync(path.join(root,'candidates/home-plan/home-plan-card.js')));return;}
  if(privateDir&&url.pathname.startsWith('/local/maison/plans/family-v1/')){const name=path.basename(url.pathname),file=path.join(privateDir,name);if(fs.existsSync(file)){res.setHeader('Content-Type',name.endsWith('.json')?'application/json':'image/svg+xml');res.end(fs.readFileSync(file));return;}}
  if(url.pathname==='/local/broken.json'){res.statusCode=404;res.end();return;}
  res.setHeader('Content-Type','text/html');res.end('<meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:12px;color-scheme:light dark;--card-background-color:#fbfbfc;--primary-text-color:#20242b;--secondary-text-color:#626b76}body.dark{--card-background-color:#1d2026;--primary-text-color:#f4f5f8;--secondary-text-color:#aab2bf}ha-card{display:block}</style><script type="module" src="/bundle.js"></script><main></main>');

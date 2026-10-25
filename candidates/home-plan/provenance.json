@@ -11,14 +11,14 @@
       "sha256": "dd16d2114845f86d02ea0f0d05323a23e2a1b2bf0e5fc3d5e7a773c17bae6f62"
     },
     "scripts/build_home_plan.mjs": {
-      "bytes": 649,
-      "sha256": "d393da2937d4c6a3819491664140612f6ae3aa3ec37a4ddb7126025974268b32"
+      "bytes": 665,
+      "sha256": "f35118f659bdcc14cc72f0f5deb6c8cee366cffdcde5bf82da8717dad493931a"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 15938,
-      "sha256": "faa5811e9bf63a859adfe8fbf2e0eebe747113b4d1f1bbf820f7801db5fae8b7"
+      "bytes": 15954,
+      "sha256": "ae59ca016e37149f202698a92fe8447ad003872ee6088477e8b17f61bb993320"
     },
-    "dist/home-plan-card.js": {
+    "candidates/home-plan/home-plan-card.js": {
       "bytes": 91363,
       "sha256": "17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75"
     }

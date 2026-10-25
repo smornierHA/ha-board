@@ -1,6 +1,6 @@
 # Notices du candidat autonome Home Plan
 
-Le module `dist/home-plan-card.js` incorpore le runtime Lit résolu par `package-lock.json` sans modification :
+Le module `candidates/home-plan/home-plan-card.js` incorpore le runtime Lit résolu par `package-lock.json` sans modification :
 
 - `lit-element@4.2.0`
 - `lit-html@3.3.3`
