@@ -1,5 +1,9 @@
 # Sources de référence
 
+## Plan familial — 25 octobre 2026
+
+Le dessin installé et son ancienne archive ne sont pas une référence géométrique valide selon la correction utilisateur. Le calque V4 annoté et les photos reçus ensuite sont les sources de la nouvelle proposition privée. Les originaux et le modèle de l’habitation restent hors Git public. La conversion brute des annotations conserve leurs pixels pour référence ; la correction suivante de l’utilisateur impose des murs droits et les seuls pans coupés indiqués. Elle prime sur les irrégularités du tracé initial. Les illustrations de pièces dérivent des photos reçues. Aucun de ces éléments ne prétend créer des mesures architecturales ou prouver une association ouverture/volet non vérifiée. La demande suivante autorise l’intégration native et corrige le volet de porte, la porte extérieure, la commande motorisée et les emplacements des détecteurs. Les associations et capacités sont relues dans HA ; le code primaire tydom2mqtt 3.5.3 confirme le TOGGLE commun aux deux payloads de ses commandes de porte. API frontend : documentation officielle cartes/éditeur consultée le 25 octobre 2026 (contributors.home-assistant.io/frontend/custom-ui/card/ et card-editor/). Voir `docs/HOME-PLAN-PREVIEW.md`.
+
 Consultation: 6 septembre 2026. Revalider avant une intervention dépendant d’une version. Les résumés sont des repères; les liens ne prouvent pas la compatibilité de notre installation.
 
 | ID | Source | Usage |

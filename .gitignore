@@ -19,3 +19,8 @@ dist/*
 !dist/home-assistant-frontend-Apache-2.0.txt
 !dist/lit-BSD-3-Clause.txt
 !dist/garage-provenance.json
+!dist/home-plan-card.js
+!dist/home-plan-provenance.json
+
+# Local dependency trees
+/node_modules

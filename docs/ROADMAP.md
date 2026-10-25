@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Plan familial — 25 octobre 2026
+
+Première carte native préparée, testée et installée comme candidat autonome `0.1.0-rc.2` après les corrections utilisateur. Les états réels, actions, associations de zones et éditeur visuel sont intégrés. Étape courante : confirmer l’affichage et l’usage depuis le navigateur utilisateur ; les commandes physiques ne sont pas exécutées par le banc de tests. Stabiliser ensuite le lot et sa CI portable avant toute fusion ou distribution HACS. La commande d’une porte reste distincte de son état physique. Aucun autre module distribué n’est modifié.
+
 La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
 
 ## Avant une éventuelle promotion stable

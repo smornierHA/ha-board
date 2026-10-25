@@ -1,0 +1,344 @@
+<div id="hpf-preview" class="viz-dotted-background">
+  <style>
+    #hpf-preview { padding: 16px 0; color-scheme: inherit; }
+    #hpf-preview .hpf-home {
+      --hp-paper: light-dark(#fbfbfc,#1d2026); --hp-ink: light-dark(#20242b,#f4f5f8);
+      --hp-secondary: light-dark(#626b76,#aab2bf); --hp-line: light-dark(#e7e9ee,#353b46);
+      --hp-soft: light-dark(#f0f2f6,#2b303a); --hp-blue: light-dark(#2673e7,#74adff);
+      --hp-selected: light-dark(#e2ecff,#273e5b); --hp-warm: light-dark(#fff0c8,#55472c);
+      --hp-amber: light-dark(#926000,#f9cc6e); --hp-orange: light-dark(#b8561c,#ffb187);
+      --hp-alert-bg: light-dark(#fff1e7,#473428); --hp-floor: light-dark(#efede6,#30353c);
+      --hp-wall: light-dark(#bcbdb8,#68727e); --hp-furniture: light-dark(#dedbd2,#424a55);
+      --hp-furniture-line: light-dark(#c7c4bb,#5a6572); --hp-water: light-dark(#9fd0d8,#346472);
+      --hp-glass: light-dark(#c4dce5,#5b7b8d); --hp-good: light-dark(#367258,#89c6aa);
+      position: relative; max-width: 680px; margin: 0 auto; overflow: hidden; isolation: isolate;
+      background: var(--hp-paper); color: var(--hp-ink); border-radius: 26px;
+      box-shadow: 0 8px 34px light-dark(#202b4212,#00000026);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 14px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #hpf-preview .hpf-home * { box-sizing: border-box; }
+    #hpf-preview button, #hpf-preview input { font: inherit; }
+    #hpf-preview button { color: inherit; }
+    #hpf-preview button:disabled { opacity: .5; }
+    #hpf-preview .hpf-head { padding: 21px 22px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    #hpf-preview .hpf-heading { display: flex; align-items: center; gap: 11px; }
+    #hpf-preview .hpf-home-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; color: var(--hp-blue); background: var(--hp-selected); }
+    #hpf-preview .hpf-home-mark svg { width: 21px; height: 21px; }
+    #hpf-preview h2 { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -.5px; }
+    #hpf-preview .hpf-floor-name { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-preview-mark { margin-right: 4px; font-size: 11px; color: var(--hp-secondary); white-space: nowrap; }
+    #hpf-preview .hpf-tools { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; padding: 0 22px 8px; }
+    #hpf-preview .hpf-glance { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: nowrap; }
+    #hpf-preview .hpf-glance button { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; border: 0; border-radius: 12px; background: transparent; padding: 4px 7px; font-size: 12px; white-space: nowrap; }
+    #hpf-preview .hpf-glance button:first-child { margin-left: -7px; }
+    #hpf-preview .hpf-glance svg { width: 15px; height: 15px; }
+    #hpf-preview .hpf-glance button[data-light-count] { color: var(--hp-amber); }
+    #hpf-preview .hpf-glance button[data-open-count] { color: var(--hp-orange); }
+    #hpf-preview .hpf-glance button[aria-pressed="true"] { background: var(--hp-soft); }
+    #hpf-preview .hpf-view { display: flex; padding: 3px; margin-left: auto; border-radius: 11px; background: var(--hp-soft); }
+    #hpf-preview .hpf-view button { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 35px; padding: 5px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--hp-secondary); font-size: 12px; }
+    #hpf-preview .hpf-view button svg { width: 17px; height: 17px; }
+    #hpf-preview .hpf-view button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px #00000013; }
+    #hpf-preview .hpf-map { position: relative; margin: 0 auto; width: calc(100% - 24px); max-width: 560px; aspect-ratio: 1000 / 660; }
+    #hpf-preview .hpf-aperture-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; pointer-events: none; }
+    #hpf-preview .hpf-aperture-layer [data-map-aperture] { pointer-events: stroke; }
+    #hpf-preview .hpf-drawing { display: block; width: 100%; height: 100%; overflow: visible; }
+    #hpf-preview .hpf-room-floor { fill: var(--hp-floor); transition: fill .2s; }
+    #hpf-preview .hpf-room-floor.is-lit { fill: var(--hp-warm); }
+    #hpf-preview .hpf-room-floor.is-selected { fill: var(--hp-selected); }
+    #hpf-preview .hpf-room-floor.is-muted { opacity: .28; }
+    #hpf-preview .hpf-drawing .wall { fill: none; stroke: var(--hp-wall); stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }
+    #hpf-preview .hpf-drawing .inner-wall { fill: none; stroke: var(--hp-wall); stroke-width: 5; }
+    #hpf-preview .hpf-drawing .thin { fill: none; stroke: var(--hp-glass); stroke-width: 1.6; opacity: .55; }
+    #hpf-preview .hpf-drawing .door { fill: none; stroke: var(--hp-wall); stroke-width: 2.6; opacity: .75; }
+    #hpf-preview .hpf-drawing .window { fill: none; stroke: var(--hp-glass); stroke-width: 5; }
+    #hpf-preview .hpf-drawing .furniture { fill: var(--hp-furniture); stroke: var(--hp-furniture-line); stroke-width: 1.6; }
+    #hpf-preview .hpf-drawing .furniture-line, #hpf-preview .hpf-drawing .stairs { fill: none; stroke: var(--hp-furniture-line); stroke-width: 2; }
+    #hpf-preview .hpf-drawing .plant { fill: none; stroke: var(--hp-good); stroke-width: 2; opacity: .4; }
+    #hpf-preview .hpf-drawing .pool { fill: var(--hp-water); stroke: var(--hp-glass); stroke-width: 2; }
+    #hpf-preview .hpf-drawing .pool-line { fill: none; stroke: var(--hp-paper); stroke-width: 2; opacity: .38; }
+    #hpf-preview .hpf-drawing .trace-wall { fill: var(--hp-wall); }
+    #hpf-preview .hpf-drawing .trace-door { fill: var(--hp-good); opacity: .7; }
+    #hpf-preview .hpf-drawing .trace-window { fill: var(--hp-glass); }
+    #hpf-preview .hpf-drawing .trace-stair { fill: var(--hp-furniture); }
+    #hpf-preview .hpf-drawing .terrace { fill: var(--hp-soft); opacity: .7; }
+    #hpf-preview .hpf-modebar { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 3px; margin: 2px 16px 8px; padding: 3px; border-radius: 14px; background: var(--hp-soft); }
+    #hpf-preview .hpf-modebar button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 49px; padding: 6px 1px; border: 0; border-radius: 11px; background: transparent; color: var(--hp-secondary); font-size: 11px; }
+    #hpf-preview .hpf-modebar svg { width: 19px; height: 19px; }
+    #hpf-preview .hpf-modebar button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px light-dark(#00000012,#00000026); }
+    #hpf-preview .hpf-mode-short { display: none; }
+    #hpf-preview .hpf-aperture-layer .aperture-line { fill: none; stroke: var(--hp-glass); stroke-width: 6; stroke-linecap: butt; }
+    #hpf-preview .hpf-aperture-layer .aperture-halo { fill: none; stroke: var(--hp-orange); stroke-width: 20; opacity: .18; }
+    #hpf-preview .hpf-aperture-layer .aperture-line.is-open, #hpf-preview .hpf-aperture-layer .aperture-leaf { stroke: var(--hp-orange); }
+    #hpf-preview .hpf-aperture-layer .aperture-leaf { fill: none; stroke-width: 4; }
+    #hpf-preview .hpf-aperture-layer .shutter-track { fill: none; stroke: var(--hp-glass); stroke-width: 12; opacity: .5; }
+    #hpf-preview .hpf-aperture-layer .shutter-fill { fill: none; stroke: var(--hp-blue); stroke-width: 12; }
+    #hpf-preview .hpf-aperture-layer .aperture-leader { fill: none; stroke: var(--hp-blue); stroke-width: 1.4; opacity: .55; }
+    #hpf-preview .hpf-aperture { position: absolute; z-index: 3; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; transform: translate(-50%,-50%); border: 0; border-radius: 12px; background: transparent; }
+    #hpf-preview .hpf-aperture-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 22px; min-height: 23px; padding: 3px 5px; border-radius: 7px; background: var(--hp-paper); color: var(--hp-blue); box-shadow: 0 1px 5px light-dark(#1d2a4525,#00000055); font-size: 11px; font-variant-numeric: tabular-nums; }
+    #hpf-preview .hpf-aperture-mark svg { width: 14px; height: 14px; }
+    #hpf-preview .hpf-aperture.is-open:not(.has-cover) .hpf-aperture-mark { color: var(--hp-orange); background: var(--hp-alert-bg); }
+    #hpf-preview .hpf-aperture:not(.show-value) .hpf-aperture-mark > span { display: none; }
+    #hpf-preview .hpf-aperture.is-muted { opacity: .32; }
+    #hpf-preview .hpf-map-legend { min-height: 30px; padding: 3px 17px 9px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-map-legend span { display: inline-flex; gap: 5px; align-items: center; }
+    #hpf-preview .hpf-map-legend svg { width: 13px; height: 13px; }
+    #hpf-preview .hpf-map-legend .opening-key { color: var(--hp-orange); }
+    #hpf-preview .hpf-map-legend .cover-key { color: var(--hp-blue); }
+    #hpf-preview .hpf-room-tile .hpf-tile-cover { color: var(--hp-blue); }
+    #hpf-preview .hpf-photo-style { position: absolute; left: 9px; bottom: 9px; border: 0; border-radius: 9px; min-height: 34px; padding: 5px 10px; background: var(--hp-paper); color: var(--hp-ink); font-size: 11px; }
+    #hpf-preview .hpf-cover-state { font-size: 12px; margin-left: auto; color: var(--hp-blue); font-variant-numeric: tabular-nums; }
+    #hpf-preview .hpf-quick-room { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; background: transparent; padding: 10px; min-height: 44px; width: 100%; color: var(--hp-blue); font-size: 12px; }
+    #hpf-preview .hpf-quick-room svg { width: 15px; height: 15px; }
+    #hpf-preview .hpf-photo-shortcut { position: absolute; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1px solid var(--hp-line); border-radius: 16px; background: var(--hp-paper); text-align: left; }
+    #hpf-preview .hpf-photo-shortcut img { width: 100%; flex: 1 1 0; min-height: 0; object-fit: cover; }
+    #hpf-preview .hpf-photo-caption { display: flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; padding: 9px 10px; font-size: 12px; font-weight: 600; }
+    #hpf-preview .hpf-photo-caption svg { flex: 0 0 auto; width: 14px; height: 14px; }
+    #hpf-preview .hpf-room-photo { position: relative; height: 160px; margin: 0 0 14px; overflow: hidden; border-radius: 15px; background: var(--hp-soft); }
+    #hpf-preview .hpf-room-photo img { width: 100%; height: 100%; object-fit: cover; }
+    #hpf-preview .hpf-photo-next { position: absolute; right: 9px; bottom: 9px; min-width: 44px; min-height: 36px; border: 0; border-radius: 10px; background: #15202dcc; color: #fff; padding: 6px 10px; font-size: 12px; }
+    #hpf-preview .hpf-zone { position: absolute; margin: 0; border: 0; padding: 0; background: transparent; overflow: visible; border-radius: 4px; }
+    #hpf-preview .hpf-zone.is-muted { opacity: .36; }
+    #hpf-preview .hpf-room-name { position: absolute; display: flex; align-items: center; flex-direction: column; gap: 3px; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }
+    #hpf-preview .hpf-room-name strong { font-size: clamp(11px,1.8vw,14px); line-height: 1.15; font-weight: 620; letter-spacing: -.2px; text-shadow: 0 1px 8px var(--hp-floor); }
+    #hpf-preview .hpf-room-name small { font-size: 11px; line-height: 1.1; color: var(--hp-secondary); }
+    #hpf-preview .hpf-name-micro { display: none; }
+    #hpf-preview .hpf-zone.has-opening strong, #hpf-preview .hpf-zone.has-opening small { color: var(--hp-orange); }
+    #hpf-preview .hpf-zone[aria-pressed="true"] strong { color: var(--hp-blue); }
+    #hpf-preview .hpf-room-name .hpf-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hp-amber); }
+    #hpf-preview .hpf-room-alert { display: inline-grid; place-items: center; margin-left: 3px; width: 12px; height: 12px; font-size: 10px; color: var(--hp-paper); background: var(--hp-orange); border-radius: 50%; text-shadow: none; vertical-align: 1px; }
+    #hpf-preview .hpf-room-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 9px 20px 18px; }
+    #hpf-preview .hpf-room-grid[hidden], #hpf-preview [hidden] { display: none !important; }
+    #hpf-preview .hpf-room-tile { min-width: 0; padding: 15px; min-height: 99px; text-align: left; border: 0; border-radius: 17px; background: var(--hp-soft); }
+    #hpf-preview .hpf-room-tile svg { display: block; width: 20px; height: 20px; margin-bottom: 10px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-room-tile strong { display: block; font-size: 13px; font-weight: 600; }
+    #hpf-preview .hpf-room-tile small { display: block; margin-top: 4px; font-size: 11px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-room-tile.is-lit { background: var(--hp-warm); }
+    #hpf-preview .hpf-room-tile.has-opening { background: var(--hp-alert-bg); }
+    #hpf-preview .hpf-room-tile.has-opening small { color: var(--hp-orange); }
+    #hpf-preview .hpf-footer { display: flex; align-items: center; gap: 8px; padding: 12px 21px 17px; border-top: 1px solid var(--hp-line); }
+    #hpf-preview .hpf-footer > svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--hp-orange); }
+    #hpf-preview .hpf-footer-copy { font-size: 12px; min-width: 0; flex: 1; color: var(--hp-secondary); }
+    #hpf-preview .hpf-footer button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; flex: 0 0 auto; border: 0; padding: 6px 0 6px 9px; background: transparent; color: var(--hp-ink); font-size: 12px; font-weight: 600; }
+    #hpf-preview .hpf-footer button svg { width: 14px; height: 14px; }
+    #hpf-preview .hpf-sheet { position: absolute; z-index: 5; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: 100%; padding: 18px 22px 21px; border: 1px solid var(--hp-line); border-bottom: 0; border-radius: 23px 23px 0 0; background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 -15px 50px #00000022; overflow-y: auto; }
+    #hpf-preview .hpf-sheet::backdrop { background: transparent; }
+    #hpf-preview .hpf-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    #hpf-preview .hpf-sheet h3 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -.4px; }
+    #hpf-preview .hpf-sheet-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-close { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; background: var(--hp-soft); }
+    #hpf-preview .hpf-close svg { width: 18px; height: 18px; }
+    #hpf-preview .hpf-device-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    #hpf-preview .hpf-device { display: flex; align-items: center; gap: 11px; min-height: 68px; border: 0; border-radius: 16px; background: var(--hp-soft); padding: 13px 14px; text-align: left; }
+    #hpf-preview .hpf-device > svg { width: 23px; height: 23px; flex: 0 0 auto; }
+    #hpf-preview .hpf-device.is-lit { background: var(--hp-warm); color: var(--hp-amber); }
+    #hpf-preview .hpf-device strong { display: block; font-size: 13px; font-weight: 600; }
+    #hpf-preview .hpf-device small { display: block; margin-top: 4px; font-size: 12px; }
+    #hpf-preview .hpf-cover { margin-top: 10px; padding: 13px 15px; border-radius: 16px; background: var(--hp-soft); }
+    #hpf-preview .hpf-cover-caption { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+    #hpf-preview .hpf-cover-caption svg { width: 17px; height: 17px; }
+    #hpf-preview .hpf-cover-caption output { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; }
+    #hpf-preview .hpf-cover input { width: 100%; margin: 9px 0 5px; min-height: 30px; accent-color: var(--hp-blue); }
+    #hpf-preview .hpf-cover-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+    #hpf-preview .hpf-cover-actions button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 9px; background: var(--hp-paper); font-size: 12px; }
+    #hpf-preview .hpf-cover-actions svg { width: 14px; height: 14px; }
+    #hpf-preview .hpf-opening { display: flex; align-items: center; gap: 9px; padding: 12px 1px 2px; font-size: 12px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-opening svg { width: 17px; height: 17px; flex: 0 0 auto; }
+    #hpf-preview .hpf-opening.is-open { color: var(--hp-orange); }
+    #hpf-preview .hpf-opening strong { margin-left: auto; font-weight: 600; }
+    #hpf-preview .hpf-sheet details { margin-top: 13px; border-top: 1px solid var(--hp-line); padding-top: 6px; }
+    #hpf-preview .hpf-sheet summary { padding: 9px 0; font-size: 12px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-extra { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 12px; }
+    #hpf-preview .hpf-extra svg { width: 16px; height: 16px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-extra span:last-child { margin-left: auto; color: var(--hp-secondary); }
+    #hpf-preview .hpf-empty { padding: 20px 0 14px; font-size: 13px; color: var(--hp-secondary); }
+    #hpf-preview .hpf-alerts { display: grid; gap: 8px; }
+    #hpf-preview .hpf-alert-item { display: flex; align-items: center; gap: 12px; min-height: 61px; padding: 11px 14px; background: var(--hp-alert-bg); border: 0; border-radius: 15px; text-align: left; }
+    #hpf-preview .hpf-alert-item > svg { width: 20px; height: 20px; color: var(--hp-orange); }
+    #hpf-preview .hpf-alert-item strong { display: block; font-size: 13px; font-weight: 600; }
+    #hpf-preview .hpf-alert-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-orange); }
+    #hpf-preview .hpf-announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
+    @media (max-width: 460px) {
+      #hpf-preview .hpf-head { padding: 18px 16px 10px; }
+      #hpf-preview .hpf-tools { padding: 0 16px 7px; gap: 6px; }
+      #hpf-preview .hpf-preview-mark { font-size: 11px; }
+      #hpf-preview .hpf-room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 6px 14px 14px; gap: 8px; }
+      #hpf-preview .hpf-room-tile { min-height: 91px; padding: 12px; }
+      #hpf-preview .hpf-footer { padding: 8px 15px 12px; }
+      #hpf-preview .hpf-sheet { padding: 16px; }
+      #hpf-preview .hpf-room-name strong { font-size: 11px; }
+      #hpf-preview .hpf-view button { min-width: 35px; padding: 5px 7px; }
+      #hpf-preview .hpf-glance { gap: 3px; }
+      #hpf-preview .hpf-glance button { padding-inline: 5px; font-size: 11px; gap: 4px; }
+      #hpf-preview .hpf-room-photo { height: 120px; }
+      #hpf-preview .hpf-photo-caption { padding: 8px; font-size: 11px; }
+      #hpf-preview .hpf-photo-shortcut { border-radius: 12px; }
+    }
+    @media (pointer: coarse) {
+      #hpf-preview .hpf-glance button, #hpf-preview .hpf-view button, #hpf-preview .hpf-cover-actions button, #hpf-preview .hpf-footer button { min-height: 44px; }
+      #hpf-preview .hpf-view button { min-width: 42px; }
+    }
+    @media (max-width: 360px) {
+      #hpf-preview .hpf-name-full { display: none; }
+      #hpf-preview .hpf-name-micro { display: inline; }
+      #hpf-preview .hpf-mode-long { display: none; }
+      #hpf-preview .hpf-mode-short { display: inline; }
+    }
+    @media (prefers-reduced-motion: reduce) { #hpf-preview .hpf-room-floor { transition: none; } }
+  </style>
+  <section class="hpf-home" aria-label="Plan et commandes de la maison">
+    <header class="hpf-head">
+      <div class="hpf-heading"><span class="hpf-home-mark"><i data-lucide="house" aria-hidden="true"></i></span><div><h2>Maison</h2><span class="hpf-floor-name"></span></div></div>
+      <span class="hpf-preview-mark">Aperçu interactif</span>
+    </header>
+    <div class="hpf-tools">
+      <div class="hpf-glance"><button class="cursor-interaction" type="button" data-light-count aria-pressed="false"></button><button class="cursor-interaction" type="button" data-open-count aria-pressed="false"></button></div>
+      <div class="hpf-view" role="group" aria-label="Présentation"><button class="cursor-interaction" type="button" data-view="plan" aria-label="Vue plan" aria-pressed="true">Plan</button><button class="cursor-interaction" type="button" data-view="rooms" aria-label="Vue pièces" aria-pressed="false">Pièces</button><button class="cursor-interaction" type="button" data-view="reference" aria-label="Voir le calque de référence" aria-pressed="false" hidden>Calque</button></div>
+    </div>
+    <div class="hpf-modebar" role="group" aria-label="Informations sur le plan">
+      <button type="button" class="cursor-interaction" data-mode="" aria-pressed="true"><i data-lucide="house" aria-hidden="true"></i>Pièces</button>
+      <button type="button" class="cursor-interaction" data-mode="lights" aria-pressed="false"><i data-lucide="lightbulb" aria-hidden="true"></i>Lumières</button>
+      <button type="button" class="cursor-interaction" data-mode="temperature" aria-pressed="false"><i data-lucide="thermometer" aria-hidden="true"></i>Temp.</button>
+      <button type="button" class="cursor-interaction" data-mode="openings" aria-pressed="false" aria-label="Ouvertures"><i data-lucide="door-open" aria-hidden="true"></i><span class="hpf-mode-long">Ouvertures</span><span class="hpf-mode-short">Ouv.</span></button>
+      <button type="button" class="cursor-interaction" data-mode="covers" aria-pressed="false"><i data-lucide="blinds" aria-hidden="true"></i>Volets</button>
+    </div>
+    <div class="hpf-map"></div>
+    <div class="hpf-map-legend"></div>
+    <div class="hpf-room-grid" hidden></div>
+    <footer class="hpf-footer"></footer>
+    <dialog class="hpf-sheet" aria-labelledby="hpf-sheet-title"></dialog>
+    <div class="hpf-announcement" role="status" aria-live="polite"></div>
+  </section>
+  <script type="application/json" id="hpf-data">
+  {"floor": "Rez-de-chaussée", "bounds": [0, 30, 1000, 660], "artwork": "<path class='wall' d='M75 115H925V640H75Z'/><path class='inner-wall' d='M470 115V640M75 355H925M690 355V640'/><rect class='furniture' x='120' y='430' width='150' height='60' rx='12'/><rect class='furniture' x='170' y='510' width='90' height='48' rx='12'/><rect class='furniture' x='535' y='440' width='100' height='130' rx='9'/><path class='window' d='M75 440v110M925 165v90'/>", "rooms": [{"id": "kitchen", "name": "Cuisine", "icon": "cooking-pot", "x": 75, "y": 115, "w": 395, "h": 240, "label": [272, 240], "openings": [{"name": "Porte cuisine", "open": true}], "cover": {"name": "Volet cuisine", "position": 80, "id": "kitchen-cover"}, "extras": [{"name": "Réfrigérateur", "value": "4 °C", "icon": "refrigerator"}]}, {"id": "entry", "name": "Entrée", "icon": "door-open", "x": 470, "y": 115, "w": 455, "h": 240, "label": [700, 240], "openings": []}, {"id": "living", "name": "Salon", "icon": "sofa", "x": 75, "y": 355, "w": 395, "h": 285, "label": [340, 430], "temperature": "21,4°", "light": {"name": "Éclairage", "on": true}, "cover": {"name": "Volet salon", "position": 68, "id": "living-cover"}, "openings": [{"name": "Porte salon", "open": false}], "extras": [{"name": "Télévision", "value": "Éteinte", "icon": "tv"}, {"name": "Robot", "value": "À la base", "icon": "bot"}]}, {"id": "guest", "name": "Chambre amis", "short": "Amis", "icon": "bed-double", "x": 470, "y": 355, "w": 220, "h": 285, "label": [580, 610], "cover": {"name": "Volet", "position": 0, "id": "guest-cover"}, "openings": [{"name": "Fenêtre", "open": true}]}, {"id": "office", "name": "Bureau", "icon": "briefcase-business", "x": 690, "y": 355, "w": 235, "h": 285, "label": [810, 500], "light": {"name": "Éclairage", "on": false}, "cover": {"name": "Volet", "position": 45, "id": "office-cover"}, "openings": [{"name": "Fenêtre", "open": false}]}], "apertures": [{"id": "kitchen-window", "room": "kitchen", "name": "Fenêtre cuisine", "opening": 0, "cover": "kitchen-cover", "segment": [75, 180, 75, 250], "control": [100, 200]}, {"id": "living-window", "room": "living", "name": "Fenêtre salon", "opening": 0, "cover": "living-cover", "segment": [75, 440, 75, 550], "control": [100, 490]}, {"id": "guest-window", "room": "guest", "name": "Fenêtre amis", "opening": 0, "cover": "guest-cover", "segment": [535, 640, 605, 640], "control": [560, 635]}, {"id": "office-window", "room": "office", "name": "Fenêtre bureau", "opening": 0, "cover": "office-cover", "segment": [925, 435, 925, 520], "control": [890, 480]}]}
+  </script>
+  <script>
+  (() => {
+    const root = document.getElementById('hpf-preview');
+    const data = JSON.parse(root.querySelector('#hpf-data').textContent);
+    const home = root.querySelector('.hpf-home'), map = root.querySelector('.hpf-map'), grid = root.querySelector('.hpf-room-grid'), sheet = root.querySelector('dialog');
+    const rooms = data.rooms, bounds = data.bounds;
+    let selected = null, view = 'plan', filter = '', opener = null, recent = data.preview?.room || null, quick = null;
+    const photoIndex = new Map();
+    const originalPhoto = new Set();
+    const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const icon = name => `<i data-lucide="${esc(name)}" aria-hidden="true"></i>`;
+    const icons = () => { if (typeof lucide !== 'undefined') lucide.createIcons({attrs:{width:18,height:18}}); };
+    const announce = text => { root.querySelector('[role=status]').textContent = text; };
+    const opening = room => (room.openings || []).find(o => o.open === true);
+    const covers = room => room.covers || (room.cover ? [room.cover] : []);
+    rooms.forEach(r => covers(r).forEach((c,i) => { c.id ||= r.id+'-cover-'+i; }));
+    const useful = room => !!(room.light || covers(room).length || room.temperature || room.extras?.length || room.openings?.length);
+    const matches = room => !filter || filter === 'lights' && room.light?.on || filter === 'openings' && opening(room) || filter === 'covers' && covers(room).length || filter === 'temperature' && room.temperature;
+    const coverState = c => !Number.isFinite(c.position) ? 'Position inconnue' : c.position === 0 ? 'Fermé' : c.position === 100 ? 'Ouvert' : c.position+' % ouvert';
+    const photo = room => room.illustration && !originalPhoto.has(room.id) ? room.illustration : room.photos?.[photoIndex.get(room.id)||0];
+    const apertures = data.apertures || [];
+    const apertureRoom = a => rooms.find(r=>r.id===a.room);
+    const apertureSensor = a => apertureRoom(a)?.openings?.[a.opening];
+    const apertureCover = a => covers(apertureRoom(a)).find(c=>c.id===a.cover);
+    const aperturePath = a => `M${a.segment[0]} ${a.segment[1]}L${a.segment[2]} ${a.segment[3]}`;
+    const coverMarkup = (room,c) => `<div class="hpf-cover" data-cover-id="${esc(c.id)}"><label class="hpf-cover-caption" for="hpf-${esc(c.id)}">${icon('blinds')}<span>${esc(c.name)}</span><output for="hpf-${esc(c.id)}">${esc(coverState(c))}</output></label><input id="hpf-${esc(c.id)}" data-key="${esc(c.id)}-position" data-position="${esc(c.id)}" type="range" min="0" max="100" value="${Number.isFinite(c.position)?c.position:50}" ${Number.isFinite(c.position)?'':'disabled'} aria-label="Pourcentage d’ouverture de ${esc(c.name)}"><div class="hpf-cover-actions"><button type="button" class="cursor-interaction" data-cover="100" data-cover-id="${esc(c.id)}" data-key="${esc(c.id)}-open">${icon('chevron-up')}Ouvrir</button><button type="button" class="cursor-interaction" data-cover="stop" data-cover-id="${esc(c.id)}" data-key="${esc(c.id)}-stop">${icon('square')}Arrêter</button><button type="button" class="cursor-interaction" data-cover="0" data-cover-id="${esc(c.id)}" data-key="${esc(c.id)}-close">${icon('chevron-down')}Fermer</button></div></div>`;
+    function openingMarkup(o) { return `<div class="hpf-opening ${o.open===true?'is-open':''}">${icon(o.name.toLowerCase().includes('fenêtre')?'panels-top-left':'door-open')}<span>${esc(o.name)}</span><strong>${o.open===true?'Ouverte':o.open===false?'Fermée':'État inconnu'}</strong></div>`; }
+    function apertureArtwork() {
+      return apertures.map(a=>{
+        const o=apertureSensor(a), c=apertureCover(a), s=a.segment, p=aperturePath(a), vertical=s[0]===s[2], shift=vertical?-12:12;
+        const parallel=`M${s[0]+(vertical?shift:0)} ${s[1]+(vertical?0:shift)}L${s[2]+(vertical?shift:0)} ${s[3]+(vertical?0:shift)}`;
+        const closed=Number.isFinite(c?.position)?100-c.position:0;
+        return `${o?.open===true?`<path class="aperture-halo" d="${p}"/>`:''}<path data-map-aperture="${esc(a.id)}" class="aperture-line cursor-interaction ${o?.open===true?'is-open':''}" d="${p}"/>${o?.open===true?`<path class="aperture-leaf" d="M${s[0]} ${s[1]}l${vertical?22:0} ${vertical?0:-22}"/>`:''}${c?`<path data-map-aperture="${esc(a.id)}" class="shutter-track cursor-interaction" d="${parallel}"/><path data-map-aperture="${esc(a.id)}" class="shutter-fill cursor-interaction" d="${parallel}" pathLength="100" stroke-dasharray="${closed} 100"/>${filter==='covers'?`<path class="aperture-leader" d="M${(s[0]+s[2])/2} ${(s[1]+s[3])/2}L${a.control[0]} ${a.control[1]}"/>`:''}`:''}`;
+      }).join('');
+    }
+    const roomStatus = room => opening(room) ? (opening(room).name.toLowerCase().includes('fenêtre') ? 'Fenêtre ouverte' : 'Porte ouverte') : room.light?.on ? 'Lumière allumée' : room.temperature || (covers(room).length ? covers(room).length===1?coverState(covers(room)[0]):covers(room).length+' volets' : useful(room) ? 'Tout est calme' : 'Aucune donnée');
+    const shape = room => room.path ? `<path d="${esc(room.path)}"` : `<rect x="${room.x}" y="${room.y}" width="${room.w}" height="${room.h}"`;
+    function draw() {
+      const active = root.activeElement || document.activeElement;
+      const focusedRoom = active?.dataset?.room;
+      root.querySelector('.hpf-floor-name').textContent = data.floor;
+      const lights = rooms.filter(r => r.light?.on).length, openings = rooms.reduce((s,r) => s + (r.openings || []).filter(o => o.open === true).length,0);
+      const lightButton = root.querySelector('[data-light-count]'), openButton = root.querySelector('[data-open-count]');
+      lightButton.innerHTML = icon('lightbulb') + `${lights} lumière${lights === 1 ? '' : 's'}`;
+      lightButton.setAttribute('aria-pressed', String(filter === 'lights'));
+      lightButton.setAttribute('aria-label', `Repérer ${lights} lumière${lights === 1 ? '' : 's'} allumée${lights === 1 ? '' : 's'}`);
+      openButton.innerHTML = icon(openings ? 'door-open' : 'shield-check') + (openings ? `${openings} ouverture${openings === 1 ? '' : 's'}` : 'Tout est fermé');
+      openButton.setAttribute('aria-pressed', String(filter === 'openings'));
+      openButton.setAttribute('aria-label', `Repérer ${openings} ouverture${openings === 1 ? '' : 's'} ouverte${openings === 1 ? '' : 's'}`);
+      map.hidden = view === 'rooms'; grid.hidden = view !== 'rooms';
+      root.querySelector('.hpf-modebar').hidden = view === 'reference';
+      root.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===filter)));
+      map.style.aspectRatio = bounds[2] + '/' + bounds[3];
+      root.querySelector('[data-view=reference]').hidden = !data.reference;
+      root.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+      map.innerHTML = `<svg class="hpf-drawing" viewBox="${bounds.join(' ')}" role="img" aria-label="Plan du ${esc(data.floor)}, ouvertures orange et positions des volets bleues"><title>Pièces, ouvertures et volets du ${esc(data.floor)}</title>${rooms.map(r => `${shape(r)} class="hpf-room-floor ${r.light?.on?'is-lit':''} ${selected===r.id?'is-selected':''} ${matches(r)?'':'is-muted'}"/>`).join('')}${data.artwork}</svg>` + rooms.map(r => {
+        const label = r.label || [r.x+r.w/2,r.y+r.h/2];
+        const [x,y,w,h]=r.hit || [r.x,r.y,r.w,r.h];
+        const selectable=r.selectable!==false,tag=selectable?'button':'div';
+        return `<${tag} class="hpf-zone ${selectable?'cursor-interaction':''} ${opening(r)?'has-opening':''} ${matches(r)?'':'is-muted'}" ${selectable?`type="button" data-room="${esc(r.id)}" aria-pressed="${selected===r.id}"`:''} aria-label="${esc(r.name)}, ${esc(roomStatus(r))}" style="left:${(x-bounds[0])/bounds[2]*100}%;top:${(y-bounds[1])/bounds[3]*100}%;width:${w/bounds[2]*100}%;height:${h/bounds[3]*100}%;${r.clip?'clip-path:'+r.clip+';':''}"><span class="hpf-room-name" style="left:${(label[0]-x)/w*100}%;top:${(label[1]-y)/h*100}%"><strong><span class="hpf-name-full">${esc(r.short||r.name)}</span><span class="hpf-name-micro">${esc(r.micro||r.short||r.name)}</span>${opening(r)?'<span class="hpf-room-alert" aria-hidden="true">!</span>':''}</strong>${r.temperature?`<small>${esc(r.temperature)}</small>`:r.light?.on?'<span class="hpf-dot" aria-label="Lumière allumée"></span>':''}</span></${tag}>`;
+      }).join('');
+      if(view==='plan')map.insertAdjacentHTML('beforeend',`<svg class="hpf-aperture-layer" viewBox="${bounds.join(' ')}" aria-hidden="true">${apertureArtwork()}</svg>`);
+      if (data.preview && recent && view==='plan') {
+        const r=rooms.find(r=>r.id===recent), p=data.preview;
+        if(photo(r))map.insertAdjacentHTML('beforeend',`<button type="button" data-room="${esc(r.id)}" class="hpf-photo-shortcut cursor-interaction" aria-label="Ouvrir les commandes de ${esc(r.name)}" style="left:${(p.x-bounds[0])/bounds[2]*100}%;top:${(p.y-bounds[1])/bounds[3]*100}%;width:${p.w/bounds[2]*100}%;height:${p.h/bounds[3]*100}%"><img src="${esc(photo(r))}" alt="${r.illustration&&!originalPhoto.has(r.id)?'Illustration de ':'Photo de '}${esc(r.name)}"><span class="hpf-photo-caption">${esc(r.short||r.name)}${icon('chevron-right')}</span></button>`);
+      }
+      if(view==='plan')map.insertAdjacentHTML('beforeend',apertures.filter(a=>apertureCover(a)||apertureSensor(a)?.open===true).map(a=>{
+        const r=apertureRoom(a),o=apertureSensor(a),c=apertureCover(a),p=a.control||[(a.segment[0]+a.segment[2])/2,(a.segment[1]+a.segment[3])/2];
+        return `<button type="button" class="hpf-aperture cursor-interaction ${c?'has-cover':''} ${filter==='covers'?'show-value':''} ${o?.open===true?'is-open':''} ${matches(r)?'':'is-muted'}" data-aperture="${esc(a.id)}" aria-label="${esc(a.name)}, ${o?o.open===true?'ouverte':o.open===false?'fermée':'état inconnu':'contact non suivi'}${c?', '+esc(c.name)+' '+esc(coverState(c)):''}. Commandes" style="left:clamp(22px,${(p[0]-bounds[0])/bounds[2]*100}%,calc(100% - 22px));top:${(p[1]-bounds[1])/bounds[3]*100}%"><span class="hpf-aperture-mark">${icon(c?'blinds':'door-open')}${c?`<span>${c.position===0?'Fermé':c.position===100?'Ouvert':Number.isFinite(c.position)?c.position+' %':'?'}</span>`:''}</span></button>`;
+      }).join(''));
+      if(view==='reference'&&data.reference)map.innerHTML=`<svg class="hpf-drawing" viewBox="${bounds.join(' ')}" role="img" aria-label="Calque de référence fourni"><image width="${data.reference.width}" height="${data.reference.height}" href="${esc(data.reference.image)}"/></svg>`;
+      const legend=root.querySelector('.hpf-map-legend');legend.hidden=view!=='plan';legend.innerHTML=`<span class="opening-key">${icon('door-open')}Porte / fenêtre ouverte</span><span class="cover-key">${icon('blinds')}${filter==='covers'?'Volet · % d’ouverture':'Toucher pour le volet'}</span>`;
+      grid.innerHTML = rooms.filter(r=>r.selectable!==false).filter(matches).map(r => `<button type="button" data-room="${esc(r.id)}" class="hpf-room-tile cursor-interaction ${r.light?.on?'is-lit':''} ${opening(r)?'has-opening':''}" aria-label="${esc(r.name)}, ${esc(roomStatus(r))}">${icon(r.icon)}<strong>${esc(r.name)}</strong><small>${esc(roomStatus(r))}</small>${covers(r).length?`<small class="hpf-tile-cover">${covers(r).map(c=>esc(c.name)+' : '+esc(coverState(c))).join(' · ')}</small>`:''}</button>`).join('') || '<div class="hpf-empty">Aucune pièce dans cette sélection.</div>';
+      const footer = root.querySelector('.hpf-footer');
+      footer.innerHTML = icon(openings ? 'circle-alert' : 'shield-check') + `<span class="hpf-footer-copy">${openings ? rooms.filter(opening).map(r => esc(r.short||r.name)).join(' · ') : 'Les ouvertures suivies sont fermées'}</span>${openings?'<button type="button" class="cursor-interaction" data-alerts>À vérifier '+icon('chevron-right')+'</button>':''}`;
+      if (focusedRoom && !sheet.open) root.querySelector(`[data-room="${CSS.escape(focusedRoom)}"]`)?.focus({preventScroll:true});
+      icons();
+    }
+    function roomSheet(room) {
+      quick = null;
+      const saved = document.activeElement?.dataset?.key;
+      selected = room.id;recent=room.id;
+      sheet.innerHTML = `<div class="hpf-sheet-head"><div><h3 id="hpf-sheet-title">${esc(room.name)}</h3><span class="hpf-sheet-sub">${esc(room.temperature ? room.temperature+' · '+data.floor : data.floor)}</span></div><button type="button" class="hpf-close cursor-interaction" data-close aria-label="Revenir au plan">${icon('x')}</button></div>` +
+      (photo(room) ? `<div class="hpf-room-photo"><img src="${esc(photo(room))}" alt="${room.illustration&&!originalPhoto.has(room.id)?'Illustration de ':'Photo de '}${esc(room.name)}">${room.illustration?`<button type="button" class="hpf-photo-style cursor-interaction" data-photo-style>${originalPhoto.has(room.id)?'Voir l’illustration':'Voir la photo'}</button>`:''}${room.photos?.length>1&&(!room.illustration||originalPhoto.has(room.id))?`<button type="button" class="hpf-photo-next cursor-interaction" data-next-photo aria-label="Photo suivante de ${esc(room.name)}">${(photoIndex.get(room.id)||0)+1} / ${room.photos.length}</button>`:''}</div>` : '') +
+      (room.light ? `<div class="hpf-device-grid"><button type="button" data-toggle-light="${esc(room.id)}" data-key="light" class="hpf-device cursor-interaction ${room.light.on?'is-lit':''}" aria-pressed="${room.light.on}">${icon('lightbulb')}<span><strong>${esc(room.light.name)}</strong><small>${room.light.on?'Allumée':'Éteinte'}</small></span></button></div>` : '') +
+      covers(room).map(c=>coverMarkup(room,c)).join('') +
+      (room.openings||[]).map(openingMarkup).join('') +
+      (room.extras?.length ? `<details><summary class="cursor-interaction">Autres équipements (${room.extras.length})</summary>${room.extras.map(e => `<div class="hpf-extra">${icon(e.icon)}<span>${esc(e.name)}</span><span>${esc(e.value)}</span></div>`).join('')}</details>` : '') +
+      (!useful(room) ? '<div class="hpf-empty">Aucun équipement associé à cette pièce.</div>' : '');
+      draw(); if (!sheet.open) sheet.show();
+      if (saved) sheet.querySelector(`[data-key="${CSS.escape(saved)}"]`)?.focus({preventScroll:true});
+      icons();
+    }
+    function apertureSheet(a) {
+      const saved=document.activeElement?.dataset?.key, room=apertureRoom(a), c=apertureCover(a), o=apertureSensor(a);
+      quick=a.id;selected=room.id;
+      sheet.innerHTML=`<div class="hpf-sheet-head"><div><h3 id="hpf-sheet-title">${esc(c?.name||a.name)}</h3><span class="hpf-sheet-sub">${esc(room.name)}${c?' · '+esc(coverState(c)):''}</span></div><button type="button" class="hpf-close cursor-interaction" data-close aria-label="Revenir au plan">${icon('x')}</button></div>${c?coverMarkup(room,c):covers(room).length?`<span class="hpf-sheet-sub">Volets de la pièce</span>${covers(room).map(c=>coverMarkup(room,c)).join('')}`:''}${o?openingMarkup(o):'<div class="hpf-opening">'+icon('panels-top-left')+'Contact physique non suivi</div>'}<button type="button" class="hpf-quick-room cursor-interaction" data-room="${esc(room.id)}">${icon(room.icon)}Voir la pièce${icon('chevron-right')}</button>`;
+      draw();if(!sheet.open)sheet.show();if(saved)sheet.querySelector(`[data-key="${CSS.escape(saved)}"]`)?.focus({preventScroll:true});icons();
+    }
+    function showAlerts() {
+      quick=null;
+      selected = null; draw();
+      sheet.innerHTML = `<div class="hpf-sheet-head"><div><h3 id="hpf-sheet-title">À vérifier</h3><span class="hpf-sheet-sub">Ouvertures du ${esc(data.floor)}</span></div><button type="button" class="hpf-close cursor-interaction" data-close aria-label="Revenir au plan">${icon('x')}</button></div><div class="hpf-alerts">${rooms.flatMap(r => (r.openings||[]).filter(o => o.open).map(o => `<button type="button" class="hpf-alert-item cursor-interaction" data-room="${esc(r.id)}">${icon('door-open')}<span><strong>${esc(r.name)}</strong><small>${esc(o.name)} ouverte</small></span></button>`)).join('')}</div>`;
+      if (!sheet.open) sheet.show(); icons();
+    }
+    root.addEventListener('click', e => {
+      const apertureHit=e.target.closest('[data-map-aperture]');if(apertureHit&&!sheet.open){const id=apertureHit.dataset.mapAperture;opener=root.querySelector(`[data-aperture="${CSS.escape(id)}"]`);apertureSheet(apertures.find(a=>a.id===id));return;}
+      const button = e.target.closest('button'); if (!button) return;
+      if (button.hasAttribute('data-close')) { sheet.close(); return; }
+      if (button.dataset.view) { if (sheet.open) sheet.close(); view=button.dataset.view; selected=null; draw(); return; }
+      if (button.hasAttribute('data-mode')) { filter=button.dataset.mode;draw();announce('Vue '+(filter||'pièces'));return; }
+      if (button.dataset.aperture) {opener=button;apertureSheet(apertures.find(a=>a.id===button.dataset.aperture));return;}
+      if (button.hasAttribute('data-light-count') || button.hasAttribute('data-open-count')) { const next = button.hasAttribute('data-light-count')?'lights':'openings'; filter=filter===next?'':next; draw(); announce(filter ? 'Pièces concernées mises en évidence' : 'Toutes les pièces affichées'); return; }
+      if (button.dataset.room) { opener=button;roomSheet(rooms.find(r => r.id===button.dataset.room)); return; }
+      if (button.hasAttribute('data-alerts')) {opener=button;showAlerts();return;}
+      const room=rooms.find(r=>r.id===selected);if(!room)return;
+      if(button.hasAttribute('data-photo-style')) {if(originalPhoto.has(room.id))originalPhoto.delete(room.id);else originalPhoto.add(room.id);roomSheet(room);sheet.querySelector('[data-photo-style]')?.focus({preventScroll:true});return;}
+      if(button.hasAttribute('data-next-photo')) {photoIndex.set(room.id,((photoIndex.get(room.id)||0)+1)%room.photos.length);roomSheet(room);sheet.querySelector('[data-next-photo]')?.focus({preventScroll:true});return;}
+      if(button.dataset.toggleLight) {room.light.on=!room.light.on;roomSheet(room);announce(`${room.name} : lumière ${room.light.on?'allumée':'éteinte'}`);}
+      if(button.dataset.cover) {const c=covers(room).find(c=>c.id===button.dataset.coverId);if(!c)return;if(button.dataset.cover==='stop')announce(`${c.name} : volet arrêté`);else {c.position=Number(button.dataset.cover);if(quick)apertureSheet(apertures.find(a=>a.id===quick));else roomSheet(room);announce(`${c.name} : ${coverState(c)}`);}}
+    });
+    sheet.addEventListener('input', e => {if(e.target.matches('input[type=range]'))e.target.closest('.hpf-cover').querySelector('output').textContent=coverState({position:Number(e.target.value)});});
+    sheet.addEventListener('change', e => {if(e.target.matches('input[type=range]')){const room=rooms.find(r=>r.id===selected),c=covers(room).find(c=>c.id===e.target.dataset.position);c.position=Number(e.target.value);draw();announce(`${c.name} : ${coverState(c)}`);}});
+    sheet.addEventListener('keydown', e => {if(e.key==='Escape'){e.preventDefault();sheet.close();}});
+    sheet.addEventListener('close', () => {if(sheet.open)return;selected=null;quick=null;draw();if(opener?.dataset?.aperture)root.querySelector(`[data-aperture="${CSS.escape(opener.dataset.aperture)}"]`)?.focus({preventScroll:true});else if(opener?.dataset?.room)root.querySelector(`[data-room="${CSS.escape(opener.dataset.room)}"]`)?.focus({preventScroll:true});else root.querySelector('[data-alerts]')?.focus({preventScroll:true});});
+    draw();
+  })();
+  </script>
+</div>

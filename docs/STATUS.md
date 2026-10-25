@@ -1,5 +1,11 @@
 # État courant — 9 septembre 2026
 
+## Plan familial — préparation du 25 octobre 2026
+
+**Plan de la maison 0.1.0-rc.2 installé comme candidat autonome sur l’accueil.** Module 91 363 octets, SHA256 `17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75`, relu à l’identique. Un bloc remplacé et une ressource ajoutée ; 43 autres ressources et le reste du dashboard inchangés. Deux zones créées, deux appareils de détection et huit libellés corrigés ; huit associations héritées vérifiées sans renommage d’ID. Vingt-quatre nouveaux fichiers relus, dont le premier bundle candidat conservé. La géométrie, les photos et les associations réelles restent privées.
+
+Contrôles Chromium locaux sur bundle figé, clair/sombre, 320/390/736 px, commandes ciblées simulées, inconnus/indisponibles, contacts indépendants, impulsion, héritage/actualisation des zones, éditeur et repères sur HTTP. Le moteur de capture HA échouait avant installation (HTTP 500) et reste indisponible après (connexion interrompue). **Chargement sur le navigateur utilisateur et recette physique non revendiqués.** Pas de fusion ni de release HACS du Plan. Détails : `HOME-PLAN.md`, preuve expurgée `../evidence/home-plan-native-2026-10-25.json`. La météo reste dans son lot PR #19.
+
 **Distribution installée : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
 
 **Candidat Garage : `v0.3.0-rc.1`, préparation de #13.** Source 1.0.1 relue sans dérive via HA-MCP ; export public expurgé et source maintenue 1.1.0 distincts. Le candidat corrige G1, les réponses tardives et le cycle de vie caméra à la reconnexion/reconfiguration, incorpore Lit, ajoute l’éditeur natif et prépare une bascule/rollback Garage seuls. Les contrats Node et comparaisons Chrome utilisent des doubles et doivent être rattachés à la CI exacte de la PR. État : préparé et testé par simulation ; non accepté, non fusionné, non publié, non installé, non chargé, non recetté dans HA. Aucun service réel n’a été appelé.

@@ -13,6 +13,8 @@ Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargemen
 | [Weather Combined Forecast](docs/CARDS.md#weather-combined-forecast) | Météo, prévisions, pluie, vent et risques ; ressource autonome | Éditeur visuel et YAML |
 | [Garage Control Card](docs/CARDS.md#garage-control-card) | État physique distinct, commande protégée, caméras, véhicules et événements ; ressource autonome | Éditeur visuel et YAML |
 
+**Candidat autonome Plan de la maison `0.1.0-rc.2`** : [utilisation et éditeur](docs/HOME-PLAN.md). Plan, pièces, volets, lumières, contacts et détecteurs ; éditeur visuel natif. Installé comme candidat séparé, hors des modules du package HACS ci-dessous ; recette utilisateur encore attendue.
+
 [Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 
 La version candidate [`v0.3.0-rc.1`](https://github.com/smornierHA/ha-board/releases/tag/v0.3.0-rc.1) ajoute Garage Control comme troisième module autonome. Elle conserve octet pour octet les modules Personnes et météo de `v0.2.0-rc.1`. L’état daté de publication, installation, chargement et recette se trouve dans [STATUS](docs/STATUS.md) ; une version ou une CI ne constitue pas à elle seule une recette Home Assistant.

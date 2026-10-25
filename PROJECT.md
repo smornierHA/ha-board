@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Exploration du plan familial — 25 octobre 2026
+
+Lot autonome séparé de la météo, issu de `main`. Dépôt public vérifié avec droit d’écriture ; seuls code, tests, documentation et fixture fictive sont versionnés. La correction utilisateur impose des murs droits, les seuls pans coupés indiqués et des ouvertures correctement placées. La première carte native **Plan de la maison 0.1.0-rc.2** est installée sur l’accueil ; un seul bloc remplacé, 43 ressources existantes inchangées. Deux appareils de détection et leurs diagnostics sont réassociés aux zones précisées, sans changement d’ID. Fichiers et configuration relus ; contrôles locaux réussis. Capture native indisponible avant et après modification ; recette utilisateur et essais physiques restent distincts. Aucun actif domestique ni configuration réelle ne rejoint ce dépôt. Voir `docs/HOME-PLAN.md` et `docs/HOME-PLAN-PREVIEW.md`.
+
 | Champ | Valeur |
 |---|---|
 | Dépôt vérifié le 6 septembre 2026 | [smornierHA/ha-board](https://github.com/smornierHA/ha-board), accessible avec droits d'administration et d'écriture |

@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-25",
+  "version": "0.1.0-rc.2",
+  "status": "standalone-candidate-installed-config-and-assets-read-back-native-acceptance-pending",
+  "bundle": {
+    "path": "dist/home-plan-card.js",
+    "bytes": 91363,
+    "sha256": "17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75",
+    "ha_exact_readback": true
+  },
+  "scope": {
+    "target_cards_replaced": 1,
+    "new_active_resources": 1,
+    "other_resources_unchanged": 43,
+    "new_areas": 2,
+    "devices_reassigned": 2,
+    "entity_names_updated_without_id_rename": 8,
+    "associated_entities_read_back": 8,
+    "asset_files_verified": 24,
+    "dwelling_assets_in_public_repo": false
+  },
+  "local_browser": {
+    "proof": [
+      {
+        "width": 320,
+        "dark": false,
+        "no_overflow": true
+      },
+      {
+        "width": 320,
+        "dark": true,
+        "no_overflow": true
+      },
+      {
+        "width": 390,
+        "dark": false,
+        "no_overflow": true
+      },
+      {
+        "width": 390,
+        "dark": true,
+        "no_overflow": true
+      },
+      {
+        "width": 736,
+        "dark": false,
+        "no_overflow": true
+      },
+      {
+        "width": 736,
+        "dark": true,
+        "no_overflow": true
+      },
+      {
+        "commands_targeted": true,
+        "no_optimistic_state": true,
+        "contact_independent": true,
+        "unknown_position": true,
+        "unavailable_disabled": true,
+        "pulse_lock": true,
+        "smoke_alert": true,
+        "registry_area_inheritance": true,
+        "registry_refresh": true,
+        "listener_cleanup": true,
+        "stable_input": true,
+        "visual_editor": true,
+        "marker_without_secure_context": true,
+        "service_error": true,
+        "asset_error": true,
+        "sanitized_svg": true
+      },
+      {
+        "private_geometry_and_images_loaded": true,
+        "private_actual_services_called": false
+      }
+    ],
+    "errors": [],
+    "real_services_called": false,
+    "native_ha": false
+  },
+  "ha_config_readback": {
+    "only_target_card_changed": true,
+    "before_hash": "b9adfc791a65a993",
+    "after_hash": "2d27dea3e4519ab0"
+  },
+  "native_capture": {
+    "before_change": "engine HTTP 500",
+    "after_change": "engine connection failed",
+    "screenshot_obtained": false
+  },
+  "physical_commands_tested": false,
+  "user_native_acceptance": false,
+  "merged": false,
+  "hacs_release": false,
+  "github_ci_for_home_plan": false,
+  "unchanged_component_checks": {
+    "person_candidate_contracts_passed": 43,
+    "garage_candidate_contracts_passed": 15,
+    "import_and_distribution_integrity": true,
+    "weather_candidate_contracts": "22 tests with TZ=UTC, matching the existing UTC fixture assumptions and CI environment; host local timezone failed the midnight-boundary fixture"
+  }
+}

@@ -2,7 +2,7 @@
 
 This file records identified third-party portions and exact review boundaries. It does not assign a global license to HA-BOARD.
 
-## Lit runtime incorporated in Garage Control
+## Lit runtime incorporated in Garage Control and Home Plan
 
 `dist/garage-control-card.js` incorporates the production modules resolved from the exact npm dependency `lit-element@4.2.0`: `lit-element`, `lit-html` and `@lit/reactive-element`. The root dependency and complete transitive resolution are locked by `package-lock.json`; `scripts/build_garage.mjs` bundles them into the distributed module. There is no CDN import or dependency on another Lovelace card at runtime.
 
@@ -12,7 +12,9 @@ This file records identified third-party portions and exact review boundaries. I
 - License declared by the installed package: BSD-3-Clause
 - License text: `lit-BSD-3-Clause.txt` beside the distributed JavaScript and in `third_party/` in the source tree.
 
-The dependency was installed from the npm registry using the integrity values in `package-lock.json`. HA-BOARD modifications are confined to the Garage card source and build wrapper; the incorporated Lit runtime is not modified directly.
+`dist/home-plan-card.js` incorporates the same locked runtime with `scripts/build_home_plan.mjs`, including the standard SVG and keyed-list directives. The runtime is unchanged; the generic Home Plan source, stylesheet and build wrapper are maintained separately.
+
+The dependency was installed from the npm registry using the integrity values in `package-lock.json`. HA-BOARD modifications are confined to the Garage and Home Plan card sources, stylesheet and build wrappers; the incorporated Lit runtime is not modified directly.
 
 ## Home Assistant frontend weather icon paths
 

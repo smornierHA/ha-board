@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0-rc.2",
+  "standalone_candidate": true,
+  "files": {
+    "src/candidate/home-plan-card.js": {
+      "bytes": 40849,
+      "sha256": "472c33953f9e4eaf2c35af705e9c7b781b61e98c1272b602c910f7f6168cf172"
+    },
+    "src/candidate/home-plan-card.css": {
+      "bytes": 17591,
+      "sha256": "dd16d2114845f86d02ea0f0d05323a23e2a1b2bf0e5fc3d5e7a773c17bae6f62"
+    },
+    "scripts/build_home_plan.mjs": {
+      "bytes": 649,
+      "sha256": "d393da2937d4c6a3819491664140612f6ae3aa3ec37a4ddb7126025974268b32"
+    },
+    "tests/home-plan-browser.mjs": {
+      "bytes": 15938,
+      "sha256": "faa5811e9bf63a859adfe8fbf2e0eebe747113b4d1f1bbf820f7801db5fae8b7"
+    },
+    "dist/home-plan-card.js": {
+      "bytes": 91363,
+      "sha256": "17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75"
+    }
+  },
+  "domestic_assets_in_module": false,
+  "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
+  "tests": "local browser contracts and simulated HA, no real motor actuation",
+  "ci_run": false,
+  "merged": false,
+  "hacs_release": false
+}
