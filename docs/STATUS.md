@@ -12,7 +12,7 @@ La pluie utilise une intensité moyenne obtenue à partir du cumul et de la cade
 
 Installation candidate effectuée via HA-MCP : module `0.4.0-rc.2` de 225 018 octets, SHA256 `4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8`, contenu relu identique au bundle testé. Les 43 ressources gardent leur ordre et seule l’URL météo change ; hash du dashboard inchangé `b9adfc791a65a993`, carte et `layout: ios` inchangés. Contrôles locaux : 24 contrats météo sur source et distribution, 19 tests Python, intégrité/confidentialité/documents, suite Chromium et matrice étendue réussis. Aucun redémarrage ni publication HACS. Le rendu du nouveau frontend après rechargement et la recette iPhone restent à confirmer. Ancien module préservé ; retour arrière non exécuté.
 
-Contrôle de paquet : le premier run GitHub a détecté la notice `dist/lucide-ISC.txt` ignorée et donc absente d’un checkout propre. La notice exacte est désormais suivie et autorisée par `.gitignore`, sans modification du runtime ni assouplissement du contrôle d’intégrité. Le résultat CI du head courant reste à lire sur la PR.
+Contrôle de paquet : le premier run GitHub a détecté la notice `dist/lucide-ISC.txt` ignorée et donc absente d’un checkout propre. La notice exacte est désormais suivie et autorisée par `.gitignore`, sans modification du runtime ni assouplissement du contrôle d’intégrité. Le banc attend aussi l’événement natif de fermeture avant de rouvrir une popup par script, sans retirer les assertions de filtres ; la suite Chromium complète repasse sur source et distribution. Un échec de démarrage Chrome affiche maintenant ses diagnostics. Le résultat CI du head courant reste à lire sur la PR.
 
 ## Présentation iOS acceptée et intégrée en candidat
 

@@ -25,6 +25,8 @@ try{
  const {targetId}=await send('Target.createTarget',{url:'about:blank'});const {sessionId}=await send('Target.attachToTarget',{targetId,flatten:true});const call=(method,params)=>send(method,params,sessionId);await call('Runtime.enable');await call('Page.enable');
  const evaluate=async expression=>{const result=await call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(result.exceptionDetails)throw Error(JSON.stringify(result.exceptionDetails));return result.result.value;};
  const waitFor=async expression=>{for(let i=0;i<100;i++){if(await evaluate(expression))return;await new Promise(r=>setTimeout(r,50));}throw Error('Timeout: '+expression);};
+ // Native close events are queued; complete them before a scripted reopen.
+ const closeSheet=()=>evaluate('new Promise(resolve=>{const d=demo.card.shadowRoot.querySelector("dialog");if(!d.open){resolve();return;}d.addEventListener("close",resolve,{once:true});d.close();})');
  const proof=[];
  for(const source of ['candidate','bundle']){
   await call('Emulation.setDeviceMetricsOverride',{width:1000,height:780,deviceScaleFactor:1,mobile:false});
@@ -151,7 +153,7 @@ try{
    await evaluate('demo.card.shadowRoot.querySelector(".wr-hour").click()');
    assert.equal(await evaluate('demo.card.shadowRoot.querySelector("dialog").open'),true);
    assert.equal(await evaluate('Boolean(demo.card.shadowRoot.querySelector(".wr-graph"))'),true);
-   await evaluate('demo.card.shadowRoot.querySelector("dialog").close()');
+   await closeSheet();
   }
   assert.ok(await evaluate('demo.card.shadowRoot.querySelectorAll(".wr-wind-plot [data-series]").length')>1);
   await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-row").click()');
@@ -161,13 +163,13 @@ try{
   await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_alert':{state:'vert',attributes:{}},'sensor.example_risk':{state:'ok',attributes:{}}}};})()`);
   assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-count").textContent'),'0');
   assert.equal(await evaluate('demo.card.shadowRoot.querySelector("dialog").open'),true);
-  await evaluate('demo.card.shadowRoot.querySelector("dialog").close();demo.card.shadowRoot.querySelector(".wr-alert-row").click()');
+  await closeSheet();await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-row").click()');
   assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("[data-risk-id]").length'),0);
   await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_leak':{state:'on',attributes:{is_active:true}}}};})()`);
   assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-row").dataset.level'),'critical');
   await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_leak':{state:'unavailable',attributes:{is_active:true}}}};})()`);
   assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-count").textContent'),'0');
-  await evaluate('demo.card.shadowRoot.querySelector("dialog").close();demo.card.shadowRoot.querySelector(".wr-hero").click()');assert.equal(await evaluate('location.hash'),'#example-weather');
+  await closeSheet();await evaluate('demo.card.shadowRoot.querySelector(".wr-hero").click()');assert.equal(await evaluate('location.hash'),'#example-weather');
   await evaluate('demo.card.shadowRoot.querySelector(".wr-rail").scrollLeft=130;demo.card.shadowRoot.querySelector("[data-mode=rain]").click()');
   assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-rail").scrollLeft'),130);
   for(const selector of ['.wr-rail','.wr-alert-row'])for(const dy of [-100,100]){

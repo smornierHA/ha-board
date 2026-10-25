@@ -591,7 +591,9 @@
       "real_services_called": false
     },
     "browser_data": "fictitious; mocked HA components",
-    "desktop_wheel_harness": "fresh desktop document after mobile touch checks; scroll and rail assertions retained"
+    "desktop_wheel_harness": "fresh desktop document after mobile touch checks; scroll and rail assertions retained",
+    "native_dialog_close_events": "Awaited before scripted reopen; filter assertions retained.",
+    "chrome_startup_diagnostics": true
   },
   "scope_preservation": {
     "original_import_unchanged": true,
@@ -639,6 +641,7 @@
     "initial_failed_run": "https://github.com/smornierHA/ha-board/actions/runs/40194337248",
     "cause": "dist/lucide-ISC.txt existed locally but was ignored and absent in a clean checkout; integrity gate failed before browser tests.",
     "fix": "Track the exact distributed license and allow it through .gitignore; keep integrity assertions intact.",
-    "runtime_changed": false
+    "runtime_changed": false,
+    "clean_committed_export_integrity": true
   }
 }
