@@ -1,8 +1,14 @@
-# HA-BOARD 0.3.1-rc.2
+# HA-BOARD 0.4.0-rc.1
+
+- Intègre la présentation iOS validée via `layout: ios` : symboles horaires superposés compacts, en-tête proportionné, trois modes à hauteur stable, courbes et détails sur données configurées.
+- Footer sobre avec compteur actif, volet filtré par défaut et accès à tous les états ; les entités indisponibles restent distinctes des problèmes confirmés. Les actions HA existantes restent accessibles.
+- L’éditeur expose iOS / Classique. Les anciennes configurations conservent leur rendu par défaut ; aucune migration des sources, seuils ou entités n’est nécessaire.
+
+## Défilement conservé de 0.3.1-rc.2
 
 - Corrige le blocage des gestes verticaux sur les prévisions et les rails de risques : les gestes tactiles restent natifs, le glisser personnalisé ne concerne que la souris.
 - Rend la molette verticale à la page et gère aussi l’annulation d’un toucher ; le swipe horizontal et la conservation de sa position restent disponibles.
-- Ajoute une maquette iOS fine sur données fictives, indépendante de la présentation installée. Aucun changement des options ou actions du dashboard.
+- La maquette reste une référence de conception fictive ; le runtime iOS consomme les données HA normalisées et les règles configurées.
 
 ## Atmosphère conservée de 0.3.1-rc.1
 

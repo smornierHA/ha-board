@@ -1,5 +1,11 @@
 # Recette et critères avant une éventuelle stable
 
+## Candidat météo iOS `0.4.0-rc.1` — 25 octobre 2026
+
+Direction graphique acceptée : `weather-ios-compact-icons.fragment.html`. Contrôles locaux sur source et distribution avec prévisions fictives : modes à hauteur stable, filtres Alertes/Tout, états faibles/indisponibles, mises à jour pendant un dialogue, actions, heure conservée, retour Classique et reconnexion. Gestes verticaux Chromium dans les deux sens, matrice 320/390/736 px clair/sombre. Preuve : `evidence/weather-ios-integration-2026-10-25.json`.
+
+Après chargement du candidat, la recette Companion/Safari doit confirmer le rendu, les gestes, les modes, les alertes réelles et les actions. Une écriture de fichier, une ressource relue ou une capture Chromium fictive ne coche pas cette recette.
+
 La distribution courante est `v0.2.0-rc.1` ; la [recette HA météo ciblée du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067) est confirmée par l’utilisateur après installation contrôlée. Les sections Personnes ci-dessous conservent la preuve du lot précédent. La CI et les contrats simulés ne constituent pas une recette Home Assistant réelle. `v0.1.2-rc.1` est publiée depuis `21c8212f8ae47fb3ff7d86131dd7c821c688b46e`, installée via HACS et chargée dans le navigateur ; l’utilisateur a confirmé sa recette HA ciblée le 9 septembre 2026. Cette clôture ne vaut pas promotion stable.
 
 ## Correctif visuel `v0.1.2-rc.1`

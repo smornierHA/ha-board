@@ -30,12 +30,21 @@
   "dependency_review": {
     "status": "verified",
     "direct": "lit-element@4.2.0",
-    "resolved": ["lit-element@4.2.0", "lit-html@3.3.3", "@lit/reactive-element@2.1.2"],
+    "resolved": [
+      "lit-element@4.2.0",
+      "lit-html@3.3.3",
+      "@lit/reactive-element@2.1.2"
+    ],
     "lockfile": "package-lock.json",
     "license": "BSD-3-Clause",
     "notice": "THIRD-PARTY-NOTICES.md",
     "license_file": "third_party/lit-BSD-3-Clause.txt",
-    "distributed_notices": ["THIRD-PARTY-NOTICES.md", "home-assistant-frontend-Apache-2.0.txt", "lit-BSD-3-Clause.txt"]
+    "distributed_notices": [
+      "THIRD-PARTY-NOTICES.md",
+      "home-assistant-frontend-Apache-2.0.txt",
+      "lit-BSD-3-Clause.txt",
+      "lucide-ISC.txt"
+    ]
   },
   "privacy_review": "verified-fictitious-only",
   "scope": "Garage only; Portail, SIP, identities, internal URLs, actual entity IDs and images excluded."

@@ -19,11 +19,12 @@ notice_sources = {
     'THIRD-PARTY-NOTICES.md': root / 'THIRD-PARTY-NOTICES.md',
     'home-assistant-frontend-Apache-2.0.txt': root / 'third_party/home-assistant-frontend-Apache-2.0.txt',
     'lit-BSD-3-Clause.txt': root / 'third_party/lit-BSD-3-Clause.txt',
+    'lucide-ISC.txt': root / 'third_party/lucide-ISC.txt',
 }
 for name, source in notice_sources.items():
     (root / 'dist' / name).write_bytes(source.read_bytes())
-manifest['package_version'] = '0.3.1-rc.2'
-manifest['components']['weather-combined-forecast-card'] = '0.3.1-rc.2'
+manifest['package_version'] = '0.4.0-rc.1'
+manifest['components']['weather-combined-forecast-card'] = '0.4.0-rc.1'
 manifest['components']['garage-control-card'] = '1.1.0'
 manifest['artifacts'] = [
     {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),

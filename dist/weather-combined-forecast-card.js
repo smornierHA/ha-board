@@ -1,4 +1,4 @@
-/* HA-BOARD weather atmosphere candidate 0.3.1-rc.2; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
+/* HA-BOARD weather iOS candidate 0.4.0-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
  * Modified from the private project source: lifecycle, editor, validation and packaging changes.
  * Home Assistant frontend weather icon paths are provided under Apache-2.0; notice distributed alongside this file.
  */
@@ -337,6 +337,1108 @@ class WeatherAtmosphere {
   }
 }
 
+// Lucide 1.8.0 icon nodes, ISC license; see third_party/lucide-ISC.txt.
+const WEATHER_IOS_ICONS = {
+  "cloud": [
+    [
+      "path",
+      {
+        "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+      }
+    ]
+  ],
+  "cloud-drizzle": [
+    [
+      "path",
+      {
+        "d": "M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 19v1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 14v1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 19v1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 14v1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 21v1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 16v1"
+      }
+    ]
+  ],
+  "cloud-rain": [
+    [
+      "path",
+      {
+        "d": "M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 14v6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 14v6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 16v6"
+      }
+    ]
+  ],
+  "cloud-sun": [
+    [
+      "path",
+      {
+        "d": "M12 2v2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m4.93 4.93 1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 12h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m19.07 4.93-1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M15.947 12.65a4 4 0 0 0-5.925-4.128"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"
+      }
+    ]
+  ],
+  "cloud-moon": [
+    [
+      "path",
+      {
+        "d": "M13 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6z"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M18.376 14.512a6 6 0 0 0 3.461-4.127c.148-.625-.659-.97-1.248-.714a4 4 0 0 1-5.259-5.26c.255-.589-.09-1.395-.716-1.248a6 6 0 0 0-4.594 5.36"
+      }
+    ]
+  ],
+  "sun": [
+    [
+      "circle",
+      {
+        "cx": "12",
+        "cy": "12",
+        "r": "4"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 2v2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 20v2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m4.93 4.93 1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m17.66 17.66 1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 12h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 12h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m6.34 17.66-1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m19.07 4.93-1.41 1.41"
+      }
+    ]
+  ],
+  "moon": [
+    [
+      "path",
+      {
+        "d": "M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+      }
+    ]
+  ],
+  "sunrise": [
+    [
+      "path",
+      {
+        "d": "M12 2v8"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m4.93 10.93 1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 18h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 18h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m19.07 10.93-1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M22 22H2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m8 6 4-4 4 4"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 18a4 4 0 0 0-8 0"
+      }
+    ]
+  ],
+  "sunset": [
+    [
+      "path",
+      {
+        "d": "M12 10V2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m4.93 10.93 1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 18h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 18h2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m19.07 10.93-1.41 1.41"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M22 22H2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m16 6-4 4-4-4"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 18a4 4 0 0 0-8 0"
+      }
+    ]
+  ],
+  "snowflake": [
+    [
+      "path",
+      {
+        "d": "m10 20-1.25-2.5L6 18"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M10 4 8.75 6.5 6 6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m14 20 1.25-2.5L18 18"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m14 4 1.25 2.5L18 6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m17 21-3-6h-4"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m17 3-3 6 1.5 3"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 12h6.5L10 9"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m20 10-1.5 2 1.5 2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M22 12h-6.5L14 15"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m4 10 1.5 2L4 14"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m7 21 3-6-1.5-3"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m7 3 3 6h4"
+      }
+    ]
+  ],
+  "cloud-lightning": [
+    [
+      "path",
+      {
+        "d": "M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m13 12-3 5h4l-3 5"
+      }
+    ]
+  ],
+  "cloud-fog": [
+    [
+      "path",
+      {
+        "d": "M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M16 17H7"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M17 21H9"
+      }
+    ]
+  ],
+  "wind": [
+    [
+      "path",
+      {
+        "d": "M12.8 19.6A2 2 0 1 0 14 16H2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M17.5 8a2.5 2.5 0 1 1 2 4H2"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M9.8 4.4A2 2 0 1 1 11 8H2"
+      }
+    ]
+  ],
+  "droplet": [
+    [
+      "path",
+      {
+        "d": "M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"
+      }
+    ]
+  ],
+  "droplets": [
+    [
+      "path",
+      {
+        "d": "M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"
+      }
+    ]
+  ],
+  "waves": [
+    [
+      "path",
+      {
+        "d": "M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"
+      }
+    ]
+  ],
+  "blinds": [
+    [
+      "path",
+      {
+        "d": "M3 3h18"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 7H8"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M20 11H8"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M10 19h10"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 15h12"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M4 3v14"
+      }
+    ],
+    [
+      "circle",
+      {
+        "cx": "4",
+        "cy": "19",
+        "r": "2"
+      }
+    ]
+  ],
+  "triangle-alert": [
+    [
+      "path",
+      {
+        "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 9v4"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 17h.01"
+      }
+    ]
+  ],
+  "circle-check": [
+    [
+      "circle",
+      {
+        "cx": "12",
+        "cy": "12",
+        "r": "10"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m9 12 2 2 4-4"
+      }
+    ]
+  ],
+  "circle-help": [
+    [
+      "circle",
+      {
+        "cx": "12",
+        "cy": "12",
+        "r": "10"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 17h.01"
+      }
+    ]
+  ],
+  "chevron-right": [
+    [
+      "path",
+      {
+        "d": "m9 18 6-6-6-6"
+      }
+    ]
+  ],
+  "chevron-left": [
+    [
+      "path",
+      {
+        "d": "m15 18-6-6 6-6"
+      }
+    ]
+  ],
+  "x": [
+    [
+      "path",
+      {
+        "d": "M18 6 6 18"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "m6 6 12 12"
+      }
+    ]
+  ],
+  "move-up": [
+    [
+      "path",
+      {
+        "d": "M8 6L12 2L16 6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M12 2V22"
+      }
+    ]
+  ]
+};
+
+/* ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+const WEATHER_IOS_STYLES = `
+    :host { --wr-ink:light-dark(#243b4d,#f1f6fb); --wr-muted:light-dark(#344f65,#b9cbdc); --wr-bg:light-dark(#e4edf4,#203449); --wr-rule:light-dark(#284c6b1c,#e3efff1a); --wr-control:light-dark(#698caa1c,#d9eaff0c); --wr-active:light-dark(#ffffffe0,#dbeaff24); --wr-rain:light-dark(#105579,#9ed8f5); --wr-warm:light-dark(#8d6019,#edc17b); --wr-sheet:light-dark(#f4f7fa,#24394e); --wr-chart:light-dark(#386784,#d5eafa); display:block; container-type:inline-size; padding:0; color:var(--wr-ink); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif; }
+    :host * { box-sizing:border-box; }
+    :host button { font:inherit; color:inherit; -webkit-tap-highlight-color:transparent; }
+    :host .wr-weather { display:block; max-width:none; border:0; margin:auto; position:relative; isolation:isolate; overflow:hidden; background:var(--wr-bg); border-radius:28px; box-shadow:0 14px 42px light-dark(#26415b14,#00000026),inset 0 1px 0 light-dark(#ffffffb0,#e6f1ff26); }
+    :host .wr-weather::before { content:""; position:absolute; z-index:-1; inset:0; background:radial-gradient(ellipse at 20% -20%,light-dark(#ffffffb0,#b4d2eb25),transparent 70%),linear-gradient(125deg,light-dark(#cadde946,#4c72932c),transparent); }
+    :host .wr-sky { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; opacity:.48; }
+    :host .wr-hero { --wr-current-size:52px; display:flex; align-items:center; gap:16px; border:0; width:100%; text-align:left; background:transparent; padding:20px 24px 17px; }
+    :host .wr-icon-temp { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    :host .wr-degrees { font-size:var(--wr-current-size); line-height:1; letter-spacing:-.075em; font-weight:400; flex-shrink:0; }
+    :host .wr-now-copy { flex:1; min-width:0; display:grid; gap:4px; }
+    :host .wr-name { font-size:12px; line-height:1.2; font-weight:400; color:var(--wr-muted); }
+    :host .wr-condition { font-size:18px; line-height:1.15; letter-spacing:-.035em; font-weight:500; }
+    :host .wr-range { font-size:12px; line-height:1.3; color:var(--wr-muted); }
+    :host .wr-range { display:grid; grid-template-columns:auto minmax(32px,1fr) auto; align-items:center; gap:6px; width:100%; max-width:160px; font-variant-numeric:tabular-nums; }
+    :host .wr-gauge { display:block; position:relative; height:4px; border-radius:4px; background:linear-gradient(90deg,#6eaadd,#b4c8b1 52%,#e5b16e); }
+    :host .wr-gauge::after { content:""; position:absolute; left:calc(var(--wr-gauge-pos,50%) - 3px); opacity:var(--wr-gauge-dot,1); top:-1px; width:6px; height:6px; background:light-dark(#ffffff,#f9fdff); border-radius:50%; box-shadow:0 0 0 1px color-mix(in srgb,var(--wr-ink) 30%,transparent); }
+    :host .wr-weather-symbol { --wr-cloud:light-dark(#f8fbff,#e8f2f8); --wr-cloud-edge:light-dark(#c1d5e4,#f1f8ff); --wr-blue:light-dark(#308ec6,#6cc4f1); --wr-sun:light-dark(#dfaa34,#f2c258); --wr-moon:light-dark(#d7b36b,#f1d69f); position:relative; display:inline-block; width:28px; height:28px; overflow:visible; flex-shrink:0; filter:drop-shadow(0 1px 1px light-dark(#3a689322,#00000018)); }
+    :host .wr-current-icon { width:var(--wr-current-size); height:var(--wr-current-size); }
+    :host .wr-glyph { position:absolute; left:0; top:0; width:48px; height:48px; transform-origin:0 0; }
+    :host .wr-glyph svg { position:absolute; display:block; }
+    :host .wr-cloud-body { left:4.8px; top:-1.4px; width:38.4px; height:38.4px; fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.65; z-index:2; }
+    :host .wr-rain-detail { inset:0; width:48px; height:48px; color:var(--wr-blue); stroke-width:1.7; z-index:1; }
+    :host .wr-rain-detail path:first-of-type { display:none; }
+    :host .wr-sun-detail { left:20px; top:-2px; width:28px; height:28px; color:var(--wr-sun); stroke-width:1.7; z-index:0; }
+    :host .wr-sun-detail circle { fill:var(--wr-sun); stroke-width:.5; }
+    :host .wr-moon-detail { left:23px; top:0; width:23px; height:23px; fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.5; z-index:0; }
+    :host .wr-solar-detail { inset:0; width:48px; height:48px; color:var(--wr-sun); stroke-width:1.5; }
+    :host .wr-baseline-probe { display:inline-block; width:0; height:0; padding:0; vertical-align:baseline; }
+    :host .wr-toolbar { display:flex; gap:8px; margin:0 20px; align-items:center; }
+    :host .wr-tabs { display:flex; flex:1; padding:3px; background:var(--wr-control); border-radius:16px; backdrop-filter:blur(14px); }
+    :host .wr-tabs button { border:0; display:flex; align-items:center; justify-content:center; gap:7px; flex:1; min-width:0; min-height:38px; border-radius:13px; background:transparent; font-size:13px; font-weight:400; color:var(--wr-muted); }
+    :host .wr-tabs button[aria-selected="true"] { background:var(--wr-active); color:var(--wr-ink); box-shadow:0 1px 4px light-dark(#3857730a,#07152215); }
+    :host .wr-tabs svg { width:16px; height:16px; stroke-width:1.6; }
+    :host .wr-panel { padding:10px 0 12px; }
+    :host .wr-context { min-height:24px; padding:0 24px 6px; display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:11px; color:var(--wr-muted); }
+    :host .wr-next { width:36px; height:44px; flex-shrink:0; margin:0; border:0; background:var(--wr-control); border-radius:15px; display:grid; place-items:center; }
+    :host .wr-next svg { width:15px; height:15px; stroke-width:1.5; }
+    :host .wr-rail { overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; touch-action:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; scroll-behavior:auto; padding:0 16px; }
+    :host .wr-rail::-webkit-scrollbar { display:none; }
+    :host .wr-hours { display:flex; width:max-content; position:relative; }
+    :host .wr-hour { display:grid; grid-template-rows:21px 48px 40px; gap:0; justify-items:center; align-items:center; width:var(--wr-item-width,62px); min-width:var(--wr-item-width,62px); border:0; padding:0 0 3px; background:transparent; border-radius:12px; font-variant-numeric:tabular-nums; position:relative; }
+    :host .wr-hour:active { background:var(--wr-control); }
+    :host .wr-hour-time { font-size:12px; color:var(--wr-muted); line-height:1; }
+    :host .wr-now .wr-hour-time { color:var(--wr-ink); font-weight:500; }
+    :host .wr-hour-icon { width:48px; height:48px; }
+    :host .wr-hour-glyph { position:absolute; left:0; top:0; width:28px; height:28px; transform-origin:0 0; }
+    :host .wr-original-stack { position:relative; display:block; width:28px; height:28px; }
+    :host .wr-hour-glyph > svg { display:block; width:28px; height:28px; }
+    :host .wr-hour-glyph .wr-solid-cloud { position:absolute; inset:-2px 0 auto; width:100%; height:84%; fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+    :host .wr-hour-glyph .wr-rain-marks { position:absolute; inset:0; width:100%; height:100%; color:var(--wr-blue); stroke-width:2.4; }
+    :host .wr-hour-glyph .wr-rain-marks path:first-of-type { display:none; }
+    :host .wr-hour-glyph .wr-symbol-sun { color:var(--wr-sun); stroke-width:1.8; }
+    :host .wr-hour-glyph .wr-symbol-sun path:nth-last-of-type(2) { fill:var(--wr-sun); }
+    :host .wr-hour-glyph .wr-symbol-sun path:last-of-type { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+    :host .wr-hour-glyph .wr-symbol-moon path:first-of-type { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+    :host .wr-hour-glyph .wr-symbol-moon path:last-of-type { fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.7; }
+    :host .wr-hour-glyph .wr-symbol-solar { color:var(--wr-sun); stroke-width:1.7; }
+    :host .wr-icon-cell { display:grid; place-items:center; width:48px; height:48px; }
+    :host .wr-icon-cell > svg { display:block; }
+    :host .wr-value[data-level="medium"] { color:var(--wr-warning); }
+    :host .wr-value[data-level="high"] { color:var(--wr-danger); }
+    :host .wr-value[data-level="cool"] { color:var(--wr-rain); }
+    :host { --wr-warning:light-dark(#724000,#f3bd66); --wr-danger:light-dark(#981b37,#ff9eb0); }
+    :host .wr-main-value { font-size:19px; font-weight:400; line-height:1.2; letter-spacing:-.035em; }
+    :host .wr-secondary-value { font-size:11px; line-height:1.2; color:var(--wr-muted); }
+    :host .wr-hour-extra { display:grid; gap:4px; justify-items:center; }
+    :host .wr-value-large { font-size:19px; font-weight:400; line-height:1.2; letter-spacing:-.02em; }
+    :host .wr-wind-arrow { width:26px; height:26px; stroke-width:1.4; transform:rotate(var(--wr-direction)); color:var(--wr-chart); }
+    :host .wr-wind-space { height:48px; }
+    :host .wr-wind-main { display:flex; align-items:center; gap:4px; }
+    :host .wr-wind-main .wr-wind-arrow { width:13px; height:13px; }
+    :host .wr-direction { display:grid; place-items:center; width:16px; height:16px; }
+    :host .wr-wind-plot { position:absolute; left:0; top:21px; width:100%; height:48px; overflow:hidden; pointer-events:none; color:var(--wr-chart); }
+    :host .wr-wind-legend { display:flex; align-items:center; gap:12px; }
+    :host .wr-wind-legend span { display:flex; align-items:center; gap:4px; }
+    :host .wr-wind-legend span::before { content:""; width:12px; border-top:1.5px solid var(--wr-chart); }
+    :host .wr-wind-legend span:last-child::before { border-top-style:dashed; }
+    :host .wr-risk[data-severity="2"], :host .wr-risk[data-severity="3"] { padding-left:10px; padding-right:10px; border-radius:12px; margin-top:6px; background:light-dark(#f4dcb32e,#d99d3914); }
+    :host .wr-risk[data-severity="3"] { background:light-dark(#d95c6c19,#ef879818); }
+    :host .wr-precip { height:29px; display:flex; align-items:end; width:18px; }
+    :host .wr-precip span { width:18px; height:var(--wr-bar); background:var(--wr-rain); border-radius:4px 4px 1px 1px; opacity:.64; min-height:2px; }
+    :host .wr-precip[data-level="medium"] span { background:var(--wr-warning); }
+    :host .wr-precip[data-level="high"] span { background:var(--wr-danger); }
+    :host .wr-alert-row { width:calc(100% - 40px); height:44px; min-height:44px; margin:0 20px 12px; padding:6px 2px; display:flex; align-items:center; gap:9px; text-align:left; border:0; border-top:1px solid var(--wr-rule); border-radius:0; background:transparent; font-size:12px; }
+    :host .wr-alert-row[data-level="severe"] { --wr-alert-accent:var(--wr-warning); }
+    :host .wr-alert-row[data-level="critical"] { --wr-alert-accent:var(--wr-danger); }
+    :host .wr-alert-row[data-level="critical"] .wr-alert-label { color:var(--wr-danger); font-weight:500; }
+    :host .wr-alert-row[data-level="severe"] .wr-alert-icon, :host .wr-alert-row[data-level="critical"] .wr-alert-icon { color:var(--wr-alert-accent); }
+    :host .wr-alert-row .wr-alert-icon { width:16px; height:16px; flex-shrink:0; color:var(--wr-warm); stroke-width:1.5; }
+    :host .wr-alert-count { display:grid; place-items:center; width:22px; height:22px; flex-shrink:0; border-radius:50%; background:color-mix(in srgb,var(--wr-alert-accent,var(--wr-muted)) 13%,transparent); color:var(--wr-alert-accent,var(--wr-ink)); font-size:11px; line-height:1; font-weight:500; }
+    :host .wr-alert-label { flex:1; min-width:0; color:var(--wr-ink); font-size:12px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    :host .wr-alert-row .wr-chevron { width:14px; height:14px; color:var(--wr-muted); flex-shrink:0; }
+    :host .wr-caption { margin:11px 0 0; color:var(--wr-muted); text-align:center; font-size:11px; line-height:1.4; }
+    :host .wr-sheet { color:var(--wr-ink); border:0; padding:0; background:var(--wr-sheet); border-radius:25px; width:calc(100% - 24px); max-width:460px; max-height:calc(100% - 24px); box-shadow:0 20px 70px #07142145; overflow:auto; }
+    :host .wr-sheet::backdrop { background:#091a2c55; backdrop-filter:blur(4px); }
+    :host .wr-sheet-top { display:flex; gap:10px; justify-content:space-between; align-items:center; padding:20px 20px 7px; }
+    :host .wr-sheet h3 { font-size:19px; line-height:1.25; letter-spacing:-.025em; margin:0; font-weight:500; }
+    :host .wr-close { width:44px; height:44px; border:0; display:grid; place-items:center; background:var(--wr-control); border-radius:50%; flex-shrink:0; }
+    :host .wr-close svg { width:18px; height:18px; }
+    :host .wr-sheet-content { padding:0 20px 20px; }
+    :host .wr-sheet-caption { margin:0 0 10px; font-size:12px; line-height:1.4; color:var(--wr-muted); }
+    :host .wr-graph { display:block; width:100%; height:105px; color:var(--wr-chart); overflow:visible; }
+    :host .wr-graph-labels { display:flex; justify-content:space-between; color:var(--wr-muted); font-size:11px; margin:5px 0 18px; }
+    :host .wr-details { margin:0; }
+    :host .wr-details div { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--wr-rule); font-size:13px; line-height:1.4; }
+    :host .wr-details dt { color:var(--wr-muted); }
+    :host .wr-details dd { margin:0; text-align:right; }
+    :host .wr-risk-filters { display:flex; gap:8px; margin:4px 0 14px; }
+    :host .wr-risk-filters button { border:0; border-radius:18px; min-height:36px; background:var(--wr-control); padding:6px 12px; font-size:12px; }
+    :host .wr-risk-filters [aria-pressed="true"] { background:var(--wr-active); color:var(--wr-ink); }
+    :host .wr-risk { border:0; border-top:1px solid var(--wr-rule); background:transparent; padding:13px 0; min-height:62px; display:flex; align-items:center; gap:11px; text-align:left; width:100%; }
+    :host .wr-risk svg { width:21px; height:21px; flex-shrink:0; color:var(--wr-muted); stroke-width:1.4; }
+    :host .wr-risk[data-active="true"] svg { color:var(--wr-warm); }
+    :host .wr-risk[data-severity="3"] svg { color:light-dark(#bb3b50,#ffadba); }
+    :host .wr-risk-copy { display:grid; gap:4px; flex:1; }
+    :host .wr-risk-copy strong { font-size:14px; font-weight:500; line-height:1.25; }
+    :host .wr-risk-copy small { font-size:12px; color:var(--wr-muted); line-height:1.3; }
+    :host .wr-risk .wr-chevron { width:14px; height:14px; }
+    :host .wr-tabs svg, :host .wr-next svg, :host .wr-alert-row svg, :host .wr-risk svg { display:block; }
+    :host .wr-thresholds { margin-top:15px; font-size:12px; color:var(--wr-muted); }
+    :host .wr-thresholds summary { min-height:44px; display:flex; align-items:center; color:var(--wr-ink); }
+    :host .wr-thresholds p { line-height:1.5; margin:6px 0; }
+    @container(max-width:420px) { :host .wr-hero { --wr-current-size:48px; padding:20px 20px 17px; gap:13px; } :host .wr-condition { font-size:16px; } }
+    @container(max-width:350px) { :host .wr-hero { --wr-current-size:44px; gap:10px; } :host .wr-icon-temp { gap:5px; } }
+    @media(pointer:coarse) { :host .wr-tabs button { min-height:44px; } :host .wr-next { width:44px; height:44px; } :host .wr-risk-filters button { min-height:44px; } }
+    @media(prefers-reduced-motion:reduce) { :host .wr-rail { scroll-behavior:auto; } }
+
+:host .weather-atmosphere { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:-1; opacity:calc(var(--weather-ios-opacity,.58) * .35); }
+:host .wr-weather > :not(.weather-atmosphere) { position:relative; }
+:host button { cursor:pointer; }
+:host button:focus-visible, :host summary:focus-visible { outline:2px solid var(--wr-ink); outline-offset:2px; }
+:host .wr-hour small, :host .wr-wind-legend small { font-size:11px; }
+:host .wr-graph { height:126px; }
+:host .wr-graph text { fill:var(--wr-muted); font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+:host .wr-plain-title, :host .wr-empty { padding:20px 24px; font-size:14px; }
+:host .wr-empty { width:100%; min-height:112px; }
+:host .wr-risk-copy { min-width:0; overflow-wrap:anywhere; }
+:host .wr-risk ha-icon { width:21px; height:21px; --mdc-icon-size:21px; flex-shrink:0; color:var(--wr-warm); }
+:host .wr-current-composite { left:0; top:0; width:48px; height:48px; color:var(--wr-cloud-edge); }
+:host .wr-current-cloud path, :host .wr-symbol-cloud.lucide-cloud path { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+:host .wr-current-sun, :host .wr-current-cloud-sun { color:var(--wr-sun); }
+:host .wr-current-sun circle { fill:var(--wr-sun); }
+:host .wr-current-cloud-sun path:nth-last-of-type(2) { fill:var(--wr-sun); }
+:host .wr-current-cloud-sun path:last-of-type { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+:host .wr-current-moon { fill:var(--wr-moon); color:var(--wr-moon); }
+:host .wr-current-cloud-moon path:first-of-type { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
+:host .wr-current-cloud-moon path:last-of-type { fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.7; }
+:host .wr-symbol-solar circle, :host .wr-current-cloud-lightning path:last-of-type { fill:currentColor; }
+:host .wr-header-slot .header-risk-subbuttons { display:flex; justify-content:flex-end; gap:8px; padding:0 20px 8px; }
+:host .risk-sub-button { border:0; border-radius:50%; min-width:36px; min-height:36px; color:var(--wr-warning); background:var(--wr-control); }
+:host .wr-hour { flex-shrink:0; }
+:host .wr-hour-glyph .lucide-sun circle { fill:var(--wr-sun); }
+:host .wr-hour-glyph .lucide-moon { fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.7; }
+`;
+
+// Presentation only: normalized forecasts, daily range, risks and actions remain
+// owned by WeatherCombinedForecastCard. No polling or HA service on view changes.
+class WeatherIOSPresentation {
+  constructor(card) {
+    this.card = card;
+    this.root = card.shadowRoot;
+    this.mode = 'weather';
+    this.allRisks = false;
+    this.selection = null;
+    this.key = '';
+    this.epoch = 0;
+    this.mounted = false;
+    this.q = selector => this.root.querySelector(selector);
+    this.textCanvas = document.createElement('canvas');
+    this.textContext = this.textCanvas.getContext('2d');
+  }
+
+  escape(value) { return this.card._escapeHtml(value); }
+  format(value, digits = 0) { return this.card._formatNumber(value, digits); }
+  icon(name, cls = '') {
+    const nodes = WEATHER_IOS_ICONS[name] || WEATHER_IOS_ICONS['circle-help'];
+    const children = nodes.map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k,v]) => `${k}="${this.escape(v)}"`).join(' ')}></${tag}>`).join('');
+    return `<svg class="lucide lucide-${name} ${cls}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${children}</svg>`;
+  }
+
+  symbol(condition, current = false) {
+    const icons = {sunny:'sun','clear-night':'moon',partlycloudy:'cloud-sun',cloudy:'cloud',rainy:'cloud-drizzle',pouring:'cloud-rain',snowy:'snowflake','snowy-rainy':'snowflake',lightning:'cloud-lightning','lightning-rainy':'cloud-lightning',fog:'cloud-fog',windy:'wind','windy-variant':'wind',hail:'cloud-rain',exceptional:'wind',sunrise:'sunrise',sunset:'sunset'};
+    const name = icons[condition] || 'cloud';
+    const rainy = name === 'cloud-drizzle' || name === 'cloud-rain';
+    let glyph;
+    if (current) {
+      glyph = rainy ? this.icon('cloud','wr-cloud-body') + this.icon(name,'wr-rain-detail') : this.icon(name,`wr-current-composite wr-current-${name}`);
+    } else {
+      glyph = rainy ? `<span class="wr-original-stack">${this.icon('cloud','wr-solid-cloud')}${this.icon(name,'wr-rain-marks')}</span>` : this.icon(name, name === 'cloud-sun' ? 'wr-symbol-sun' : name === 'cloud-moon' ? 'wr-symbol-moon' : ['sun','moon','sunrise','sunset'].includes(name) ? 'wr-symbol-solar' : 'wr-symbol-cloud');
+    }
+    return `<span class="wr-weather-symbol ${current?'wr-current-icon':'wr-hour-icon'}" aria-hidden="true"><span class="${current?'wr-glyph':'wr-hour-glyph'}">${glyph}</span></span>`;
+  }
+
+  level(kind, value) {
+    if (!Number.isFinite(value)) return 'neutral';
+    if (kind === 'wind' || kind === 'gust') {
+      const c = this.card.config;
+      return this.card._intensityLevel(value, this.card._threshold(c[kind === 'wind' ? 'wind_reference_threshold_entity' : 'gust_reference_threshold_entity'], c[kind === 'wind' ? 'wind_reference_threshold_fallback' : 'gust_reference_threshold_fallback']));
+    }
+    if (kind === 'temperature') { const t=String(this.card.config.temperature_unit).includes('F')?(value-32)*5/9:value;return t > 27 ? 'high' : t > 20 ? 'medium' : t <= 5 ? 'cool' : 'low'; }
+    const mm=String(this.card.config.precipitation_unit).toLowerCase()==='in'?value*25.4:value;
+    return mm >= 5 ? 'high' : mm >= 2 ? 'medium' : 'low';
+  }
+
+  risks() {
+    const card = this.card;
+    return card._riskConfigItems().flatMap((cfg, index) => {
+      const id = String(index), entity = card._tapActionEntity(cfg);
+      if (cfg.mode === 'weather_alert_pills') {
+        const state = card._state(cfg.entity), available = state && !['unknown','unavailable'].includes(state.state);
+        const alerts = available ? card._buildWeatherAlertPills(cfg, index) : [];
+        if (alerts.length) return alerts.map((p,j) => ({...p,id:`${id}-${j}`,active:true,severity:p.severity,title:`${p.label} · ${p.mainText}`,detail:p.subtitle||p.title,entity}));
+        return [{id,title:cfg.label||'Vigilance météo',detail:available?'Aucune vigilance active':'Indisponible',active:false,severity:0,entity,config:cfg,available}];
+      }
+      const chip = card._buildGenericRiskChip(cfg,index), level = chip?.level;
+      const severity = ({critique:3,fort:2,alert:2,moyen:1})[level] || 0;
+      const relevant = [cfg.entity,cfg.level_entity].filter(Boolean).map(e=>card._state(e));
+      const available = relevant.every(s=>s && !['unknown','unavailable'].includes(s.state));
+      const fallback = cfg.label || cfg.name || card._state(cfg.level_entity||cfg.entity)?.attributes?.friendly_name || 'Risque';
+      return [{...chip,id,title:chip?.label||fallback,detail:available?(chip?[chip.mainText,chip.subtitle].filter(Boolean).join(' · '):card._riskSecondaryText(cfg,'Aucun problème signalé')):'Indisponible',active:available&&severity>0,severity:available?severity:0,entity,config:cfg,available}];
+    }).sort((a,b)=>b.severity-a.severity || (a.priority??50)-(b.priority??50));
+  }
+
+  render(force = false) {
+    const c = this.card, cfg = c.config;
+    const entries = c._enrichEntries(c._forecastEntries());
+    const risks = this.risks(), range = c._currentTemperatureRange(entries,c._currentTemperatureValue().value);
+    const dark = c._hass?.themes?.darkMode;
+    const key = JSON.stringify([cfg,entries.map(d=>[d.datetimeMs,d.temperature,d.precipitation,d.probability,d.windSpeed,d.windGust,d.windBearing,d.condition]),risks,range,c._currentTemperatureValue(),c._currentSummaryText(),c._state(cfg.sun_entity)?.attributes,c._state(cfg.weather_entity)?.state,dark]);
+    const rail = this.q('.combined-scroll');
+    if (rail && c._isInteracting && !force) { c._pendingRender = true; return; }
+    this.entries = entries; this.items = risks; this.range = range;
+    this.modes = ['weather', ...((cfg.show_rain !== false || c._shouldShowProbability(entries))?['rain']:[]), ...(cfg.show_wind!==false?['wind']:[])];
+    if (!this.modes.includes(this.mode)) this.mode = this.modes[0];
+    if (!this.mounted || !this.q('.wr-weather')) this.mount();
+    this.q('.wr-weather').className = `wr-weather weather-ios-${c._weatherMode()}`;
+    this.q('.wr-weather').style.setProperty('--weather-ios-opacity',String(Number(cfg.weather_background_opacity??.58)));
+    if (typeof dark === 'boolean') this.card.style.colorScheme = dark?'dark':'light';
+    c._syncAtmosphere(c._weatherMode());
+    if (!force && key === this.key) return;
+    this.key = key;
+    this.renderHeader(); this.renderTimeline(); this.renderFooter();
+    if (this.selection && this.q('dialog')?.open) this.renderSelection(false);
+    this.normalize();
+  }
+
+  mount() {
+    this.mounted = true;
+    this.root.innerHTML = `<style>${this.styles()}</style><ha-card class="wr-weather"><div class="wr-header-slot"></div><div class="wr-toolbar"><div class="wr-tabs" role="tablist" aria-label="Donnée des prévisions"></div><button type="button" class="wr-next" aria-label="Voir les heures suivantes">${this.icon('chevron-right')}</button></div><section class="wr-panel" id="wr-panel" role="tabpanel"><div class="wr-context"><span class="wr-context-label"></span></div><div class="wr-rail combined-scroll" role="region" aria-label="Prévisions horaires"><div class="wr-hours"></div></div></section><div class="wr-footer-slot"></div></ha-card><dialog class="wr-sheet" aria-labelledby="wr-sheet-title"><div class="wr-sheet-top"><h3 id="wr-sheet-title">Détails météo</h3><button type="button" class="wr-close" aria-label="Fermer les détails">${this.icon('x')}</button></div><div class="wr-sheet-content"></div></dialog>`;
+    this.root.addEventListener('click', this.onClick = e => {
+      const button = e.target.closest('button'); if (!button) return;
+      if (button.matches('[data-mode]')) this.setMode(button.dataset.mode);
+      else if (button.matches('.wr-next')) this.q('.wr-rail').scrollBy({left:this.q('.wr-rail').clientWidth*.7,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      else if (button.matches('[data-hour]')) { if (!this.dragged) this.open({kind:'hour',time:Number(button.dataset.hour)}); }
+      else if (button.matches('.wr-hero')) cAction(this.card);
+      else if (button.matches('.wr-alert-row')) { this.allRisks=false; this.open({kind:'risks'}); }
+      else if (button.matches('.wr-close')) this.q('dialog').close();
+      else if (button.matches('[data-all-risks]')) { this.allRisks=button.dataset.allRisks==='true'; this.renderSelection(false); this.q(`[data-all-risks="${this.allRisks}"]`)?.focus(); }
+      else if (button.matches('[data-risk-id]')) this.open({kind:'risk',id:button.dataset.riskId});
+      else if (button.matches('[data-risk-back]')) this.open({kind:'risks'});
+      else if (button.matches('[data-native-info]')) { const entity=button.dataset.nativeInfo;this.opener=null;this.openerSelector=null;this.q('dialog').close();this.card._openMoreInfo(entity); }
+      else if (button.matches('[data-current-details]')) this.open({kind:'current'});
+    });
+    const cAction = card => card._handleAction(card._mainHeaderTapAction());
+    this.root.addEventListener('keydown', this.onKey = e => {
+      if (!e.target.matches('[data-mode]')) return;
+      const at=this.modes.indexOf(e.target.dataset.mode); let next;
+      if (e.key==='ArrowRight') next=(at+1)%this.modes.length;
+      if (e.key==='ArrowLeft') next=(at+this.modes.length-1)%this.modes.length;
+      if (e.key==='Home') next=0; if(e.key==='End') next=this.modes.length-1;
+      if (next!==undefined) {e.preventDefault();this.setMode(this.modes[next]);this.q(`[data-mode="${this.mode}"]`).focus();}
+    });
+    const dialog=this.q('dialog');
+    dialog.addEventListener('close',()=>{this.selection=null;const target=this.opener?.isConnected?this.opener:this.openerSelector?this.q(this.openerSelector):null;target?.focus({preventScroll:true});});
+    dialog.addEventListener('click',e=>{if(e.target===dialog){const b=dialog.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)dialog.close();}});
+    this.observer = new ResizeObserver(()=>{this.normalize(); if(this.selection&&dialog.open)this.drawDetailsChart();});
+    this.observer.observe(this.q('.wr-weather'));
+    this.card._setupScrollInteractions();
+    // Block a click synthesized after mouse dragging, without touching native touch scrolling.
+    const rail=this.q('.wr-rail');
+    rail.addEventListener('pointerdown',()=>{this.dragged=false;});
+    rail.addEventListener('pointermove',()=>{if(this.card._dragState?.moved)this.dragged=true;});
+    const epoch=++this.epoch;document.fonts?.ready.then(()=>{if(this.card.isConnected&&epoch===this.epoch)this.normalize();});
+  }
+
+  renderHeader() {
+    const c=this.card,cfg=c.config,t=c._currentTemperatureValue().value,range=this.range;
+    const focused=this.root.activeElement?.matches('.wr-hero');
+    if(cfg.show_header===false){this.q('.wr-header-slot').innerHTML=cfg.show_title===false?'':`<div class="wr-plain-title">${this.escape(cfg.title)}</div>`;return;}
+    const title=cfg.show_title!==false&&cfg.show_header_title!==false?`<span class="wr-name">${this.escape(cfg.title)}</span>`:'';
+    const value=Number.isFinite(t)?`${this.format(t)}°`:'—';
+    let gauge='';
+    if(cfg.show_header_temperature_range!==false&&range){const pos=Number.isFinite(t)?Math.max(0,Math.min(100,(t-range.min)/(range.max-range.min||1)*100)):null;
+      gauge=`<span class="wr-range"><span>${this.format(range.min)}°</span><span class="wr-gauge" role="meter" aria-label="Température entre minimum et maximum" aria-valuemin="${range.min}" aria-valuemax="${range.max}" ${pos===null?'':`aria-valuenow="${Math.max(range.min,Math.min(range.max,t))}"`} aria-valuetext="${this.escape(`${value}, minimum ${this.format(range.min)} et maximum ${this.format(range.max)}`)}" style="--wr-gauge-pos:${pos??50}%;--wr-gauge-dot:${pos===null?0:1};background:${c._temperatureGaugeGradient(range.min,range.max)}"></span><span>${this.format(range.max)}°</span></span>`;}
+    this.q('.wr-header-slot').innerHTML=`<button type="button" class="wr-hero" aria-label="Ouvrir la météo"><span class="wr-icon-temp">${cfg.show_current_weather_icon===false?'':this.symbol(c._state(cfg.weather_entity)?.state,true)}${cfg.show_current_temperature===false?'':`<span class="wr-degrees">${value}<span class="wr-baseline-probe" aria-hidden="true"></span></span>`}</span><span class="wr-now-copy">${title}${cfg.show_current_summary===false?'':`<span class="wr-condition">${this.escape(c._currentSummaryText())}</span>`}${gauge}</span></button>${c._riskDisplayMode()==='header_sub_buttons'?c._renderHeaderRiskSubButtons():''}`;
+    c._setupRiskPillInteractions();
+    if(focused)this.q('.wr-hero')?.focus({preventScroll:true});
+  }
+
+  setMode(mode) { if(!this.modes.includes(mode))return;this.mode=mode;this.renderTimeline();this.normalize(); }
+
+  renderTimeline() {
+    const c=this.card,cfg=c.config,entries=this.entries,rail=this.q('.wr-rail'),left=rail.scrollLeft;
+    const focus=this.root.activeElement,focusedTime=focus?.dataset?.hour;
+    const focusedMode=focus?.dataset?.mode;
+    const width=Math.max(56,Number(cfg.item_width)||62);this.itemWidth=width;
+    this.q('.wr-tabs').innerHTML=this.modes.map(m=>`<button type="button" id="wr-tab-${m}" role="tab" aria-controls="wr-panel" aria-selected="${this.mode===m}" data-mode="${m}">${this.icon(({weather:'cloud-sun',rain:'droplet',wind:'wind'})[m])}${({weather:'Météo',rain:'Pluie',wind:'Vent'})[m]}</button>`).join('');
+    const panel=this.q('.wr-panel');panel.setAttribute('aria-labelledby',`wr-tab-${this.mode}`);panel.dataset.view=this.mode;
+    this.q('.wr-context-label').innerHTML=this.mode==='wind'?`<span class="wr-wind-legend"><span>Vent</span><span>Rafales</span><small>${this.escape(cfg.wind_unit)}</small></span>`:this.escape(this.mode==='rain'?`${c._shouldShowProbability(entries)?'Probabilité · ':''}${cfg.show_rain!==false?'Cumul · '+cfg.precipitation_unit:''}`:`Température · ${cfg.temperature_unit}`);
+    const solar=c._solarEventMap(entries),maxRain=Math.max(.1,...entries.map(d=>d.precipitation).filter(Number.isFinite));
+    this.q('.wr-hours').style.setProperty('--wr-item-width',`${width}px`);
+    this.q('.wr-hours').innerHTML=entries.map((d,i)=>{
+      const meta=c._timeCellMeta(d,i,entries,solar),event=solar.get(i),time=this.escape(meta.label);
+      const weather=`<span class="wr-icon-cell">${this.symbol(event?.type||d.condition)}</span><span class="wr-main-value wr-value" data-level="${this.level('temperature',d.temperature)}">${cfg.show_temperature===false?'':this.format(d.temperature)+(Number.isFinite(d.temperature)?'°':'')}</span>`;
+      const rain=`<span class="wr-icon-cell"><span class="wr-precip" data-level="${this.level('rain',d.precipitation)}" aria-hidden="true">${cfg.show_rain!==false&&Number.isFinite(d.precipitation)?`<span style="--wr-bar:${d.precipitation>0?Math.max(2,Math.min(28,d.precipitation/maxRain*28)):0}px"></span>`:''}</span></span><span class="wr-hour-extra">${c._shouldShowProbability(entries)?`<span class="wr-value-large">${this.format(d.probability)}<small> %</small></span>`:''}${cfg.show_rain!==false?`<span class="wr-secondary-value wr-value" data-level="${this.level('rain',d.precipitation)}">${this.format(d.precipitation,1)} ${this.escape(cfg.precipitation_unit)}</span>`:''}</span>`;
+      const direction=c._arrowBearing(d.windBearing);
+      const wind=`<span class="wr-wind-space" aria-hidden="true"></span><span class="wr-hour-extra"><span class="wr-wind-main">${Number.isFinite(direction)?`<span class="wr-direction" style="--wr-direction:${direction}deg">${this.icon('move-up','wr-wind-arrow')}</span>`:''}<span class="wr-value-large wr-value" data-level="${this.level('wind',d.windSpeed)}">${this.format(d.windSpeed)}</span></span><span class="wr-secondary-value wr-value" data-level="${this.level('gust',d.windGust)}">Raf. ${this.format(d.windGust)}</span></span>`;
+      const full=this.hourTitle(d,event),unit=this.mode==='weather'?cfg.temperature_unit:this.mode==='rain'?cfg.precipitation_unit:cfg.wind_unit;
+      const kind=this.mode==='weather'?'temperature':this.mode==='rain'?'rain':'wind',value=this.mode==='weather'?d.temperature:this.mode==='rain'?d.precipitation:d.windSpeed;
+      const status=({high:'Seuil élevé dépassé.',medium:'Seuil intermédiaire dépassé.',cool:'Température basse.',neutral:'Donnée indisponible.'})[this.level(kind,value)]||'';
+      const gustStatus=this.mode==='wind'?({high:'Rafales : seuil élevé dépassé.',medium:'Rafales : seuil intermédiaire dépassé.'})[this.level('gust',d.windGust)]||'':'';
+      return `<button type="button" class="wr-hour ${d.isNowColumn&&cfg.highlight_current!==false?'wr-now':''} ${event?'wr-solar':''}" data-hour="${d.datetimeMs}" aria-label="${this.escape(full)} · ${this.escape(this.mode==='weather'?this.format(d.temperature):this.mode==='rain'?this.format(d.precipitation,1):`${this.format(d.windSpeed)} / ${this.format(d.windGust)}`)} ${this.escape(unit)}. ${status} ${gustStatus}"><span class="wr-hour-time">${time}</span>${this.mode==='weather'?weather:this.mode==='rain'?rain:wind}</button>`;
+    }).join('') || `<div class="wr-empty">${this.escape(cfg.empty_label)}</div>`;
+    if(this.mode==='wind'&&entries.length)this.q('.wr-hours').insertAdjacentHTML('beforeend',this.chart('wind',true));
+    rail.scrollLeft=left;c._scrollLeft=left;
+    if(focusedTime)this.q(`[data-hour="${focusedTime}"]`)?.focus({preventScroll:true});
+    else if(focusedMode)this.q(`[data-mode="${focusedMode}"]`)?.focus({preventScroll:true});
+  }
+
+  hourTitle(d,solar) { return `${solar?(solar.type==='sunrise'?'Lever du soleil · ':'Coucher du soleil · '):d.isNowColumn?'Maintenant · ':''}${new Intl.DateTimeFormat('fr-FR',{weekday:'short',hour:'2-digit',minute:'2-digit',timeZone:this.card._hass?.config?.time_zone}).format(solar?.date||d.date)}`; }
+
+  renderFooter() {
+    const focused=this.root.activeElement?.matches('.wr-alert-row');
+    const cfg=this.card.config,enabled=cfg.show_current_risk_pills!==false&&cfg.show_header_risk_pills!==false&&cfg.show_alerts_footer!==false&&this.card._riskDisplayMode()==='footer'&&this.items.length;
+    const slot=this.q('.wr-footer-slot');
+    if(!enabled){slot.innerHTML='';return;}
+    const active=this.items.filter(r=>r.active),severity=active[0]?.severity||0,count=active.length,label=active.length?(severity>=3?'Critique · ':'')+active.map(r=>r.title).join(' · '):'Aucune alerte';
+    slot.innerHTML=`<button type="button" class="wr-alert-row" data-level="${severity>=3?'critical':severity>=2?'severe':'normal'}" title="${this.escape(label)}" aria-label="${count} alerte${count>1?'s':''}. ${severity>=3?'Priorité critique. ':severity>=2?'Priorité importante. ':''}${this.escape(label)}. Consulter les risques.">${this.icon(count?'triangle-alert':'circle-check','wr-alert-icon')}<span class="wr-alert-label">${this.escape(label)}</span><span class="wr-alert-count" style="visibility:${count?'visible':'hidden'}">${count}</span>${this.icon('chevron-right','wr-chevron')}</button>`;
+    if(focused)this.q('.wr-alert-row')?.focus({preventScroll:true});
+  }
+
+  open(selection) {
+    this.selection=selection;const dialog=this.q('dialog');
+    if(!dialog.open){this.opener=this.root.activeElement;this.openerSelector=this.opener?.dataset?.hour?`[data-hour="${this.opener.dataset.hour}"]`:this.opener?.matches('.wr-alert-row')?'.wr-alert-row':'.wr-hero';dialog.showModal();}
+    this.renderSelection(true);
+  }
+  renderSelection(focus) {
+    const s=this.selection;if(!s)return;
+    const content=this.q('.wr-sheet-content'),title=this.q('#wr-sheet-title');
+    const active=this.root.activeElement,scrollTop=this.q('dialog').scrollTop;
+    const focusKey=active?.dataset?.riskId!==undefined?`[data-risk-id="${active.dataset.riskId}"]`:active?.dataset?.allRisks!==undefined?`[data-all-risks="${active.dataset.allRisks}"]`:active?.matches('[data-risk-back]')?'[data-risk-back]':active?.matches('[data-current-details]')?'[data-current-details]':null;
+    const previous=content.querySelector('.wr-thresholds')?.open;
+    if(s.kind==='risks') {
+      title.textContent='Météo et maison';const active=this.items.filter(r=>r.active),shown=this.allRisks?this.items:active;
+      content.innerHTML=`<div class="wr-risk-filters" role="group" aria-label="Filtrer les risques">${[[false,`Alertes (${active.length})`],[true,`Tout (${this.items.length})`]].map(([all,label])=>`<button type="button" data-all-risks="${all}" aria-pressed="${this.allRisks===all}">${label}</button>`).join('')}</div>${shown.length?shown.map(r=>`<button type="button" class="wr-risk" data-risk-id="${r.id}" data-active="${r.active}" data-severity="${r.severity}">${r.icon?`<ha-icon icon="${this.escape(r.icon)}" aria-hidden="true"></ha-icon>`:this.icon(r.available===false?'circle-help':r.active?'triangle-alert':'circle-check')}<span class="wr-risk-copy"><strong>${this.escape(r.title)}</strong><small>${this.escape(r.detail)}</small></span>${this.icon('chevron-right','wr-chevron')}</button>`).join(''):'<p class="wr-sheet-caption">Aucune alerte active.</p>'}${this.thresholds()}`;
+    } else if(s.kind==='risk') {
+      const r=this.items.find(r=>r.id===s.id);if(!r){this.selection={kind:'risks'};this.renderSelection(focus);return;}
+      title.textContent=r.title;content.innerHTML=`<p class="wr-sheet-caption">${r.severity>=3?'Critique · ':r.severity>=2?'Important · ':''}${this.escape(r.detail)}</p>${r.entity?`<button type="button" class="wr-risk" data-native-info="${this.escape(r.entity)}">Ouvrir l’entité dans Home Assistant ${this.icon('chevron-right','wr-chevron')}</button>`:''}<button type="button" class="wr-risk" data-risk-back>Revenir aux risques</button>${this.thresholds()}`;
+    } else {
+      const c=this.card,d=s.kind==='hour'?this.entries.find(d=>d.datetimeMs===s.time):this.entries[0],cfg=c.config;
+      if(!d){title.textContent='Prévisions';content.innerHTML='<p class="wr-sheet-caption">Cette prévision n’est plus disponible.</p>';return;}
+      title.textContent=s.kind==='current'?'Météo actuelle':this.hourTitle(d,c._solarEventMap(this.entries).get(this.entries.indexOf(d)));
+      const rows=[['Température',`${this.format(d.temperature)} ${cfg.temperature_unit}`],['Pluie',`${this.format(d.precipitation,1)} ${cfg.precipitation_unit} · ${this.format(d.probability)} %`],['Vent / rafales',`${this.format(d.windSpeed)} / ${this.format(d.windGust)} ${cfg.wind_unit}`],['Direction',`${this.format(d.windBearing)}° · ${c._bearingToDirection(d.windBearing)||'—'} · ${cfg.bearing_reference_mode==='house'?'référence maison':'référence nord'}`]];
+      if(this.range)rows.push(['Minimum / maximum',`${this.format(this.range.min)}° / ${this.format(this.range.max)}°`]);
+      const sun=c._state(cfg.sun_entity)?.attributes;for(const [label,key] of [['Lever du soleil','next_rising'],['Coucher du soleil','next_setting']])if(sun?.[key]&&!Number.isNaN(new Date(sun[key]).getTime()))rows.push([label,new Intl.DateTimeFormat('fr-FR',{weekday:'short',hour:'2-digit',minute:'2-digit',timeZone:c._hass?.config?.time_zone}).format(new Date(sun[key]))]);
+      content.innerHTML=`<p class="wr-sheet-caption">${this.escape(this.mode==='weather'?`Température · ${cfg.temperature_unit}`:this.mode==='rain'?`Précipitations · ${cfg.precipitation_unit}`:`Vent — trait plein · Rafales — pointillés · ${cfg.wind_unit}`)}</p><div class="wr-detail-chart"></div><dl class="wr-details">${rows.map(([l,v])=>`<div><dt>${this.escape(l)}</dt><dd>${this.escape(v)}</dd></div>`).join('')}</dl>${this.thresholds()}`;
+      this.drawDetailsChart();
+    }
+    if(previous&&content.querySelector('.wr-thresholds'))content.querySelector('.wr-thresholds').open=true;
+    if(focus)this.q('.wr-close').focus();
+    else {if(focusKey)content.querySelector(focusKey)?.focus({preventScroll:true});this.q('dialog').scrollTop=scrollTop;}
+  }
+
+  thresholds() {
+    const c=this.card,cfg=c.config,w=c._threshold(cfg.wind_reference_threshold_entity,cfg.wind_reference_threshold_fallback),g=c._threshold(cfg.gust_reference_threshold_entity,cfg.gust_reference_threshold_fallback),close=Number(cfg.intensity_close_ratio??1.1),strong=Number(cfg.intensity_strong_ratio??1.3);
+    return `<details class="wr-thresholds"><summary>Codes couleur et seuils</summary><p>Vent : orange au-delà de ${this.format(w*close,1)}, rouge au-delà de ${this.format(w*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Rafales : orange au-delà de ${this.format(g*close,1)}, rouge au-delà de ${this.format(g*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Température : bleu à 5 °C ou moins, orange au-dessus de 20 °C, rouge au-dessus de 27 °C. Pluie : orange dès 2 mm, rouge dès 5 mm par créneau de prévision. Repères visuels ; les règles de risques configurées restent indépendantes.</p><button type="button" class="wr-risk" data-current-details>Météo actuelle et repères solaires ${this.icon('chevron-right','wr-chevron')}</button></details>`;
+  }
+
+  chart(mode, inline=false) {
+    const data=this.entries,c=this.card,count=data.length;if(!count)return '';
+    const width=inline?count*this.itemWidth:Math.max(240,this.q('.wr-sheet-content')?.clientWidth-40||320),height=inline?48:126;
+    const keys=mode==='wind'?['windSpeed','windGust']:mode==='rain'?['precipitation']:['temperature'];
+    const values=data.flatMap(d=>keys.map(k=>d[k])).filter(Number.isFinite);
+    if(!values.length)return inline?'':'<p class="wr-sheet-caption">Données indisponibles.</p>';
+    const minimum=mode==='weather'?Math.min(...values)-2:Math.min(0,...values),maximum=Math.max(...values,minimum+1),bottom=inline?44:100,top=inline?4:10,left=inline?this.itemWidth/2:32,right=inline?width-this.itemWidth/2:width-12;
+    const x=i=>left+(right-left)*i/Math.max(1,count-1),y=v=>bottom-(v-minimum)/(maximum-minimum)*(bottom-top);
+    const selected=this.selection?.kind==='hour'?data.findIndex(d=>d.datetimeMs===this.selection.time):0;
+    let marks='';
+    if(!inline)for(const v of [minimum,maximum])marks+=`<text x="0" y="${y(v)+4}">${this.format(v,mode==='rain'?1:0)}</text><path d="M 29 ${y(v)} H ${width-8}" stroke="var(--wr-rule)" fill="none"/>`;
+    for(const key of keys){
+      if(mode==='rain'){data.forEach((d,i)=>{if(Number.isFinite(d[key]))marks+=`<rect x="${x(i)-3}" y="${y(d[key])}" width="6" height="${Math.max(0,bottom-y(d[key]))}" rx="2" fill="var(--wr-rain)" opacity="${i===selected?1:.55}"/>`;});continue;}
+      const kind=key==='windSpeed'?'wind':'gust';
+      // Small segments preserve gaps and threshold color, without interpolating missing data.
+      for(let i=1;i<count;i++){const a=data[i-1][key],b=data[i][key];if(!Number.isFinite(a)||!Number.isFinite(b))continue;
+        const cuts=[0,1];if(mode==='wind'){const cfg=c.config,ref=c._threshold(cfg[kind==='wind'?'wind_reference_threshold_entity':'gust_reference_threshold_entity'],cfg[kind==='wind'?'wind_reference_threshold_fallback':'gust_reference_threshold_fallback']);for(const ratio of [Number(cfg.intensity_close_ratio??1.1),Number(cfg.intensity_strong_ratio??1.3)]){const t=(ref*ratio-a)/(b-a);if(t>0&&t<1)cuts.push(t);}}cuts.sort((a,b)=>a-b);
+        for(let j=1;j<cuts.length;j++){const t0=cuts[j-1],t1=cuts[j],va=a+(b-a)*t0,vb=a+(b-a)*t1,level=this.level(mode==='wind'?kind:'temperature',(va+vb)/2),color=level==='high'?'var(--wr-danger)':level==='medium'?'var(--wr-warning)':level==='cool'?'var(--wr-rain)':'var(--wr-chart)';marks+=`<path data-series="${key}" d="M ${x(i-1)+(x(i)-x(i-1))*t0} ${y(va)} L ${x(i-1)+(x(i)-x(i-1))*t1} ${y(vb)}" fill="none" stroke="${color}" stroke-width="${key==='windGust'?1.35:1.8}" ${key==='windGust'?'stroke-dasharray="4 4"':''}/>`;}
+      }
+      if(!inline&&Number.isFinite(data[selected]?.[key]))marks+=`<circle cx="${x(selected)}" cy="${y(data[selected][key])}" r="3" fill="var(--wr-chart)"/>`;
+    }
+    if(!inline)marks+=`<text x="${left}" y="122">${this.escape(c._hourLabel(data[0]))}</text><text x="${right}" y="122" text-anchor="end">${this.escape(this.hourTitle(data[count-1]))}</text>`;
+    return `<svg class="${inline?'wr-wind-plot':'wr-graph'}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${this.escape(mode==='wind'?`Vent et rafales, ${c.config.wind_unit}`:mode==='rain'?`Précipitations, ${c.config.precipitation_unit}`:`Température, ${c.config.temperature_unit}`)}">${marks}</svg>`;
+  }
+
+  drawDetailsChart() { const slot=this.q('.wr-detail-chart');if(slot)slot.innerHTML=this.chart(this.selection?.kind==='current'?'weather':this.mode); }
+
+  painted(scope,origin) {
+    let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
+    for(const shape of scope.querySelectorAll('path,circle,line,polyline,polygon,rect')){
+      const style=getComputedStyle(shape);if(style.display==='none'||style.visibility==='hidden'||Number(style.opacity)===0)continue;
+      const matrix=shape.getScreenCTM();if(!matrix)continue;const b=shape.getBBox(),pad=style.stroke==='none'?0:(parseFloat(style.strokeWidth)||0)/2;
+      for(const [x,y] of [[b.x-pad,b.y-pad],[b.x+b.width+pad,b.y-pad],[b.x-pad,b.y+b.height+pad],[b.x+b.width+pad,b.y+b.height+pad]]){const p=new DOMPoint(x,y).matrixTransform(matrix);left=Math.min(left,p.x-origin.left);right=Math.max(right,p.x-origin.left);top=Math.min(top,p.y-origin.top);bottom=Math.max(bottom,p.y-origin.top);}
+    }
+    return Number.isFinite(left)?{left,top,width:right-left,height:bottom-top}:null;
+  }
+
+  normalize() {
+    for(const frame of this.root.querySelectorAll('.wr-weather-symbol')){
+      const glyph=frame.querySelector('.wr-glyph,.wr-hour-glyph');if(!glyph)continue;glyph.style.transform='none';const origin=glyph.getBoundingClientRect(),paint=this.painted(glyph,origin);if(!paint?.height)continue;
+      const box=frame.getBoundingClientRect();let scale,x,y;
+      const temp=this.q('.wr-degrees');
+      if(frame.classList.contains('wr-current-icon')&&temp&&this.textContext){
+        const style=getComputedStyle(temp);this.textContext.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;const metrics=this.textContext.measureText(temp.textContent),target=metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent,top=this.q('.wr-baseline-probe').getBoundingClientRect().top-metrics.actualBoundingBoxAscent;
+        scale=target/paint.height;x=(box.width-paint.width*scale)/2-paint.left*scale;y=top-box.top-paint.top*scale;
+      }else{const size=frame.classList.contains('wr-current-icon')?32:Math.max(16,Math.min(24,Number(this.card.config.forecast_icon_size)||24));scale=size/Math.max(paint.width,paint.height);x=(box.width-paint.width*scale)/2-paint.left*scale;y=(box.height-paint.height*scale)/2-paint.top*scale;}
+      glyph.style.transform=`translate(${x}px,${y}px) scale(${scale})`;
+    }
+  }
+
+  disconnect() {
+    ++this.epoch;this.mounted=false;this.observer?.disconnect();this.observer=null;
+    this.root.removeEventListener('click',this.onClick);this.root.removeEventListener('keydown',this.onKey);
+    const dialog=this.q('dialog');if(dialog?.open)dialog.close();
+    this.selection=null;this.key='';
+  }
+
+  styles() { return WEATHER_IOS_STYLES; }
+}
+
+
 class WeatherCombinedForecastCard extends HTMLElement {
   constructor() {
     super();
@@ -358,6 +1460,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
 
   static getDefaultConfig() {
     return {
+      layout: "classic",
       title: "Prévisions météo",
       show_title: true,
       show_header: true,
@@ -472,6 +1575,10 @@ class WeatherCombinedForecastCard extends HTMLElement {
     ];
     return {
       schema: [
+        { name: "layout", selector: { select: { options: [
+          { value: "classic", label: "Classique" },
+          { value: "ios", label: "iOS · Météo / Pluie / Vent" },
+        ], mode: "dropdown" } } },
         ...[
   {
     "type": "expandable",
@@ -921,6 +2028,7 @@ class WeatherCombinedForecastCard extends HTMLElement {
       ],
       computeLabel: (schema) => {
         const labels = {
+          layout: "Présentation",
           title: "Titre",
           show_title: "Afficher le titre",
           show_current: "Afficher Maint.",
@@ -991,6 +2099,8 @@ class WeatherCombinedForecastCard extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this._iosView?.disconnect();
+    this._iosView = null;
     this._atmosphere?.disconnect();
     this._atmosphere = null;
     this._unbindForecastConnection();
@@ -2820,14 +3930,17 @@ class WeatherCombinedForecastCard extends HTMLElement {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
       this._isInteracting = true;
       this._dragState = { pointerId: event.pointerId, startX: event.clientX, startScrollLeft: rail.scrollLeft, moved: false };
-      rail.setPointerCapture?.(event.pointerId);
+      if (!rail.classList.contains("wr-rail")) rail.setPointerCapture?.(event.pointerId);
       rail.classList.add("is-dragging");
     });
 
     rail.addEventListener("pointermove", (event) => {
       if (!this._dragState || this._dragState.pointerId !== event.pointerId) return;
       const dx = event.clientX - this._dragState.startX;
-      if (Math.abs(dx) > 3) this._dragState.moved = true;
+      if (Math.abs(dx) > 3) {
+        this._dragState.moved = true;
+        if (rail.classList.contains("wr-rail")) rail.setPointerCapture?.(event.pointerId);
+      }
       rail.scrollLeft = this._dragState.startScrollLeft - dx;
       this._scrollLeft = rail.scrollLeft;
     });
@@ -2856,6 +3969,17 @@ class WeatherCombinedForecastCard extends HTMLElement {
 
   renderCard(force = false) {
     if (!this.isConnected || !this.shadowRoot || !this.config) return;
+    if (this.config.layout === "ios") {
+      this._lastRenderKey = "";
+      this._iosView ||= new WeatherIOSPresentation(this);
+      this._iosView.render(force);
+      return;
+    }
+    if (this._iosView) {
+      this._iosView.disconnect();
+      this._iosView = null;
+      this._lastRenderKey = "";
+    }
     const oldRail = this.shadowRoot.querySelector?.(".combined-scroll");
     if (oldRail) this._scrollLeft = oldRail.scrollLeft;
     if (this._isInteracting && !force && oldRail) {

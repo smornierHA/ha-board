@@ -1,5 +1,11 @@
 # Livraison HACS — Dashboard
 
+## Candidat iOS `0.4.0-rc.1` — 25 octobre 2026
+
+Installation ciblée : nouveau module dans `www/ha-board-candidates/`, mise à jour de la ressource météo existante et ajout du seul `layout: ios` à la carte ciblée via l’API Lovelace. Sources et risques inchangés ; aucun redémarrage HA. Le choix iOS / Classique est réversible dans l’éditeur.
+
+Rollback ciblé : retirer `layout`, puis restaurer l’URL `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js?v=0.3.1-rc.2` sur la ressource météo existante. L’ancien module de 155 264 octets, SHA256 `7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6`, est préservé. Vérifier ressources et configuration avant/après puis recharger le frontend. Ce rollback n’est pas exécuté dans le lot.
+
 HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une intégration `custom_components`.
 
 [![Ouvrir dans HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=smornierHA&repository=ha-board&category=plugin)

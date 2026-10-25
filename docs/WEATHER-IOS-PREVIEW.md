@@ -1,6 +1,12 @@
 # Proposition météo iOS fine
 
-## Pictogrammes horaires compacts — 25 octobre 2026, proposition courante
+## Direction acceptée et intégrée — 25 octobre 2026
+
+`examples/weather-ios-compact-icons.fragment.html` est accepté (« Ok on part la dessus »). La fixture reste fictive ; sa présentation est intégrée au candidat `0.4.0-rc.1` avec `layout: ios`, sur les sources HA normalisées et les règles configurées. Aucune valeur de démonstration n’est intégrée au runtime. Les formes Lucide sont incorporées avec leur notice ISC/Feather MIT, sans appel réseau. L’atmosphère procédurale reste discrète ; les couleurs claires sont renforcées pour la lisibilité.
+
+`layout: classic` conserve le rendu historique. En iOS, `item_width` règle l’espacement, le dessin horaire reste plafonné à 24 px et la zone du graphe vent reste de 48 px pour garantir la hauteur constante. `chart_height` et `wind_row_height` conservent leur rôle géométrique en mode classique. Le clic d’en-tête conserve l’action HA configurée ; les courbes et repères détaillés s’ouvrent depuis une heure. Installation, chargement réel et recette native sont séparés dans STATUS et `evidence/weather-ios-integration-2026-10-25.json`.
+
+## Pictogrammes horaires compacts — 25 octobre 2026, référence acceptée
 
 Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’utilisateur valide l’icône principale mais rejette la recomposition et la taille des icônes horaires. L’en-tête reste strictement identique. Les heures reprennent les compositions précédentes : nuage et pluie superposés, cloud-sun/cloud-moon Lucide complets, et repères solaires d’origine.
 

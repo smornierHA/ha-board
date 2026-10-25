@@ -1,5 +1,13 @@
 # État courant — 25 octobre 2026
 
+## Présentation iOS acceptée et intégrée en candidat
+
+L’accord utilisateur porte sur `examples/weather-ios-compact-icons.fragment.html`. Le candidat `0.4.0-rc.1` fournit `layout: ios` : trois vues, symboles compacts superposés, icône principale proportionnée, jauge daily, courbes et détails, footer discret avec compteur actif et volet Alertes/Tout. Les risques faibles génériques ne sont pas comptés comme problèmes ; une vigilance jaune reste une alerte, et un état indisponible n’est pas un problème confirmé.
+
+L’éditeur conserve sources, seuils et actions et expose le choix de présentation ; les configurations existantes restent classiques sans `layout: ios`. Défilement natif, heure affichée, dialogue pendant les mises à jour et nettoyage au détachement sont préservés. Personnes et Garage restent identiques octet pour octet. Préparation, contrôles et installation : `evidence/weather-ios-integration-2026-10-25.json`. Chargement utilisateur et recette native iPhone restent à confirmer ; aucune fusion, publication ou CI distante déduite des contrôles locaux.
+
+**Installation candidate effectuée et relue** : `0.4.0-rc.1`, 216 260 octets, SHA256 `1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df`, code du commit local `e83c93a`. Une seule ressource météo, 43 ressources au total ; les autres valeurs et leur ordre sont identiques. Seul `layout: ios` est ajouté à la carte ciblée, tous ses autres champs relus identiques. Aucun redémarrage. L’ancien candidat reste préservé. La capture HA a expiré après 20 s sans image ; elle n’est pas revendiquée comme preuve de rendu. **Rechargement complet du frontend puis recette native utilisateur restent à faire.**
+
 ## Maquette météo : slider compact, compositions conservées
 
 Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’icône d’en-tête reçoit l’accord utilisateur et reste identique. Le slider revient aux compositions précédentes : nuage/pluie superposés et symboles Lucide cloud-sun/cloud-moon complets, sans décomposer leur dessin. Leur contour complet est limité à 24 px maximum, centré horizontalement et verticalement sur une ligne commune dans la trame réservée de 48 px. Cette taille est une calibration de maquette d’après la référence Apple déjà consultée, pas une mesure officielle publiée par Apple.

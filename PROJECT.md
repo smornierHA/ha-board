@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Intégration de la présentation iOS — 25 octobre 2026
+
+L’utilisateur accepte `weather-ios-compact-icons.fragment.html` (« Ok on part la dessus »). Le candidat `0.4.0-rc.1` intègre cette direction via `layout: ios`, sur les adaptateurs de données, sources secondaires, risques et actions existants. `layout: classic` reste le défaut des configurations existantes. Dépôt public adapté au code et fixtures fictives ; aucune configuration domestique ou capture réelle versionnée. Installation candidate limitée à la météo ; statut et preuves dans STATUS.
+
 ## Pictogrammes horaires compacts — 25 octobre 2026
 
 L’utilisateur valide l’icône d’en-tête mais écarte la recomposition et l’agrandissement des symboles du slider. Référence courante : `weather-ios-compact-icons.fragment.html`. Retour aux compositions Lucide précédentes, superpositions conservées, dessin complet de 24 px maximum et centre optique commun. Le dépôt public et les droits d’écriture sont reconfirmés ; seules maquette fictive et références changent, sans delta runtime ou HA.

@@ -1,5 +1,11 @@
 # Sources de référence
 
+## Intégration iOS — 25 octobre 2026
+
+- Accord utilisateur sur `weather-ios-compact-icons.fragment.html` ; runtime sur les adaptateurs de données existants, sans fixture embarquée.
+- 24 définitions de nœuds d’icônes de `lucide@1.8.0` présent dans l’environnement de conception ; notice complète ISC et attribution Feather MIT conservées dans le JS et `third_party/lucide-ISC.txt`. Aucun artwork Apple, CDN ou dépendance runtime ajoutée.
+- Référence des contrôles et état de déploiement : `evidence/weather-ios-integration-2026-10-25.json`. Les résultats Chromium ne constituent pas une recette native HA/iPhone.
+
 Consultation: 6 septembre 2026. Revalider avant une intervention dépendant d’une version. Les résumés sont des repères; les liens ne prouvent pas la compatibilité de notre installation.
 
 | ID | Source | Usage |

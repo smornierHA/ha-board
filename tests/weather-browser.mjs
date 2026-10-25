@@ -100,9 +100,67 @@ try{
    for(const dy of [-100,100]){await resetViewport();const point=await rect(selector);const before=await evaluate('window.scrollY');await swipe(point,0,dy);const after=await evaluate('window.scrollY');assert.ok((before-after)*dy>30,`${source} ${selector} vertical ${dy} trapped: ${before} -> ${after}`);gestures.push({selector,dy,vertical_page_scroll:true});}
   }
   await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const p=await rect('.combined-scroll'),beforeY=await evaluate('window.scrollY');await swipe(p,-130,0);assert.ok(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft > 50'),'native horizontal forecast swipe');assert.ok(Math.abs((await evaluate('window.scrollY'))-beforeY)<4,'horizontal swipe must leave page still');
-  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const wp=await rect('.combined-scroll'),wy=await evaluate('window.scrollY');await call('Input.dispatchMouseEvent',{type:'mouseWheel',x:wp.x,y:wp.y,deltaX:0,deltaY:120});await new Promise(r=>setTimeout(r,300));assert.ok((await evaluate('window.scrollY'))>wy+40,'vertical wheel must scroll page');assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft'),0,'vertical wheel must not move forecast');
+  // Wheel is a desktop input; leave mobile touch emulation before this assertion.
+  await call('Emulation.setTouchEmulationEnabled',{enabled:false});
+  await call('Emulation.setDeviceMetricsOverride',{width:1000,height:780,deviceScaleFactor:1,mobile:false});
+  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const wp=await rect('.combined-scroll'),wy=await evaluate('window.scrollY');await call('Input.synthesizeScrollGesture',{x:wp.x,y:wp.y,yDistance:-120,gestureSourceType:'mouse',speed:500,preventFling:true});await new Promise(r=>setTimeout(r,300));assert.ok((await evaluate('window.scrollY'))>wy+40,'vertical wheel must scroll page: '+JSON.stringify({source,point:wp,before:wy,after:await evaluate('window.scrollY'),height:await evaluate('innerHeight')}));assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft'),0,'vertical wheel must not move forecast');
+  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
   await evaluate('demo.card.setConfig({...demo.card.config,risk_display_mode:"header_sub_buttons"})');await resetViewport();const hp=await rect('.header-risk-subbuttons'),hy=await evaluate('window.scrollY');await swipe(hp,0,100);assert.ok((await evaluate('window.scrollY'))<hy-30,'header risk buttons must allow vertical page scroll');
   await resetViewport();const cp=await rect('.combined-scroll');await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:cp.x,y:cp.y}]});await call('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await waitFor('demo.card._isInteracting === false');
+  // Accepted iOS presentation uses the same normalized sources and actions.
+  await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,themes:{darkMode:true},states:{...h.states,
+    'sensor.example_leak':{state:'off',attributes:{is_active:false}},
+    'sensor.example_rain':{state:'faible',attributes:{}},
+    'sensor.example_shutters':{state:'ok',attributes:{}}}};
+    c.setConfig({...c.config,layout:'ios',risk_display_mode:'footer',risk_entities:[...c.config.risk_entities,
+    {entity:'sensor.example_leak',label:'Inondation',active_attribute:'is_active',level_when_active:'critique'},
+    {entity:'sensor.example_rain',label:'Pluie',level_source:'state'},
+    {entity:'sensor.example_shutters',label:'Volets',level_source:'state'}]});})()`);
+  await waitFor('Boolean(demo.card.shadowRoot.querySelector(".wr-hour"))');
+  const iosHeight=await evaluate('demo.card.shadowRoot.querySelector("ha-card").getBoundingClientRect().height');
+  const slots=await evaluate('demo.card._enrichEntries(demo.card._forecastEntries()).length');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll(".wr-hour").length'),slots);
+  for(const mode of ['weather','rain','wind']){
+   await evaluate(`demo.card.shadowRoot.querySelector('[data-mode="${mode}"]').click()`);
+   assert.equal(await evaluate('demo.card.shadowRoot.querySelector("ha-card").getBoundingClientRect().height'),iosHeight);
+   await evaluate('demo.card.shadowRoot.querySelector(".wr-hour").click()');
+   assert.equal(await evaluate('demo.card.shadowRoot.querySelector("dialog").open'),true);
+   assert.equal(await evaluate('Boolean(demo.card.shadowRoot.querySelector(".wr-graph"))'),true);
+   await evaluate('demo.card.shadowRoot.querySelector("dialog").close()');
+  }
+  assert.ok(await evaluate('demo.card.shadowRoot.querySelectorAll(".wr-wind-plot [data-series]").length')>1);
+  await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-row").click()');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("[data-risk-id]").length'),3);
+  await evaluate('demo.card.shadowRoot.querySelector("[data-all-risks=true]").click()');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("[data-risk-id]").length'),6);
+  await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_alert':{state:'vert',attributes:{}},'sensor.example_risk':{state:'ok',attributes:{}}}};})()`);
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-count").textContent'),'0');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector("dialog").open'),true);
+  await evaluate('demo.card.shadowRoot.querySelector("dialog").close();demo.card.shadowRoot.querySelector(".wr-alert-row").click()');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll("[data-risk-id]").length'),0);
+  await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_leak':{state:'on',attributes:{is_active:true}}}};})()`);
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-row").dataset.level'),'critical');
+  await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_leak':{state:'unavailable',attributes:{is_active:true}}}};})()`);
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-alert-count").textContent'),'0');
+  await evaluate('demo.card.shadowRoot.querySelector("dialog").close();demo.card.shadowRoot.querySelector(".wr-hero").click()');assert.equal(await evaluate('location.hash'),'#example-weather');
+  await evaluate('demo.card.shadowRoot.querySelector(".wr-rail").scrollLeft=130;demo.card.shadowRoot.querySelector("[data-mode=rain]").click()');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-rail").scrollLeft'),130);
+  for(const selector of ['.wr-rail','.wr-alert-row'])for(const dy of [-100,100]){
+   await resetViewport();const before=await evaluate('scrollY');await swipe(await rect(selector),0,dy);assert.ok((before-(await evaluate('scrollY')))*dy>30,`${source} iOS ${selector} gesture trapped`);
+  }
+  await evaluate('demo.card.remove();document.querySelector("#cards").append(demo.card);demo.card.shadowRoot.querySelector("[data-mode=weather]").click()');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-panel").dataset.view'),'weather');
+  const iosViewports=[];
+  for(const width of [320,390,736])for(const dark of [true,false]){
+   await call('Emulation.setDeviceMetricsOverride',{width,height:844,deviceScaleFactor:1,mobile:true});
+   await evaluate(`demo.card.hass={...demo.card._hass,themes:{darkMode:${dark}}};document.body.classList.toggle('light',${!dark});window.scrollTo(0,document.querySelector('#gesture-top').getBoundingClientRect().height+100)`);
+   await evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+   assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true);
+   const {data}=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,`${source}-ios-${width}-${dark?'dark':'light'}.png`),Buffer.from(data,'base64'));iosViewports.push({width,dark});
+  }
+  await evaluate('demo.card.setConfig({...demo.card.config,layout:"classic"})');assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".wr-weather")'),null);
+  proof.push({source,ios:{views:3,slots,stable_height:true,active_risks:true,all_states:true,live_updates:true,unavailable_not_problem:true,header_action:true,native_vertical_rail_and_footer:true,reconnection:true,classic_fallback:true,viewports:iosViewports}});
   await evaluate('document.querySelector("#gesture-top").remove();document.querySelector("#gesture-bottom").remove();window.scrollTo(0,0)');
   await call('Emulation.setTouchEmulationEnabled',{enabled:false});
   proof.push({source,render:true,editor:'mock ha-form round-trip',navigation:true,reconnection:true,viewports:['desktop-dark','mobile-light'],atmosphere,reduced_motion:true,offscreen_pause:true,canvas_cleanup:true,separate_instances:true,gestures,native_horizontal_swipe:true,vertical_wheel:true,header_risk_vertical_swipe:true,touch_cancel_recovers:true});

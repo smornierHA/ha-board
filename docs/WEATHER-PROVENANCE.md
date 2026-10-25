@@ -1,5 +1,9 @@
 # Provenance du pilote météo #12
 
+## Révision iOS `0.4.0-rc.1` — 25 octobre 2026
+
+Présentation acceptée intégrée comme option de la source maintenue, sans modifier l’export original ni les adaptateurs de données. Les 24 icônes Lucide 1.8.0 reprises de la maquette sont incorporées en nœuds SVG ; le code d’assemblage, la géométrie et les couleurs sont adaptés au composant. Notice complète ISC/Feather MIT dans le JS et comme asset manifesté ; aucun artwork Apple. La revue antérieure des 16 tracés HA reste applicable au rendu classique. Empreintes courantes dans `weather-provenance.json`, recette et installation dans STATUS.
+
 Collecte en lecture seule le **9 septembre 2026**, via HA-MCP exécuté avec succès. La ressource active et la configuration ciblée ont été relues. Le fichier est inchangé par rapport au ticket : 129 967 octets, SHA256 `da5a13fce2b78fe7109394918a1fb80861955ff9d2319d22be1f66197df74f1b`, en-tête `V1.9.4.2.10`, nom historique `weather-combined-forecast-card-v1.17.10.js`.
 
 ## Quatre états distincts

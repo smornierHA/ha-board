@@ -1,9 +1,12 @@
 # Options Weather Combined Forecast
 
-Types et valeurs par défaut du candidat public. Les identifiants `example` sont fictifs ; configurer les sources HA dans l’éditeur. Les objets risques et actions conservent leurs clés imbriquées. Les options YAML inconnues sont préservées. L’éditeur affiche les valeurs effectives depuis la même définition de défauts que la carte et retire une surcharge remise à son défaut. Limite héritée : `precipitation_unit`, `temperature_unit`, `wind_unit` ne modifient pas les libellés d’affichage ; leurs clés YAML sont conservées mais ces trois options ne sont pas proposées comme contrôles modifiables. Aucune conversion, source métrique attendue.
+`0.4.0-rc.1` ajoute `layout: ios` ; `layout: classic` reste le défaut. Le choix est disponible dans l’éditeur. iOS utilise les mêmes sources, seuils et actions, réserve 48 px au graphe/aux pictogrammes et plafonne le dessin horaire à 24 px. `item_width` reste appliqué ; les hauteurs historiques `chart_height` / `wind_row_height` restent propres au rendu classique. Les unités YAML servent de libellés dans iOS, sans conversion des données.
+
+Types et valeurs par défaut du candidat public. Les identifiants `example` sont fictifs ; configurer les sources HA dans l’éditeur. Les objets risques et actions conservent leurs clés imbriquées. Les options YAML inconnues sont préservées. L’éditeur affiche les valeurs effectives depuis la même définition de défauts que la carte et retire une surcharge remise à son défaut. Limite héritée du rendu classique : `precipitation_unit`, `temperature_unit`, `wind_unit` ne modifient pas les libellés d’affichage ; leurs clés YAML sont conservées mais ces trois options ne sont pas proposées comme contrôles modifiables. Aucune conversion, source métrique attendue.
 
 | Option | Type | Défaut public |
 |---|---|---|
+| `layout` | `classic` / `ios` | `"classic"` |
 | `title` | string | `"Prévisions météo"` |
 | `show_title` | boolean | `true` |
 | `show_header` | boolean | `true` |

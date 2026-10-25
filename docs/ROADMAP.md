@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Présentation iOS acceptée et intégration — 25 octobre 2026
+
+La maquette `weather-ios-compact-icons.fragment.html` est acceptée. Intégration candidate `0.4.0-rc.1` avec choix iOS / Classique dans l’éditeur ; sources et règles existantes conservées. Vérifier les trois modes, hauteur, pictogrammes, risques, gestes et cycle de vie sur source et distribution avant installation ciblée. Le chargement et la recette iPhone restent distincts des contrôles Chromium. Aucune fusion ou release HACS dans ce lot.
+
 ## Slider météo compact — 25 octobre 2026
 
 Référence courante : `weather-ios-compact-icons.fragment.html`. L’en-tête de la proposition précédente est validé et conservé. Pour les heures, reprendre les pictogrammes et superpositions précédents, réduire le dessin complet à 24 px maximum et aligner leur centre visible sur une ligne. Le nuage commun agrandi à 30 px est écarté pour le slider. Les acquis de hauteur stable, graphes, seuils, jauge et footer sont conservés ; l’intégration HA reste distincte de la maquette.
