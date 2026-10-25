@@ -627,12 +627,18 @@
   },
   "native_frontend_render": "pending after full reload",
   "native_iphone_acceptance": "pending",
-  "remote_ci": "not-asserted",
+  "remote_ci": "Current-head checks are recorded on PR #19; not asserted by this local evidence file.",
   "merged": false,
   "released": false,
   "limitations": [
     "Browser checks use fictitious data and mocked platform components.",
     "The previous module loaded in the user screenshots; this does not prove the new frontend render or native iPhone gestures.",
     "Rainfall intensity is averaged over each forecast interval and may understate a brief peak."
-  ]
+  ],
+  "packaging_correction": {
+    "initial_failed_run": "https://github.com/smornierHA/ha-board/actions/runs/40194337248",
+    "cause": "dist/lucide-ISC.txt existed locally but was ignored and absent in a clean checkout; integrity gate failed before browser tests.",
+    "fix": "Track the exact distributed license and allow it through .gitignore; keep integrity assertions intact.",
+    "runtime_changed": false
+  }
 }

@@ -18,4 +18,5 @@ dist/*
 !dist/THIRD-PARTY-NOTICES.md
 !dist/home-assistant-frontend-Apache-2.0.txt
 !dist/lit-BSD-3-Clause.txt
+!dist/lucide-ISC.txt
 !dist/garage-provenance.json
