@@ -98,5 +98,10 @@
     "garage_candidate_contracts_passed": 15,
     "import_and_distribution_integrity": true,
     "weather_candidate_contracts": "22 tests with TZ=UTC, matching the existing UTC fixture assumptions and CI environment; host local timezone failed the midnight-boundary fixture"
+  },
+  "ci_packaging_correction": {
+    "initial_run": 40217361946,
+    "failure": "Shared notice differed from its immutable HACS distribution copy.",
+    "fix": "Restore original shared notice; keep standalone Home Plan notice separate. Installed bundle unchanged."
   }
 }

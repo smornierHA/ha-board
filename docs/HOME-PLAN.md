@@ -52,7 +52,7 @@ Le modèle JSON contient `bounds: [x,y,largeur,hauteur]`, les surfaces de `rooms
 
 ## Construction et contrôle
 
-`node scripts/build_home_plan.mjs` produit `dist/home-plan-card.js` avec le runtime Lit verrouillé par `package-lock.json`. Aucun import CDN ou dépendance à une autre carte à l’exécution. Les notices BSD accompagnent le module.
+`node scripts/build_home_plan.mjs` produit `dist/home-plan-card.js` avec le runtime Lit verrouillé par `package-lock.json`. Aucun import CDN ou dépendance à une autre carte à l’exécution. Les [notices propres au candidat](HOME-PLAN-NOTICES.md) recensent le runtime ; la licence BSD est incorporée dans le module. Les notices du package HACS existant sont conservées à l’identique.
 
 `node tests/home-plan-browser.mjs` contrôle les thèmes et formats 320/390/736 px, les cibles de commandes, l’indépendance contact/volet, l’absence d’état optimiste, les capacités, indisponibilités, erreurs de service et de plan, l’éditeur, l’héritage de zone et le nettoyage des abonnements. Il utilise des doubles HA et ne commande aucun équipement réel. `CHROME_BIN` sélectionne Chromium. Les contrôles privés peuvent utiliser un modèle fourni hors Git.
 

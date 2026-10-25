@@ -28,5 +28,6 @@
   "tests": "local browser contracts and simulated HA, no real motor actuation",
   "ci_run": false,
   "merged": false,
-  "hacs_release": false
+  "hacs_release": false,
+  "notices": "docs/HOME-PLAN-NOTICES.md; BSD-3-Clause embedded in the standalone bundle"
 }
