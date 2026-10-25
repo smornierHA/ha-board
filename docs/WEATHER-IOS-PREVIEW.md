@@ -1,6 +1,14 @@
 # Proposition météo iOS fine
 
-## Révision des dessins et footer sobre — 25 octobre 2026, proposition courante
+## Pictogrammes horaires compacts — 25 octobre 2026, proposition courante
+
+Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’utilisateur valide l’icône principale mais rejette la recomposition et la taille des icônes horaires. L’en-tête reste strictement identique. Les heures reprennent les compositions précédentes : nuage et pluie superposés, cloud-sun/cloud-moon Lucide complets, et repères solaires d’origine.
+
+Chaque dessin complet est réduit uniformément à 24 px maximum, sans modifier ses proportions internes, puis son contour visible est centré dans la même ligne de 48 px. Le critère devient le centre optique du pictogramme complet ; l’ancienne base commune des seuls nuages ne s’applique plus. Les 24 px sont une calibration visuelle d’après la capture Apple déjà consultée, pas une spécification Apple ni une mesure native certifiée. Aucun artwork ou tracé Apple n’est incorporé.
+
+Les trois modes, graphes, jauge, couleurs de seuil, footer plat et détails sont conservés. Contrôles à 320/390/736 px clair/sombre, 25 dessins au centre commun et sans débordement, hauteur stable, conservation de l’heure, clavier et filtres. Preuve : `evidence/weather-ios-compact-icons-2026-10-25.json`. Maquette fictive seulement ; runtime, package et HA inchangés. L’accord reçu sur l’en-tête ne vaut pas acceptation globale ou ordre de déploiement.
+
+## Révision des dessins et footer sobre — 25 octobre 2026, référence précédente
 
 Référence courante : `examples/weather-ios-optical.fragment.html`. Le retour utilisateur invalide l’alignement visuel revendiqué par la précédente proposition : des cadres égaux n’assurent pas une taille et une base communes des dessins internes.
 

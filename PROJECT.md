@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Pictogrammes horaires compacts — 25 octobre 2026
+
+L’utilisateur valide l’icône d’en-tête mais écarte la recomposition et l’agrandissement des symboles du slider. Référence courante : `weather-ios-compact-icons.fragment.html`. Retour aux compositions Lucide précédentes, superpositions conservées, dessin complet de 24 px maximum et centre optique commun. Le dépôt public et les droits d’écriture sont reconfirmés ; seules maquette fictive et références changent, sans delta runtime ou HA.
+
 ## Dessins météo et footer sobre — 25 octobre 2026
 
 `weather-ios-optical.fragment.html` devient la référence après le retour sur la taille et l’alignement des dessins, et sur le footer. Normalisation de la base et de la taille des nuages visibles, symbole principal lié aux métriques réelles des chiffres, footer réduit à une ligne sobre. Dépôt public et droits d’écriture reconfirmés ; contenu fictif uniquement. Aucun changement de source runtime, package ou HA.

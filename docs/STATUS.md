@@ -1,5 +1,11 @@
 # État courant — 25 octobre 2026
 
+## Maquette météo : slider compact, compositions conservées
+
+Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’icône d’en-tête reçoit l’accord utilisateur et reste identique. Le slider revient aux compositions précédentes : nuage/pluie superposés et symboles Lucide cloud-sun/cloud-moon complets, sans décomposer leur dessin. Leur contour complet est limité à 24 px maximum, centré horizontalement et verticalement sur une ligne commune dans la trame réservée de 48 px. Cette taille est une calibration de maquette d’après la référence Apple déjà consultée, pas une mesure officielle publiée par Apple.
+
+Vérification visuelle et interactions à 320/390/736 px clair/sombre, 25 pictogrammes mesurés, trois modes à hauteur stable, détails, filtres, clavier et heure conservée. En-tête, footer, jauge, seuils et graphes restent identiques à la proposition précédente. **Maquette fictive uniquement, aucune modification du runtime ou de HA.** Preuve : `evidence/weather-ios-compact-icons-2026-10-25.json`. Le retour utilisateur sur le nouveau slider et la recette native Safari/iPhone restent distincts des contrôles Chromium.
+
 ## Maquette météo : dessins alignés et footer plat
 
 Nouvelle référence `examples/weather-ios-optical.fragment.html`. Le retour utilisateur remet en cause la taille apparente de l’icône principale et l’alignement des icônes horaires malgré leurs cadres communs. Le dessin visible est désormais normalisé : nuage partagé de 30 px, base commune à 31 px, couches météo séparées ; l’icône principale suit les contours visibles des chiffres. Le footer coloré plein est remplacé par une ligne de 44 px avec accents de gravité, intitulés et compteur.

@@ -101,6 +101,12 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Pictogrammes horaires compacts — 25 octobre 2026
+
+- Retour utilisateur : en-tête validé ; revenir aux symboles superposés d’origine dans le slider, plus petits et alignés sur une ligne. Compositions reprises de `examples/weather-ios-fixed.fragment.html`, en-tête et footer conservés depuis `examples/weather-ios-optical.fragment.html`.
+- Capture officielle Apple déjà consultée pour les proportions horaires, sans nouvel artwork importé. Le plafond de 24 px est notre calibration visuelle, pas une dimension officielle Apple. Lucide fourni par l’hôte reste la seule source d’icônes.
+- Référence courante : `examples/weather-ios-compact-icons.fragment.html`, preuve `evidence/weather-ios-compact-icons-2026-10-25.json` ; données fictives et aucun delta runtime HA.
+
 # Dessins visibles et footer sobre — 25 octobre 2026
 
 - Retour utilisateur : taille principale toujours inadaptée, icônes horaires à agrandir et aligner, footer à revoir. Le critère précédent fondé sur les cadres ne prouvait pas l’alignement des dessins.

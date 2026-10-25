@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Slider météo compact — 25 octobre 2026
+
+Référence courante : `weather-ios-compact-icons.fragment.html`. L’en-tête de la proposition précédente est validé et conservé. Pour les heures, reprendre les pictogrammes et superpositions précédents, réduire le dessin complet à 24 px maximum et aligner leur centre visible sur une ligne. Le nuage commun agrandi à 30 px est écarté pour le slider. Les acquis de hauteur stable, graphes, seuils, jauge et footer sont conservés ; l’intégration HA reste distincte de la maquette.
+
 ## Contours visibles et footer sobre — 25 octobre 2026
 
 Référence courante : `weather-ios-optical.fragment.html`. Conserver les pictogrammes horaires agrandis et leur nuage à base commune, le symbole principal lié aux contours des chiffres, le footer plat avec compteur et les acquis de hauteur constante. Le critère des seuls cadres égaux est insuffisant et le footer plein précédent est écarté. La proposition reste à examiner, sans intégration HA dans ce lot.
