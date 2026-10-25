@@ -88,6 +88,10 @@ Les exemples sont fictifs. Ne jamais publier les captures familiales, positions,
 
 ## Weather Combined Forecast
 
+`0.4.0-rc.2` affine iOS : ciel par condition et jour/nuit, carte plus compacte sans ligne secondaire, vent/rafales actuels dans l’en-tête existant et pluie à échelle absolue. Les trois modes gardent la même hauteur. Les cumuls en mm restent affichés ; la hauteur des barres représente leur intensité moyenne par durée de créneau, avec repères légers/modérés/forts consultables dans le détail.
+
+Le candidat `0.4.0-rc.1` ajoute `layout: ios` (« Présentation » dans l’éditeur) : Météo / Pluie / Vent, courbes au toucher d’une heure, jauge quotidienne, footer avec compteur actif et filtre Alertes/Tout. `layout: classic`, défaut des configurations existantes, conserve le rendu historique. Sources, seuils et actions restent configurables. Les unités YAML servent de libellés dans la vue iOS et doivent correspondre aux sources ; elles ne convertissent pas les données. La géométrie historique reste disponible en Classique ; iOS réserve une hauteur fixe au graphe et limite les pictogrammes à 24 px.
+
 **Disponible depuis `v0.2.0-rc.1`, recette HA ciblée confirmée le 9 septembre 2026.** Type conservé `custom:weather-combined-forecast-card`. Fichier dédié `weather-combined-forecast-card.js`, avec une ressource distincte selon la [bascule contrôlée](HACS.md#migration-météo-020-rc1). Le bundle Personnes ne charge pas cette carte.
 
 Météo actuelle, min/max du jour depuis la prévision daily, graphe horaire température/pluie, probabilité rapprochée dans le temps, vent/rafales/orientation, soleil et risques. Le mode `weather_alert_pills` intégré conserve ses attributions ; aucune autre carte météo n’est importée. [Options complètes](WEATHER-OPTIONS.md) · [Provenance](WEATHER-PROVENANCE.md) · [Démonstration fictive](../examples/weather-demo.html).

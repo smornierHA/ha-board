@@ -54,8 +54,10 @@ for path in privacy_paths:
 artifacts = {item["file"]: item for item in distribution["artifacts"]}
 for name, expected in {
     "ha-board.js": (38462, "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6"),
-    "weather-combined-forecast-card.js": (142577, "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"),
 }.items():
     assert (artifacts[name]["bytes"], artifacts[name]["sha256"]) == expected
 assert artifacts["garage-control-card.js"]["sha256"] == provenance["distribution"]["sha256"]
-print("Garage source/export/distribution, exact Lit lock, privacy and Personnes/Météo invariants verified.")
+weather = json.loads((root / "weather-provenance.json").read_text())["distribution"]
+verify(weather)
+assert (artifacts["weather-combined-forecast-card.js"]["bytes"], artifacts["weather-combined-forecast-card.js"]["sha256"]) == (weather["bytes"], weather["sha256"])
+print("Garage source/export/distribution, exact Lit lock, privacy, unchanged Personnes and independently verified weather distribution.")

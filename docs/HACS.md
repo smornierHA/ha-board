@@ -1,5 +1,15 @@
 # Livraison HACS — Dashboard
 
+## Candidat d’affinement iOS `0.4.0-rc.2` — 25 octobre 2026
+
+La carte est déjà en `layout: ios`. Le nouveau module candidat a été écrit puis relu à l’identique, et l’URL de la seule ressource météo existante mise à jour ; configuration de dashboard strictement identique, 43 ressources dans le même ordre. L’ancien fichier `0.4.0-rc.1` est conservé. Rollback ciblé : restaurer `/local/ha-board-candidates/weather-combined-forecast-card-0.4.0-rc.1.js?v=0.4.0-rc.1` sur le même ID de ressource ; module de 216 260 octets, SHA256 `1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df`. Aucun redémarrage HA. Rechargement complet du frontend requis pour charger la nouvelle URL. Rollback non exécuté.
+
+## Candidat iOS `0.4.0-rc.1` — 25 octobre 2026
+
+Installation ciblée : nouveau module dans `www/ha-board-candidates/`, mise à jour de la ressource météo existante et ajout du seul `layout: ios` à la carte ciblée via l’API Lovelace. Sources et risques inchangés ; aucun redémarrage HA. Le choix iOS / Classique est réversible dans l’éditeur.
+
+Rollback ciblé : retirer `layout`, puis restaurer l’URL `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js?v=0.3.1-rc.2` sur la ressource météo existante. L’ancien module de 155 264 octets, SHA256 `7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6`, est préservé. Vérifier ressources et configuration avant/après puis recharger le frontend. Ce rollback n’est pas exécuté dans le lot.
+
 HA-BOARD est un dépôt HACS personnalisé de catégorie **Dashboard**, pas une intégration `custom_components`.
 
 [![Ouvrir dans HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=smornierHA&repository=ha-board&category=plugin)
@@ -101,3 +111,16 @@ Après vérification de l’original, mettre à jour par identifiant la seule re
 Le 9 septembre, la méthode `get_documentation` du HACS installé a confirmé la lecture de `installed_version` pour un dépôt installé. Actualiser les informations peut purger le cache ancien mais ne remplace pas le README immuable du tag `v0.2.0-rc.1` par celui de `main`. La correction complète sera donc visible dans HACS avec la prochaine version autorisée ; le README courant et les preuves GitHub sont la référence actualisée.
 
 Origine de ce contrôle : [retour de recette du 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Cette règle locale de livraison n’ajoute aucun audit global ni dépendance à une nouvelle version du playbook.
+# Installation candidate atmosphère météo — 0.3.1-rc.1
+
+**Mise à jour ciblée `0.3.1-rc.2` :** même procédure avec un nouveau fichier `www/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js` et l’URL `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.2.js?v=0.3.1-rc.2`, en réutilisant la ressource météo existante. La maquette iOS n’est pas dans le bundle et n’est pas activée par cette mise à jour. Le candidat précédent reste disponible pour revenir au décor accepté avant le correctif de geste, sans toucher aux autres composants. Aucun redémarrage HA.
+
+Cet incrément peut être essayé indépendamment d’une publication HACS. Construire et tester l’arbre candidat ; conserver le module météo distribué par `v0.3.0-rc.1` comme référence de retour arrière. Placer les octets vérifiés du nouveau `dist/weather-combined-forecast-card.js` dans `www/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js`.
+
+Relire les ressources et modifier **par son identifiant existant** la seule ressource météo vers `/local/ha-board-candidates/weather-combined-forecast-card-0.3.1-rc.1.js?v=0.3.1-rc.1`. Ne pas ajouter une deuxième ressource définissant le même composant. Personnes reste la première ressource du namespace HACS ; les autres URLs et leur ordre sont conservés. Aucune modification des entités, alertes ou options de la carte n’est requise.
+
+Relire le fichier et comparer SHA256/taille au manifeste, vérifier la ressource unique, puis recharger complètement le frontend. Une écriture ou un HTTP 200 ne prouve pas la recette du navigateur natif. L’installation candidate ne change pas la version du package annoncée par HACS et n’équivaut pas à une release publiée.
+
+Retour arrière ciblé : remettre cette même ressource sur `/hacsfiles/ha-board/weather-combined-forecast-card.js?v=0.2.0-rc.1`, dont le module historique est préservé. Recharger complètement le frontend. Aucune restauration générale HA ni réinstallation des autres cartes n’est nécessaire.
+
+## Distribution HACS

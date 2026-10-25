@@ -16,20 +16,21 @@
   },
   "candidate": {
     "path": "src/candidate/weather-combined-forecast-card.js",
-    "bytes": 142577,
-    "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"
+    "bytes": 225018,
+    "sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8"
   },
   "distribution": {
     "path": "dist/weather-combined-forecast-card.js",
-    "bytes": 142577,
-    "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093"
+    "bytes": 225018,
+    "sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8"
   },
   "license_review": "verified",
   "license_findings": [
     "16 inline weather icon paths: Home Assistant frontend commit 18f79dfc919e2019102c4fde0606fdb449f4cc15, src/data/weather.ts; Apache-2.0 license and modification notice distributed",
     "clock-weather-card commit 8fc1415dde5cf8d55d61c86ae2eb4a34b46e7732: functional comparison only; no copied source/artwork identified by targeted normalized-line comparison",
     "weather_alert_pills mappings: copied from the project-local weather-alert-pills-card-v3.js supplied with the private source; project-origin, explicit attribution retained, no runtime import or external origin identified",
-    "HACS update_dashboard_resources exact installed method is retained only as an attributed MIT test fixture"
+    "HACS update_dashboard_resources exact installed method is retained only as an attributed MIT test fixture",
+    "24 Lucide icon node definitions, npm lucide@1.8.0; ISC notice including Feather MIT attribution embedded and distributed; no Apple artwork"
   ],
   "dependencies": {
     "runtime_imports": [],
@@ -48,7 +49,41 @@
     "hacs_test_fixture_license": "third_party/hacs-MIT.txt",
     "distributed_notices": [
       "THIRD-PARTY-NOTICES.md",
-      "home-assistant-frontend-Apache-2.0.txt"
-    ]
+      "home-assistant-frontend-Apache-2.0.txt",
+      "lucide-ISC.txt"
+    ],
+    "lucide_license": "third_party/lucide-ISC.txt"
+  },
+  "atmosphere_revision": {
+    "version": "0.3.1-rc.1",
+    "date": "2026-10-24",
+    "base_commit": "0a46049e784f4cf8a1484272e8474d0b20a872a6",
+    "method": "Original procedural Canvas2D; no external artwork or runtime dependency",
+    "ha_acceptance": "not-performed"
+  },
+  "scroll_revision": {
+    "version": "0.3.1-rc.2",
+    "date": "2026-10-24",
+    "cause": "pan-x on three horizontal rails; vertical wheel remapping; pointer capture also applied to touch",
+    "method": "Native touch/trackpad scrolling; mouse-only pointer dragging; touchcancel cleanup",
+    "user_feedback_previous_atmosphere": "Visually satisfactory; vertical gesture defect reported",
+    "native_ios_scroll_acceptance": "pending"
+  },
+  "ios_revision": {
+    "version": "0.4.0-rc.1",
+    "date": "2026-10-25",
+    "accepted_mockup": "examples/weather-ios-compact-icons.fragment.html",
+    "method": "Optional iOS presentation over unchanged forecast/risk data adapters; default classic retained",
+    "user_design_acceptance": "2026-10-25: Ok on part la dessus",
+    "native_ha_acceptance": "Frontend loading/render confirmed by user screenshots; gestures and native iPhone receipt not confirmed",
+    "installation": "candidate file and targeted layout verified through HA-MCP"
+  },
+  "ios_refinement_revision": {
+    "date": "2026-10-25",
+    "version": "0.4.0-rc.2",
+    "method": "Weather-driven scene and sunlight, current wind glance, compact fixed-height views and absolute average-rainfall scale",
+    "precipitation_reference": "WMO No.8, seventh edition, 2008, chapter 14 annex; 2.5 and 10 mm/h used as display boundaries on forecast interval means, not instant observed peaks",
+    "native_ha_acceptance": "pending after frontend reload",
+    "installation": "Versioned module read back exactly; only existing weather resource URL changed; dashboard configuration unchanged"
   }
 }

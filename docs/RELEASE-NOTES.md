@@ -1,3 +1,35 @@
+# HA-BOARD 0.4.0-rc.2
+
+- Rend le ciel iOS lisible selon la condition actuelle et le jour/nuit : bleu et lumière solaire, nuages/brume/pluie/neige distincts, mouvement lié au vent et pauses conservées.
+- Réduit les marges et retire la ligne secondaire sous les sélecteurs dans les trois vues ; le graphe du vent garde sa place réservée.
+- Affiche le vent actuel et les rafales à la place du titre générique quand il vente, avec un repère discret sur l’onglet Vent, sans ligne supplémentaire.
+- Corrige la pluie : intensité moyenne selon la durée des créneaux, échelle commune jamais inférieure à 10 mm/h et repères légers/modérés/forts de 2,5/10 mm/h. Les cumuls restent affichés en mm, y compris dans le détail.
+
+## Présentation conservée de 0.4.0-rc.1
+
+- Intègre la présentation iOS validée via `layout: ios` : symboles horaires superposés compacts, en-tête proportionné, trois modes à hauteur stable, courbes et détails sur données configurées.
+- Footer sobre avec compteur actif, volet filtré par défaut et accès à tous les états ; les entités indisponibles restent distinctes des problèmes confirmés. Les actions HA existantes restent accessibles.
+- L’éditeur expose iOS / Classique. Les anciennes configurations conservent leur rendu par défaut ; aucune migration des sources, seuils ou entités n’est nécessaire.
+
+## Défilement conservé de 0.3.1-rc.2
+
+- Corrige le blocage des gestes verticaux sur les prévisions et les rails de risques : les gestes tactiles restent natifs, le glisser personnalisé ne concerne que la souris.
+- Rend la molette verticale à la page et gère aussi l’annulation d’un toucher ; le swipe horizontal et la conservation de sa position restent disponibles.
+- La maquette reste une référence de conception fictive ; le runtime iOS consomme les données HA normalisées et les règles configurées.
+
+## Atmosphère conservée de 0.3.1-rc.1
+
+- Remplace le motif de pluie en barres par des gouttes individuelles de profondeur et vitesse variables, légèrement inclinées par le vent.
+- Ajoute de petits rebonds balistiques, des ondulations qui s’effacent et des reflets diffus dans le bas de la carte.
+- Nuages procéduraux en couches lentes, jour/nuit, brume, neige et éclairages doux ; aucun média tiers, shader externe ou appel réseau pour les décors.
+- Animation limitée à environ 30 images/s, particules et résolution plafonnées ; pause hors écran, onglet masqué et en mode réduction des animations.
+- Reconfiguration et mises à jour HA conservent la phase ; le détachement nettoie observateurs, écouteurs et frame en attente.
+- Préserve les prévisions, graphiques, unités, alertes, défilement, éditeur visuel et actions. Personnes et Garage sont inchangés octet pour octet.
+
+L’état candidat, la livraison ciblée et les limites de recette native sont suivis dans `docs/STATUS.md`. Les tests emploient des données fictives et ne prouvent pas à eux seuls le rendu dans l’application iPhone.
+
+## Historique
+
 # HA-BOARD 0.3.0-rc.1
 
 - Ajoute Garage Control Card 1.1.0 comme troisième module autonome, sans import dans le bundle Personnes.

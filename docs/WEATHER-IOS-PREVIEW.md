@@ -1,0 +1,104 @@
+# Proposition météo iOS fine
+
+## Affinement du rendu chargé — candidat `0.4.0-rc.2`
+
+Le retour utilisateur et ses deux captures conduisent à retirer le contexte secondaire dans Météo/Pluie/Vent et à réduire les marges ; le rail réserve maintenant 40 px au lieu de 48, sans agrandir ou redessiner les symboles de 24 px maximum. Les fixtures mobiles passent de 357,375 à 303,375 px. Le vent actuel et les rafales occupent la ligne du titre générique quand il vente ; le titre reste accessible, les actions d’en-tête et le footer sont préservés.
+
+Le ciel a une base par condition, un éclairage solaire lié à l’élévation et une animation d’air liée au vent. Jour/nuit et condition actuelle ont priorité sur le thème de l’application pour le décor ; les dialogues gardent le thème HA. Le facteur d’atténuation 0,35 est retiré. Les couleurs et surfaces de lecture sont ajustées pour préserver le contraste. Les prévisions de pluie futures ne déclenchent pas la pluie dans un ciel actuellement sec.
+
+Les cumuls sont ramenés à une intensité moyenne par la cadence des prévisions (médiane des intervalles réguliers ; repli 1 h si elle est indéterminable). Repères inspirés du guide WMO-No.8, édition 2008, chapitre 14 annexe : légère sous 2,5 mm/h, modérée de 2,5 à moins de 10, forte dès 10. Il s’agit d’une représentation des moyennes prévues, sans prétendre mesurer une intensité instantanée ou ses pics. Le niveau violent est regroupé dans fort pour cette vue à trois classes.
+
+Même échelle absolue dans le rail et le détail, minimum 10 mm/h, étendue au maximum des créneaux affichés ; aucune renormalisation sur le seul maximum faible ou sur la portion visible à l’écran. Le rail garde un trait minimal de 1 px pour les valeurs positives. Le cumul de chaque créneau reste affiché dans l’unité configurée ; son total est dans le détail. Les alertes de pluie restent indépendantes de ces repères. Preuve : `evidence/weather-ios-refinement-2026-10-25.json`.
+
+## Direction initiale acceptée et intégrée — `0.4.0-rc.1`, 25 octobre 2026
+
+`examples/weather-ios-compact-icons.fragment.html` est accepté (« Ok on part la dessus »). La fixture reste fictive ; sa présentation est intégrée au candidat `0.4.0-rc.1` avec `layout: ios`, sur les sources HA normalisées et les règles configurées. Aucune valeur de démonstration n’est intégrée au runtime. Les formes Lucide sont incorporées avec leur notice ISC/Feather MIT, sans appel réseau. L’atmosphère procédurale reste discrète ; les couleurs claires sont renforcées pour la lisibilité.
+
+`layout: classic` conserve le rendu historique. En iOS, `item_width` règle l’espacement, le dessin horaire reste plafonné à 24 px et la zone du graphe vent reste de 48 px pour garantir la hauteur constante. `chart_height` et `wind_row_height` conservent leur rôle géométrique en mode classique. Le clic d’en-tête conserve l’action HA configurée ; les courbes et repères détaillés s’ouvrent depuis une heure. Installation, chargement réel et recette native sont séparés dans STATUS et `evidence/weather-ios-integration-2026-10-25.json`.
+
+## Pictogrammes horaires compacts — 25 octobre 2026, référence acceptée
+
+Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’utilisateur valide l’icône principale mais rejette la recomposition et la taille des icônes horaires. L’en-tête reste strictement identique. Les heures reprennent les compositions précédentes : nuage et pluie superposés, cloud-sun/cloud-moon Lucide complets, et repères solaires d’origine.
+
+Chaque dessin complet est réduit uniformément à 24 px maximum, sans modifier ses proportions internes, puis son contour visible est centré dans la même ligne de 48 px. Le critère devient le centre optique du pictogramme complet ; l’ancienne base commune des seuls nuages ne s’applique plus. Les 24 px sont une calibration visuelle d’après la capture Apple déjà consultée, pas une spécification Apple ni une mesure native certifiée. Aucun artwork ou tracé Apple n’est incorporé.
+
+Les trois modes, graphes, jauge, couleurs de seuil, footer plat et détails sont conservés. Contrôles à 320/390/736 px clair/sombre, 25 dessins au centre commun et sans débordement, hauteur stable, conservation de l’heure, clavier et filtres. Preuve : `evidence/weather-ios-compact-icons-2026-10-25.json`. Maquette fictive seulement ; runtime, package et HA inchangés. L’accord reçu sur l’en-tête ne vaut pas acceptation globale ou ordre de déploiement.
+
+## Révision des dessins et footer sobre — 25 octobre 2026, référence précédente
+
+Référence courante : `examples/weather-ios-optical.fragment.html`. Le retour utilisateur invalide l’alignement visuel revendiqué par la précédente proposition : des cadres égaux n’assurent pas une taille et une base communes des dessins internes.
+
+Les symboles horaires utilisent désormais le même nuage plein, avec des couches soleil/lune/pluie issues de Lucide. Le nuage visible fait 30 px de large et sa base est placée à 31 px dans la ligne réservée de 48 px, pour pluie, éclaircies et nuit. Le symbole principal est calibré sur la hauteur et le sommet visibles des chiffres, mesurés dans la police réellement rendue, au lieu de prendre le seul corps de police comme taille de dessin. Le recalibrage suit le chargement de police et le redimensionnement. Aucun tracé d’icône ou artwork Apple n’est copié.
+
+Le footer devient une ligne de 44 px avec un séparateur léger, les intitulés, un compteur rond et le chevron. Le panneau coloré plein de la précédente proposition est retiré. La gravité reste portée par des accents orange/rouges et un libellé critique explicite ; le volet filtré, les compteurs actifs et l’accès à tous les états sont conservés. Le libellé accessible distingue le nombre d’alertes du niveau le plus élevé.
+
+Les vues, graphes, jauge, couleurs de seuil et position horaire restent conservés. À 390 px, wrapper 357,375 px et footer 44 px dans les trois modes et les quatre niveaux d’alerte. Le contrôle géométrique porte sur les contours SVG peints avec leur trait et sur les métriques visibles du texte : à 390 px, 36 px de hauteur pour le symbole principal comme pour les chiffres, sommets coïncidents ; 23 nuages contrôlés, base et largeur communes. Contrôles complémentaires 320/736 px, clair/sombre, interactions, clavier et filtres. Preuve : `evidence/weather-ios-optical-2026-10-25.json`. Il s’agit toujours d’une maquette fictive ; aucune modification du runtime ou de l’instance HA et aucune recette Safari/iPhone déduite du banc Chromium.
+
+## Révision alignement et hauteur stable — 25 octobre 2026, référence précédente
+
+Référence courante : `examples/weather-ios-fixed.fragment.html`. Cette révision remplace le bandeau supérieur et la croissance du graphe de la proposition précédente, conformément au nouveau retour utilisateur.
+
+- Icône principale et température partagent la même dimension responsive : 44 px à 320 px, 48 px à 390 px, 52 px dans le banc large, avec centres verticaux identiques. Les pictogrammes horaires ont un cadre commun ; les petites flèches ont leur propre cadre centré.
+- Toutes les alertes restent dans le footer de 52 px. Les niveaux important/critique modifient sa teinte et son libellé, sans ajouter de bandeau ni de hauteur. Le volet conserve le tri par gravité, les alertes actives et l’accès à tous les états.
+- La même trame horaire réserve 48 px au pictogramme ou au graphe, dans les trois vues. Le graphe vent/rafales utilise cette zone ; hauteur du wrapper et position du footer restent identiques lors des changements de vue et de gravité.
+- Valeurs et courbes du vent partagent les couleurs de seuil. La maquette reprend les références 35 km/h pour le vent et 45 km/h pour les rafales, avec les ratios 1,10/1,30 du composant existant : orange au-delà de 38,5/49,5 km/h et rouge au-delà de 45,5/58,5 km/h. Le trait plein/pointillé continue de distinguer vent et rafales.
+- Repères visuels complémentaires : température bleue à 5 °C ou moins, orange au-dessus de 20 °C, rouge au-dessus de 27 °C ; cumul horaire de pluie orange dès 2 mm, rouge dès 5 mm. Ces plages servent à la proposition visuelle ; elles ne créent pas de règle d’alerte HA. Les seuils et statuts textuels sont consultables dans les détails, sans ajouter de ligne à la carte.
+
+Vérification : trois vues × 320/390/736 px × clair/sombre, valeurs non coupées, graphes et détails, légende, clavier, position horaire et filtres. Le banc mesure la même hauteur entre les vues et les quatre niveaux d’alerte ; sur 390 px : wrapper 365,375 px, footer 52 px. Les valeurs orange/rouges sont distinctes et leur statut figure aussi dans le libellé accessible. Preuve : `evidence/weather-ios-fixed-2026-10-25.json`. Maquette et valeurs fictives uniquement ; source, bundle, version et instance HA inchangés.
+
+## Révision pictogrammes, vent et alertes — 25 octobre 2026, référence précédente
+
+La direction à trois vues est appréciée. La référence courante devient `examples/weather-ios-refined.fragment.html`, qui applique les quatre nouvelles remarques :
+
+- Pictogrammes météo pleins et colorés : nuages clairs, pluie bleue, soleil doré et lune douce. Composition et style à partir des icônes Lucide fournies par l’hôte ; aucun SF Symbol ni artwork Apple embarqué.
+- Graphe directement dans la vue Vent : vent moyen en trait plein, rafales en pointillés, alignés sur les 25 positions horaires du même rail natif. Vitesse, rafales et direction relative à la maison restent accessibles ; les détails au toucher sont conservés.
+- Icône météo principale immédiatement à gauche de la température ; jauge mini/maxi graduée de 9 à 17 °C avec un repère à 14 °C sur la fixture.
+- Footer et volet des risques conservés. Les alertes importantes ou critiques obtiennent un bandeau directement visible : orange ou rouge, texte de gravité explicite pour le critique et noms des alertes concernées. Les risques du volet sont triés par gravité. Un niveau faible conserve seulement le footer ; zéro alerte reste zéro et le bouton Tout permet de consulter les états normaux.
+
+L’exemple contient une **alerte orange simulée**, cohérente avec un profil fictif de rafales culminant à 72 km/h ; aucune alarme domestique réelle n’a été consultée ou modifiée. Le bandeau et son détail sont conditionnels à la gravité. Le graphe augmente uniquement la vue Vent de 41 px ; le bandeau s’ajoute seulement lorsqu’une alerte importante existe. La vérification distingue donc les hauteurs selon la situation, sans reprendre l’ancienne promesse de hauteur identique entre les trois vues.
+
+Vérifié en Chromium, pointeur tactile, 320/390/736 px en clair/sombre : icône adjacente, jauge accessible, deux séries du graphe non coupées, conservation de l’heure, détails, clavier, footer et filtres. Scénarios complémentaires : critique rouge, risques faibles sans bandeau, zéro alerte avec cinq états encore consultables. Preuve : `evidence/weather-ios-refined-2026-10-25.json`. **Maquette uniquement : aucun changement du bundle ou de l’instance HA**. La source et la distribution installées restent `0.3.1-rc.2` ; la recette native iPhone reste distincte.
+
+## Révision lisibilité — référence précédente
+
+La première maquette a été jugée trop dense : températures, courbe, cumuls, probabilités, vent, rafales et cinq risques se superposaient dans le même espace. La proposition courante est désormais `examples/weather-ios-readable.fragment.html`. La première reste une référence historique, pas un design accepté.
+
+La référence consultée est le [guide Météo iOS 27 d’Apple](https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios), ainsi que ses deux captures officielles (météo principale et détails). Le guide décrit une bascule conditions/précipitations/vent et l’ouverture des graphiques au toucher. Les [principes de mise en page](https://developer.apple.com/design/human-interface-guidelines/layout) et les [matériaux](https://developer.apple.com/design/human-interface-guidelines/materials) motivent la divulgation progressive et la retenue des effets de verre. Aucun artwork Apple n’est incorporé à la maquette. La liste des versions de sécurité distingue iOS 27.0.1 courant de la version propre à l’iPhone Duo et des RC développeur ; aucune fonction n’est déduite d’une RC.
+
+| Accès | Proposition courante |
+|---|---|
+| Immédiat | Température actuelle, condition, mini/maxi et chronologie météo simple |
+| Trois boutons nommés | Météo / Pluie / Vent ; une seule famille de données visible à la fois |
+| Pluie | Barres de cumul, probabilités et valeurs en mm |
+| Vent | Direction relative à la maison, moyenne et rafales en km/h |
+| Toucher une heure | Courbe dédiée et valeurs météo, pluie, vent/rafales de l’heure |
+| Toucher l’en-tête | Météo actuelle, courbe et repères solaires |
+| Une ligne d’alertes | Deux alertes fictives actives regroupées ; détail et bouton Tout pour les cinq risques |
+
+Les 25 positions restent disponibles. Le passage d’une donnée à une autre conserve l’heure affichée et la hauteur de la carte. Les courbes passent dans le détail : elles sont conservées sans être toutes permanentes. Les icônes et polices sont plus grandes que dans la première proposition ; la hauteur de 343–344 px ne constitue pas une réduction de hauteur. Le gain recherché est la lecture, grâce à moins de valeurs et de traitements graphiques simultanés.
+
+Vérification ciblée Chromium sur pointeur tactile : 320/390/736 px en clair/sombre, trois vues, valeurs non coupées, détails et courbes, position horaire conservée, filtres de risques, clavier et fermeture modale. Aucune modification de source, distribution, version ou configuration HA ; le correctif de défilement `0.3.1-rc.2` reste identique. L’aperçu ne vaut pas recette native Safari/iPhone ni intégration de la nouvelle disposition. Preuve : `evidence/weather-ios-readable-2026-10-24.json`.
+
+## Première proposition — historique
+
+Maquette du 24 octobre 2026 : `examples/weather-ios-fine.fragment.html`. Fragment autonome pour la prévisualisation de la conversation, qui fournit Lucide. Ce fichier n’est pas une nouvelle carte HA, n’est pas importé par le composant réel et n’est pas un package à installer. Aucun appel réseau, service HA, identifiant réel ou donnée domestique. Les textes et valeurs sont fictifs ; le runtime du composant et l’éditeur restent inchangés hors correction de défilement.
+
+| Fonction actuelle | Présentation proposée |
+|---|---|
+| Météo courante, icône et température | En-tête compact avec un seul niveau de lecture principal |
+| Minimum, maximum, position actuelle | Jauge fine et valeurs explicites |
+| Prévisions horaires, heure courante et jour suivant | Rail de 25 positions : maintenant et 24 heures |
+| Courbe de température et précipitations | Courbe fine et barres de cumul transparentes, valeurs en mm |
+| Probabilités de pluie | Pourcentages alignés sous les cumuls |
+| Vent, orientation maison, rafales et seuils | Flèche fine, vitesse et rafales ; couleur renforcée au seuil |
+| Lever/coucher du soleil | Repères horaires dans la même chronologie |
+| Vigilance, inondation, portail, pluie et volets | Boutons de risque lisibles, détail au toucher/clavier |
+| Action de l’en-tête | Ouverture locale d’un détail simulé, représentative de la navigation configurée |
+| Jour/nuit et fond animé | Ambiance discrète ; réduction des animations respectée |
+| Éditeur et configurations historiques | À réutiliser lors d’une intégration, aucune migration requise pour le correctif seul |
+
+Le défilement horizontal des heures et des risques reste natif ; le bouton suivant rend les heures accessibles sans glisser. La navigation et les détails de risques sont uniquement simulés. Les configurations avancées (autres sources, mode en-tête des risques, affichages masqués, actions de service) demeurent prises en charge par le composant réel ; la maquette illustre la disposition principale, pas tous les réglages simultanément.
+
+Vérifications : largeurs 320/390/736 px, thèmes clair/sombre, 25 positions, absence de débordement de page, bouton suivant, détails/fermeture clavier, retour de focus, valeurs d’en-tête non tronquées. Hauteur environ 323–328 px dans le banc. Le prototype ne change pas le dashboard installé et n’a pas été exécuté dans Safari/iPhone.
+
+Le correctif de geste fait partie du bundle `0.3.1-rc.2`. La décision d’intégrer cette nouvelle disposition est distincte ; les données, seuils, actions, options et identités devront rester identiques et être recettés sur le composant intégré.

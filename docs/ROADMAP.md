@@ -1,5 +1,41 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Affinement iOS demandé sur le rendu chargé — 25 octobre 2026
+
+`0.4.0-rc.2` corrige le ciel trop gris, retire le contexte secondaire des trois vues, compacte la géométrie, stabilise l’échelle de pluie et expose le vent dans l’en-tête existant. Garder les pictogrammes validés, la même hauteur entre vues, les sources/actions, le footer et les filtres. Neuf ambiances, 0,2 mm comme maximum, cumuls sur 3 h, mises à jour du vent seul et gestes vérifiés localement sur source et distribution ; seule la ressource météo est installée. Chargement et recette utilisateur restent distincts des contrôles locaux.
+
+## Présentation iOS acceptée et intégration — 25 octobre 2026
+
+La maquette `weather-ios-compact-icons.fragment.html` est acceptée. Intégration candidate `0.4.0-rc.1` avec choix iOS / Classique dans l’éditeur ; sources et règles existantes conservées. Vérifier les trois modes, hauteur, pictogrammes, risques, gestes et cycle de vie sur source et distribution avant installation ciblée. Le chargement et la recette iPhone restent distincts des contrôles Chromium. Aucune fusion ou release HACS dans ce lot.
+
+## Slider météo compact — 25 octobre 2026
+
+Référence courante : `weather-ios-compact-icons.fragment.html`. L’en-tête de la proposition précédente est validé et conservé. Pour les heures, reprendre les pictogrammes et superpositions précédents, réduire le dessin complet à 24 px maximum et aligner leur centre visible sur une ligne. Le nuage commun agrandi à 30 px est écarté pour le slider. Les acquis de hauteur stable, graphes, seuils, jauge et footer sont conservés ; l’intégration HA reste distincte de la maquette.
+
+## Contours visibles et footer sobre — 25 octobre 2026
+
+Référence courante : `weather-ios-optical.fragment.html`. Conserver les pictogrammes horaires agrandis et leur nuage à base commune, le symbole principal lié aux contours des chiffres, le footer plat avec compteur et les acquis de hauteur constante. Le critère des seuls cadres égaux est insuffisant et le footer plein précédent est écarté. La proposition reste à examiner, sans intégration HA dans ce lot.
+
+## Géométrie constante et alertes dans le footer — 25 octobre 2026
+
+Utiliser désormais `weather-ios-fixed.fragment.html` comme proposition courante : même hauteur entre vues, graphe dans l’espace réservé, icône principale proportionnée aux degrés, couleurs de seuil et toutes les alertes dans le footer. Le bandeau supérieur de la révision précédente est écarté par le nouveau retour utilisateur. La maquette ne vaut toujours pas intégration ou déploiement HA.
+
+## Ajustements de la proposition météo — 25 octobre 2026
+
+Référence courante pour examen : `weather-ios-refined.fragment.html`. Conserver les trois vues appréciées, les pictogrammes colorés, la jauge et l’icône près des degrés, le graphe vent/rafales et la distinction footer / alerte importante / critique. Une éventuelle intégration utilisera les données et niveaux normalisés réels, sans conserver les valeurs de démonstration ; aucun changement du composant installé dans ce lot de maquette.
+
+## Révision de lisibilité météo — 24 octobre 2026
+
+La première maquette trop dense est remplacée pour examen par `weather-ios-readable.fragment.html` : une seule donnée horaire à la fois, courbes et valeurs détaillées au toucher, une ligne d’alertes. Reprendre cette référence pour une éventuelle intégration après retour utilisateur. Le rendu proposé ne change pas les options ni le bundle installé et n’est pas une nouvelle livraison HACS.
+
+## Défilement et proposition iOS — 24 octobre 2026
+
+Corriger le blocage vertical du composant météo sans modifier ses options ni son rendu courant. Le candidat `0.3.1-rc.2` prolonge l’atmosphère de #19. La maquette iOS fine est proposée séparément ; son éventuelle intégration reprendra les mêmes données, seuils, unités, actions et options de l’éditeur. Une approbation de la maquette et une recette native restent distinctes du correctif de geste.
+
+## Incrément actif — atmosphère météo, 24 octobre 2026
+
+Demande utilisateur : pluie fine avec gouttes, rebonds, nuages et reflets. Le candidat `0.3.1-rc.1` remplace uniquement les décors météo, conserve Personnes/Garage, et fait l’objet d’une vérification navigateur sur données fictives puis d’une installation candidate ciblée. Le compteur de recette native reste séparé de ces contrôles : publication HACS et acceptation iPhone ne sont pas déduites de l’écriture des fichiers. Les lots historiques ci-dessous ne sont pas relancés.
+
 La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
 
 ## Avant une éventuelle promotion stable

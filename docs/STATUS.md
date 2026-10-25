@@ -1,4 +1,78 @@
-# État courant — 9 septembre 2026
+# État courant — 25 octobre 2026
+
+## Candidat iOS `0.4.0-rc.2` : ciel lisible, carte compacte, pluie et vent
+
+Les captures utilisateur confirment le chargement du frontend précédent ; elles ne constituent pas une recette des gestes ou de l’iPhone. Le nouveau retour corrige une atténuation excessive du décor (opacité configurée multipliée par 0,35) qui laissait dominer la même surface grise malgré la condition actuelle.
+
+Le décor iOS suit désormais une base de ciel propre à la condition, le jour/nuit et l’élévation solaire ; vent, nuages et lumière sont animés sans ajouter de pluie lorsque le temps actuel est sec. Les cartes suivent le ciel plutôt que le thème clair/sombre de l’application ; les dialogues conservent le thème HA. L’animation respecte les pauses et la réduction des mouvements.
+
+La ligne de contexte sous les onglets disparaît dans les trois vues et les marges sont réduites. La zone pictogramme/graphe devient 40 px, à taille de dessin horaire inchangée (24 px maximum). Sur fixture mobile 390 px : 303,375 px contre 357,375, soit 54 px de moins, avec hauteur identique entre vues. Le vent actuel et les rafales remplacent le titre générique lorsqu’il vente ; le titre reste dans le libellé accessible. Un point de couleur repère l’onglet Vent si les seuils configurés sont dépassés, sans ligne ajoutée.
+
+La pluie utilise une intensité moyenne obtenue à partir du cumul et de la cadence des prévisions : légère sous 2,5 mm/h, modérée de 2,5 à moins de 10, forte dès 10. Échelle commune au rail et aux détails, jamais inférieure à 10 mm/h et étendue aux valeurs supérieures ; 0,2 mm/h reste un trait de 1 px minimum dans le rail. Les cumuls par créneau et le cumul des créneaux disponibles restent consultables. Ces repères visuels ne changent aucune alerte HA. Préparation, contrôles et installation : `evidence/weather-ios-refinement-2026-10-25.json`.
+
+Installation candidate effectuée via HA-MCP : module `0.4.0-rc.2` de 225 018 octets, SHA256 `4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8`, contenu relu identique au bundle testé. Les 43 ressources gardent leur ordre et seule l’URL météo change ; hash du dashboard inchangé `b9adfc791a65a993`, carte et `layout: ios` inchangés. Contrôles locaux : 24 contrats météo sur source et distribution, 19 tests Python, intégrité/confidentialité/documents, suite Chromium et matrice étendue réussis. Aucun redémarrage ni publication HACS. Le rendu du nouveau frontend après rechargement et la recette iPhone restent à confirmer. Ancien module préservé ; retour arrière non exécuté.
+
+Contrôle de paquet : le premier run GitHub a détecté la notice `dist/lucide-ISC.txt` ignorée et donc absente d’un checkout propre. La notice exacte est désormais suivie et autorisée par `.gitignore`, sans modification du runtime ni assouplissement du contrôle d’intégrité. Le banc attend aussi l’événement natif de fermeture avant de rouvrir une popup par script, sans retirer les assertions de filtres ; la suite Chromium complète repasse sur source et distribution. Un échec de démarrage Chrome affiche maintenant ses diagnostics. Le résultat CI du head courant reste à lire sur la PR.
+
+## Présentation iOS acceptée et intégrée en candidat
+
+L’accord utilisateur porte sur `examples/weather-ios-compact-icons.fragment.html`. Le candidat `0.4.0-rc.1` fournit `layout: ios` : trois vues, symboles compacts superposés, icône principale proportionnée, jauge daily, courbes et détails, footer discret avec compteur actif et volet Alertes/Tout. Les risques faibles génériques ne sont pas comptés comme problèmes ; une vigilance jaune reste une alerte, et un état indisponible n’est pas un problème confirmé.
+
+L’éditeur conserve sources, seuils et actions et expose le choix de présentation ; les configurations existantes restent classiques sans `layout: ios`. Défilement natif, heure affichée, dialogue pendant les mises à jour et nettoyage au détachement sont préservés. Personnes et Garage restent identiques octet pour octet. Préparation, contrôles et installation : `evidence/weather-ios-integration-2026-10-25.json`. Chargement utilisateur et recette native iPhone restent à confirmer ; aucune fusion, publication ou CI distante déduite des contrôles locaux.
+
+**Installation candidate effectuée et relue** : `0.4.0-rc.1`, 216 260 octets, SHA256 `1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df`, code du commit local `e83c93a`. Une seule ressource météo, 43 ressources au total ; les autres valeurs et leur ordre sont identiques. Seul `layout: ios` est ajouté à la carte ciblée, tous ses autres champs relus identiques. Aucun redémarrage. L’ancien candidat reste préservé. La capture HA a expiré après 20 s sans image ; elle n’est pas revendiquée comme preuve de rendu. **Rechargement complet du frontend puis recette native utilisateur restent à faire.**
+
+## Maquette météo : slider compact, compositions conservées
+
+Référence courante : `examples/weather-ios-compact-icons.fragment.html`. L’icône d’en-tête reçoit l’accord utilisateur et reste identique. Le slider revient aux compositions précédentes : nuage/pluie superposés et symboles Lucide cloud-sun/cloud-moon complets, sans décomposer leur dessin. Leur contour complet est limité à 24 px maximum, centré horizontalement et verticalement sur une ligne commune dans la trame réservée de 48 px. Cette taille est une calibration de maquette d’après la référence Apple déjà consultée, pas une mesure officielle publiée par Apple.
+
+Vérification visuelle et interactions à 320/390/736 px clair/sombre, 25 pictogrammes mesurés, trois modes à hauteur stable, détails, filtres, clavier et heure conservée. En-tête, footer, jauge, seuils et graphes restent identiques à la proposition précédente. **Maquette fictive uniquement, aucune modification du runtime ou de HA.** Preuve : `evidence/weather-ios-compact-icons-2026-10-25.json`. Le retour utilisateur sur le nouveau slider et la recette native Safari/iPhone restent distincts des contrôles Chromium.
+
+## Maquette météo : dessins alignés et footer plat
+
+Nouvelle référence `examples/weather-ios-optical.fragment.html`. Le retour utilisateur remet en cause la taille apparente de l’icône principale et l’alignement des icônes horaires malgré leurs cadres communs. Le dessin visible est désormais normalisé : nuage partagé de 30 px, base commune à 31 px, couches météo séparées ; l’icône principale suit les contours visibles des chiffres. Le footer coloré plein est remplacé par une ligne de 44 px avec accents de gravité, intitulés et compteur.
+
+Les trois modes, courbes, seuils, jauge, détails, filtres et clavier passent à 320/390/736 px clair/sombre. Le contrôle des contours peints vérifie une hauteur principale égale au texte (33/36/39 px selon le banc), un sommet identique et 23 nuages de largeur/base communes. Wrapper et footer restent identiques entre vues et niveaux d’alerte. **Maquette fictive uniquement, pas de changement ou déploiement HA.** Preuve : `evidence/weather-ios-optical-2026-10-25.json`.
+
+## Maquette météo : hauteur constante, footer et seuils
+
+Référence courante `examples/weather-ios-fixed.fragment.html`. Le nouveau retour retire le bandeau d’alerte supérieur et la variation de taille du graphe. Le footer unique reste coloré selon la gravité, l’icône principale partage la dimension de la température et les pictogrammes ont des cadres d’alignement. Valeurs et courbes utilisent des couleurs de seuil consultables dans les détails.
+
+Le banc confirme une hauteur et une position du footer identiques entre Météo/Pluie/Vent et entre états important/critique/faible/zéro ; à 390 px, 365,375 px pour le wrapper, 52 px pour le footer. Les trois largeurs 320/390/736 et deux thèmes passent, ainsi que couleurs, légende, détails, filtres, clavier et conservation de l’heure. **Maquette seulement, données fictives, source/bundle et HA inchangés.** Preuve : `evidence/weather-ios-fixed-2026-10-25.json`.
+
+## Maquette météo : pictogrammes, jauge, graphe du vent et gravité
+
+La direction précédente est appréciée. La nouvelle référence `examples/weather-ios-refined.fragment.html` applique les quatre demandes du 25 octobre : pictogrammes colorés inspirés d’iOS, icône à côté de la température et jauge mini/maxi, graphe vent/rafales visible dans la vue Vent, bandeau orange/rouge pour les alertes importantes/critiques. Le footer, le volet filtré et les cinq risques restent présents. L’alerte orange affichée est simulée.
+
+Vérifications ciblées : 320/390/736 px clair/sombre tactile, trois vues, deux séries du graphe et leur alignement, jauge, position horaire, détails, clavier, filtres, scénarios critique/faible/zéro. Les hauteurs varient selon le bandeau et la présence du graphe ; cette évolution remplace le critère de hauteur identique de la proposition précédente. **Pas de déploiement, de publication ni de modification de source ou distribution HA.** Preuve : `evidence/weather-ios-refined-2026-10-25.json`. Le candidat de défilement installé reste inchangé.
+
+## Maquette météo : lisibilité et données à la demande
+
+La première proposition n’est pas acceptée : l’utilisateur trouve les informations trop empilées. La révision `examples/weather-ios-readable.fragment.html` reprend la bascule Météo/Pluie/Vent du guide Apple iOS 27 et ouvre les courbes au toucher d’une heure. Le résumé des risques devient une seule ligne donnant accès aux alertes actives puis à tous les états. Les fonctions sont représentées dans des vues dédiées, avec 25 positions horaires et une position conservée lors du changement de vue.
+
+L’aperçu est vérifié à 320, 390 et 736 px, clair/sombre, avec des cibles tactiles, les trois modes, les détails, le clavier, les filtres de risques et l’absence de débordement. Hauteur environ 343–344 px : la révision privilégie l’aération et la lisibilité, pas un écrasement vertical. **Maquette seulement, données fictives, aucune nouvelle écriture HA ni modification du bundle**. Le candidat de défilement ci-dessous reste en place et sa recette iPhone reste distincte. Preuve : `evidence/weather-ios-readable-2026-10-24.json` ; décision et sources dans `docs/WEATHER-IOS-PREVIEW.md`.
+
+## Défilement météo `0.3.1-rc.2` et maquette iOS
+
+L’utilisateur juge le nouveau décor satisfaisant, puis signale un défilement vertical bloqué sur la carte. Le banc tactile reproduit le défaut sur le candidat précédent : un geste vertical de 100 px laisse la page à 750 px. Cause vérifiée dans le code : `touch-action: pan-x` sur trois rails, capture des pointeurs tactiles par le drag personnalisé et conversion de la molette verticale en défilement horizontal.
+
+Le correctif rend le défilement tactile au navigateur, autorise les deux axes et le zoom, conserve le glisser à la souris et libère l’état d’interaction sur `touchcancel`. Les tests avec entrées tactiles CDP vérifient les deux sens verticaux sur le graphique et le footer, les boutons de risques en en-tête, le swipe horizontal, la molette et l’annulation du toucher, sur source et distribution. Les contrôles de rendu, atmosphère et éditeur restent actifs. Cette preuve Chromium ne constitue pas une recette Safari/iPhone.
+
+La proposition visuelle `examples/weather-ios-fine.fragment.html` est indépendante du bundle : typographie plus légère, courbe fine, précipitations, probabilités, vent orienté et rafales, repères solaires, alertes cliquables et détails simulés. Vérifiée à 320, 390 et 736 px, en clair et sombre. Aucune modification des options ou de la disposition du dashboard réel pour cette maquette. Voir `docs/WEATHER-IOS-PREVIEW.md` et `evidence/weather-scroll-ios-2026-10-24.json` pour le statut de déploiement et les limites.
+
+**Correctif seul installé et relu identique** : module de 155 264 octets, SHA256 `7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6`. La ressource météo existante pointe sur le nouveau fichier candidat versionné ; elle reste unique. Les autres ressources et leur ordre sont identiques, le hash du dashboard est inchangé. Pas de redémarrage, pas de publication HACS, pas de bascule de la maquette. Chargement et geste natif à confirmer après rechargement de l’application utilisateur.
+
+## Atmosphère météo `0.3.1-rc.1`
+
+La source maintenue et le module autonome remplacent les barres de pluie par des gouttes, impacts, reflets et nuages procéduraux. Base `0a46049e784f4cf8a1484272e8474d0b20a872a6` ; branche `feat/weather-atmosphere-20261024`. Le fichier météo observé dans HA avant intervention correspond exactement au module historique de 142 577 octets, SHA256 `f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`. HACS annonce désormais le package `v0.3.0-rc.1` installé ; la météo reste sur son asset `0.2.0-rc.1`. Cette observation actualise uniquement l’état utile au lot météo.
+
+Les contrats météo Node passent (22 sur la source et 22 sur la distribution), ainsi que les 43 contrats Personnes sur source et bundle, les 15 contrats Garage, les tests Python et les vérifications d’intégrité/confidentialité/documentation. Chromium vérifie source et module distribué, desktop/mobile clair/sombre, sept conditions, impacts, réduction des animations, détachement/reconnexion, pause hors écran et plusieurs instances. La comparaison visuelle complémentaire couvre huit ambiances ; la moyenne locale de peinture à chaud reste inférieure à 0,5 ms pour une carte de 850 × 347 px. Ce dernier chiffre n’est pas une mesure d’iPhone.
+
+**Installation candidate ciblée effectuée le 24 octobre** depuis le code testé du commit local `208a7b9`. Module autonome : **156 267 octets**, SHA256 `3f94d1e96d7bdfbbe7153939969e0e06c167568c5c38bff6c202423c97707dc7`. Fichier relu identique après écriture ; la ressource météo existante pointe sur ce candidat, reste unique, et toutes les autres ressources conservent leurs valeurs et leur ordre. Les options du dashboard sont inchangées. L’asset HACS précédent est préservé pour le retour arrière.
+
+Ce déploiement candidat ne change pas la version annoncée par HACS et ne constitue pas une publication de `v0.3.1-rc.1`. **Chargement utilisateur et recette native HA/iPhone restent à confirmer après rechargement complet du frontend.** Le moteur de capture HA précédemment indisponible n’est pas assimilé au banc Chromium fictif. Personnes et Garage restent identiques. Preuve : `evidence/weather-atmosphere-2026-10-24.json`.
+
+## Historique — état consolidé du 9 septembre 2026
 
 **Distribution installée : `v0.2.0-rc.1`, météo et Personnes.** Le lot météo est clos après les essais natifs globalement concluants confirmés par l’utilisateur. [Décision de supervision](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067).
 

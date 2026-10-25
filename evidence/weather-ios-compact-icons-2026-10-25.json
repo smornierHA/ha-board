@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-25",
+  "scope": "Mockup hourly icons only; validated header preserved",
+  "file": "examples/weather-ios-compact-icons.fragment.html",
+  "bytes": 44229,
+  "sha256": "13e2b3114a536ea0ff8badb7905d702300bd032748b65e48c85922398a541016",
+  "previous_proposal": "examples/weather-ios-optical.fragment.html",
+  "decision": "Header approved. Restore prior stacked/composite Lucide hourly pictograms, reduce complete painted symbols to max 24px and center on a common line. No Apple artwork.",
+  "sizing_reference": "Visual calibration from previously inspected official Apple Weather screenshot; 24px is not an official Apple measurement.",
+  "verification": {
+    "proof": [
+      {
+        "width": 320,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 357.375,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 357.375,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 357.375,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 357.375,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "colorScheme": "light",
+        "coarse_pointer": true,
+        "height": 359.671875,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      },
+      {
+        "width": 736,
+        "colorScheme": "dark",
+        "coarse_pointer": true,
+        "height": 359.671875,
+        "forecast_slots": 25,
+        "modes": [
+          "weather",
+          "rain",
+          "wind"
+        ],
+        "wind_graph": true,
+        "wind_graph_height_delta": 0,
+        "gauge": true,
+        "primary_icon_next_to_temperature": true,
+        "duotone_weather_icons": true,
+        "footer_only_alerts": true,
+        "unclipped_values": true,
+        "details": true,
+        "hour_position_preserved": true,
+        "active_risks_only_default": true,
+        "all_risks_available": true,
+        "keyboard": true,
+        "overflow": false
+      }
+    ],
+    "severity": [
+      {
+        "scenario": "critical",
+        "major_banner": false,
+        "footer_emphasis": true,
+        "active_count": 2
+      },
+      {
+        "scenario": "minor",
+        "major_banner": false,
+        "footer_emphasis": false,
+        "active_count": 2
+      },
+      {
+        "scenario": "none",
+        "major_banner": false,
+        "footer_emphasis": false,
+        "active_count": 0
+      }
+    ],
+    "errors": [],
+    "native_ios": false,
+    "production_changed": false
+  },
+  "painted_geometry": {
+    "proof": [
+      {
+        "width": 320,
+        "main_symbol_ink_height": 33.00000406075819,
+        "number_ink_height": 33,
+        "main_ink_top_difference": -3.2262931597415445e-06,
+        "hour_icons_checked": 25,
+        "hour_max_painted_size": 24,
+        "hour_center_x": 23.999999397948415,
+        "hour_center_y": 23.999999123653197,
+        "flat_footer_height": 44,
+        "fixed_wrapper_and_footer": true
+      },
+      {
+        "width": 390,
+        "main_symbol_ink_height": 36.00000117877501,
+        "number_ink_height": 36,
+        "main_ink_top_difference": 1.6643665503579541e-06,
+        "hour_icons_checked": 25,
+        "hour_max_painted_size": 24,
+        "hour_center_x": 23.999999397948415,
+        "hour_center_y": 23.999999123653197,
+        "flat_footer_height": 44,
+        "fixed_wrapper_and_footer": true
+      },
+      {
+        "width": 736,
+        "main_symbol_ink_height": 39.000000574990054,
+        "number_ink_height": 39,
+        "main_ink_top_difference": -6.286342397743283e-07,
+        "hour_icons_checked": 25,
+        "hour_max_painted_size": 24,
+        "hour_center_x": 23.999999397948415,
+        "hour_center_y": 23.999999123653197,
+        "flat_footer_height": 44,
+        "fixed_wrapper_and_footer": true
+      }
+    ],
+    "severity": [
+      {
+        "level": "severe",
+        "wrapper_height": 357.375,
+        "footer_height": 44
+      },
+      {
+        "level": "critical",
+        "wrapper_height": 357.375,
+        "footer_height": 44
+      },
+      {
+        "level": "minor",
+        "wrapper_height": 357.375,
+        "footer_height": 44
+      },
+      {
+        "level": "none",
+        "wrapper_height": 357.375,
+        "footer_height": 44
+      }
+    ],
+    "native_ios": false
+  },
+  "source_checks": {
+    "header_markup_unchanged": true,
+    "footer_markup_unchanged": true,
+    "fragment_and_repo_bytes_identical": true,
+    "offline_fragment": true
+  },
+  "native_ios_tested": false,
+  "runtime_source_changed": false,
+  "dist_changed": false,
+  "package_changed": false,
+  "home_assistant_changed": false,
+  "deployed": false,
+  "limitations": [
+    "Chromium visual and interaction checks on fictional data only.",
+    "The user approved only the previous header; the new slider remains a proposal.",
+    "Remote CI not asserted."
+  ]
+}

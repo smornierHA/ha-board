@@ -1,5 +1,41 @@
 # Projet HA-BOARD
 
+## Ciel, densité et intensités iOS — 25 octobre 2026
+
+Le retour utilisateur sur la carte chargée demande un ciel réellement lié à la situation, moins d’espace, le retrait du contexte secondaire, une échelle de pluie stable et le vent visible dès l’arrivée. Le candidat `0.4.0-rc.2` ajuste uniquement la météo ; sources, seuils de risques et actions sont conservés. Dépôt public et écriture reconfirmés ; fixtures fictives seulement, captures et configuration domestiques exclues. Le candidat précédent est préservé pour retour arrière.
+
+## Intégration de la présentation iOS — 25 octobre 2026
+
+L’utilisateur accepte `weather-ios-compact-icons.fragment.html` (« Ok on part la dessus »). Le candidat `0.4.0-rc.1` intègre cette direction via `layout: ios`, sur les adaptateurs de données, sources secondaires, risques et actions existants. `layout: classic` reste le défaut des configurations existantes. Dépôt public adapté au code et fixtures fictives ; aucune configuration domestique ou capture réelle versionnée. Installation candidate limitée à la météo ; statut et preuves dans STATUS.
+
+## Pictogrammes horaires compacts — 25 octobre 2026
+
+L’utilisateur valide l’icône d’en-tête mais écarte la recomposition et l’agrandissement des symboles du slider. Référence courante : `weather-ios-compact-icons.fragment.html`. Retour aux compositions Lucide précédentes, superpositions conservées, dessin complet de 24 px maximum et centre optique commun. Le dépôt public et les droits d’écriture sont reconfirmés ; seules maquette fictive et références changent, sans delta runtime ou HA.
+
+## Dessins météo et footer sobre — 25 octobre 2026
+
+`weather-ios-optical.fragment.html` devient la référence après le retour sur la taille et l’alignement des dessins, et sur le footer. Normalisation de la base et de la taille des nuages visibles, symbole principal lié aux métriques réelles des chiffres, footer réduit à une ligne sobre. Dépôt public et droits d’écriture reconfirmés ; contenu fictif uniquement. Aucun changement de source runtime, package ou HA.
+
+## Hauteur stable et footer météo — 25 octobre 2026
+
+`weather-ios-fixed.fragment.html` devient la référence de maquette : icône de la taille des degrés, alignements communs, toutes les alertes dans le footer, couleurs de seuil et géométrie constante entre vues. Dépôt public et droits d’écriture reconfirmés ; exemple et mesures fictifs uniquement sur la branche de #19. Aucun changement de runtime, de package ou de configuration HA.
+
+## Ajustements de la maquette météo — 25 octobre 2026
+
+Dépôt public et droits d’écriture reconfirmés. La proposition à trois vues reste la base demandée ; `weather-ios-refined.fragment.html` ajoute des pictogrammes colorés, le graphe du vent, la jauge mini/maxi et la mise en évidence des alertes importantes. Données et alertes sont fictives. Seuls l’exemple et ses références/preuves évoluent sur la branche de #19 ; aucun delta runtime, package ou HA.
+
+## Révision de maquette météo — 24 octobre 2026
+
+Le retour utilisateur remplace la proposition initiale, trop dense, par un aperçu à trois vues Météo/Pluie/Vent inspiré du guide Apple iOS 27 actuel. Dépôt public et droits d’écriture reconfirmés ; branche existante de #19. Seuls l’exemple fictif, ses références et sa preuve évoluent. Le code distribué et l’instance HA ne sont pas modifiés dans cette révision.
+
+## Incrément gestes et maquette météo — 24 octobre 2026
+
+Dépôt public et droits push/admin reconfirmés. La branche `feat/weather-atmosphere-20261024` et la PR draft #19 accueillent le correctif de défilement `0.3.1-rc.2`, puis une maquette iOS distincte du composant installé. Seuls du code et des données fictives sont versionnés ; aucun export HA réel ni capture privée. La production conserve son interface existante ; la nouvelle disposition reste une proposition à examiner.
+
+## Incrément atmosphère météo — 24 octobre 2026
+
+Dépôt `smornierHA/ha-board` confirmé public, avec droits d’écriture. Cette visibilité reste adaptée au code frontend et aux exemples fictifs. Configuration domestique, noms/entités réels, URLs internes et captures de l’instance restent exclus du dépôt. Base locale `0a46049e784f4cf8a1484272e8474d0b20a872a6`, branche `feat/weather-atmosphere-20261024` ; seul le composant météo évolue. Les sources `src/` d’import restent intactes. Le détail testé/déployé est maintenu dans STATUS et dans la preuve de cet incrément.
+
 | Champ | Valeur |
 |---|---|
 | Dépôt vérifié le 6 septembre 2026 | [smornierHA/ha-board](https://github.com/smornierHA/ha-board), accessible avec droits d'administration et d'écriture |

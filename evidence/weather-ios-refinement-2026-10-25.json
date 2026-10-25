@@ -1,0 +1,647 @@
+{
+  "date": "2026-10-25",
+  "version": "0.4.0-rc.2",
+  "status": "candidate-installed-file-and-resource-verified-frontend-reload-pending",
+  "artifact": {
+    "source": "src/candidate/weather-combined-forecast-card.js",
+    "distribution": "dist/weather-combined-forecast-card.js",
+    "bytes": 225018,
+    "sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8"
+  },
+  "user_feedback": [
+    "Weather-correlated animated iOS atmosphere",
+    "Less vertical space",
+    "Remove secondary context in all three views",
+    "Absolute rain intensity scale with three levels and cumuls",
+    "Current wind visible without extra height"
+  ],
+  "behavior": {
+    "weather_scenes": 9,
+    "current_condition_not_future_rain": true,
+    "sun_elevation_and_day_night": true,
+    "wind_glance_in_existing_header": true,
+    "severity_marker_on_wind_tab": true,
+    "secondary_context_removed_all_modes": true,
+    "hourly_symbols_unchanged": true,
+    "hourly_symbol_max_px": 24,
+    "graph_row_px": 40,
+    "mobile_fixture_height_px": 303.375,
+    "previous_mobile_fixture_height_px": 357.375,
+    "saved_height_px": 54,
+    "equal_height_across_modes": true
+  },
+  "precipitation": {
+    "quantity": "forecast interval mean intensity",
+    "boundaries_mm_per_hour": [
+      2.5,
+      10
+    ],
+    "three_categories": [
+      "light",
+      "moderate",
+      "heavy"
+    ],
+    "scale_floor_mm_per_hour": 10,
+    "scale_expands_for_heavy_values": true,
+    "zero_height_px": 0,
+    "positive_minimum_rail_px": 1,
+    "max_0_2_mm_per_hour_height_px": 1,
+    "cadence_and_units_normalized": true,
+    "three_hour_cumulative_case_passed": true,
+    "slot_cumuls_and_available_total_retained": true,
+    "reference": "https://www.weather.gov/media/epz/mesonet/CWOP-WMO8.pdf#page=323",
+    "reference_note": "WMO No.8 seventh edition (2008), chapter 14 annex. Display adaptation to forecast means; not instant observed intensity. Violent folded into heavy."
+  },
+  "validation": {
+    "weather_contracts_source": 24,
+    "weather_contracts_distribution": 24,
+    "python_tests": 19,
+    "syntax_integrity_privacy_docs": true,
+    "git_diff_check": true,
+    "browser_cdp": {
+      "chrome": "Chromium 133.0.6943.0",
+      "checks": [
+        {
+          "source": "candidate",
+          "ios": {
+            "views": 3,
+            "slots": 16,
+            "stable_height": true,
+            "active_risks": true,
+            "all_states": true,
+            "live_updates": true,
+            "unavailable_not_problem": true,
+            "header_action": true,
+            "native_vertical_rail_and_footer": true,
+            "reconnection": true,
+            "classic_fallback": true,
+            "viewports": [
+              {
+                "width": 320,
+                "dark": true
+              },
+              {
+                "width": 320,
+                "dark": false
+              },
+              {
+                "width": 390,
+                "dark": true
+              },
+              {
+                "width": 390,
+                "dark": false
+              },
+              {
+                "width": 736,
+                "dark": true
+              },
+              {
+                "width": 736,
+                "dark": false
+              }
+            ]
+          }
+        },
+        {
+          "source": "candidate",
+          "render": true,
+          "editor": "mock ha-form round-trip",
+          "navigation": true,
+          "reconnection": true,
+          "viewports": [
+            "desktop-dark",
+            "mobile-light"
+          ],
+          "atmosphere": [
+            {
+              "condition": "rainy",
+              "night": false,
+              "particles": 31
+            },
+            {
+              "condition": "pouring",
+              "night": true,
+              "particles": 49
+            },
+            {
+              "condition": "cloudy",
+              "night": false,
+              "particles": 0
+            },
+            {
+              "condition": "clear-night",
+              "night": true,
+              "particles": 0
+            },
+            {
+              "condition": "snowy",
+              "night": false,
+              "particles": 28
+            },
+            {
+              "condition": "fog",
+              "night": false,
+              "particles": 0
+            },
+            {
+              "condition": "sunny",
+              "night": false,
+              "particles": 0
+            }
+          ],
+          "reduced_motion": true,
+          "offscreen_pause": true,
+          "canvas_cleanup": true,
+          "separate_instances": true,
+          "gestures": [
+            {
+              "selector": ".combined-scroll",
+              "dy": -100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".combined-scroll",
+              "dy": 100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".risk-pills-slider",
+              "dy": -100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".risk-pills-slider",
+              "dy": 100,
+              "vertical_page_scroll": true
+            }
+          ],
+          "native_horizontal_swipe": true,
+          "vertical_wheel": true,
+          "header_risk_vertical_swipe": true,
+          "touch_cancel_recovers": true
+        },
+        {
+          "source": "bundle",
+          "ios": {
+            "views": 3,
+            "slots": 16,
+            "stable_height": true,
+            "active_risks": true,
+            "all_states": true,
+            "live_updates": true,
+            "unavailable_not_problem": true,
+            "header_action": true,
+            "native_vertical_rail_and_footer": true,
+            "reconnection": true,
+            "classic_fallback": true,
+            "viewports": [
+              {
+                "width": 320,
+                "dark": true
+              },
+              {
+                "width": 320,
+                "dark": false
+              },
+              {
+                "width": 390,
+                "dark": true
+              },
+              {
+                "width": 390,
+                "dark": false
+              },
+              {
+                "width": 736,
+                "dark": true
+              },
+              {
+                "width": 736,
+                "dark": false
+              }
+            ]
+          }
+        },
+        {
+          "source": "bundle",
+          "render": true,
+          "editor": "mock ha-form round-trip",
+          "navigation": true,
+          "reconnection": true,
+          "viewports": [
+            "desktop-dark",
+            "mobile-light"
+          ],
+          "atmosphere": [
+            {
+              "condition": "rainy",
+              "night": false,
+              "particles": 31
+            },
+            {
+              "condition": "pouring",
+              "night": true,
+              "particles": 49
+            },
+            {
+              "condition": "cloudy",
+              "night": false,
+              "particles": 0
+            },
+            {
+              "condition": "clear-night",
+              "night": true,
+              "particles": 0
+            },
+            {
+              "condition": "snowy",
+              "night": false,
+              "particles": 28
+            },
+            {
+              "condition": "fog",
+              "night": false,
+              "particles": 0
+            },
+            {
+              "condition": "sunny",
+              "night": false,
+              "particles": 0
+            }
+          ],
+          "reduced_motion": true,
+          "offscreen_pause": true,
+          "canvas_cleanup": true,
+          "separate_instances": true,
+          "gestures": [
+            {
+              "selector": ".combined-scroll",
+              "dy": -100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".combined-scroll",
+              "dy": 100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".risk-pills-slider",
+              "dy": -100,
+              "vertical_page_scroll": true
+            },
+            {
+              "selector": ".risk-pills-slider",
+              "dy": 100,
+              "vertical_page_scroll": true
+            }
+          ],
+          "native_horizontal_swipe": true,
+          "vertical_wheel": true,
+          "header_risk_vertical_swipe": true,
+          "touch_cancel_recovers": true
+        }
+      ],
+      "errors": [],
+      "ha_acceptance": false
+    },
+    "browser_extended": {
+      "proof": [
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 320,
+          "dark": true,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 320,
+          "dark": false,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 390,
+          "dark": true,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 390,
+          "dark": false,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 736,
+          "dark": true,
+          "height": 305.671875,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "width": 736,
+          "dark": false,
+          "height": 305.671875,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "compact_height": 303.375,
+          "previous_height": 357.375,
+          "saved_height": 54,
+          "no_secondary_context": true,
+          "wind_visible_without_extra_row": true,
+          "wind_only_update": true,
+          "weak_rain_max_height": 1,
+          "mixed_rain_levels": [
+            {
+              "level": "low",
+              "height": 1
+            },
+            {
+              "level": "medium",
+              "height": 3.5
+            },
+            {
+              "level": "medium",
+              "height": 7
+            },
+            {
+              "level": "high",
+              "height": 14
+            },
+            {
+              "level": "high",
+              "height": 28
+            }
+          ],
+          "three_hour_cumulative_normalization": true,
+          "weather_scenes": 9,
+          "animation_changes": true,
+          "reduced_motion": true
+        },
+        {
+          "source": "src/candidate/weather-combined-forecast-card.js",
+          "live_risks": true,
+          "active_only_default": true,
+          "all_states": true,
+          "unknown_not_confirmed_problem": true,
+          "header_action": true,
+          "scroll_position": true,
+          "native_vertical_touch_both_directions": true,
+          "reconnect": true,
+          "classic_fallback": true,
+          "multi_instance": true
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 320,
+          "dark": true,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 320,
+          "dark": false,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 390,
+          "dark": true,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 390,
+          "dark": false,
+          "height": 303.375,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 736,
+          "dark": true,
+          "height": 305.671875,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "width": 736,
+          "dark": false,
+          "height": 305.671875,
+          "slots": 25,
+          "stable_height": true,
+          "details": true,
+          "overflow": false,
+          "appearance": {
+            "bg": "rgb(48, 75, 100)",
+            "ink": "rgb(243, 248, 253)",
+            "canvas_opacity": "0.58"
+          }
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "compact_height": 303.375,
+          "previous_height": 357.375,
+          "saved_height": 54,
+          "no_secondary_context": true,
+          "wind_visible_without_extra_row": true,
+          "wind_only_update": true,
+          "weak_rain_max_height": 1,
+          "mixed_rain_levels": [
+            {
+              "level": "low",
+              "height": 1
+            },
+            {
+              "level": "medium",
+              "height": 3.5
+            },
+            {
+              "level": "medium",
+              "height": 7
+            },
+            {
+              "level": "high",
+              "height": 14
+            },
+            {
+              "level": "high",
+              "height": 28
+            }
+          ],
+          "three_hour_cumulative_normalization": true,
+          "weather_scenes": 9,
+          "animation_changes": true,
+          "reduced_motion": true
+        },
+        {
+          "source": "dist/weather-combined-forecast-card.js",
+          "live_risks": true,
+          "active_only_default": true,
+          "all_states": true,
+          "unknown_not_confirmed_problem": true,
+          "header_action": true,
+          "scroll_position": true,
+          "native_vertical_touch_both_directions": true,
+          "reconnect": true,
+          "classic_fallback": true,
+          "multi_instance": true
+        }
+      ],
+      "errors": [],
+      "native_ios": false,
+      "real_services_called": false
+    },
+    "browser_data": "fictitious; mocked HA components",
+    "desktop_wheel_harness": "fresh desktop document after mobile touch checks; scroll and rail assertions retained",
+    "native_dialog_close_events": "Awaited before scripted reopen; filter assertions retained.",
+    "chrome_startup_diagnostics": true
+  },
+  "scope_preservation": {
+    "original_import_unchanged": true,
+    "classic_default_retained": true,
+    "configured_actions_and_alert_rules_preserved": true,
+    "unknown_options_preserved": true,
+    "people_sha256": "80caf1146f0af5a175a6a2763239fe1ee935259beb28c7ffa4a57c04ca82baf6",
+    "garage_sha256": "6f7b151883a607b26ae146f18a1e2d30633698f152ddfd5d9dac6db5c1fefa4d"
+  },
+  "installation": {
+    "status": "candidate-installed-file-and-resource-verified",
+    "previous_version": "0.4.0-rc.1",
+    "previous_bytes": 216260,
+    "previous_sha256": "1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df",
+    "rollback": "Restore the existing weather resource URL to /local/ha-board-candidates/weather-combined-forecast-card-0.4.0-rc.1.js?v=0.4.0-rc.1; keep layout ios. Previous module retained.",
+    "restart": false,
+    "dashboard_config_write": false,
+    "hacs_release": false,
+    "version": "0.4.0-rc.2",
+    "module_path": "www/ha-board-candidates/weather-combined-forecast-card-0.4.0-rc.2.js",
+    "module_bytes": 225018,
+    "module_sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8",
+    "readback_exact_content": true,
+    "resource_count": 43,
+    "weather_resource_unique": true,
+    "other_resources_and_order_unchanged": true,
+    "dashboard_config_hash_before": "b9adfc791a65a993",
+    "dashboard_config_hash_after": "b9adfc791a65a993",
+    "targeted_card_unchanged": true,
+    "layout": "ios",
+    "code_commit_local": "7694aa2",
+    "rollback_executed": false
+  },
+  "native_frontend_render": "pending after full reload",
+  "native_iphone_acceptance": "pending",
+  "remote_ci": "Current-head checks are recorded on PR #19; not asserted by this local evidence file.",
+  "merged": false,
+  "released": false,
+  "limitations": [
+    "Browser checks use fictitious data and mocked platform components.",
+    "The previous module loaded in the user screenshots; this does not prove the new frontend render or native iPhone gestures.",
+    "Rainfall intensity is averaged over each forecast interval and may understate a brief peak."
+  ],
+  "packaging_correction": {
+    "initial_failed_run": "https://github.com/smornierHA/ha-board/actions/runs/40194337248",
+    "cause": "dist/lucide-ISC.txt existed locally but was ignored and absent in a clean checkout; integrity gate failed before browser tests.",
+    "fix": "Track the exact distributed license and allow it through .gitignore; keep integrity assertions intact.",
+    "runtime_changed": false,
+    "clean_committed_export_integrity": true
+  }
+}

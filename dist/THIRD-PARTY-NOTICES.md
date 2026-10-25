@@ -2,6 +2,17 @@
 
 This file records identified third-party portions and exact review boundaries. It does not assign a global license to HA-BOARD.
 
+## Lucide icon nodes in the optional iOS weather presentation
+
+The weather module vendors 24 icon node definitions from the installed npm package `lucide@1.8.0`, used by the accepted mockup. No Lucide runtime or network import is required. HA-BOARD assembles these nodes into SVG, preserves the cloud/rain and composite sun/moon drawings, and adds colors, optical alignment and sizing.
+
+- Source: `https://github.com/lucide-icons/lucide`, npm `lucide@1.8.0`, `dist/cjs/lucide.js` icon definitions.
+- License: ISC; the package notice also retains the Feather MIT attribution for derived icons such as moon, chevrons and x.
+- The complete package notice is embedded in the weather JavaScript and distributed as `lucide-ISC.txt`, also preserved in `third_party/`.
+- Icon names: cloud, cloud-drizzle, cloud-rain, cloud-sun, cloud-moon, sun, moon, sunrise, sunset, snowflake, cloud-lightning, cloud-fog, wind, droplet, droplets, waves, blinds, triangle-alert, circle-check, circle-help, chevron-right, chevron-left, x, move-up.
+
+No Apple/SF Symbols paths, screenshots or artwork are distributed.
+
 ## Lit runtime incorporated in Garage Control
 
 `dist/garage-control-card.js` incorporates the production modules resolved from the exact npm dependency `lit-element@4.2.0`: `lit-element`, `lit-html` and `@lit/reactive-element`. The root dependency and complete transitive resolution are locked by `package-lock.json`; `scripts/build_garage.mjs` bundles them into the distributed module. There is no CDN import or dependency on another Lovelace card at runtime.

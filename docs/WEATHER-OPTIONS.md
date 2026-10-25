@@ -1,9 +1,14 @@
 # Options Weather Combined Forecast
 
-Types et valeurs par défaut du candidat public. Les identifiants `example` sont fictifs ; configurer les sources HA dans l’éditeur. Les objets risques et actions conservent leurs clés imbriquées. Les options YAML inconnues sont préservées. L’éditeur affiche les valeurs effectives depuis la même définition de défauts que la carte et retire une surcharge remise à son défaut. Limite héritée : `precipitation_unit`, `temperature_unit`, `wind_unit` ne modifient pas les libellés d’affichage ; leurs clés YAML sont conservées mais ces trois options ne sont pas proposées comme contrôles modifiables. Aucune conversion, source métrique attendue.
+`0.4.0-rc.1` ajoute `layout: ios` ; `layout: classic` reste le défaut. Le choix est disponible dans l’éditeur. En `0.4.0-rc.2`, iOS utilise les mêmes sources, seuils et actions, réserve 40 px au graphe/aux pictogrammes et plafonne le dessin horaire à 24 px. `item_width` reste appliqué ; `chart_height` / `wind_row_height` restent propres au rendu classique. Les unités YAML servent de libellés ; la pluie est normalisée en mm/h pour son échelle moyenne, les cumuls restent dans l’unité source configurée.
+
+Le contexte secondaire est retiré des trois vues. Le vent actuel et les rafales remplacent le titre générique quand le vent atteint 12 km/h, les rafales 25 km/h ou un seuil configuré ; le titre et les valeurs complètes restent accessibles. Le décor suit la météo et le soleil, avec pauses conservées. Repères de pluie : légère < 2,5 mm/h, modérée 2,5–<10, forte ≥10 ; ce sont des repères d’affichage, pas de nouvelles règles d’alerte.
+
+Types et valeurs par défaut du candidat public. Les identifiants `example` sont fictifs ; configurer les sources HA dans l’éditeur. Les objets risques et actions conservent leurs clés imbriquées. Les options YAML inconnues sont préservées. L’éditeur affiche les valeurs effectives depuis la même définition de défauts que la carte et retire une surcharge remise à son défaut. Limite héritée du rendu classique : `precipitation_unit`, `temperature_unit`, `wind_unit` ne modifient pas les libellés d’affichage ; leurs clés YAML sont conservées mais ces trois options ne sont pas proposées comme contrôles modifiables. Aucune conversion, source métrique attendue.
 
 | Option | Type | Défaut public |
 |---|---|---|
+| `layout` | `classic` / `ios` | `"classic"` |
 | `title` | string | `"Prévisions météo"` |
 | `show_title` | boolean | `true` |
 | `show_header` | boolean | `true` |
@@ -83,3 +88,16 @@ Types et valeurs par défaut du candidat public. Les identifiants `example` sont
 | `weather_background_opacity` | number | `0.58` |
 | `weather_background_speed` | number | `0.9` |
 | `empty_label` | string | `"Aucune prévision disponible"` |
+# Fond atmosphérique — candidat 0.3.1-rc.2
+
+Les types YAML et les options existantes restent compatibles. `weather_background_opacity` règle la discrétion du décor (défaut 0,58) ; `weather_background_speed` règle la vitesse, plafonnée entre 0 et 2 (défaut 0,9). Une vitesse à zéro conserve un décor fixe. L’éditeur visuel expose déjà ces deux options.
+
+La condition de l’entité météo sélectionne le décor ; `sun_entity` distingue le jour et la nuit. Le vent courant incline légèrement les gouttes. La forte pluie augmente leur densité. Les gouttes ont des profondeurs, des tailles et des vitesses différentes. Le bas de carte reçoit des impacts brefs, deux microgouttes en rebond, une ondulation elliptique et une lumière réfléchie diffuse. L’ensemble reste derrière les informations et n’intercepte aucun geste.
+
+Nuages, brume, soleil, nuit et neige utilisent le même rendu procédural local, sans média Apple ni autre artwork copié. Il s’agit d’une ambiance inspirée de la sobriété d’une application météo, pas d’une reproduction de son moteur.
+
+La scène est plafonnée à environ 30 images/s, 160 particules et un ratio de pixels de 1,5. Elle s’arrête hors écran, lorsque l’onglet est masqué, ou si le système demande de réduire les animations ; un fond statique reste visible. Les paramètres de réduction des animations du système ne sont jamais modifiés.
+
+## Options de la carte
+
+Les prévisions et les rails de risques utilisent le défilement natif : un geste horizontal parcourt les heures/risques, un geste vertical déplace la page et le zoom reste disponible. La molette verticale n’est plus transformée en déplacement horizontal ; utiliser le trackpad horizontal, Maj + molette selon le navigateur, ou glisser à la souris. Aucune option de configuration supplémentaire n’est nécessaire. La maquette iOS reste distincte : `docs/WEATHER-IOS-PREVIEW.md`.

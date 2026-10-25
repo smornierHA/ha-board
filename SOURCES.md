@@ -1,5 +1,17 @@
 # Sources de référence
 
+## Ciel, densité, pluie et vent iOS — 25 octobre 2026
+
+- Captures utilisateur : preuve de chargement du candidat précédent, ciel peu différencié et contexte secondaire redondant. Les captures domestiques restent hors du dépôt public. Les lectures HA ciblées vérifient seulement les sources déjà configurées ; aucune identité ni valeur domestique brute n’est exportée.
+- [WMO-No.8, septième édition 2008, chapitre 14, annexe I.14–7](https://www.weather.gov/media/epz/mesonet/CWOP-WMO8.pdf#page=323) : repères de pluie <2,5 / 2,5–<10 / 10–<50 mm/h, puis violent. La vue regroupe forte/violente et adapte ces repères à des intensités moyennes de prévision ; elle ne prétend pas reprendre une mesure instantanée sur 3 min.
+- Candidat `0.4.0-rc.2`, mêmes sources et actions, sans artwork Apple ou dépendance ajoutée ; preuve `evidence/weather-ios-refinement-2026-10-25.json`.
+
+## Intégration iOS — 25 octobre 2026
+
+- Accord utilisateur sur `weather-ios-compact-icons.fragment.html` ; runtime sur les adaptateurs de données existants, sans fixture embarquée.
+- 24 définitions de nœuds d’icônes de `lucide@1.8.0` présent dans l’environnement de conception ; notice complète ISC et attribution Feather MIT conservées dans le JS et `third_party/lucide-ISC.txt`. Aucun artwork Apple, CDN ou dépendance runtime ajoutée.
+- Référence des contrôles et état de déploiement : `evidence/weather-ios-integration-2026-10-25.json`. Les résultats Chromium ne constituent pas une recette native HA/iPhone.
+
 Consultation: 6 septembre 2026. Revalider avant une intervention dépendant d’une version. Les résumés sont des repères; les liens ne prouvent pas la compatibilité de notre installation.
 
 | ID | Source | Usage |
@@ -101,3 +113,48 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 - Dépendance : métadonnées npm et package installé `lit-element@4.2.0`, licence BSD-3-Clause, résolution exacte dans `package-lock.json`. `lit-html@3.3.3` et `@lit/reactive-element@2.1.2` sont les dépendances runtime incorporées ; `esbuild@0.25.9` est uniquement l’outil de construction.
 - Méthode HACS installée déjà qualifiée par le pilote météo et fixture exacte réutilisée. Le test Garage ajoute un troisième module et une mise à jour ultérieure : Personnes doit rester la première ressource du namespace, météo et Garage sont mis à jour explicitement par identifiant. La migration météo n’est pas rejouée.
 - Originaux, export, candidat et distribution sont distingués dans `garage-provenance.json` et `docs/GARAGE-PROVENANCE.md`. Les seules images ajoutées sont des SVG fictifs du banc. La comparaison Chrome CI ne vaut pas recette Home Assistant native.
+# Pictogrammes horaires compacts — 25 octobre 2026
+
+- Retour utilisateur : en-tête validé ; revenir aux symboles superposés d’origine dans le slider, plus petits et alignés sur une ligne. Compositions reprises de `examples/weather-ios-fixed.fragment.html`, en-tête et footer conservés depuis `examples/weather-ios-optical.fragment.html`.
+- Capture officielle Apple déjà consultée pour les proportions horaires, sans nouvel artwork importé. Le plafond de 24 px est notre calibration visuelle, pas une dimension officielle Apple. Lucide fourni par l’hôte reste la seule source d’icônes.
+- Référence courante : `examples/weather-ios-compact-icons.fragment.html`, preuve `evidence/weather-ios-compact-icons-2026-10-25.json` ; données fictives et aucun delta runtime HA.
+
+# Dessins visibles et footer sobre — 25 octobre 2026
+
+- Retour utilisateur : taille principale toujours inadaptée, icônes horaires à agrandir et aligner, footer à revoir. Le critère précédent fondé sur les cadres ne prouvait pas l’alignement des dessins.
+- Composition locale avec les mêmes symboles Lucide fournis par l’hôte, nuage commun et couches météo séparées ; aucun artwork ou tracé Apple incorporé. Les vérifications mesurent les contours SVG avec trait et les métriques visibles de la police réellement rendue.
+- Référence `examples/weather-ios-optical.fragment.html`, preuve `evidence/weather-ios-optical-2026-10-25.json`. Footer plat, accents de gravité, contenu fictif et aucun delta runtime HA.
+
+# Hauteur constante et footer de la maquette météo — 25 octobre 2026
+
+- Nouveau retour utilisateur : dimension de l’icône liée aux degrés, alertes exclusivement dans le footer, alignements, couleurs au-delà des seuils et wrapper constant entre les vues.
+- Code local maintenu `_intensityLevel`, `_combinedWindLevel` et `_tempColor` relu : références vent/rafales et ratios 1,10/1,30 réutilisés pour le rendu de démonstration. Les plages pluie et température de la proposition sont décrites dans `docs/WEATHER-IOS-PREVIEW.md` ; aucune règle HA n’est modifiée.
+- Référence courante `examples/weather-ios-fixed.fragment.html` et preuve `evidence/weather-ios-fixed-2026-10-25.json` : mesures de géométrie, couleurs et statuts accessibles sur données fictives ; aucune donnée domestique ou ressource tierce ajoutée.
+
+# Ajustements de la maquette météo — 25 octobre 2026
+
+- Retour utilisateur sur la proposition à trois vues : pictogrammes iPhone-like, graphe dans la vue Vent, jauge mini/maxi, icône principale près des degrés et alertes importantes visibles.
+- Pictogrammes Lucide fournis par l’hôte de prévisualisation (runtime local observé 1.8.0, licence ISC) : composition de symboles existants et styles propres au projet, sans nouveau tracé d’icône ou artwork Apple. Aucun import ou asset ajouté au bundle réel.
+- Référence `examples/weather-ios-refined.fragment.html` ; profil météo et alertes fictifs ; preuve `evidence/weather-ios-refined-2026-10-25.json`. Les captures Apple consultées la veille restent des références de conception, pas des ressources embarquées.
+
+# Révision lisibilité de la maquette météo — 24 octobre 2026
+
+- [Guide Météo iOS 27](https://support.apple.com/fr-fr/guide/iphone/iph1ac0b35f/ios), texte et deux captures officielles consultés : bascule conditions/précipitations/vent, graphiques détaillés au toucher. Captures consultées uniquement, sans copie dans le projet ou le prototype.
+- [Apple HIG Layout](https://developer.apple.com/design/human-interface-guidelines/layout) et [Materials](https://developer.apple.com/design/human-interface-guidelines/materials), consultés pour la hiérarchie, la divulgation progressive et les contrôles distincts du contenu.
+- [Mises à jour Apple](https://support.apple.com/fr-fr/100100), consultées pour distinguer la version courante d’iOS 27 des RC et de la version propre à un autre appareil. La maquette n’est pas présentée comme une app Apple ni comme une reproduction native.
+- Référence courante : `examples/weather-ios-readable.fragment.html`, vérifications fictives dans `evidence/weather-ios-readable-2026-10-24.json`. Aucun delta runtime HA ni dépendance ajoutée.
+
+# Complément défilement et maquette météo — 24 octobre 2026
+
+- Retour utilisateur : décor satisfaisant et nouveau défaut de geste vertical. Reproduction par entrée tactile Chromium sur fixture, sans appel à une entité ou commande réelle.
+- [MDN `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action), consulté le 24 octobre : gestion native des axes, calcul avec les ancêtres, zoom et annulation des événements pointeur. Diagnostic du blocage corroboré par le code et le test avant/après, sans attribuer tout le comportement de l’application iOS à Chromium.
+- Maquette originale inspirée des conventions visuelles iOS, sans artwork Apple. Icônes Lucide fournies par l’hôte de prévisualisation ; aucune dépendance ou icône ajoutée au bundle météo réel. Référence et limites : `docs/WEATHER-IOS-PREVIEW.md`.
+
+# Complément atmosphère météo — 24 octobre 2026
+
+- Dépôt HA-BOARD public et base `0a46049e784f4cf8a1484272e8474d0b20a872a6` vérifiés ; la source maintenue est `src/candidate/weather-combined-forecast-card.js`.
+- Le module météo observé via HA-MCP correspond exactement aux octets déjà distribués dans Git (`f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093`). Aucune configuration ni identité réelle n’est exportée ici.
+- Nouveau décor Canvas2D écrit pour ce projet, sans artwork Apple, image distante, média tiers ou dépendance runtime ajoutée. Les licences existantes des icônes météo et des autres composants restent inchangées.
+- Contrats Node sur source et distribution, cycle de vie et scènes Chromium sur fixtures fictives : `evidence/weather-atmosphere-2026-10-24.json`. Leur portée reste distincte d’une recette native HA/iPhone.
+
+## Sources antérieures

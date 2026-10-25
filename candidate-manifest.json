@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "status": "draft-garage-migration-13-not-published",
-  "base_commit": "89637463121bf9d88e17ae1939bc9c02f47f6552",
+  "status": "weather-ios-refinement-candidate-installed-frontend-receipt-pending-not-published",
+  "base_commit": "0a46049e784f4cf8a1484272e8474d0b20a872a6",
   "reference_release": {
     "version": "0.2.0-rc.1",
     "commit": "a9c885419cea031fb307623076100b04feb78e98",
@@ -32,9 +32,9 @@
     },
     {
       "path": "src/candidate/weather-combined-forecast-card.js",
-      "bytes": 142577,
-      "sha256": "f853e1d46c887209ed3dad4c56d592a79bc9e769102654095ea2a7c6f6edc093",
-      "version": "0.2.0-rc.1"
+      "bytes": 225018,
+      "sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8",
+      "version": "0.4.0-rc.2"
     },
     {
       "path": "src/candidate/garage-control-card.js",

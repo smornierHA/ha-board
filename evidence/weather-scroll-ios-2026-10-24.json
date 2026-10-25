@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "version": "0.3.1-rc.2",
+  "base_remote_commit": "9c357f96f8cdfa4fd501af212fc8f34459dc082f",
+  "reproduction_before": {
+    "input": "CDP trusted touch: vertical -100px over .combined-scroll",
+    "scroll_y_before": 750,
+    "scroll_y_after": 750,
+    "result": "fails as expected"
+  },
+  "artifact": {
+    "bytes": 155264,
+    "sha256": "7370d3269117e486b4b27805b70444ec865f7739770bfc77e00e4e28feddfda6"
+  },
+  "browser": {
+    "chrome": "Chromium 133.0.6943.0",
+    "checks": [
+      {
+        "source": "candidate",
+        "render": true,
+        "editor": "mock ha-form round-trip",
+        "navigation": true,
+        "reconnection": true,
+        "viewports": [
+          "desktop-dark",
+          "mobile-light"
+        ],
+        "atmosphere": [
+          {
+            "condition": "rainy",
+            "night": false,
+            "particles": 31
+          },
+          {
+            "condition": "pouring",
+            "night": true,
+            "particles": 49
+          },
+          {
+            "condition": "cloudy",
+            "night": false,
+            "particles": 0
+          },
+          {
+            "condition": "clear-night",
+            "night": true,
+            "particles": 0
+          },
+          {
+            "condition": "snowy",
+            "night": false,
+            "particles": 28
+          },
+          {
+            "condition": "fog",
+            "night": false,
+            "particles": 0
+          },
+          {
+            "condition": "sunny",
+            "night": false,
+            "particles": 0
+          }
+        ],
+        "reduced_motion": true,
+        "offscreen_pause": true,
+        "canvas_cleanup": true,
+        "separate_instances": true,
+        "gestures": [
+          {
+            "selector": ".combined-scroll",
+            "dy": -100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".combined-scroll",
+            "dy": 100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".risk-pills-slider",
+            "dy": -100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".risk-pills-slider",
+            "dy": 100,
+            "vertical_page_scroll": true
+          }
+        ],
+        "native_horizontal_swipe": true,
+        "vertical_wheel": true,
+        "header_risk_vertical_swipe": true,
+        "touch_cancel_recovers": true
+      },
+      {
+        "source": "bundle",
+        "render": true,
+        "editor": "mock ha-form round-trip",
+        "navigation": true,
+        "reconnection": true,
+        "viewports": [
+          "desktop-dark",
+          "mobile-light"
+        ],
+        "atmosphere": [
+          {
+            "condition": "rainy",
+            "night": false,
+            "particles": 31
+          },
+          {
+            "condition": "pouring",
+            "night": true,
+            "particles": 49
+          },
+          {
+            "condition": "cloudy",
+            "night": false,
+            "particles": 0
+          },
+          {
+            "condition": "clear-night",
+            "night": true,
+            "particles": 0
+          },
+          {
+            "condition": "snowy",
+            "night": false,
+            "particles": 28
+          },
+          {
+            "condition": "fog",
+            "night": false,
+            "particles": 0
+          },
+          {
+            "condition": "sunny",
+            "night": false,
+            "particles": 0
+          }
+        ],
+        "reduced_motion": true,
+        "offscreen_pause": true,
+        "canvas_cleanup": true,
+        "separate_instances": true,
+        "gestures": [
+          {
+            "selector": ".combined-scroll",
+            "dy": -100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".combined-scroll",
+            "dy": 100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".risk-pills-slider",
+            "dy": -100,
+            "vertical_page_scroll": true
+          },
+          {
+            "selector": ".risk-pills-slider",
+            "dy": 100,
+            "vertical_page_scroll": true
+          }
+        ],
+        "native_horizontal_swipe": true,
+        "vertical_wheel": true,
+        "header_risk_vertical_swipe": true,
+        "touch_cancel_recovers": true
+      }
+    ],
+    "errors": [],
+    "ha_acceptance": false
+  },
+  "mockup": {
+    "file": "examples/weather-ios-fine.fragment.html",
+    "sha256": "01d07b2566db0b3fa168666bc7e5c82471ebc0987c63f10fab77e0563a77c870",
+    "verification": {
+      "proof": [
+        {
+          "width": 736,
+          "colorScheme": "light",
+          "height": 323.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        },
+        {
+          "width": 736,
+          "colorScheme": "dark",
+          "height": 323.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        },
+        {
+          "width": 390,
+          "colorScheme": "light",
+          "height": 323.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        },
+        {
+          "width": 390,
+          "colorScheme": "dark",
+          "height": 323.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        },
+        {
+          "width": 320,
+          "colorScheme": "light",
+          "height": 328.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        },
+        {
+          "width": 320,
+          "colorScheme": "dark",
+          "height": 328.28125,
+          "overflow": false,
+          "hourly_slots": 25,
+          "local_actions": true,
+          "keyboard_close": true
+        }
+      ],
+      "errors": [],
+      "native_ios": false
+    },
+    "installed": false,
+    "data": "fictitious"
+  },
+  "validation": {
+    "weather_node_contracts_source": 22,
+    "weather_node_contracts_distribution": 22,
+    "persons_contracts_source": 43,
+    "persons_contracts_bundle": 43,
+    "garage_node_contracts": 15,
+    "python_unittests": 19,
+    "integrity_privacy_docs": true,
+    "remote_ci": "not queried"
+  },
+  "deployment": {
+    "file_read_back_identical": true,
+    "existing_resource_updated": true,
+    "exactly_one_weather_resource": true,
+    "other_resources_and_order_unchanged": true,
+    "dashboard_config_hash_unchanged": true,
+    "ha_restarted": false,
+    "hacs_release_published": false,
+    "frontend_loaded": "pending user reload",
+    "native_ios_scroll_acceptance": "pending"
+  },
+  "rollback": {
+    "method": "Retarget existing weather resource to preserved 0.3.1-rc.1 candidate, then reload frontend",
+    "performed": false
+  },
+  "privacy": "No real HA config, entity IDs, resources IDs, internal URLs, screenshots or credentials included"
+}
