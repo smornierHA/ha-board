@@ -1,5 +1,11 @@
 # Sources de référence
 
+## Ciel, densité, pluie et vent iOS — 25 octobre 2026
+
+- Captures utilisateur : preuve de chargement du candidat précédent, ciel peu différencié et contexte secondaire redondant. Les captures domestiques restent hors du dépôt public. Les lectures HA ciblées vérifient seulement les sources déjà configurées ; aucune identité ni valeur domestique brute n’est exportée.
+- [WMO-No.8, septième édition 2008, chapitre 14, annexe I.14–7](https://www.weather.gov/media/epz/mesonet/CWOP-WMO8.pdf#page=323) : repères de pluie <2,5 / 2,5–<10 / 10–<50 mm/h, puis violent. La vue regroupe forte/violente et adapte ces repères à des intensités moyennes de prévision ; elle ne prétend pas reprendre une mesure instantanée sur 3 min.
+- Candidat `0.4.0-rc.2`, mêmes sources et actions, sans artwork Apple ou dépendance ajoutée ; preuve `evidence/weather-ios-refinement-2026-10-25.json`.
+
 ## Intégration iOS — 25 octobre 2026
 
 - Accord utilisateur sur `weather-ios-compact-icons.fragment.html` ; runtime sur les adaptateurs de données existants, sans fixture embarquée.

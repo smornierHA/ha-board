@@ -103,7 +103,11 @@ try{
   // Wheel is a desktop input; leave mobile touch emulation before this assertion.
   await call('Emulation.setTouchEmulationEnabled',{enabled:false});
   await call('Emulation.setDeviceMetricsOverride',{width:1000,height:780,deviceScaleFactor:1,mobile:false});
-  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const wp=await rect('.combined-scroll'),wy=await evaluate('window.scrollY');await call('Input.synthesizeScrollGesture',{x:wp.x,y:wp.y,yDistance:-120,gestureSourceType:'mouse',speed:500,preventFling:true});await new Promise(r=>setTimeout(r,300));assert.ok((await evaluate('window.scrollY'))>wy+40,'vertical wheel must scroll page: '+JSON.stringify({source,point:wp,before:wy,after:await evaluate('window.scrollY'),height:await evaluate('innerHeight')}));assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft'),0,'vertical wheel must not move forecast');
+  // Isolate this desktop check from the preceding touch/viewport sequence.
+  await call('Page.navigate',{url:`http://127.0.0.1:${server.address().port}/examples/weather-demo.html?source=${source}&wheel=1`});
+  await waitFor('location.search.includes("wheel=1") && window.demoReady === true && Boolean(demo.card.shadowRoot.querySelector(".combined-scroll"))');
+  await evaluate(`(()=>{const top=document.createElement('div');top.id='gesture-top';top.style.height='650px';document.body.prepend(top);const bottom=document.createElement('div');bottom.id='gesture-bottom';bottom.style.height='1800px';document.body.append(bottom);document.documentElement.style.scrollBehavior='auto';})()`);
+  await resetViewport();await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft=0');const wp=await rect('.combined-scroll'),wy=await evaluate('window.scrollY');await call('Page.bringToFront');await call('Input.dispatchMouseEvent',{type:'mouseMoved',x:wp.x,y:wp.y});await evaluate('new Promise(r=>requestAnimationFrame(r))');await call('Input.synthesizeScrollGesture',{x:wp.x,y:wp.y,yDistance:-120,gestureSourceType:'mouse',speed:500,preventFling:true});await new Promise(r=>setTimeout(r,300));assert.ok((await evaluate('window.scrollY'))>wy+40,'vertical wheel must scroll page: '+JSON.stringify({source,point:wp,before:wy,after:await evaluate('window.scrollY'),height:await evaluate('innerHeight')}));assert.equal(await evaluate('demo.card.shadowRoot.querySelector(".combined-scroll").scrollLeft'),0,'vertical wheel must not move forecast');
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
   await evaluate('demo.card.setConfig({...demo.card.config,risk_display_mode:"header_sub_buttons"})');await resetViewport();const hp=await rect('.header-risk-subbuttons'),hy=await evaluate('window.scrollY');await swipe(hp,0,100);assert.ok((await evaluate('window.scrollY'))<hy-30,'header risk buttons must allow vertical page scroll');
@@ -119,6 +123,20 @@ try{
     {entity:'sensor.example_shutters',label:'Volets',level_source:'state'}]});})()`);
   await waitFor('Boolean(demo.card.shadowRoot.querySelector(".wr-hour"))');
   const iosHeight=await evaluate('demo.card.shadowRoot.querySelector("ha-card").getBoundingClientRect().height');
+  assert.ok(iosHeight<330,'compact iOS card must remain below 330px in the mobile fixture');
+  assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll(".wr-context").length'),0);
+  const compactWeather=await evaluate(`(()=>{const c=demo.card;window.beforeCompactWeather=c._hass;const h=c._hass;
+    c.hass={...h,states:{...h.states,
+      'weather.example':{state:'sunny',attributes:{temperature:14,wind_speed:40,wind_gust_speed:72,wind_speed_unit:'km/h',precipitation:.2}},
+      'sun.sun':{state:'above_horizon',attributes:{...h.states['sun.sun'].attributes,elevation:29}},
+      'sensor.example_hourly':{state:'ok',attributes:{forecast:h.states['sensor.example_hourly'].attributes.forecast.map(d=>({...d,precipitation:.2}))}}
+    }};return {mode:c._atmosphere.options.mode,elevation:c._atmosphere.options.elevation,wind:c._atmosphere.options.windSpeed,particles:c._atmosphere._particles.length,glance:c.shadowRoot.querySelector('.wr-wind-now').textContent};})()`);
+  assert.equal(compactWeather.mode,'sunny');assert.equal(compactWeather.elevation,29);assert.equal(compactWeather.wind,40);assert.equal(compactWeather.particles,0);assert.match(compactWeather.glance,/40.*72/);
+  await evaluate('demo.card.shadowRoot.querySelector("[data-mode=rain]").click()');
+  assert.ok(await evaluate('Array.from(demo.card.shadowRoot.querySelectorAll(".wr-precip>span")).every(e=>e.getBoundingClientRect().height<=1.1)'),'0.2mm must stay a small bar even as the forecast maximum');
+  await evaluate(`(()=>{const c=demo.card,h=c._hass;c.hass={...h,states:{...h.states,'sensor.example_hourly':{state:'ok',attributes:{forecast:h.states['sensor.example_hourly'].attributes.forecast.map((d,i)=>({...d,precipitation:[.2,2.5,5,10,20][i%5]}))}}}};})()`);
+  assert.deepEqual(await evaluate('Array.from(demo.card.shadowRoot.querySelectorAll(".wr-precip")).slice(0,5).map(e=>e.dataset.level)'),['low','medium','medium','high','high']);
+  await evaluate('demo.card.hass=beforeCompactWeather;demo.card.shadowRoot.querySelector("[data-mode=weather]").click()');
   const slots=await evaluate('demo.card._enrichEntries(demo.card._forecastEntries()).length');
   assert.equal(await evaluate('demo.card.shadowRoot.querySelectorAll(".wr-hour").length'),slots);
   for(const mode of ['weather','rain','wind']){

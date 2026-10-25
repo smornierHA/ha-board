@@ -1,5 +1,17 @@
 # État courant — 25 octobre 2026
 
+## Candidat iOS `0.4.0-rc.2` : ciel lisible, carte compacte, pluie et vent
+
+Les captures utilisateur confirment le chargement du frontend précédent ; elles ne constituent pas une recette des gestes ou de l’iPhone. Le nouveau retour corrige une atténuation excessive du décor (opacité configurée multipliée par 0,35) qui laissait dominer la même surface grise malgré la condition actuelle.
+
+Le décor iOS suit désormais une base de ciel propre à la condition, le jour/nuit et l’élévation solaire ; vent, nuages et lumière sont animés sans ajouter de pluie lorsque le temps actuel est sec. Les cartes suivent le ciel plutôt que le thème clair/sombre de l’application ; les dialogues conservent le thème HA. L’animation respecte les pauses et la réduction des mouvements.
+
+La ligne de contexte sous les onglets disparaît dans les trois vues et les marges sont réduites. La zone pictogramme/graphe devient 40 px, à taille de dessin horaire inchangée (24 px maximum). Sur fixture mobile 390 px : 303,375 px contre 357,375, soit 54 px de moins, avec hauteur identique entre vues. Le vent actuel et les rafales remplacent le titre générique lorsqu’il vente ; le titre reste dans le libellé accessible. Un point de couleur repère l’onglet Vent si les seuils configurés sont dépassés, sans ligne ajoutée.
+
+La pluie utilise une intensité moyenne obtenue à partir du cumul et de la cadence des prévisions : légère sous 2,5 mm/h, modérée de 2,5 à moins de 10, forte dès 10. Échelle commune au rail et aux détails, jamais inférieure à 10 mm/h et étendue aux valeurs supérieures ; 0,2 mm/h reste un trait de 1 px minimum dans le rail. Les cumuls par créneau et le cumul des créneaux disponibles restent consultables. Ces repères visuels ne changent aucune alerte HA. Préparation, contrôles et installation : `evidence/weather-ios-refinement-2026-10-25.json`.
+
+Installation candidate effectuée via HA-MCP : module `0.4.0-rc.2` de 225 018 octets, SHA256 `4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8`, contenu relu identique au bundle testé. Les 43 ressources gardent leur ordre et seule l’URL météo change ; hash du dashboard inchangé `b9adfc791a65a993`, carte et `layout: ios` inchangés. Contrôles locaux : 24 contrats météo sur source et distribution, 19 tests Python, intégrité/confidentialité/documents, suite Chromium et matrice étendue réussis. Aucun redémarrage ni publication HACS. Le rendu du nouveau frontend après rechargement et la recette iPhone restent à confirmer. Ancien module préservé ; retour arrière non exécuté.
+
 ## Présentation iOS acceptée et intégrée en candidat
 
 L’accord utilisateur porte sur `examples/weather-ios-compact-icons.fragment.html`. Le candidat `0.4.0-rc.1` fournit `layout: ios` : trois vues, symboles compacts superposés, icône principale proportionnée, jauge daily, courbes et détails, footer discret avec compteur actif et volet Alertes/Tout. Les risques faibles génériques ne sont pas comptés comme problèmes ; une vigilance jaune reste une alerte, et un état indisponible n’est pas un problème confirmé.

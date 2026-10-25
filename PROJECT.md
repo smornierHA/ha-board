@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Ciel, densité et intensités iOS — 25 octobre 2026
+
+Le retour utilisateur sur la carte chargée demande un ciel réellement lié à la situation, moins d’espace, le retrait du contexte secondaire, une échelle de pluie stable et le vent visible dès l’arrivée. Le candidat `0.4.0-rc.2` ajuste uniquement la météo ; sources, seuils de risques et actions sont conservés. Dépôt public et écriture reconfirmés ; fixtures fictives seulement, captures et configuration domestiques exclues. Le candidat précédent est préservé pour retour arrière.
+
 ## Intégration de la présentation iOS — 25 octobre 2026
 
 L’utilisateur accepte `weather-ios-compact-icons.fragment.html` (« Ok on part la dessus »). Le candidat `0.4.0-rc.1` intègre cette direction via `layout: ios`, sur les adaptateurs de données, sources secondaires, risques et actions existants. `layout: classic` reste le défaut des configurations existantes. Dépôt public adapté au code et fixtures fictives ; aucune configuration domestique ou capture réelle versionnée. Installation candidate limitée à la météo ; statut et preuves dans STATUS.

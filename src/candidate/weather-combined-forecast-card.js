@@ -1,4 +1,4 @@
-/* HA-BOARD weather iOS candidate 0.4.0-rc.1; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
+/* HA-BOARD weather iOS candidate 0.4.0-rc.2; see THIRD-PARTY-NOTICES.md and docs/WEATHER-PROVENANCE.md.
  * Modified from the private project source: lifecycle, editor, validation and packaging changes.
  * Home Assistant frontend weather icon paths are provided under Apache-2.0; notice distributed alongside this file.
  */
@@ -70,7 +70,7 @@ class WeatherAtmosphere {
 
   mount(host, options) {
     if (!this.ctx || !host) return false;
-    const changed = this.options?.mode !== options.mode || this.options?.night !== options.night;
+    const changed = this.options?.mode !== options.mode || this.options?.night !== options.night || this.options?.style !== options.style;
     this.options = options;
     if (host !== this.host) {
       this._resizeObserver?.disconnect();
@@ -252,6 +252,7 @@ class WeatherAtmosphere {
     if (!this.ctx || !this.width || !this.options) return;
     const c = this.ctx, w = this.width, h = this.height, t = this._time;
     const {mode, night} = this.options;
+    const ios = this.options.style === "ios";
     const wet = this._isWet();
     const palettes = {
       sunny: ["#316ea2", "#80afd0", "#b7b8aa"], night: ["#121b37", "#23314b", "#2e354a"],
@@ -260,14 +261,27 @@ class WeatherAtmosphere {
       storm: ["#1b2438", "#344055", "#596879"], snow: ["#687e95", "#9aa9b9", "#b6c1cb"],
       fog: ["#687787", "#919ca6", "#acb4bb"]
     };
-    const colors = night && mode !== "night" ? palettes.night : (palettes[mode] || palettes.cloudy);
+    const iosPalettes = {
+      sunny:["#246eaa","#559acf","#84b1d4"], partly:["#376c9d","#7299bb","#a0b6c8"],
+      cloudy:["#40566e","#667c92","#8d9fac"], rain:["#233c55","#425d73","#718997"],
+      pouring:["#202e43","#3a5067","#657b89"], storm:["#182639","#34495f","#596e7d"],
+      snow:["#546b83","#8199af","#b3c4d3"], fog:["#536a7c","#8295a4","#abb9c2"],
+      night:["#0d1830","#1b2c46","#34445b"]
+    };
+    const scene = ios ? iosPalettes : palettes;
+    const colors = night && mode !== "night" ? scene.night : (scene[mode] || scene.cloudy);
     const sky = c.createLinearGradient(0, 0, w * .25, h);
     colors.forEach((color, i) => sky.addColorStop(i / 2, color));
     c.fillStyle = sky; c.fillRect(0, 0, w, h);
     if (["sunny", "partly", "night"].includes(mode)) {
-      const x = w * .79, y = h * .15;
-      this._glow(x, y, Math.max(w * .37, h * .7), night || mode === "night" ? "162,187,230" : "255,226,160", night ? .18 : .48);
-      this._glow(x, y, h * .13, night || mode === "night" ? "215,225,243" : "255,242,200", .65);
+      const elevation = Number.isFinite(this.options.elevation) ? this.options.elevation : 35;
+      const x = w * (ios ? .80 : .79), y = h * (ios && !night ? .35 - Math.max(0,Math.min(60,elevation)) / 60 * .30 : .15);
+      this._glow(x, y, Math.max(w * .37, h * .7), night || mode === "night" ? "162,187,230" : "255,226,160", night ? .18 : ios ? .72 : .48);
+      this._glow(x, y, h * .13, night || mode === "night" ? "215,225,243" : "255,242,200", ios ? .42 : .65);
+      if (ios && !night) {
+        c.save();c.translate(x,y);c.rotate(Math.sin(t*.013)*.025);
+        for(let i=0;i<5;i++){const angle=.25+i*.24;c.rotate(angle);const beam=c.createLinearGradient(0,0,0,h*1.1);beam.addColorStop(0,"rgba(255,237,191,.07)");beam.addColorStop(1,"rgba(255,237,191,0)");c.fillStyle=beam;c.beginPath();c.moveTo(-3,0);c.lineTo(-w*.045,h*1.1);c.lineTo(w*.045,h*1.1);c.closePath();c.fill();c.rotate(-angle);}c.restore();
+      }
     }
     if (night && !wet && mode !== "fog" && mode !== "snow") {
       c.fillStyle = "rgba(223,231,247,.45)";
@@ -282,13 +296,19 @@ class WeatherAtmosphere {
       const layers = mode === "fog" ? 4 : cloudy ? 3 : 1;
       for (let i = 0; i < layers; i++) {
         const cw = w * (1.25 + i * .17), ch = h * (mode === "fog" ? .64 : .98);
-        const drift = w * ([-.45, .10, -.15, .05][i] + Math.sin(t / (60 + i * 17) + i) * .09);
-        c.globalAlpha = mode === "sunny" ? .16 : mode === "partly" ? .58 : wet ? .65 : .68;
+        const air = ios ? Math.sin(t / (24+i*8) + i) * Math.min(.22,(this.options.windSpeed||0)/300) : 0;
+        const drift = w * ([-.45, .10, -.15, .05][i] + Math.sin(t / (60 + i * 17) + i) * .09 + air);
+        c.globalAlpha = mode === "sunny" ? (ios ? .10 : .16) : mode === "partly" ? .58 : wet ? .65 : .68;
         const sprite = this._clouds[wet && i === 2 ? 1 : 0];
         const y = mode === "fog" ? h * (.15 + i * .15) - ch * .35 : h * [-.42, -.18, -.12][i];
         c.drawImage(sprite, drift, y, cw, ch);
       }
       c.globalAlpha = 1;
+    }
+    // Dry wind is a separate fine veil; it never creates raindrops in a clear sky.
+    if (ios && !wet && mode !== "snow" && this.options.windSpeed >= 15) {
+      const strength = Math.min(1,this.options.windSpeed/60),direction = this.options.wind < 0 ? -1 : 1;
+      for(let i=0;i<3;i++){const phase=(t*(.012+strength*.018)+i*.37)%1.6;const x=(direction>0?phase-.3:1.3-phase)*w,y=h*(.16+i*.17);const veil=c.createLinearGradient(x-w*.18,0,x+w*.18,0);veil.addColorStop(0,"rgba(225,241,255,0)");veil.addColorStop(.5,`rgba(225,241,255,${.035+strength*.045})`);veil.addColorStop(1,"rgba(225,241,255,0)");c.strokeStyle=veil;c.lineWidth=.65;c.beginPath();c.moveTo(x-w*.18,y);c.bezierCurveTo(x-w*.06,y-3,x+w*.05,y+3,x+w*.18,y);c.stroke();}
     }
     if (wet) {
       // A diffuse wet-surface reflection. No horizon line, tiled texture or
@@ -334,6 +354,10 @@ class WeatherAtmosphere {
     const shade = c.createLinearGradient(0, 0, 0, h);
     shade.addColorStop(0, "rgba(9,17,30,0)"); shade.addColorStop(.52, "rgba(9,17,30,.09)"); shade.addColorStop(1, "rgba(9,17,30,0)");
     c.fillStyle = shade; c.fillRect(0, 0, w, h);
+    if (ios) {
+      // Retain a readable foreground while leaving the upper sky and sunlight visible.
+      const veil=c.createLinearGradient(0,0,0,h);veil.addColorStop(0,"rgba(6,22,42,.18)");veil.addColorStop(.42,"rgba(6,22,42,.22)");veil.addColorStop(1,"rgba(6,22,42,.38)");c.fillStyle=veil;c.fillRect(0,0,w,h);
+    }
   }
 }
 
@@ -1006,7 +1030,7 @@ const WEATHER_IOS_STYLES = `
     :host .wr-weather { display:block; max-width:none; border:0; margin:auto; position:relative; isolation:isolate; overflow:hidden; background:var(--wr-bg); border-radius:28px; box-shadow:0 14px 42px light-dark(#26415b14,#00000026),inset 0 1px 0 light-dark(#ffffffb0,#e6f1ff26); }
     :host .wr-weather::before { content:""; position:absolute; z-index:-1; inset:0; background:radial-gradient(ellipse at 20% -20%,light-dark(#ffffffb0,#b4d2eb25),transparent 70%),linear-gradient(125deg,light-dark(#cadde946,#4c72932c),transparent); }
     :host .wr-sky { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; opacity:.48; }
-    :host .wr-hero { --wr-current-size:52px; display:flex; align-items:center; gap:16px; border:0; width:100%; text-align:left; background:transparent; padding:20px 24px 17px; }
+    :host .wr-hero { --wr-current-size:52px; display:flex; align-items:center; gap:16px; border:0; width:100%; text-align:left; background:transparent; padding:16px 24px 11px; }
     :host .wr-icon-temp { display:flex; align-items:center; gap:8px; flex-shrink:0; }
     :host .wr-degrees { font-size:var(--wr-current-size); line-height:1; letter-spacing:-.075em; font-weight:400; flex-shrink:0; }
     :host .wr-now-copy { flex:1; min-width:0; display:grid; gap:4px; }
@@ -1033,18 +1057,17 @@ const WEATHER_IOS_STYLES = `
     :host .wr-tabs button { border:0; display:flex; align-items:center; justify-content:center; gap:7px; flex:1; min-width:0; min-height:38px; border-radius:13px; background:transparent; font-size:13px; font-weight:400; color:var(--wr-muted); }
     :host .wr-tabs button[aria-selected="true"] { background:var(--wr-active); color:var(--wr-ink); box-shadow:0 1px 4px light-dark(#3857730a,#07152215); }
     :host .wr-tabs svg { width:16px; height:16px; stroke-width:1.6; }
-    :host .wr-panel { padding:10px 0 12px; }
-    :host .wr-context { min-height:24px; padding:0 24px 6px; display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:11px; color:var(--wr-muted); }
+    :host .wr-panel { padding:6px 0 8px; }
     :host .wr-next { width:36px; height:44px; flex-shrink:0; margin:0; border:0; background:var(--wr-control); border-radius:15px; display:grid; place-items:center; }
     :host .wr-next svg { width:15px; height:15px; stroke-width:1.5; }
     :host .wr-rail { overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; touch-action:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; scroll-behavior:auto; padding:0 16px; }
     :host .wr-rail::-webkit-scrollbar { display:none; }
     :host .wr-hours { display:flex; width:max-content; position:relative; }
-    :host .wr-hour { display:grid; grid-template-rows:21px 48px 40px; gap:0; justify-items:center; align-items:center; width:var(--wr-item-width,62px); min-width:var(--wr-item-width,62px); border:0; padding:0 0 3px; background:transparent; border-radius:12px; font-variant-numeric:tabular-nums; position:relative; }
+    :host .wr-hour { display:grid; grid-template-rows:21px 40px 40px; gap:0; justify-items:center; align-items:center; width:var(--wr-item-width,62px); min-width:var(--wr-item-width,62px); border:0; padding:0 0 3px; background:transparent; border-radius:12px; font-variant-numeric:tabular-nums; position:relative; }
     :host .wr-hour:active { background:var(--wr-control); }
     :host .wr-hour-time { font-size:12px; color:var(--wr-muted); line-height:1; }
     :host .wr-now .wr-hour-time { color:var(--wr-ink); font-weight:500; }
-    :host .wr-hour-icon { width:48px; height:48px; }
+    :host .wr-hour-icon { width:48px; height:40px; }
     :host .wr-hour-glyph { position:absolute; left:0; top:0; width:28px; height:28px; transform-origin:0 0; }
     :host .wr-original-stack { position:relative; display:block; width:28px; height:28px; }
     :host .wr-hour-glyph > svg { display:block; width:28px; height:28px; }
@@ -1057,7 +1080,7 @@ const WEATHER_IOS_STYLES = `
     :host .wr-hour-glyph .wr-symbol-moon path:first-of-type { fill:var(--wr-cloud); stroke:var(--wr-cloud-edge); stroke-width:.7; }
     :host .wr-hour-glyph .wr-symbol-moon path:last-of-type { fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.7; }
     :host .wr-hour-glyph .wr-symbol-solar { color:var(--wr-sun); stroke-width:1.7; }
-    :host .wr-icon-cell { display:grid; place-items:center; width:48px; height:48px; }
+    :host .wr-icon-cell { display:grid; place-items:center; width:48px; height:40px; }
     :host .wr-icon-cell > svg { display:block; }
     :host .wr-value[data-level="medium"] { color:var(--wr-warning); }
     :host .wr-value[data-level="high"] { color:var(--wr-danger); }
@@ -1068,11 +1091,11 @@ const WEATHER_IOS_STYLES = `
     :host .wr-hour-extra { display:grid; gap:4px; justify-items:center; }
     :host .wr-value-large { font-size:19px; font-weight:400; line-height:1.2; letter-spacing:-.02em; }
     :host .wr-wind-arrow { width:26px; height:26px; stroke-width:1.4; transform:rotate(var(--wr-direction)); color:var(--wr-chart); }
-    :host .wr-wind-space { height:48px; }
+    :host .wr-wind-space { height:40px; }
     :host .wr-wind-main { display:flex; align-items:center; gap:4px; }
     :host .wr-wind-main .wr-wind-arrow { width:13px; height:13px; }
     :host .wr-direction { display:grid; place-items:center; width:16px; height:16px; }
-    :host .wr-wind-plot { position:absolute; left:0; top:21px; width:100%; height:48px; overflow:hidden; pointer-events:none; color:var(--wr-chart); }
+    :host .wr-wind-plot { position:absolute; left:0; top:21px; width:100%; height:40px; overflow:hidden; pointer-events:none; color:var(--wr-chart); }
     :host .wr-wind-legend { display:flex; align-items:center; gap:12px; }
     :host .wr-wind-legend span { display:flex; align-items:center; gap:4px; }
     :host .wr-wind-legend span::before { content:""; width:12px; border-top:1.5px solid var(--wr-chart); }
@@ -1080,10 +1103,10 @@ const WEATHER_IOS_STYLES = `
     :host .wr-risk[data-severity="2"], :host .wr-risk[data-severity="3"] { padding-left:10px; padding-right:10px; border-radius:12px; margin-top:6px; background:light-dark(#f4dcb32e,#d99d3914); }
     :host .wr-risk[data-severity="3"] { background:light-dark(#d95c6c19,#ef879818); }
     :host .wr-precip { height:29px; display:flex; align-items:end; width:18px; }
-    :host .wr-precip span { width:18px; height:var(--wr-bar); background:var(--wr-rain); border-radius:4px 4px 1px 1px; opacity:.64; min-height:2px; }
+    :host .wr-precip span { width:18px; height:var(--wr-bar); background:var(--wr-rain); border-radius:4px 4px 1px 1px; opacity:.8; min-height:0; }
     :host .wr-precip[data-level="medium"] span { background:var(--wr-warning); }
     :host .wr-precip[data-level="high"] span { background:var(--wr-danger); }
-    :host .wr-alert-row { width:calc(100% - 40px); height:44px; min-height:44px; margin:0 20px 12px; padding:6px 2px; display:flex; align-items:center; gap:9px; text-align:left; border:0; border-top:1px solid var(--wr-rule); border-radius:0; background:transparent; font-size:12px; }
+    :host .wr-alert-row { width:calc(100% - 40px); height:44px; min-height:44px; margin:0 20px 8px; padding:6px 2px; display:flex; align-items:center; gap:9px; text-align:left; border:0; border-top:1px solid var(--wr-rule); border-radius:0; background:transparent; font-size:12px; }
     :host .wr-alert-row[data-level="severe"] { --wr-alert-accent:var(--wr-warning); }
     :host .wr-alert-row[data-level="critical"] { --wr-alert-accent:var(--wr-danger); }
     :host .wr-alert-row[data-level="critical"] .wr-alert-label { color:var(--wr-danger); font-weight:500; }
@@ -1122,12 +1145,12 @@ const WEATHER_IOS_STYLES = `
     :host .wr-thresholds { margin-top:15px; font-size:12px; color:var(--wr-muted); }
     :host .wr-thresholds summary { min-height:44px; display:flex; align-items:center; color:var(--wr-ink); }
     :host .wr-thresholds p { line-height:1.5; margin:6px 0; }
-    @container(max-width:420px) { :host .wr-hero { --wr-current-size:48px; padding:20px 20px 17px; gap:13px; } :host .wr-condition { font-size:16px; } }
+    @container(max-width:420px) { :host .wr-hero { --wr-current-size:48px; padding:16px 20px 11px; gap:13px; } :host .wr-condition { font-size:16px; } }
     @container(max-width:350px) { :host .wr-hero { --wr-current-size:44px; gap:10px; } :host .wr-icon-temp { gap:5px; } }
     @media(pointer:coarse) { :host .wr-tabs button { min-height:44px; } :host .wr-next { width:44px; height:44px; } :host .wr-risk-filters button { min-height:44px; } }
     @media(prefers-reduced-motion:reduce) { :host .wr-rail { scroll-behavior:auto; } }
 
-:host .weather-atmosphere { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:-1; opacity:calc(var(--weather-ios-opacity,.58) * .35); }
+:host .weather-atmosphere { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:-1; opacity:var(--weather-ios-opacity,.58); }
 :host .wr-weather > :not(.weather-atmosphere) { position:relative; }
 :host button { cursor:pointer; }
 :host button:focus-visible, :host summary:focus-visible { outline:2px solid var(--wr-ink); outline-offset:2px; }
@@ -1153,6 +1176,30 @@ const WEATHER_IOS_STYLES = `
 :host .wr-hour { flex-shrink:0; }
 :host .wr-hour-glyph .lucide-sun circle { fill:var(--wr-sun); }
 :host .wr-hour-glyph .lucide-moon { fill:var(--wr-moon); stroke:var(--wr-moon); stroke-width:.7; }
+
+:host .wr-weather { color:var(--wr-ink); --wr-ink:#f3f8fd; --wr-muted:#edf4fb; --wr-bg:#385b78; --wr-rule:#eff6ff26; --wr-control:#09203866; --wr-active:#eff7ff25; --wr-rain:#a7dfff; --wr-chart:#e1f1ff; --wr-warning:#ffd29a; --wr-danger:#ffc0cb; --wr-warm:#f4ce91; }
+:host .wr-weather[class~="weather-ios-sunny"] { --wr-bg:#2a70a3; }
+:host .wr-weather[class~="weather-ios-partly"] { --wr-bg:#3d6689; }
+:host .wr-weather[class~="weather-ios-cloudy"] { --wr-bg:#445d74; }
+:host .wr-weather[class~="weather-ios-rain"] { --wr-bg:#304b64; }
+:host .wr-weather[class~="weather-ios-pouring"] { --wr-bg:#263f59; }
+:host .wr-weather[class~="weather-ios-storm"] { --wr-bg:#24374e; }
+:host .wr-weather[class~="weather-ios-snow"] { --wr-bg:#526e87; }
+:host .wr-weather[class~="weather-ios-fog"] { --wr-bg:#536b7d; }
+:host .wr-weather[class~="weather-ios-night"], :host .wr-weather[data-night="true"] { --wr-bg:#162740; }
+:host .wr-weather::before { background:linear-gradient(180deg,#06172c0a,#06172c22); }
+:host .wr-wind-now { font-weight:500; display:flex; align-items:center; gap:5px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+:host .wr-wind-now svg { width:14px; height:14px; flex-shrink:0; }
+:host .wr-wind-now span { overflow:hidden; text-overflow:ellipsis; }
+:host .wr-wind-now small { font-size:11px; }
+:host .wr-wind-now[data-level="medium"] { color:var(--wr-warning); }
+:host .wr-wind-now[data-level="high"] { color:var(--wr-danger); }
+:host .wr-tabs [data-wind-level="high"]::after, :host .wr-tabs [data-wind-level="medium"]::after { content:""; width:4px; height:4px; flex-shrink:0; border-radius:50%; background:var(--wr-warning); }
+:host .wr-tabs [data-wind-level="high"]::after { background:var(--wr-danger); }
+:host .wr-wind-now { width:fit-content; max-width:100%; }
+:host .wr-wind-now[data-level="medium"], :host .wr-wind-now[data-level="high"] { background:#06182e66; padding:0 4px; margin-left:-4px; border-radius:5px; }
+:host .wr-weather .wr-alert-count { background:#0c254866; }
+
 `;
 
 // Presentation only: normalized forecasts, daily range, risks and actions remain
@@ -1200,8 +1247,42 @@ class WeatherIOSPresentation {
       return this.card._intensityLevel(value, this.card._threshold(c[kind === 'wind' ? 'wind_reference_threshold_entity' : 'gust_reference_threshold_entity'], c[kind === 'wind' ? 'wind_reference_threshold_fallback' : 'gust_reference_threshold_fallback']));
     }
     if (kind === 'temperature') { const t=String(this.card.config.temperature_unit).includes('F')?(value-32)*5/9:value;return t > 27 ? 'high' : t > 20 ? 'medium' : t <= 5 ? 'cool' : 'low'; }
-    const mm=String(this.card.config.precipitation_unit).toLowerCase()==='in'?value*25.4:value;
-    return mm >= 5 ? 'high' : mm >= 2 ? 'medium' : 'low';
+    const mm=value*this.rainUnitFactor();
+    return mm >= 10 ? 'high' : mm >= 2.5 ? 'medium' : 'low';
+  }
+
+  currentWind() {
+    const c=this.card,state=c._state(c.config.weather_entity),attrs=state?.attributes||{};
+    const available=state&&!['unknown','unavailable'].includes(state.state);
+    const wind=available?c._toNumber(attrs.wind_speed):null,gust=available?c._toNumber(attrs.wind_gust_speed):null;
+    const factor=u=>({'m/s':3.6,'mph':1.609344,'kn':1.852,'knots':1.852,'km/h':1,'kph':1})[String(u).toLowerCase()]||1;
+    const unit=attrs.wind_speed_unit||c.config.wind_unit,ratio=factor(unit)/factor(c.config.wind_unit);
+    const level=c._maxLevel(this.level('wind',Number.isFinite(wind)?wind*ratio:null),this.level('gust',Number.isFinite(gust)?gust*ratio:null));
+    return {wind,gust,unit,level,visible:c.config.show_wind!==false&&(wind*factor(unit)>=12||gust*factor(unit)>=25||c._levelRank(level)>=2)};
+  }
+
+  rainPeriodHours() {
+    const rows=this.card._rawForecastRows(),times=(rows.length>1?rows:this.entries||[]).map(d=>d.datetimeMs);
+    const steps=times.slice(1).map((t,i)=>(t-times[i])/3600000).filter(h=>h>0&&h<=24).sort((a,b)=>a-b);
+    return steps.length?steps[Math.floor(steps.length/2)]:1;
+  }
+
+  rainUnitFactor() { return ({in:25.4,cm:10})[String(this.card.config.precipitation_unit).toLowerCase()]||1; }
+
+  rainRate(item, period=this.rainPeriodHours()) {
+    const amount=item?.precipitation;if(!Number.isFinite(amount))return null;
+    const mm=amount*this.rainUnitFactor();
+    return Math.max(0,mm)/period;
+  }
+
+  rainScale() {
+    // Absolute intensity scale: a dry forecast must not magnify 0.2 mm into a full bar.
+    const period=this.rainPeriodHours(),rates=this.entries.map(d=>this.rainRate(d,period)).filter(Number.isFinite);
+    return {maximum:Math.max(10,...rates),period,light:2.5,heavy:10};
+  }
+
+  rainHeight(item, height=28, scale=this.rainScale()) {
+    const rate=this.rainRate(item,scale.period);return rate>0?Math.max(1,rate/scale.maximum*height):0;
   }
 
   risks() {
@@ -1228,7 +1309,7 @@ class WeatherIOSPresentation {
     const entries = c._enrichEntries(c._forecastEntries());
     const risks = this.risks(), range = c._currentTemperatureRange(entries,c._currentTemperatureValue().value);
     const dark = c._hass?.themes?.darkMode;
-    const key = JSON.stringify([cfg,entries.map(d=>[d.datetimeMs,d.temperature,d.precipitation,d.probability,d.windSpeed,d.windGust,d.windBearing,d.condition]),risks,range,c._currentTemperatureValue(),c._currentSummaryText(),c._state(cfg.sun_entity)?.attributes,c._state(cfg.weather_entity)?.state,dark]);
+    const key = JSON.stringify([cfg,entries.map(d=>[d.datetimeMs,d.temperature,d.precipitation,d.probability,d.windSpeed,d.windGust,d.windBearing,d.condition]),risks,range,c._currentTemperatureValue(),c._currentSummaryText(),this.currentWind(),c._state(cfg.sun_entity)?.attributes,c._state(cfg.weather_entity)?.state,dark]);
     const rail = this.q('.combined-scroll');
     if (rail && c._isInteracting && !force) { c._pendingRender = true; return; }
     this.entries = entries; this.items = risks; this.range = range;
@@ -1236,6 +1317,7 @@ class WeatherIOSPresentation {
     if (!this.modes.includes(this.mode)) this.mode = this.modes[0];
     if (!this.mounted || !this.q('.wr-weather')) this.mount();
     this.q('.wr-weather').className = `wr-weather weather-ios-${c._weatherMode()}`;
+    this.q('.wr-weather').dataset.night=String(c._weatherMode()==='night'||c._state(cfg.sun_entity||'sun.sun')?.state==='below_horizon');
     this.q('.wr-weather').style.setProperty('--weather-ios-opacity',String(Number(cfg.weather_background_opacity??.58)));
     if (typeof dark === 'boolean') this.card.style.colorScheme = dark?'dark':'light';
     c._syncAtmosphere(c._weatherMode());
@@ -1248,7 +1330,7 @@ class WeatherIOSPresentation {
 
   mount() {
     this.mounted = true;
-    this.root.innerHTML = `<style>${this.styles()}</style><ha-card class="wr-weather"><div class="wr-header-slot"></div><div class="wr-toolbar"><div class="wr-tabs" role="tablist" aria-label="Donnée des prévisions"></div><button type="button" class="wr-next" aria-label="Voir les heures suivantes">${this.icon('chevron-right')}</button></div><section class="wr-panel" id="wr-panel" role="tabpanel"><div class="wr-context"><span class="wr-context-label"></span></div><div class="wr-rail combined-scroll" role="region" aria-label="Prévisions horaires"><div class="wr-hours"></div></div></section><div class="wr-footer-slot"></div></ha-card><dialog class="wr-sheet" aria-labelledby="wr-sheet-title"><div class="wr-sheet-top"><h3 id="wr-sheet-title">Détails météo</h3><button type="button" class="wr-close" aria-label="Fermer les détails">${this.icon('x')}</button></div><div class="wr-sheet-content"></div></dialog>`;
+    this.root.innerHTML = `<style>${this.styles()}</style><ha-card class="wr-weather"><div class="wr-header-slot"></div><div class="wr-toolbar"><div class="wr-tabs" role="tablist" aria-label="Donnée des prévisions"></div><button type="button" class="wr-next" aria-label="Voir les heures suivantes">${this.icon('chevron-right')}</button></div><section class="wr-panel" id="wr-panel" role="tabpanel"><div class="wr-rail combined-scroll" role="region" aria-label="Prévisions horaires"><div class="wr-hours"></div></div></section><div class="wr-footer-slot"></div></ha-card><dialog class="wr-sheet" aria-labelledby="wr-sheet-title"><div class="wr-sheet-top"><h3 id="wr-sheet-title">Détails météo</h3><button type="button" class="wr-close" aria-label="Fermer les détails">${this.icon('x')}</button></div><div class="wr-sheet-content"></div></dialog>`;
     this.root.addEventListener('click', this.onClick = e => {
       const button = e.target.closest('button'); if (!button) return;
       if (button.matches('[data-mode]')) this.setMode(button.dataset.mode);
@@ -1289,12 +1371,14 @@ class WeatherIOSPresentation {
     const c=this.card,cfg=c.config,t=c._currentTemperatureValue().value,range=this.range;
     const focused=this.root.activeElement?.matches('.wr-hero');
     if(cfg.show_header===false){this.q('.wr-header-slot').innerHTML=cfg.show_title===false?'':`<div class="wr-plain-title">${this.escape(cfg.title)}</div>`;return;}
-    const title=cfg.show_title!==false&&cfg.show_header_title!==false?`<span class="wr-name">${this.escape(cfg.title)}</span>`:'';
+    const wind=this.currentWind(),windText=`Vent actuel ${this.format(wind.wind)} ${wind.unit}${Number.isFinite(wind.gust)?`, rafales ${this.format(wind.gust)} ${wind.unit}`:''}${wind.level==='high'?'. Seuil élevé configuré dépassé':wind.level==='medium'?'. Seuil intermédiaire configuré dépassé':''}`;
+    const title=wind.visible?`<span class="wr-name wr-wind-now" data-level="${wind.level}" title="${this.escape(windText)}" aria-label="${this.escape(windText)}">${this.icon('wind')}<span>${this.format(wind.wind)}${Number.isFinite(wind.gust)?` · raf. ${this.format(wind.gust)}`:''} <small>${this.escape(wind.unit)}</small></span></span>`:cfg.show_title!==false&&cfg.show_header_title!==false?`<span class="wr-name">${this.escape(cfg.title)}</span>`:'';
     const value=Number.isFinite(t)?`${this.format(t)}°`:'—';
     let gauge='';
     if(cfg.show_header_temperature_range!==false&&range){const pos=Number.isFinite(t)?Math.max(0,Math.min(100,(t-range.min)/(range.max-range.min||1)*100)):null;
       gauge=`<span class="wr-range"><span>${this.format(range.min)}°</span><span class="wr-gauge" role="meter" aria-label="Température entre minimum et maximum" aria-valuemin="${range.min}" aria-valuemax="${range.max}" ${pos===null?'':`aria-valuenow="${Math.max(range.min,Math.min(range.max,t))}"`} aria-valuetext="${this.escape(`${value}, minimum ${this.format(range.min)} et maximum ${this.format(range.max)}`)}" style="--wr-gauge-pos:${pos??50}%;--wr-gauge-dot:${pos===null?0:1};background:${c._temperatureGaugeGradient(range.min,range.max)}"></span><span>${this.format(range.max)}°</span></span>`;}
-    this.q('.wr-header-slot').innerHTML=`<button type="button" class="wr-hero" aria-label="Ouvrir la météo"><span class="wr-icon-temp">${cfg.show_current_weather_icon===false?'':this.symbol(c._state(cfg.weather_entity)?.state,true)}${cfg.show_current_temperature===false?'':`<span class="wr-degrees">${value}<span class="wr-baseline-probe" aria-hidden="true"></span></span>`}</span><span class="wr-now-copy">${title}${cfg.show_current_summary===false?'':`<span class="wr-condition">${this.escape(c._currentSummaryText())}</span>`}${gauge}</span></button>${c._riskDisplayMode()==='header_sub_buttons'?c._renderHeaderRiskSubButtons():''}`;
+    const headerLabel=[cfg.show_title!==false?cfg.title:'',cfg.show_current_temperature!==false?value:'',cfg.show_current_summary!==false?c._currentSummaryText():'',wind.visible?windText:'','Ouvrir la météo'].filter(Boolean).join('. ');
+    this.q('.wr-header-slot').innerHTML=`<button type="button" class="wr-hero" aria-label="${this.escape(headerLabel)}"><span class="wr-icon-temp">${cfg.show_current_weather_icon===false?'':this.symbol(c._state(cfg.weather_entity)?.state,true)}${cfg.show_current_temperature===false?'':`<span class="wr-degrees">${value}<span class="wr-baseline-probe" aria-hidden="true"></span></span>`}</span><span class="wr-now-copy">${title}${cfg.show_current_summary===false?'':`<span class="wr-condition">${this.escape(c._currentSummaryText())}</span>`}${gauge}</span></button>${c._riskDisplayMode()==='header_sub_buttons'?c._renderHeaderRiskSubButtons():''}`;
     c._setupRiskPillInteractions();
     if(focused)this.q('.wr-hero')?.focus({preventScroll:true});
   }
@@ -1306,20 +1390,21 @@ class WeatherIOSPresentation {
     const focus=this.root.activeElement,focusedTime=focus?.dataset?.hour;
     const focusedMode=focus?.dataset?.mode;
     const width=Math.max(56,Number(cfg.item_width)||62);this.itemWidth=width;
-    this.q('.wr-tabs').innerHTML=this.modes.map(m=>`<button type="button" id="wr-tab-${m}" role="tab" aria-controls="wr-panel" aria-selected="${this.mode===m}" data-mode="${m}">${this.icon(({weather:'cloud-sun',rain:'droplet',wind:'wind'})[m])}${({weather:'Météo',rain:'Pluie',wind:'Vent'})[m]}</button>`).join('');
+    const currentWind=this.currentWind();
+    this.q('.wr-tabs').innerHTML=this.modes.map(m=>`<button type="button" id="wr-tab-${m}" role="tab" aria-controls="wr-panel" aria-selected="${this.mode===m}" data-mode="${m}" ${m==='wind'?`data-wind-level="${currentWind.level}" aria-label="Vent, ${this.format(currentWind.wind)} ${this.escape(currentWind.unit)}, rafales ${this.format(currentWind.gust)} ${this.escape(currentWind.unit)}"`:''}>${this.icon(({weather:'cloud-sun',rain:'droplet',wind:'wind'})[m])}${({weather:'Météo',rain:'Pluie',wind:'Vent'})[m]}</button>`).join('');
     const panel=this.q('.wr-panel');panel.setAttribute('aria-labelledby',`wr-tab-${this.mode}`);panel.dataset.view=this.mode;
-    this.q('.wr-context-label').innerHTML=this.mode==='wind'?`<span class="wr-wind-legend"><span>Vent</span><span>Rafales</span><small>${this.escape(cfg.wind_unit)}</small></span>`:this.escape(this.mode==='rain'?`${c._shouldShowProbability(entries)?'Probabilité · ':''}${cfg.show_rain!==false?'Cumul · '+cfg.precipitation_unit:''}`:`Température · ${cfg.temperature_unit}`);
-    const solar=c._solarEventMap(entries),maxRain=Math.max(.1,...entries.map(d=>d.precipitation).filter(Number.isFinite));
+    const solar=c._solarEventMap(entries),rainScale=this.rainScale();
     this.q('.wr-hours').style.setProperty('--wr-item-width',`${width}px`);
     this.q('.wr-hours').innerHTML=entries.map((d,i)=>{
       const meta=c._timeCellMeta(d,i,entries,solar),event=solar.get(i),time=this.escape(meta.label);
       const weather=`<span class="wr-icon-cell">${this.symbol(event?.type||d.condition)}</span><span class="wr-main-value wr-value" data-level="${this.level('temperature',d.temperature)}">${cfg.show_temperature===false?'':this.format(d.temperature)+(Number.isFinite(d.temperature)?'°':'')}</span>`;
-      const rain=`<span class="wr-icon-cell"><span class="wr-precip" data-level="${this.level('rain',d.precipitation)}" aria-hidden="true">${cfg.show_rain!==false&&Number.isFinite(d.precipitation)?`<span style="--wr-bar:${d.precipitation>0?Math.max(2,Math.min(28,d.precipitation/maxRain*28)):0}px"></span>`:''}</span></span><span class="wr-hour-extra">${c._shouldShowProbability(entries)?`<span class="wr-value-large">${this.format(d.probability)}<small> %</small></span>`:''}${cfg.show_rain!==false?`<span class="wr-secondary-value wr-value" data-level="${this.level('rain',d.precipitation)}">${this.format(d.precipitation,1)} ${this.escape(cfg.precipitation_unit)}</span>`:''}</span>`;
+      const rainRate=this.rainRate(d,rainScale.period),rainLevel=this.level('rain',Number.isFinite(rainRate)?rainRate/this.rainUnitFactor():null);
+      const rain=`<span class="wr-icon-cell"><span class="wr-precip" data-level="${rainLevel}" aria-hidden="true">${cfg.show_rain!==false&&Number.isFinite(d.precipitation)?`<span style="--wr-bar:${this.rainHeight(d,28,rainScale)}px"></span>`:''}</span></span><span class="wr-hour-extra">${c._shouldShowProbability(entries)?`<span class="wr-value-large">${this.format(d.probability)}<small> %</small></span>`:''}${cfg.show_rain!==false?`<span class="wr-secondary-value wr-value" data-level="${rainLevel}">${this.format(d.precipitation,1)} ${this.escape(cfg.precipitation_unit)}</span>`:''}</span>`;
       const direction=c._arrowBearing(d.windBearing);
       const wind=`<span class="wr-wind-space" aria-hidden="true"></span><span class="wr-hour-extra"><span class="wr-wind-main">${Number.isFinite(direction)?`<span class="wr-direction" style="--wr-direction:${direction}deg">${this.icon('move-up','wr-wind-arrow')}</span>`:''}<span class="wr-value-large wr-value" data-level="${this.level('wind',d.windSpeed)}">${this.format(d.windSpeed)}</span></span><span class="wr-secondary-value wr-value" data-level="${this.level('gust',d.windGust)}">Raf. ${this.format(d.windGust)}</span></span>`;
       const full=this.hourTitle(d,event),unit=this.mode==='weather'?cfg.temperature_unit:this.mode==='rain'?cfg.precipitation_unit:cfg.wind_unit;
       const kind=this.mode==='weather'?'temperature':this.mode==='rain'?'rain':'wind',value=this.mode==='weather'?d.temperature:this.mode==='rain'?d.precipitation:d.windSpeed;
-      const status=({high:'Seuil élevé dépassé.',medium:'Seuil intermédiaire dépassé.',cool:'Température basse.',neutral:'Donnée indisponible.'})[this.level(kind,value)]||'';
+      const status=this.mode==='rain'?`${Number.isFinite(rainRate)?rainRate===0?'Aucune pluie prévue.':({high:'Pluie forte.',medium:'Pluie modérée.',low:'Pluie légère.'})[rainLevel]:'Donnée indisponible.'}`:({high:'Seuil élevé dépassé.',medium:'Seuil intermédiaire dépassé.',cool:'Température basse.',neutral:'Donnée indisponible.'})[this.level(kind,value)]||'';
       const gustStatus=this.mode==='wind'?({high:'Rafales : seuil élevé dépassé.',medium:'Rafales : seuil intermédiaire dépassé.'})[this.level('gust',d.windGust)]||'':'';
       return `<button type="button" class="wr-hour ${d.isNowColumn&&cfg.highlight_current!==false?'wr-now':''} ${event?'wr-solar':''}" data-hour="${d.datetimeMs}" aria-label="${this.escape(full)} · ${this.escape(this.mode==='weather'?this.format(d.temperature):this.mode==='rain'?this.format(d.precipitation,1):`${this.format(d.windSpeed)} / ${this.format(d.windGust)}`)} ${this.escape(unit)}. ${status} ${gustStatus}"><span class="wr-hour-time">${time}</span>${this.mode==='weather'?weather:this.mode==='rain'?rain:wind}</button>`;
     }).join('') || `<div class="wr-empty">${this.escape(cfg.empty_label)}</div>`;
@@ -1363,9 +1448,13 @@ class WeatherIOSPresentation {
       if(!d){title.textContent='Prévisions';content.innerHTML='<p class="wr-sheet-caption">Cette prévision n’est plus disponible.</p>';return;}
       title.textContent=s.kind==='current'?'Météo actuelle':this.hourTitle(d,c._solarEventMap(this.entries).get(this.entries.indexOf(d)));
       const rows=[['Température',`${this.format(d.temperature)} ${cfg.temperature_unit}`],['Pluie',`${this.format(d.precipitation,1)} ${cfg.precipitation_unit} · ${this.format(d.probability)} %`],['Vent / rafales',`${this.format(d.windSpeed)} / ${this.format(d.windGust)} ${cfg.wind_unit}`],['Direction',`${this.format(d.windBearing)}° · ${c._bearingToDirection(d.windBearing)||'—'} · ${cfg.bearing_reference_mode==='house'?'référence maison':'référence nord'}`]];
+      if(this.mode==='rain'){
+        const amounts=this.entries.map(item=>item.precipitation).filter(Number.isFinite);
+        rows.splice(2,0,['Intensité moyenne prévue',`${this.format(this.rainRate(d),1)} mm/h`],['Cumul des créneaux disponibles',`${this.format(amounts.length?amounts.reduce((a,b)=>a+b,0):null,1)} ${cfg.precipitation_unit}`]);
+      }
       if(this.range)rows.push(['Minimum / maximum',`${this.format(this.range.min)}° / ${this.format(this.range.max)}°`]);
       const sun=c._state(cfg.sun_entity)?.attributes;for(const [label,key] of [['Lever du soleil','next_rising'],['Coucher du soleil','next_setting']])if(sun?.[key]&&!Number.isNaN(new Date(sun[key]).getTime()))rows.push([label,new Intl.DateTimeFormat('fr-FR',{weekday:'short',hour:'2-digit',minute:'2-digit',timeZone:c._hass?.config?.time_zone}).format(new Date(sun[key]))]);
-      content.innerHTML=`<p class="wr-sheet-caption">${this.escape(this.mode==='weather'?`Température · ${cfg.temperature_unit}`:this.mode==='rain'?`Précipitations · ${cfg.precipitation_unit}`:`Vent — trait plein · Rafales — pointillés · ${cfg.wind_unit}`)}</p><div class="wr-detail-chart"></div><dl class="wr-details">${rows.map(([l,v])=>`<div><dt>${this.escape(l)}</dt><dd>${this.escape(v)}</dd></div>`).join('')}</dl>${this.thresholds()}`;
+      content.innerHTML=`<p class="wr-sheet-caption">${this.escape(this.mode==='weather'?`Température · ${cfg.temperature_unit}`:this.mode==='rain'?'Intensité · mm/h':`Vent — trait plein · Rafales — pointillés · ${cfg.wind_unit}`)}</p><div class="wr-detail-chart"></div><dl class="wr-details">${rows.map(([l,v])=>`<div><dt>${this.escape(l)}</dt><dd>${this.escape(v)}</dd></div>`).join('')}</dl>${this.thresholds()}`;
       this.drawDetailsChart();
     }
     if(previous&&content.querySelector('.wr-thresholds'))content.querySelector('.wr-thresholds').open=true;
@@ -1375,22 +1464,27 @@ class WeatherIOSPresentation {
 
   thresholds() {
     const c=this.card,cfg=c.config,w=c._threshold(cfg.wind_reference_threshold_entity,cfg.wind_reference_threshold_fallback),g=c._threshold(cfg.gust_reference_threshold_entity,cfg.gust_reference_threshold_fallback),close=Number(cfg.intensity_close_ratio??1.1),strong=Number(cfg.intensity_strong_ratio??1.3);
-    return `<details class="wr-thresholds"><summary>Codes couleur et seuils</summary><p>Vent : orange au-delà de ${this.format(w*close,1)}, rouge au-delà de ${this.format(w*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Rafales : orange au-delà de ${this.format(g*close,1)}, rouge au-delà de ${this.format(g*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Température : bleu à 5 °C ou moins, orange au-dessus de 20 °C, rouge au-dessus de 27 °C. Pluie : orange dès 2 mm, rouge dès 5 mm par créneau de prévision. Repères visuels ; les règles de risques configurées restent indépendantes.</p><button type="button" class="wr-risk" data-current-details>Météo actuelle et repères solaires ${this.icon('chevron-right','wr-chevron')}</button></details>`;
+    return `<details class="wr-thresholds"><summary>Codes couleur et seuils</summary><p>Vent : orange au-delà de ${this.format(w*close,1)}, rouge au-delà de ${this.format(w*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Rafales : orange au-delà de ${this.format(g*close,1)}, rouge au-delà de ${this.format(g*strong,1)} ${this.escape(cfg.wind_unit)}.</p><p>Pluie légère : moins de 2,5 mm/h. Modérée : de 2,5 à moins de 10 mm/h. Forte : dès 10 mm/h. Même échelle pour toutes les heures, jusqu’à ${this.format(this.rainScale().maximum,1)} mm/h ; elle ne descend jamais sous 10 mm/h. Les cumuls affichés restent ceux des créneaux de ${this.format(this.rainPeriodHours(),1)} h.</p><p>Température : bleu à 5 °C ou moins, orange au-dessus de 20 °C, rouge au-dessus de 27 °C. Ces repères visuels ne modifient pas les règles de risques configurées.</p><button type="button" class="wr-risk" data-current-details>Météo actuelle et repères solaires ${this.icon('chevron-right','wr-chevron')}</button></details>`;
   }
 
   chart(mode, inline=false) {
     const data=this.entries,c=this.card,count=data.length;if(!count)return '';
-    const width=inline?count*this.itemWidth:Math.max(240,this.q('.wr-sheet-content')?.clientWidth-40||320),height=inline?48:126;
+    const width=inline?count*this.itemWidth:Math.max(240,this.q('.wr-sheet-content')?.clientWidth-40||320),height=inline?40:126;
     const keys=mode==='wind'?['windSpeed','windGust']:mode==='rain'?['precipitation']:['temperature'];
-    const values=data.flatMap(d=>keys.map(k=>d[k])).filter(Number.isFinite);
+    const rainScale=mode==='rain'?this.rainScale():null;
+    const rainRates=rainScale?data.map(d=>this.rainRate(d,rainScale.period)):[];
+    const values=mode==='rain'?rainRates.filter(Number.isFinite):data.flatMap(d=>keys.map(k=>d[k])).filter(Number.isFinite);
     if(!values.length)return inline?'':'<p class="wr-sheet-caption">Données indisponibles.</p>';
-    const minimum=mode==='weather'?Math.min(...values)-2:Math.min(0,...values),maximum=Math.max(...values,minimum+1),bottom=inline?44:100,top=inline?4:10,left=inline?this.itemWidth/2:32,right=inline?width-this.itemWidth/2:width-12;
+    const minimum=mode==='weather'?Math.min(...values)-2:Math.min(0,...values),maximum=rainScale?rainScale.maximum:Math.max(...values,minimum+1),bottom=inline?36:100,top=inline?4:10,left=inline?this.itemWidth/2:32,right=inline?width-this.itemWidth/2:width-12;
     const x=i=>left+(right-left)*i/Math.max(1,count-1),y=v=>bottom-(v-minimum)/(maximum-minimum)*(bottom-top);
     const selected=this.selection?.kind==='hour'?data.findIndex(d=>d.datetimeMs===this.selection.time):0;
     let marks='';
     if(!inline)for(const v of [minimum,maximum])marks+=`<text x="0" y="${y(v)+4}">${this.format(v,mode==='rain'?1:0)}</text><path d="M 29 ${y(v)} H ${width-8}" stroke="var(--wr-rule)" fill="none"/>`;
     for(const key of keys){
-      if(mode==='rain'){data.forEach((d,i)=>{if(Number.isFinite(d[key]))marks+=`<rect x="${x(i)-3}" y="${y(d[key])}" width="6" height="${Math.max(0,bottom-y(d[key]))}" rx="2" fill="var(--wr-rain)" opacity="${i===selected?1:.55}"/>`;});continue;}
+      if(mode==='rain'){
+        for(const threshold of [rainScale.light,rainScale.heavy])if(threshold<maximum)marks+=`<path data-rain-threshold="${threshold}" d="M 29 ${y(threshold)} H ${width-8}" stroke="var(--wr-rule)" stroke-dasharray="2 4" fill="none"/><text x="0" y="${y(threshold)+4}">${this.format(threshold,1)}</text>`;
+        rainRates.forEach((rate,i)=>{if(Number.isFinite(rate)){const color=rate>=rainScale.heavy?'var(--wr-danger)':rate>=rainScale.light?'var(--wr-warning)':'var(--wr-rain)';marks+=`<rect data-rain-rate="${rate}" x="${x(i)-3}" y="${y(rate)}" width="6" height="${Math.max(0,bottom-y(rate))}" rx="2" fill="${color}" opacity="${i===selected?1:.55}"/>`;}});continue;
+      }
       const kind=key==='windSpeed'?'wind':'gust';
       // Small segments preserve gaps and threshold color, without interpolating missing data.
       for(let i=1;i<count;i++){const a=data[i-1][key],b=data[i][key];if(!Number.isFinite(a)||!Number.isFinite(b))continue;
@@ -1400,7 +1494,7 @@ class WeatherIOSPresentation {
       if(!inline&&Number.isFinite(data[selected]?.[key]))marks+=`<circle cx="${x(selected)}" cy="${y(data[selected][key])}" r="3" fill="var(--wr-chart)"/>`;
     }
     if(!inline)marks+=`<text x="${left}" y="122">${this.escape(c._hourLabel(data[0]))}</text><text x="${right}" y="122" text-anchor="end">${this.escape(this.hourTitle(data[count-1]))}</text>`;
-    return `<svg class="${inline?'wr-wind-plot':'wr-graph'}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${this.escape(mode==='wind'?`Vent et rafales, ${c.config.wind_unit}`:mode==='rain'?`Précipitations, ${c.config.precipitation_unit}`:`Température, ${c.config.temperature_unit}`)}">${marks}</svg>`;
+    return `<svg class="${inline?'wr-wind-plot':'wr-graph'}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${this.escape(mode==='wind'?`Vent et rafales, ${c.config.wind_unit}`:mode==='rain'?'Intensité de pluie, millimètres par heure':`Température, ${c.config.temperature_unit}`)}">${marks}</svg>`;
   }
 
   drawDetailsChart() { const slot=this.q('.wr-detail-chart');if(slot)slot.innerHTML=this.chart(this.selection?.kind==='current'?'weather':this.mode); }
@@ -2138,10 +2232,15 @@ class WeatherCombinedForecastCard extends HTMLElement {
     const attrs = this._state(this.config.weather_entity)?.attributes || {};
     const wind = this._toNumber(attrs.wind_speed, 0);
     const bearing = this._toNumber(attrs.wind_bearing, 0);
+    const solar = this._state(this.config.sun_entity || "sun.sun")?.attributes || {};
+    const windFactor = ({"m/s":3.6,"mph":1.609344,"kn":1.852,"knots":1.852})[String(attrs.wind_speed_unit||this.config.wind_unit).toLowerCase()] || 1;
     const speed = Number(this.config.weather_background_speed ?? .9);
     this._atmosphere ||= new WeatherAtmosphere();
     this._atmosphere.mount(host, {
       mode,
+      style: this.config.layout === "ios" ? "ios" : "classic",
+      elevation: this._toNumber(solar.elevation, null),
+      windSpeed: Math.max(0,wind * windFactor),
       night: mode === "night" || this._state(this.config.sun_entity || "sun.sun")?.state === "below_horizon",
       wind: Math.max(-48, Math.min(48, -Math.sin(bearing * Math.PI / 180) * wind * 1.3)),
       speed: Number.isFinite(speed) ? Math.max(0, Math.min(2, speed)) : .9,

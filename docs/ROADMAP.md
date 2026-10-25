@@ -1,5 +1,9 @@
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
+## Affinement iOS demandé sur le rendu chargé — 25 octobre 2026
+
+`0.4.0-rc.2` corrige le ciel trop gris, retire le contexte secondaire des trois vues, compacte la géométrie, stabilise l’échelle de pluie et expose le vent dans l’en-tête existant. Garder les pictogrammes validés, la même hauteur entre vues, les sources/actions, le footer et les filtres. Neuf ambiances, 0,2 mm comme maximum, cumuls sur 3 h, mises à jour du vent seul et gestes vérifiés localement sur source et distribution ; seule la ressource météo est installée. Chargement et recette utilisateur restent distincts des contrôles locaux.
+
 ## Présentation iOS acceptée et intégration — 25 octobre 2026
 
 La maquette `weather-ios-compact-icons.fragment.html` est acceptée. Intégration candidate `0.4.0-rc.1` avec choix iOS / Classique dans l’éditeur ; sources et règles existantes conservées. Vérifier les trois modes, hauteur, pictogrammes, risques, gestes et cycle de vie sur source et distribution avant installation ciblée. Le chargement et la recette iPhone restent distincts des contrôles Chromium. Aucune fusion ou release HACS dans ce lot.

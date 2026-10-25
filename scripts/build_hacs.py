@@ -23,8 +23,8 @@ notice_sources = {
 }
 for name, source in notice_sources.items():
     (root / 'dist' / name).write_bytes(source.read_bytes())
-manifest['package_version'] = '0.4.0-rc.1'
-manifest['components']['weather-combined-forecast-card'] = '0.4.0-rc.1'
+manifest['package_version'] = '0.4.0-rc.2'
+manifest['components']['weather-combined-forecast-card'] = '0.4.0-rc.2'
 manifest['components']['garage-control-card'] = '1.1.0'
 manifest['artifacts'] = [
     {'file': name, 'bytes': len((root/'dist'/name).read_bytes()),

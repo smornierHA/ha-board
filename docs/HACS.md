@@ -1,5 +1,9 @@
 # Livraison HACS — Dashboard
 
+## Candidat d’affinement iOS `0.4.0-rc.2` — 25 octobre 2026
+
+La carte est déjà en `layout: ios`. Le nouveau module candidat a été écrit puis relu à l’identique, et l’URL de la seule ressource météo existante mise à jour ; configuration de dashboard strictement identique, 43 ressources dans le même ordre. L’ancien fichier `0.4.0-rc.1` est conservé. Rollback ciblé : restaurer `/local/ha-board-candidates/weather-combined-forecast-card-0.4.0-rc.1.js?v=0.4.0-rc.1` sur le même ID de ressource ; module de 216 260 octets, SHA256 `1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df`. Aucun redémarrage HA. Rechargement complet du frontend requis pour charger la nouvelle URL. Rollback non exécuté.
+
 ## Candidat iOS `0.4.0-rc.1` — 25 octobre 2026
 
 Installation ciblée : nouveau module dans `www/ha-board-candidates/`, mise à jour de la ressource météo existante et ajout du seul `layout: ios` à la carte ciblée via l’API Lovelace. Sources et risques inchangés ; aucun redémarrage HA. Le choix iOS / Classique est réversible dans l’éditeur.

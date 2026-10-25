@@ -67,4 +67,22 @@ await test('original rendering and legacy metric labels preserved',()=>{
   assert.equal(c._shouldShowProbability([{probability:0}]),false);
   c.config.show_probability=true;assert.equal(c._shouldShowProbability([{probability:0}]),true);
 });
+await test('iOS rain keeps a weak maximum small and normalizes multi-hour accumulations',()=>{
+  const c=card(),v=Object.create(vm.runInContext('WeatherIOSPresentation.prototype',context));v.card=c;
+  const rows=(amount,hours)=>Array.from({length:4},(_,i)=>({datetime:new Date(Date.UTC(2026,0,1,i*hours)).toISOString(),precipitation:amount}));
+  c._hass.states['sensor.example_hourly']={state:'ok',attributes:{forecast:rows(.2,1)}};v.entries=c._rawForecastRows();
+  assert.equal(v.rainScale().maximum,10);assert.ok(v.rainHeight(v.entries[0])<=1.1);assert.equal(v.rainHeight({precipitation:0}),0);assert.equal(v.rainRate({precipitation:null}),null);
+  c._hass.states['sensor.example_hourly'].attributes.forecast=rows(.6,3);v.entries=c._rawForecastRows();
+  assert.equal(v.rainPeriodHours(),3);assert.ok(Math.abs(v.rainRate(v.entries[0])-.2)<1e-9);
+  assert.equal(v.level('rain',2.49),'low');assert.equal(v.level('rain',2.5),'medium');assert.equal(v.level('rain',10),'high');
+  c.config.precipitation_unit='in';assert.ok(Math.abs(v.rainRate(v.entries[0])-5.08)<1e-9);
+  c.config.precipitation_unit='cm';assert.ok(Math.abs(v.rainRate(v.entries[0])-2)<1e-9);
+});
+await test('iOS current wind uses live source units and hides retained unavailable readings',()=>{
+  const c=card(),v=Object.create(vm.runInContext('WeatherIOSPresentation.prototype',context));v.card=c;
+  c._hass.states['weather.example']={state:'sunny',attributes:{wind_speed:7.5,wind_gust_speed:0,wind_speed_unit:'mph'}};
+  assert.equal(v.currentWind().visible,true);assert.equal(v.currentWind().unit,'mph');
+  c._hass.states['weather.example'].attributes.wind_gust_speed=45;assert.equal(v.currentWind().level,'high');
+  c._hass.states['weather.example'].state='unavailable';assert.equal(v.currentWind().visible,false);assert.equal(v.currentWind().wind,null);
+});
 console.log(JSON.stringify({file,passed,environment:'Node VM; fictitious data; not HA acceptance'}));

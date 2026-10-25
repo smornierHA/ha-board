@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "weather-ios-candidate-installed-frontend-receipt-pending-not-published",
+  "status": "weather-ios-refinement-candidate-installed-frontend-receipt-pending-not-published",
   "base_commit": "0a46049e784f4cf8a1484272e8474d0b20a872a6",
   "reference_release": {
     "version": "0.2.0-rc.1",
@@ -32,9 +32,9 @@
     },
     {
       "path": "src/candidate/weather-combined-forecast-card.js",
-      "bytes": 216260,
-      "sha256": "1ee5b8088fcf9c764d9c93fe0ec5f2e18fd6da3c5694e5821b186daf307784df",
-      "version": "0.4.0-rc.1"
+      "bytes": 225018,
+      "sha256": "4b59a6464a44dcdfe7d9c5215c2f6b95929021c1923ca984400bc56f38cc01d8",
+      "version": "0.4.0-rc.2"
     },
     {
       "path": "src/candidate/garage-control-card.js",

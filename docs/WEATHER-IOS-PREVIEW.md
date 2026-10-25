@@ -1,6 +1,16 @@
 # Proposition météo iOS fine
 
-## Direction acceptée et intégrée — 25 octobre 2026
+## Affinement du rendu chargé — candidat `0.4.0-rc.2`
+
+Le retour utilisateur et ses deux captures conduisent à retirer le contexte secondaire dans Météo/Pluie/Vent et à réduire les marges ; le rail réserve maintenant 40 px au lieu de 48, sans agrandir ou redessiner les symboles de 24 px maximum. Les fixtures mobiles passent de 357,375 à 303,375 px. Le vent actuel et les rafales occupent la ligne du titre générique quand il vente ; le titre reste accessible, les actions d’en-tête et le footer sont préservés.
+
+Le ciel a une base par condition, un éclairage solaire lié à l’élévation et une animation d’air liée au vent. Jour/nuit et condition actuelle ont priorité sur le thème de l’application pour le décor ; les dialogues gardent le thème HA. Le facteur d’atténuation 0,35 est retiré. Les couleurs et surfaces de lecture sont ajustées pour préserver le contraste. Les prévisions de pluie futures ne déclenchent pas la pluie dans un ciel actuellement sec.
+
+Les cumuls sont ramenés à une intensité moyenne par la cadence des prévisions (médiane des intervalles réguliers ; repli 1 h si elle est indéterminable). Repères inspirés du guide WMO-No.8, édition 2008, chapitre 14 annexe : légère sous 2,5 mm/h, modérée de 2,5 à moins de 10, forte dès 10. Il s’agit d’une représentation des moyennes prévues, sans prétendre mesurer une intensité instantanée ou ses pics. Le niveau violent est regroupé dans fort pour cette vue à trois classes.
+
+Même échelle absolue dans le rail et le détail, minimum 10 mm/h, étendue au maximum des créneaux affichés ; aucune renormalisation sur le seul maximum faible ou sur la portion visible à l’écran. Le rail garde un trait minimal de 1 px pour les valeurs positives. Le cumul de chaque créneau reste affiché dans l’unité configurée ; son total est dans le détail. Les alertes de pluie restent indépendantes de ces repères. Preuve : `evidence/weather-ios-refinement-2026-10-25.json`.
+
+## Direction initiale acceptée et intégrée — `0.4.0-rc.1`, 25 octobre 2026
 
 `examples/weather-ios-compact-icons.fragment.html` est accepté (« Ok on part la dessus »). La fixture reste fictive ; sa présentation est intégrée au candidat `0.4.0-rc.1` avec `layout: ios`, sur les sources HA normalisées et les règles configurées. Aucune valeur de démonstration n’est intégrée au runtime. Les formes Lucide sont incorporées avec leur notice ISC/Feather MIT, sans appel réseau. L’atmosphère procédurale reste discrète ; les couleurs claires sont renforcées pour la lisibilité.
 

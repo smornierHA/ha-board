@@ -1,5 +1,9 @@
 # Recette et critères avant une éventuelle stable
 
+## Affinement météo iOS `0.4.0-rc.2`
+
+Les captures utilisateur confirment le chargement de `0.4.0-rc.1`, sans attester une campagne native iPhone. Pour le nouveau candidat : condition actuelle/jour/nuit et neuf décors, vent courant sans ligne ajoutée, retrait du contexte, hauteur réduite et stable entre modes, pluie maximale de 0,2 mm restant petite, seuils 2,5/10, normalisation d’un cumul de 3 h, détails et gestes. La recette après rechargement doit confirmer ces points sur le frontend utilisateur. Preuve : `evidence/weather-ios-refinement-2026-10-25.json`.
+
 ## Candidat météo iOS `0.4.0-rc.1` — 25 octobre 2026
 
 Direction graphique acceptée : `weather-ios-compact-icons.fragment.html`. Contrôles locaux sur source et distribution avec prévisions fictives : modes à hauteur stable, filtres Alertes/Tout, états faibles/indisponibles, mises à jour pendant un dialogue, actions, heure conservée, retour Classique et reconnexion. Gestes verticaux Chromium dans les deux sens, matrice 320/390/736 px clair/sombre. Preuve : `evidence/weather-ios-integration-2026-10-25.json`.

@@ -1,4 +1,11 @@
-# HA-BOARD 0.4.0-rc.1
+# HA-BOARD 0.4.0-rc.2
+
+- Rend le ciel iOS lisible selon la condition actuelle et le jour/nuit : bleu et lumière solaire, nuages/brume/pluie/neige distincts, mouvement lié au vent et pauses conservées.
+- Réduit les marges et retire la ligne secondaire sous les sélecteurs dans les trois vues ; le graphe du vent garde sa place réservée.
+- Affiche le vent actuel et les rafales à la place du titre générique quand il vente, avec un repère discret sur l’onglet Vent, sans ligne supplémentaire.
+- Corrige la pluie : intensité moyenne selon la durée des créneaux, échelle commune jamais inférieure à 10 mm/h et repères légers/modérés/forts de 2,5/10 mm/h. Les cumuls restent affichés en mm, y compris dans le détail.
+
+## Présentation conservée de 0.4.0-rc.1
 
 - Intègre la présentation iOS validée via `layout: ios` : symboles horaires superposés compacts, en-tête proportionné, trois modes à hauteur stable, courbes et détails sur données configurées.
 - Footer sobre avec compteur actif, volet filtré par défaut et accès à tous les états ; les entités indisponibles restent distinctes des problèmes confirmés. Les actions HA existantes restent accessibles.
