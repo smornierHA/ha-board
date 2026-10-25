@@ -12,7 +12,13 @@ await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const processChrome=spawn(chrome,['--headless=new','--no-sandbox','--disable-gpu','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe'],detached:process.platform!=='win32'});
 let ws;
 try{
- const endpoint=await new Promise((resolve,reject)=>{let buffer='';const timer=setTimeout(()=>reject(Error('Chrome startup timeout')),20000);processChrome.on('error',reject);processChrome.stderr.on('data',data=>{buffer+=data;const match=buffer.match(/DevTools listening on (ws:\/\/\S+)/);if(match){clearTimeout(timer);resolve(match[1]);}});});
+ const endpoint=await new Promise((resolve,reject)=>{
+  let buffer='';const fail=message=>{clearTimeout(timer);reject(Error(`${message} (${chrome})\n${buffer.slice(-6000)}`));};
+  const timer=setTimeout(()=>fail('Chrome startup timeout'),20000);
+  processChrome.on('error',error=>fail(error.message));
+  processChrome.on('exit',(code,signal)=>fail(`Chrome exited before endpoint: code=${code}, signal=${signal}`));
+  processChrome.stderr.on('data',data=>{buffer+=data;const match=buffer.match(/DevTools listening on (ws:\/\/\S+)/);if(match){clearTimeout(timer);resolve(match[1]);}});
+ });
  ws=new WebSocket(endpoint);await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject;});let serial=0;const pending=new Map(),errors=[];
  ws.onmessage=event=>{const m=JSON.parse(event.data);if(m.id){const p=pending.get(m.id);pending.delete(m.id);if(!p)return;if(m.error)p.reject(Error(JSON.stringify(m.error)));else p.resolve(m.result);}else if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails.text);};
  const send=(method,params={},sessionId)=>new Promise((resolve,reject)=>{const id=++serial;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));});
