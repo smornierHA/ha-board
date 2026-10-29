@@ -30,7 +30,7 @@ const server=http.createServer((req,res)=>{
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 let browser;const errors=[],proof=[];
 try{
- browser=await chromium.launch({executablePath:process.env.CHROME_BIN||['google-chrome','chromium','chromium-browser'].map(name=>{try{return execFileSync('which',[name],{encoding:'utf8'}).trim();}catch{return null;}}).find(Boolean),headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--single-process']});
+ browser=await chromium.launch({executablePath:process.env.CHROME_BIN||['google-chrome','chromium','chromium-browser'].map(name=>{try{return execFileSync('which',[name],{encoding:'utf8'}).trim();}catch{return null;}}).find(Boolean),headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--use-angle=swiftshader',...(process.env.HOME_PLAN_SINGLE_PROCESS==='1'?['--no-zygote','--single-process']:[])]});
  const page=await browser.newPage({viewport:{width:390,height:900},hasTouch:true,isMobile:true});await page.emulateMedia({reducedMotion:'reduce'});page.on('pageerror',e=>errors.push(e.message));
  await page.goto(`http://127.0.0.1:${server.address().port}`);await page.waitForFunction(()=>customElements.get('home-plan-card'));
  await page.evaluate(({config,states})=>{

@@ -15,8 +15,8 @@
       "sha256": "d7474040f20cb8fda39f8a3149a9ca055992e38cf67708fb09d9d73791c1c6f3"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 44843,
-      "sha256": "64a418e66add3c11a58f529fc19c14798608a3d0db44e363dbc75ad656974019"
+      "bytes": 44938,
+      "sha256": "1a3ec6dca8504645f256dfe2ea59135579a3e0ce212799fc8dcd512e121d2c60"
     },
     "candidates/home-plan/home-plan-card.js": {
       "bytes": 159308,
