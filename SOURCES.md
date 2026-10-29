@@ -1,5 +1,9 @@
 # Sources de référence
 
+## Plan — niveaux et focus 0.5.0-rc.1
+
+Sources maintenues : `src/candidate/home-plan-card.js`, CSS et `home-plan-notices.js`. Bundle autonome figé sous `candidates/home-plan/`, provenance régénérée. Les plans, photos, illustrations, associations et positions réelles restent hors Git. La géométrie privée du second niveau dérive du PDF fourni ; les nouvelles illustrations dérivent des photos fournies. La configuration native active reste autoritaire pour les positions. Voir `docs/HOME-PLAN.md` et `evidence/home-plan-levels-2026-10-29.json`. Le package HACS et ses distributions sont inchangés.
+
 ## Plan — récupération et repères d’appareil du 29 octobre 2026
 
 Le candidat autonome **Plan de la maison 0.4.0-rc.1** lit un suivi natif persistant de récupération : fin de programme puis ouverture réelle ultérieure de la porte, sans réapparition après reconnexion. Deux sources programme/porte vérifiées sont raccordées ; un appareil sans porte disponible reste hors de cette automatisation. Les signalements d’un même appareil partagent un seul repère, coloré selon le plus prioritaire, avec compteur et détail ordonné ; filtres indépendants et piles dédupliquées restent distincts. **Piles** devient une catégorie dédiée. Repères déplaçables, masqués sans signalement et accessibles au placement ; activité discrète et illustrations conservées. Géométrie, photos, états et identités domestiques restent privés. Automatisations créées et relues ; contrats purs et banc navigateur local sur services simulés, 12 groupes réussis. Module installé sur l’accueil, fichiers et configuration relus à l’identique ; une carte/ressource actualisée et 43 autres ressources conservées. Aucun appareil physique commandé, chargement utilisateur de cette révision et cycle complet non revendiqués. Preuve : `evidence/home-plan-collection-2026-10-29.json`. Aucune fusion/release HACS. Voir `docs/HOME-PLAN-COLLECTION.md` et `docs/HOME-PLAN.md`.

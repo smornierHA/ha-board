@@ -74,3 +74,10 @@ assert.equal(grouped.length,1);assert.equal(grouped[0].notices.length,3);assert.
 assert.equal(groupEquipmentNotices(grouped[0].notices.filter(n=>n.level!=='priority'))[0].level,'maintenance');
 assert.equal(groupEquipmentNotices([]).length,0);
 console.log('Dedicated battery tier and single physical device wrapper with independent issues OK.');
+
+// A selected plan follows native diagnostic siblings, while another level stays out.
+const floorRegistry={entities:{'sensor.floor_battery':{entity_id:'sensor.floor_battery',area_id:'selected'},'sensor.other_filter':{entity_id:'sensor.other_filter',area_id:'other'}},areas:{selected:{area_id:'selected',floor_id:'one'},other:{area_id:'other',floor_id:'two'}},floors:{one:{name:'One'},two:{name:'Two'}},devices:{}};
+const floorStates={'sensor.floor_battery':{entity_id:'sensor.floor_battery',state:'8',attributes:{device_class:'battery'}},'sensor.other_filter':{entity_id:'sensor.other_filter',state:'replace',attributes:{}}};
+const floorNotices=buildNotices({registry:floorRegistry,states:floorStates,rooms:[{id:'selected-room',area_id:'selected',entity_ids:[]}],rules:[{id:'other-filter',entity:'sensor.other_filter',states:['replace'],level:'maintenance'}]});
+assert.deepEqual(floorNotices.map(n=>n.entity),['sensor.floor_battery']);
+console.log('Selected floor discovers native battery diagnostics and excludes rules for other floors.');

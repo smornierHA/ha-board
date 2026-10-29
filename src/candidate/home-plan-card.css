@@ -285,5 +285,14 @@
     .hpf-notice-count { position:absolute; top:0; right:0; display:grid; place-items:center; min-width:17px; height:17px; padding:0 3px; border:2px solid var(--hp-paper); border-radius:10px; background:var(--notice-color); color:light-dark(#fff,#20242b); font-size:10px; line-height:1; font-weight:700; }
 
     .hpf-map .hpf-equipment-notice.info { --notice-color:var(--hp-blue); --notice-bg:var(--hp-selected); }
-    .hpf-map .hpf-equipment-notice.info ha-state-icon { --mdc-icon-size:16px; width:26px; height:26px; opacity:.85; border:0; box-shadow:none; }
+    .hpf-map .hpf-equipment-notice.info ha-state-icon { opacity:.85; border:0; box-shadow:none; }
     .hpf-equipment-notice.info .hpf-notice-count { display:none; }
+    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:14px; width:24px; height:24px; border-radius:7px; }
+    .hpf-map .hpf-room-marker.is-muted { opacity:.32; }
+    .hpf-map .hpf-room-marker.is-muted:is(:hover,:focus-visible) { opacity:1; }
+    .hpf-map .hpf-room-marker.is-muted .hpf-notice-count { box-shadow:none; }
+    .hpf-map .hpf-room-marker:not(.is-light) .hpf-notice-count { width:13px; height:13px; min-width:13px; font-size:9px; top:5px; right:5px; }
+    .hpf-levels { display:flex; flex-wrap:nowrap; flex-shrink:0; gap:2px; padding:3px; background:var(--hp-soft); border-radius:12px; }
+    .hpf-levels button { border:0; border-radius:9px; min-height:44px; padding:7px 9px; background:transparent; color:var(--hp-secondary); font:inherit; font-size:12px; font-weight:600; }
+    .hpf-levels button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-ink); }
+    .hpf-home > .hpf-levels { margin:12px 16px; width:fit-content; }

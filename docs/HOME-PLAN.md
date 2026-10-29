@@ -2,6 +2,16 @@
 
 `custom:home-plan-card` affiche un plan local, les pièces et leurs équipements réels. Le nom du sélecteur de cartes est **Plan de la maison**. Le candidat autonome ne modifie pas les distributions météo, Personnes ou Garage.
 
+## Plusieurs niveaux
+
+Le sélecteur du bandeau choisit le plan affiché. Le mode Lumières / Temp. / Ouvertures / Volets est conservé lors du changement ; les fiches précédentes sont fermées. Les associations, géométries et positions appartiennent à chaque niveau. Dans l’éditeur, choisir **Niveau** avant la pièce : déplacer un repère ne réécrit pas les positions d’un autre plan. Les politiques de volets et règles de signalement sont partagées. Une erreur de chargement conserve le sélecteur pour revenir à un autre niveau.
+
+La configuration existante reste le niveau principal. `level_name` donne son libellé court. `levels` ajoute jusqu’à dix entrées uniques avec `id`, `floor`, `level_name`, `model_url` (ou `model`), `rooms`, `apertures` et `markers`. Ces listes sont propres au niveau et ne se mélangent pas aux listes du niveau principal. Les repères visuels mesurent 24 px, avec pictogramme de 14 px et cible tactile de 44 px. Un repère non concerné par le focus reste accessible avec une opacité réduite, comme les portes et volets.
+
+Une pièce peut choisir une entité `climate` et `temperature_attribute: current_temperature` pour sa mesure ambiante. L’état `heat` et la consigne ne sont jamais utilisés comme température. Un modèle peut activer `compact_temperatures: true` pour une lecture à une décimale avec symbole degré sur le plan ; la fiche et le libellé accessible gardent la valeur complète et l’unité. Le périmètre **Pièces du plan** découvre aussi les diagnostics piles/défauts des zones du niveau et écarte les règles associées à un autre niveau. **Toute la maison** conserve une vue globale.
+
+Les commandes groupées de volets découvrent également les autres niveaux natifs, développent les groupes en équipements terminaux et évitent un groupe identique au niveau courant. Les miniatures des volets et de l’écran restent inchangées.
+
 ## Utilisation
 
 - Plan / Pièces change la présentation. Pièces, Lumières, Temp., Ouvertures et Volets sélectionne les informations mises en évidence. Lumières et Ouvertures montrent toutes les pièces équipées, même éteintes ou fermées ; les couleurs continuent de porter les états réels.

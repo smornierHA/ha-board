@@ -1,34 +1,34 @@
 {
-  "version": "0.4.0-rc.1",
+  "version": "0.5.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 74538,
-      "sha256": "c0748cc5ecafc307b3a4f4dbd181e0f0b7b68b2b7ade93048920ea889ca45231"
+      "bytes": 79984,
+      "sha256": "48835c1da04d75d276c7f9f01fe85ff77846a2c400d898a53a51e379383c6bdc"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 29080,
-      "sha256": "701c5abbbd75954767e9d8ad4e70b0f1533fc95f10b6351378f3f9229cf9277b"
+      "bytes": 30114,
+      "sha256": "514fdebccdf66e3619bdb74e441c36db996254b24a64b63fda678115a2ccccdc"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "9d5acdb10ab22f226e5f41755d702021a0d18a43826811f2bb28732213579e31"
+      "sha256": "d7474040f20cb8fda39f8a3149a9ca055992e38cf67708fb09d9d73791c1c6f3"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 38443,
-      "sha256": "3646613c720fdcafad3f909e4ffae8efa9cd948ae44921ba7815913f270f11f3"
+      "bytes": 44843,
+      "sha256": "64a418e66add3c11a58f529fc19c14798608a3d0db44e363dbc75ad656974019"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 151713,
-      "sha256": "a3480f55c2242b456f5821e7da69bf3985a85d91137f479d375366c96bb0b143"
+      "bytes": 159308,
+      "sha256": "f4aaafbddb759211f4d6835b83f3ca8aa2f3e0ab431172fe79699ea4df2333e4"
     },
     "src/candidate/home-plan-notices.js": {
-      "bytes": 9463,
-      "sha256": "f9dcd83f6863121906a5575e4d9b2195d8d58cd502e0019314fbd08164415a78"
+      "bytes": 9725,
+      "sha256": "8535362d83fe35be8b0bb2a16feb5e4c2ef4c5a6f1b4e3cda19e86b0fd1727eb"
     },
     "tests/home-plan-notices.mjs": {
-      "bytes": 9154,
-      "sha256": "95a18ab2f722f17a58a1ff1d9872c02095ab5c205d54cbd944c74316ff800b41"
+      "bytes": 10196,
+      "sha256": "83884c029e7cbb81e711812ccdb354b3cd2c485b8b292ccee269c272dd5fe28b"
     },
     "src/candidate/home-plan-collection.js": {
       "bytes": 2149,
@@ -37,11 +37,23 @@
     "tests/home-plan-collection.mjs": {
       "bytes": 3413,
       "sha256": "c76369ed089c189575658f370b7aa57dcd5a2d22bc00680a00cc781ac24e22d9"
+    },
+    "package.json": {
+      "bytes": 461,
+      "sha256": "765b25764fd1c22c735eba1d8de32b4fd0702f832ef86cabd6f81ccd2523ff75"
+    },
+    "package-lock.json": {
+      "bytes": 16869,
+      "sha256": "307db15cd68fa81f5ff8e94a4ae196dc456b894ae3e19e1f90acecab412ef9c4"
+    },
+    ".github/workflows/poc-contracts.yml": {
+      "bytes": 4140,
+      "sha256": "5f5664dcb67f41dedde0e51fd27b1d467af1e83bc558be7a76f5dd3c820ac422"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "Pure collection configuration and notification contracts in existing CI; 12 local browser proof groups, 320/390/736 light/dark, HA doubles. Single device wrapper, independent filters, battery category, colors/recovery, placement and existing controls. Native configuration readback separately verified; no physical appliance service.",
+  "tests": "12 fictitious browser proof groups in existing CI, plus 2 private local groups: levels, service scopes, editor isolation, compact/muted markers, climate ambient reading and failed model recovery; pure notices and collection contracts. No native physical device service.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,

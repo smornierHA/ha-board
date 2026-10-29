@@ -13,6 +13,7 @@
     "lit-element": "4.2.0"
   },
   "devDependencies": {
-    "esbuild": "0.25.9"
+    "esbuild": "0.25.9",
+    "playwright-core": "1.62.1"
   }
 }

@@ -38,3 +38,7 @@ Le workflow applicatif existant exécute `tests/home-plan-notices.mjs` sur des d
 Le lot tactile 0.3.0-rc.2 étend les contrats purs aux cycles **À récupérer** et aux robots sur base. Le banc navigateur local vérifie aussi pièces équipées au repos, niveaux d’éclairage et événements haptiques (unicité d’un groupe, propagation Shadow DOM, échec et absence en placement). Une émission DOM simulée ne prouve pas une vibration physique iOS.
 
 Le lot 0.4.0-rc.1 ajoute `tests/home-plan-collection.mjs` au même job et étend les tests de signalements aux groupes d’appareil, causes indépendantes, ordre de priorité et piles dédiées. Les simulations navigateur restent locales ; une validation de configuration HA et une trace de porte réelle ne prouvent pas un cycle physique complet.
+
+## Contrôles Plan — 0.5.0-rc.1
+
+Le workflow existant reconstruit le bundle Plan et exige son égalité avec le candidat figé, puis exécute le banc Playwright Core verrouillé sur Chrome/Chromium disponible. Aucune donnée privée ni commande HA réelle. Douze groupes fictifs couvrent les commandes, positions et cycle de vie, les signalements, puis l’isolation des niveaux, le focus, la température ambiante du chauffage et le retour depuis un modèle en erreur. Les deux groupes supplémentaires locaux utilisant les modèles et illustrations privés ne sont pas exportés en CI. Les captures privées sont des preuves locales, pas des artefacts publics. La validation navigateur ne prouve ni chargement dans l’app HA ni mouvement physique d’un appareil.

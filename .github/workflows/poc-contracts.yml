@@ -44,6 +44,11 @@ jobs:
         run: |
           node tests/home-plan-notices.mjs
           node tests/home-plan-collection.mjs
+      - name: Home Plan frozen bundle and fictitious browser contracts
+        run: |
+          node scripts/build_home_plan.mjs
+          git diff --exit-code -- candidates/home-plan/home-plan-card.js
+          node tests/home-plan-browser.mjs
       - name: Historical address adapter contracts
         run: node tests/history-address-adapter.mjs
       - name: Build and test HACS entrypoint

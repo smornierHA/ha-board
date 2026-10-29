@@ -66,9 +66,11 @@ export function buildNotices({states={},registry={},rooms=[],apertures=[],rules=
   const openings=new Set([...apertures.map(a=>a.opening_entity),...openingEntities].filter(Boolean));
   const overrides=new Set(rules.flatMap(r=>[r.entity,...(r.aliases||[])]));
   const wanted=new Set([...directRooms.keys(),...openings]);
-  if(scope==='home')for(const e of Object.values(entities)){
+  const planAreas=new Set(rooms.map(r=>r.area_id).filter(Boolean));
+  for(const e of Object.values(entities)){
     if(e.disabled_by||e.hidden_by)continue;const area=areaOf(e.entity_id),s=states[e.entity_id],cls=s?.attributes?.device_class,domain=e.entity_id.split('.')[0];
     if(!s&&['sensor','binary_sensor'].includes(domain)){getState(e.entity_id);continue;}
+    if(scope!=='home'&&!planAreas.has(area))continue;
     if(excludedAreas.includes(area)||(!area&&!CRITICAL.has(cls)))continue;
     if(['media_player','fan','vacuum'].includes(domain)||domain==='binary_sensor'&&(CRITICAL.has(cls)||['battery','problem','tamper','safety'].includes(cls))||domain==='sensor'&&(cls==='battery'||cls==='enum'&&s?.attributes?.options?.includes('finished')))wanted.add(e.entity_id);
   }
@@ -83,7 +85,7 @@ export function buildNotices({states={},registry={},rooms=[],apertures=[],rules=
   };
   for(const id of wanted){if(overrides.has(id)||excludedEntities.includes(id))continue;const s=getState(id);add(id,baseNotice(s,{opening:openings.has(id)}));}
   const evaluated=rules.map(rule=>({rule,item:ruleNotice(rule,getState)}));const specificActive=new Set(evaluated.filter(({rule,item})=>item&&!rule.fallback_for?.length).map(({rule})=>rule.id));
-  for(const {rule,item} of evaluated){if(rule.fallback_for?.some(id=>specificActive.has(id)))continue;add(rule.entity,item,rule);}
+  for(const {rule,item} of evaluated){if(scope!=='home'&&(areaOf(rule.entity)||rule.room)&&!wanted.has(rule.entity)&&!planAreas.has(areaOf(rule.entity))&&!rooms.some(r=>r.id===rule.room))continue;if(rule.fallback_for?.some(id=>specificActive.has(id)))continue;add(rule.entity,item,rule);}
   return [...result.values()].sort(noticeOrder);
 }
 export function groupEquipmentNotices(notices){
