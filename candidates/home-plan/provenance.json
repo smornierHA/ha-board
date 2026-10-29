@@ -1,31 +1,39 @@
 {
-  "version": "0.2.0-rc.2",
+  "version": "0.3.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 57684,
-      "sha256": "49edf200a427bab25d62abf2ea303cf9bac473f39b66e9d67867b1d3f0599afb"
+      "bytes": 68726,
+      "sha256": "e5ad681d3f4c1014052165857f2f47fb7ddcab3f07eee91695f50821eca82711"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 22864,
-      "sha256": "04f8d43dadb176d813c7031cd932a137722a18a4fec7c68554f7018314fc4121"
+      "bytes": 27105,
+      "sha256": "505a47469cf2ab4cfff6fdce993de6fd677a4ef81034687793d3645cb980d583"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "7df638d8b34d90f34de06a610b2ebc9d9b7b956558774c1b50a4324dbabb6ea2"
+      "sha256": "94d4d17bc9b8625865cd9c47e8de492a4c551fd55af660d1e4392d64deac016d"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 24792,
-      "sha256": "afd4430db573c9b7e285d797d1a50e6ea283e86f70690f1412935a1d370f0877"
+      "bytes": 30854,
+      "sha256": "bad7ba9060080fb7156c401665fb804632dabb3f1ebc04fb7930f668a4237f75"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 116224,
-      "sha256": "bac58c85c8c0dd0727ba6d73c1109cf24bab5e5df09c0f8c6a9b71011711b143"
+      "bytes": 142228,
+      "sha256": "0f41f9c006c924785545520833fe0c9087aba3e71018ea0549e5ec861c79a368"
+    },
+    "src/candidate/home-plan-notices.js": {
+      "bytes": 8429,
+      "sha256": "17fe9489fbf7ac7df0a2f7cd19f090c52523760e741bbc7da099b9c2e57bea8a"
+    },
+    "tests/home-plan-notices.mjs": {
+      "bytes": 6870,
+      "sha256": "774bb14606381205122201f1c9ca106e0d2c27407a166186895638eb160a9a06"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "Local Chromium: 320/390/736 light/dark; simulated HA; explicit ambient temperature, enum doors, native icon binding, leaf-group dedupe, screen limits, room/floor batches, pointer/keyboard positioning, service/lifecycle failures. No real motor actuation.",
+  "tests": "Pure live-signal contracts in existing CI; local Chromium 320/390/736 light/dark and HA doubles; severity, Art mode/aliases, consumables, location filters, recovery, inverse range, preserved illustrations, group control and placement. No real motor actuation.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,

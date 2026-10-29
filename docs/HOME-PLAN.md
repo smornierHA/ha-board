@@ -14,7 +14,10 @@
 - Les groupes de lumières sont développés en lampes uniques. Un seul ensemble **Tout allumer / Tout éteindre** commande la pièce. Les repères de lumière se commandent sur le plan et deviennent lumineux quand le retour HA les indique allumés.
 - La fiche possède deux vues : **Commandes** (accès courants et favoris) et **Équipements** (informations et réglages regroupés par appareil, repliés par défaut). Les capteurs de porte de type enum, les prises et les réglages principaux sont inclus, indépendamment de leur domaine. Les diagnostics/configurations automatiques restent exclus ; ils peuvent être ajoutés explicitement.
 - La température ambiante est choisie explicitement dans l’éditeur. Aucune mesure d’appareil n’est automatiquement utilisée comme température de pièce. Les icônes d’entités utilisent le composant natif HA et ses personnalisations.
-- Les détecteurs de fumée et autres alertes sont visibles dans la fiche et dans le résumé. Leurs repères deviennent des alertes lorsque le capteur le signale. La carte ne remplace pas les fonctions d’alarme des équipements.
+- Les détecteurs de fumée, de gaz et de fuite au repos sont masqués sur le plan et dans les commandes courantes. Ils restent dans l’inventaire et dans le mode de placement. Leur repère apparaît lors d’un signalement ; une alarme de fumée/fuite est prioritaire, un défaut de capteur relève de la maintenance. La carte ne remplace pas les fonctions d’alarme des équipements.
+- Le pied de carte compte uniquement les signalements actifs : **Alertes**, **Entretien**, **Actifs**. Le panneau distingue Priorités, Maintenance et Infos, avec filtres de niveau et de pièce. Une priorité de fumée/fuite est mise en évidence ; les ouvrants physiques ouverts sont aussi prioritaires. Piles faibles, défauts, consommables et cycles terminés relèvent de la maintenance. Les équipements en service ont de petits pictogrammes dans leur pièce. Les règles utilisent les états courants et ne créent aucune notification externe.
+- La jauge d’un volet est pleine fermé et vide ouvert ; le texte reste le pourcentage ouvert. Celle d’un écran suit son déploiement. Les illustrations retenues sont conservées.
+- Un équipement d’un groupe affecté à une autre zone reste dans sa propre pièce. Les commandes de pièce ne suivent pas aveuglément les anciens groupes globaux.
 
 ## Ajouter ou associer un équipement
 
@@ -28,6 +31,14 @@ Accueil → Modifier le tableau de bord → Modifier la carte **Maison** → éd
 6. Enregistrer la carte dans Home Assistant.
 
 Les identifiants de pièces, ouvertures et repères restent stables lors des modifications. Aucun équipement n’est renommé ou déplacé globalement par l’éditeur de la carte.
+
+## Signalements et mode Art
+
+L’éditeur **Alertes et informations** choisit le périmètre du plan ou de la maison, les zones/équipements exclus, les contacts physiques supplémentaires et des règles d’état ou de seuil. Les diagnostics pertinents de pile/défaut sont surveillés même quand ils ne figurent pas dans les commandes courantes. Un appareil mobile ou une zone réseau peut être exclu du résumé sans modifier son registre HA.
+
+Une règle peut utiliser `state_entity` comme source et `aliases` pour plusieurs entités du même équipement. L’exception `unless` permet de traiter un mode Art confirmé comme repos et `idle_label` l’affiche dans la fiche. Une source inconnue ne prouve pas que la TV fonctionne. Aucune présence réseau n’est assimilée à un PC allumé. Les règles de consommables doivent utiliser les états fournis par leur intégration ; **installed** ne signifie pas vide. `fallback_for` conserve un diagnostic agrégé seulement lorsqu’aucune règle détaillée de sa liste n’est active. Les problèmes indépendants sont comptés séparément ; deux sources de la même pile ne créent pas deux avertissements.
+
+Le résumé se met à jour avec HA ; il ne mémorise pas d’anciennes alertes. Un cycle reste « terminé » tant que l’intégration conserve cet état. Les inconnus/indisponibles ne sont pas transformés en états sains.
 
 ## Configuration et fichiers
 
@@ -55,6 +66,13 @@ cover_options:
     kind: screen
     max_position: 90
     invert_position: false
+notification_scope: plan
+notification_rules:
+  - id: example_filter
+    entity: sensor.example_filter
+    level: maintenance
+    label: Filtre du purificateur
+    states: [replace]
 markers: []
 ```
 
@@ -65,6 +83,8 @@ Le modèle JSON contient `bounds: [x,y,largeur,hauteur]`, les surfaces de `rooms
 `node scripts/build_home_plan.mjs` produit `candidates/home-plan/home-plan-card.js` avec le runtime Lit verrouillé par `package-lock.json`. Aucun import CDN ou dépendance à une autre carte à l’exécution. Les [notices propres au candidat](HOME-PLAN-NOTICES.md) recensent le runtime ; la licence BSD est incorporée dans le module. Les notices du package HACS existant sont conservées à l’identique.
 
 `node tests/home-plan-browser.mjs` contrôle les thèmes et formats 320/390/736 px, les cibles de commandes, l’indépendance contact/volet, l’absence d’état optimiste, les capacités, indisponibilités, erreurs de service et de plan, l’éditeur, l’héritage de zone et le nettoyage des abonnements, le dédoublonnage des groupes, les portes enum, les limites de course et les cibles des commandes groupées, ainsi que le glisser-déposer et le déplacement clavier sans action physique. Il utilise des doubles HA et ne commande aucun équipement réel. `CHROME_BIN` sélectionne Chromium. Les contrôles privés peuvent utiliser un modèle fourni hors Git.
+
+`node tests/home-plan-notices.mjs` teste sans navigateur la classification, les inconnus, la déduplication, le mode Art, les consommables, les niveaux et la récupération. Ces contrats sont raccordés à la CI existante. Le banc navigateur reste local.
 
 ## Installation candidate et retour arrière
 

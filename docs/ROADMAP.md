@@ -1,4 +1,8 @@
-# Roadmap HA-BOARD — base candidate validée v0.2.0-rc.2
+# Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
+
+## Plan — signalements du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.3.0-rc.1** organise les priorités, la maintenance et les informations d’activité par équipement, pièce et niveau. Les détecteurs au repos sont masqués sur le plan ; un mode Art confirmé n’est pas une TV en service. Jauges et centrage des icônes corrigés, illustrations des volets conservées et préférence consignée. Les positions modifiées par l’utilisateur sont préservées. Géométrie, associations et règles domestiques restent privées. Un seul appareil change de zone conformément à la demande. Contrats purs raccordés au workflow existant et banc navigateur local sur services simulés ; aucun moteur actionné. Voir `HOME-PLAN.md` et la preuve du lot. Pas de changement du package HACS, fusion ou release.
 
 ## Plan familial — améliorations du 29 octobre 2026
 
@@ -8,7 +12,7 @@ Le retour utilisateur confirme le chargement du premier candidat et précise les
 
 Première carte native préparée, testée et installée comme candidat autonome `0.1.0-rc.2` après les corrections utilisateur. Les états réels, actions, associations de zones et éditeur visuel sont intégrés. Étape courante : confirmer l’affichage et l’usage depuis le navigateur utilisateur ; les commandes physiques ne sont pas exécutées par le banc de tests. Stabiliser ensuite le lot et sa CI portable avant toute fusion ou distribution HACS. La commande d’une porte reste distincte de son état physique. Aucun autre module distribué n’est modifié.
 
-La distribution courante `v0.2.0-rc.2` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
+La distribution courante `v0.2.0-rc.1` ajoute la météo et conserve Personnes `v0.1.2-rc.1` octet pour octet. Elle est publiée, installée, chargée et sa [recette HA ciblée est confirmée le 9 septembre 2026](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). Localisation #8 et météo #12 sont clos ; **Garage #13 est préparé pour revue**, puis Portail #14 reste hors périmètre.
 
 ## Avant une éventuelle promotion stable
 
@@ -74,7 +78,7 @@ Le chantier MAP/Core, Livebox (`smornierHA/hass-livebox-component`, branche `liv
 
 ## Clôture du pilote météo #12 — 9 septembre 2026
 
-- PR #16 fusionnée ; `v0.2.0-rc.2` publiée depuis `a9c885419cea031fb307623076100b04feb78e98`, CI intégrée réussie.
+- PR #16 fusionnée ; `v0.2.0-rc.1` publiée depuis `a9c885419cea031fb307623076100b04feb78e98`, CI intégrée réussie.
 - HACS et bascule exécutés ; [recette native ciblée confirmée](https://github.com/smornierHA/ha-board/pull/16#issuecomment-5602950067). W1, éditeur, provenance et notices traités ; bundle Personnes inchangé.
 - [Migration et rollback ciblés](HACS.md#migration-météo-020-rc1) : conserver Personnes avant météo, une ressource par module. Rollback disponible, non exécuté.
 - Documentation de distribution à aligner avant publication ; informations HACS et recette à relire après déploiement selon [HACS.md](HACS.md#documentation-à-chaque-livraison).

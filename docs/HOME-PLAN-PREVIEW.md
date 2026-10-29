@@ -1,5 +1,9 @@
 # Plan familial — exploration du 25 octobre 2026
 
+## Plan — signalements du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.3.0-rc.1** organise les priorités, la maintenance et les informations d’activité par équipement, pièce et niveau. Les détecteurs au repos sont masqués sur le plan ; un mode Art confirmé n’est pas une TV en service. Jauges et centrage des icônes corrigés, illustrations des volets conservées et préférence consignée. Les positions modifiées par l’utilisateur sont préservées. Géométrie, associations et règles domestiques restent privées. Un seul appareil change de zone conformément à la demande. Contrats purs raccordés au workflow existant et banc navigateur local sur services simulés ; aucun moteur actionné. Voir `HOME-PLAN.md` et la preuve du lot. Installé ; fichiers et configuration relus à l’identique, autre configuration et 43 ressources conservées. Chargement utilisateur de cette révision non revendiqué. Preuve : `../evidence/home-plan-notifications-2026-10-29.json`. Pas de changement du package HACS, fusion ou release.
+
 ## État courant
 
 Le retour utilisateur du 29 octobre confirme le premier rendu et précise quinze améliorations. Le candidat autonome **0.2.0-rc.2** est installé sur la carte existante : plan et repères corrigés dans un nouveau modèle privé, choix explicite de température ambiante, icônes natives, équipements regroupés, commandes de volets pièce/niveau, écran distinct limité et placement visuel des repères. Trois nouveaux fichiers relus à l’identique, une ressource remplacée et un seul bloc actualisé ; les 43 autres ressources et le reste du dashboard sont conservés. Aucun moteur ni registre global n’a été modifié. Tests et aperçu interactif locaux sur le bundle figé ; chargement utilisateur de cette nouvelle révision et essais physiques restent distincts. Utilisation : `HOME-PLAN.md`. Preuve : `../evidence/home-plan-usability-2026-10-29.json`.

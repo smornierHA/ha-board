@@ -53,3 +53,7 @@ Ne pas demander de recréer un dépôt déjà vérifié, de relancer une mise à
 ## Maintenance de ces règles
 
 Les sources canoniques sont `standards/COMMUN.md`, `profiles/` et `templates/project/`. Toute évolution est reportée dans les instructions, le contrat et les prompts, puis les starters et packages sont régénérés. Les projets existants adoptent le diff explicitement ; le dépôt central reste privé et ne transforme pas leur visibilité. La maintenance mensuelle existante n'est pas dupliquée.
+
+## Plan de la maison — préférence explicite du 29 octobre 2026
+
+**Conserver absolument les petites illustrations des volets ouverts/fermés et de l’écran.** Elles font partie de l’interface retenue par l’utilisateur et ne doivent pas être remplacées par de simples icônes. La miniature du volet se remplit quand il se ferme ; celle de l’écran se remplit quand il se déploie. Les jauges suivent la même convention visuelle, tandis que le texte conserve le pourcentage d’ouverture / de déploiement réel.

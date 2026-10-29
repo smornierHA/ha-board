@@ -232,3 +232,40 @@
 
     .hpf-level-picker { display:flex; gap:12px; align-items:center; font-size:12px; margin:8px 0; }
     .hpf-level-picker select { flex:1; min-width:0; min-height:44px; font:inherit; color:var(--hp-ink); background:var(--hp-soft); border:1px solid var(--hp-line); border-radius:10px; padding:8px; }
+    /* Keep the slatted shutter/screen illustration; range fill represents closure/deployment. */
+    .hpf-home :is(ha-icon,ha-state-icon) { display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; flex-shrink:0; }
+    .hpf-home button :is(ha-icon,ha-state-icon) { align-self:center; }
+    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:18px; width:32px; height:32px; box-sizing:border-box; padding:0; display:flex; align-items:center; justify-content:center; }
+    .hpf-map .hpf-room-marker.is-maintenance ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); }
+    .hpf-room-activity { display:inline-flex; align-items:center; justify-content:center; gap:3px; color:var(--hp-blue); font-size:11px; }
+    .hpf-room-activity ha-state-icon { --mdc-icon-size:12px; width:12px; height:12px; }
+    .hpf-home { --hp-danger:light-dark(#b3261e,#ffb4ab); --hp-danger-bg:light-dark(#ffedeb,#48272b); }
+    .hpf-notice-footer { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:6px; min-height:53px; padding:8px 12px; border-top:1px solid var(--hp-line); }
+    .hpf-notice-footer .hpf-footer-copy:empty { display:none; }
+    .hpf-notice-chip { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:36px; padding:5px 8px; border:0; border-radius:10px; background:var(--hp-soft); font-size:12px; color:var(--hp-secondary); }
+    .hpf-notice-chip ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }
+    .hpf-notice-chip strong { font-weight:600; font-variant-numeric:tabular-nums; }
+    .hpf-notice-chip.priority { color:var(--hp-orange); background:var(--hp-alert-bg); }
+    .hpf-notice-chip.priority.is-critical { color:var(--hp-danger); background:var(--hp-danger-bg); }
+    .hpf-notice-chip.maintenance { color:var(--hp-amber); background:var(--hp-warm); }
+    .hpf-notice-chip.info { color:var(--hp-blue); background:var(--hp-selected); }
+    .hpf-room-notices { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 10px; }
+    .hpf-notice-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; padding:3px; border-radius:12px; background:var(--hp-soft); }
+    .hpf-notice-tabs button { display:grid; place-items:center; gap:2px; min-width:0; min-height:48px; padding:5px 2px; border:0; border-radius:9px; background:transparent; color:var(--hp-secondary); font-size:12px; }
+    .hpf-notice-tabs button[aria-pressed="true"] { background:var(--hp-paper); color:var(--hp-ink); }
+    .hpf-notice-tabs button span { font-size:11px; font-variant-numeric:tabular-nums; }
+    .hpf-notice-filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:12px 0; }
+    .hpf-notice-filters label { display:grid; gap:5px; font-size:11px; color:var(--hp-secondary); }
+    .hpf-notice-filters select { width:100%; min-width:0; min-height:42px; padding:8px; border:1px solid var(--hp-line); border-radius:9px; background:var(--hp-soft); color:var(--hp-ink); font:inherit; font-size:12px; }
+    .hpf-notice-list { display:grid; gap:7px; }
+    .hpf-notice-row { display:flex; align-items:center; gap:10px; width:100%; min-height:72px; padding:12px; border:0; border-radius:12px; background:var(--hp-soft); text-align:left; }
+    .hpf-notice-row > span { display:grid; flex:1; min-width:0; gap:4px; }
+    .hpf-notice-row strong { font-weight:600; font-size:13px; overflow-wrap:anywhere; }
+    .hpf-notice-row .hpf-notice-reason { font-size:12px; overflow-wrap:anywhere; }
+    .hpf-notice-row small { font-size:11px; color:var(--hp-secondary); }
+    .hpf-notice-row.is-critical { background:var(--hp-danger-bg); }
+    .hpf-notice-row.is-critical > ha-icon,.hpf-notice-row.is-critical .hpf-notice-reason { color:var(--hp-danger); }
+    .hpf-notice-row.priority:not(.is-critical) > ha-icon { color:var(--hp-orange); }
+    .hpf-notice-row.maintenance > ha-icon { color:var(--hp-amber); }
+    .hpf-drawing .sliding-track { fill:none; stroke:var(--hp-glass); stroke-width:3; }
+    .hpf-drawing .sliding-panel { fill:none; stroke:var(--hp-glass); stroke-width:2; }

@@ -30,3 +30,7 @@ Le workflow installe strictement `package-lock.json`, construit Garage avec `lit
 Le banc Chrome compare l’export original, la source construite et le module distribué sur données/images fictives, produit les captures et exerce sur source et bundle la reconnexion caméra sans fermer le dialogue, l’unicité de la caméra sélectionnée, l’annulation après reconfiguration/détachement et le rejet d’une erreur tardive. L’égalité visuelle du banc n’est pas une recette native HA. Les tests Python rejouent la méthode HACS installée sur trois ressources HA-BOARD fictives, une mise à jour ultérieure et le rollback Garage seul, sans rejouer la migration météo réelle.
 
 Les contrôles Personnes et météo restent exécutés. `scripts/check_garage.py` exige leurs tailles et SHA256 inchangés avant d’accepter la distribution Garage.
+
+## Contrôles du Plan — signalements
+
+Le workflow applicatif existant exécute `tests/home-plan-notices.mjs` sur des données fictives : criticité, inconnus, piles et déduplication, sources/alias de TV et mode Art, consommables installés/faibles, exclusions, niveaux et récupération. Ce contrôle léger n’ajoute pas de workflow et ne remplace pas le banc navigateur local du Plan ni une recette native HA.

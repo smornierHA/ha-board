@@ -1,5 +1,9 @@
 # Projet HA-BOARD
 
+## Plan — signalements du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.3.0-rc.1** organise les priorités, la maintenance et les informations d’activité par équipement, pièce et niveau. Les détecteurs au repos sont masqués sur le plan ; un mode Art confirmé n’est pas une TV en service. Jauges et centrage des icônes corrigés, illustrations des volets conservées et préférence consignée. Les positions modifiées par l’utilisateur sont préservées. Géométrie, associations et règles domestiques restent privées. Un seul appareil change de zone conformément à la demande. Contrats purs raccordés au workflow existant et banc navigateur local sur services simulés ; aucun moteur actionné. Voir `docs/HOME-PLAN.md` et la preuve du lot. Installé ; fichiers et configuration relus à l’identique, autre configuration et 43 ressources conservées. Chargement utilisateur de cette révision non revendiqué. Preuve : `evidence/home-plan-notifications-2026-10-29.json`. Pas de changement du package HACS, fusion ou release.
+
 ## Plan familial — améliorations du 29 octobre 2026
 
 Le retour utilisateur confirme le chargement du premier candidat et précise les corrections de géométrie/repères. Le candidat autonome **0.2.0-rc.2** ajoute le placement visuel des repères existants, les lumières sur le plan, les volets groupés par pièce/niveau, le traitement distinct des écrans avec limite de course, les équipements regroupés par appareil et la sélection explicite de température ambiante. Les icônes sont natives HA. Les originaux, géométrie et bindings domestiques restent hors Git public. Tests navigateur sur bundle figé et services simulés ; aucune commande physique de test. Installé sur la carte existante ; nouveaux fichiers et configuration relus à l’identique. Capture native expirée après 25 secondes, nouvelle recette utilisateur et mouvements physiques non revendiqués. État et limites : `docs/HOME-PLAN.md`, preuve datée du lot. Le package HACS courant, les autres composants et les associations globales ne sont pas modifiés.
@@ -31,7 +35,7 @@ Une version de socle disponible ou préparée n'est pas adoptée tant que son di
 
 ## Cycle pilote météo #12
 
-Le 9 septembre, le dépôt public est relu via GitHub avec droits push/admin ; la préparation a été réalisée sur branche dédiée. Sources privées météo et configuration ciblée conservées hors Git ; seules les références expurgées et données fictives sont admises ici. Le profil HA et la coordination RC.8 ont été relus et appliqués aux parties concernées, sans adoption complète. Package 0.2.0-rc.2 désormais publié, installé, chargé et accepté en recette HA ciblée le 9 septembre ; Personnes 0.1.2-rc.1 inchangé. Statut et preuves courants dans STATUS ; provenance dans WEATHER-PROVENANCE. La documentation affichée par HACS est contrôlée à chaque livraison selon docs/HACS.md.
+Le 9 septembre, le dépôt public est relu via GitHub avec droits push/admin ; la préparation a été réalisée sur branche dédiée. Sources privées météo et configuration ciblée conservées hors Git ; seules les références expurgées et données fictives sont admises ici. Le profil HA et la coordination RC.8 ont été relus et appliqués aux parties concernées, sans adoption complète. Package 0.2.0-rc.1 désormais publié, installé, chargé et accepté en recette HA ciblée le 9 septembre ; Personnes 0.1.2-rc.1 inchangé. Statut et preuves courants dans STATUS ; provenance dans WEATHER-PROVENANCE. La documentation affichée par HACS est contrôlée à chaque livraison selon docs/HACS.md.
 
 ## Préparation Garage #13
 
