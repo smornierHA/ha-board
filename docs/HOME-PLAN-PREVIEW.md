@@ -2,7 +2,7 @@
 
 ## État courant
 
-La demande d’intégrer la première version est exécutée : `custom:home-plan-card` candidat autonome **0.1.0-rc.2** installé sur l’accueil. Les ouvertures et détecteurs précisés sont pris en compte ; associations HA corrigées et relues. Un seul bloc et une seule nouvelle ressource, autres ressources inchangées. Les contrôles du bundle sont locaux et simulés ; le moteur de capture natif est indisponible, la recette utilisateur reste attendue. Utilisation et éditeur : `HOME-PLAN.md`. Preuve expurgée : `../evidence/home-plan-native-2026-10-25.json`.
+Le retour utilisateur du 29 octobre confirme le premier rendu et précise quinze améliorations. Le candidat autonome **0.2.0-rc.2** est installé sur la carte existante : plan et repères corrigés dans un nouveau modèle privé, choix explicite de température ambiante, icônes natives, équipements regroupés, commandes de volets pièce/niveau, écran distinct limité et placement visuel des repères. Trois nouveaux fichiers relus à l’identique, une ressource remplacée et un seul bloc actualisé ; les 43 autres ressources et le reste du dashboard sont conservés. Aucun moteur ni registre global n’a été modifié. Tests et aperçu interactif locaux sur le bundle figé ; chargement utilisateur de cette nouvelle révision et essais physiques restent distincts. Utilisation : `HOME-PLAN.md`. Preuve : `../evidence/home-plan-usability-2026-10-29.json`.
 
 ## Référence géométrique reçue
 

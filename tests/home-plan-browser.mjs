@@ -22,7 +22,7 @@ Object.entries(states).forEach(([id,s])=>s.entity_id=id);
 const server=http.createServer((req,res)=>{
  const url=new URL(req.url,'http://localhost');
  if(url.pathname==='/bundle.js'){res.setHeader('Content-Type','text/javascript');res.end(fs.readFileSync(path.join(root,'candidates/home-plan/home-plan-card.js')));return;}
- if(privateDir&&url.pathname.startsWith('/local/maison/plans/family-v1/')){const name=path.basename(url.pathname),file=path.join(privateDir,name);if(fs.existsSync(file)){res.setHeader('Content-Type',name.endsWith('.json')?'application/json':'image/svg+xml');res.end(fs.readFileSync(file));return;}}
+ if(privateDir&&url.pathname.startsWith('/local/maison/plans/family-v1/')){const name=path.basename(url.pathname),file=path.join(privateDir,name.startsWith('model-')?'model.json':name);if(fs.existsSync(file)){res.setHeader('Content-Type',name.endsWith('.json')?'application/json':'image/svg+xml');res.end(fs.readFileSync(file));return;}}
  if(url.pathname==='/local/broken.json'){res.statusCode=404;res.end();return;}
  res.setHeader('Content-Type','text/html');res.end('<meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:12px;color-scheme:light dark;--card-background-color:#fbfbfc;--primary-text-color:#20242b;--secondary-text-color:#626b76}body.dark{--card-background-color:#1d2026;--primary-text-color:#f4f5f8;--secondary-text-color:#aab2bf}ha-card{display:block}</style><script type="module" src="/bundle.js"></script><main></main>');
 });
@@ -71,11 +71,63 @@ try{
  await page.evaluate(()=>{const bad=document.createElement('home-plan-card');bad.setConfig({model_url:'/local/broken.json'});bad.hass=hass;document.querySelector('main').append(bad);window.bad=bad;});await page.waitForFunction(()=>bad.shadowRoot.textContent.includes('HTTP 404'));await page.evaluate(()=>bad.remove());
  const sanitized=await page.evaluate(()=>{const badModel=structuredClone(card._config.model);badModel.artwork='<foreignObject><img src="x" onerror="window.injected=true"/></foreignObject><path d="M0 0H2" onclick="alert(1)"/>';const c=document.createElement('home-plan-card');c.setConfig({model:badModel});c.hass=hass;document.querySelector('main').append(c);window.sanitizedCard=c;return true;});assert.ok(sanitized);await page.evaluate(()=>sanitizedCard.updateComplete);assert.equal(await page.evaluate(()=>sanitizedCard._model.artwork.includes('onclick')||sanitizedCard._model.artwork.includes('foreignObject')),false);await page.evaluate(()=>sanitizedCard.remove());
  proof.push({commands_targeted:true,no_optimistic_state:true,contact_independent:true,unknown_position:true,unavailable_disabled:true,pulse_lock:true,smoke_alert:true,registry_area_inheritance:true,registry_refresh:true,listener_cleanup:true,stable_input:true,visual_editor:true,marker_without_secure_context:true,service_error:true,asset_error:true,sanitized_svg:true});
+ // Room/device selection, screen limits and group targets use the real frozen bundle.
+ await page.evaluate(async({config})=>{
+  const cfg=structuredClone(config);delete cfg.rooms[0].temperature_entity;
+  const additions={
+   'cover.extra':{state:'open',attributes:{friendly_name:'Autre volet',current_position:25,supported_features:15}},
+   'cover.screen':{state:'open',attributes:{friendly_name:'Écran de démonstration',current_position:100,supported_features:15}},
+   'cover.absent':{state:'unavailable',attributes:{friendly_name:'Volet indisponible',supported_features:15}},
+   'light.other':{state:'off',attributes:{friendly_name:'Autre lampe',icon:'mdi:lamp'}},
+   'light.group_a':{state:'off',attributes:{friendly_name:'Groupe commun',entity_id:['light.example','light.other']}},
+   'light.group_b':{state:'off',attributes:{friendly_name:'Groupe commun',entity_id:['light.other']}},
+   'sensor.oven':{state:'60',attributes:{friendly_name:'Four température',device_class:'temperature',unit_of_measurement:'°C'}},
+   'sensor.oven_door':{state:'closed',attributes:{friendly_name:'Four porte',device_class:'enum',options:['closed','open','locked']}}
+  };
+  for(const [id,s]of Object.entries(additions)){s.entity_id=id;registry.entities.push({entity_id:id,area_id:'west_area'});}
+  cfg.rooms[0].entities.push(...Object.keys(additions));cfg.cover_options=[{entity:'cover.screen',kind:'screen',max_position:90}];cfg.cover_groups=[{id:'upper',name:'Niveau supérieur',entities:['cover.extra','cover.screen']}];
+  cfg.markers.push({id:'lightmark',room:'west',entity:'light.other',point:[240,230]});
+  hass={...hass,states:{...hass.states,...additions}};rejectService=false;window.extra=document.createElement('home-plan-card');extra.setConfig(cfg);extra.hass=hass;document.querySelector('main').append(extra);
+ },{config});
+ await page.waitForFunction(()=>extra._model&&extra._registryLoaded);const ex=page.locator('home-plan-card').last();
+ assert.equal(await page.evaluate(()=>extra._temperature(extra._rooms()[0])),undefined,'oven must never become ambient temperature implicitly');
+ assert.ok(await page.evaluate(()=>extra._entities(extra._rooms()[0]).includes('sensor.oven_door')),'enum appliance doors included');
+ assert.deepEqual(await page.evaluate(()=>extra._lights(extra._rooms()[0]).sort()),['light.example','light.other'],'overlapping light groups flattened and deduplicated');
+ await ex.locator('.hpf-zone').first().click();
+ const screen=ex.locator('[data-entity="cover.screen"]');assert.equal(await screen.locator('output').innerText(),'100 % déployé');assert.equal(await screen.locator('input').getAttribute('max'),'90');
+ await screen.getByRole('button',{name:'Déployer',exact:true}).click();assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['cover','set_cover_position',{position:90},{entity_id:'cover.screen'}]);
+ await screen.getByRole('button',{name:'Rentrer',exact:true}).click();assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['cover','close_cover',{}, {entity_id:'cover.screen'}]);
+ await page.evaluate(()=>extra._send('cover.screen','cover.set_cover_position',{position:100}));assert.equal(await page.evaluate(()=>calls.at(-1)[2].position),90);
+ assert.equal(await screen.locator('output').innerText(),'100 % déployé','screen state remains reported, no optimistic update');
+ await page.evaluate(()=>{extra._config.cover_options.push({entity:'cover.extra',invert_position:true});extra.requestUpdate();});await page.evaluate(()=>extra.updateComplete);assert.equal(await page.evaluate(()=>extra._coverValue('cover.extra')),75);assert.equal(await page.evaluate(()=>extra._coverLabel('cover.extra')),'75 % ouvert');await page.evaluate(()=>extra._send('cover.extra','cover.set_cover_position',{position:30}));assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['cover','set_cover_position',{position:70},{entity_id:'cover.extra'}]);await page.evaluate(()=>{extra._config.cover_options=extra._config.cover_options.filter(p=>p.entity!=='cover.extra');extra.requestUpdate();});
+ const grouped=await page.evaluate(async()=>{const start=calls.length;await extra._batch(extra._windowCovers(extra._rooms()),'close_cover');return {calls:calls.slice(start),feedback:extra._feedback};});
+ assert.deepEqual(grouped.calls.map(c=>c[3].entity_id).sort(),['cover.example','cover.extra']);assert.match(grouped.feedback,/2\/3/);assert.ok(!grouped.calls.some(c=>c[3].entity_id==='cover.screen'));
+ assert.equal(await ex.locator('[data-light]').count(),2);
+ assert.equal(await ex.locator('ha-state-icon').first().evaluate(e=>typeof e.stateObj),'object');
+ await ex.getByRole('button',{name:/Équipements$/}).click();assert.equal(await ex.locator('[data-equipment="sensor.oven_door"]').count(),1);await ex.locator('[data-close]').click();
+ // Placement: all original model markers have their positions, and drag/keyboard emit config only.
+ await page.evaluate(()=>{const ed=document.createElement('home-plan-card-editor');ed.setConfig(extra._config);ed.hass=hass;window.dragEditor=ed;ed.addEventListener('config-changed',e=>window.dragConfig=e.detail.config);document.querySelector('main').append(ed);});
+ const ed=page.locator('home-plan-card-editor');await page.waitForFunction(()=>dragEditor._baseModel);const preview=ed.locator('home-plan-card');
+ assert.equal(await preview.locator('[data-marker]').count(),2,'existing markers rendered in placement mode');
+ assert.ok(await page.evaluate(()=>dragEditor._allMarkers().find(m=>m.id==='smoke').point[0]===650),'base marker position inherited');
+ const mark=preview.locator('[data-marker=lightmark]');await mark.scrollIntoViewIfNeeded();const box=await mark.boundingBox();const beforeCalls=await page.evaluate(()=>calls.length);
+ await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+25,box.y+box.height/2+20,{steps:5});await page.mouse.up();
+ assert.ok(await page.evaluate(()=>dragConfig.markers.find(m=>m.id==='lightmark').point[0]>240),'drag persists a changed coordinate');assert.equal(await page.evaluate(()=>calls.length),beforeCalls,'placement never sends services');
+ const beforeKey=await page.evaluate(()=>dragConfig.markers.find(m=>m.id==='lightmark').point[0]);await mark.focus();await page.keyboard.press('ArrowRight');assert.equal(await page.evaluate(()=>dragConfig.markers.find(m=>m.id==='lightmark').point[0]),beforeKey+5);
+ const ap=preview.locator('[data-aperture=window]');await ap.focus();await page.keyboard.press('ArrowDown');assert.equal(await page.evaluate(()=>dragConfig.apertures.find(m=>m.id==='window').control[1]),265);
+ assert.deepEqual(await page.evaluate(()=>dragConfig.apertures.find(m=>m.id==='window').segment),[70,200,70,320],'dragging command preserves architectural opening');
+ const cancelBefore=await page.evaluate(()=>JSON.stringify(dragConfig));await mark.scrollIntoViewIfNeeded();const cancelBox=await mark.boundingBox();await page.mouse.move(cancelBox.x+22,cancelBox.y+22);await page.mouse.down();await page.mouse.move(cancelBox.x+42,cancelBox.y+42);await page.evaluate(()=>{const c=dragEditor.shadowRoot.querySelector('home-plan-card');c._dragEnd({pointerId:c._drag.pointerId},true);});await page.mouse.up();assert.equal(await page.evaluate(()=>JSON.stringify(dragConfig)),cancelBefore,'cancelled drag does not persist');
+ await page.evaluate(()=>{dragEditor.remove();});await ex.locator('[data-mode=covers]').click();await ex.locator('[data-floor-covers]').click();await ex.getByLabel('Niveau des volets').selectOption('upper');assert.equal(await ex.locator('.hpf-sheet [data-entity]').count(),1);assert.equal(await ex.locator('.hpf-sheet [data-entity]').getAttribute('data-entity'),'cover.extra','selected level expands group and excludes screen');
+ await page.evaluate(()=>extra.remove());
+ proof.push({explicit_ambient_temperature:true,enum_appliance_door:true,native_entity_icons:true,overlapping_lights_deduplicated:true,screen_deploy_retract:true,screen_90_limit:true,floor_batch_excludes_screen:true,batch_partial_unavailable:true,existing_marker_positions:true,drag_and_keyboard_persist_config:true,placement_never_actuates:true,aperture_geometry_preserved:true});
+
  if(privateDir){
-  const cfg=JSON.parse(fs.readFileSync(path.join(privateDir,'card-config.json'),'utf8')),live=JSON.parse(fs.readFileSync(path.join(privateDir,'states.json'),'utf8'));await page.evaluate(({cfg,live})=>{card.setConfig(cfg);hass={...hass,states:live};card.hass=hass;rejectService=false;}, {cfg,live});await page.waitForFunction(()=>card._model?.markers?.length===2&&card.shadowRoot.querySelectorAll('[data-aperture]').length===8);
+  const cfg=JSON.parse(fs.readFileSync(path.join(privateDir,'card-config.json'),'utf8')),live=JSON.parse(fs.readFileSync(path.join(privateDir,'states.json'),'utf8')),reg=fs.existsSync(path.join(privateDir,'registry.json'))?JSON.parse(fs.readFileSync(path.join(privateDir,'registry.json'),'utf8')):null;await page.evaluate(({cfg,live,reg})=>{card.setConfig(cfg);if(reg){window.registry=reg;card._registryLoaded=false;card._startRegistry();}hass={...hass,states:live};card.hass=hass;rejectService=false;}, {cfg,live,reg});await page.waitForFunction(()=>card._model?.markers?.length>=2&&card.shadowRoot.querySelectorAll('[data-aperture]').length===8);
   for(const width of [320,390,736])for(const dark of [false,true]){await page.setViewportSize({width,height:1100});await page.evaluate(dark=>{document.body.classList.toggle('dark',dark);card.hass={...hass,themes:{darkMode:dark}};},dark);await page.evaluate(()=>card.updateComplete);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));fs.writeFileSync(path.join(out,`style-${width}-${dark}.json`),JSON.stringify(await page.evaluate(()=>({hostDark:card.hasAttribute('dark'),theme:card.hass.themes.darkMode,scheme:getComputedStyle(card).colorScheme,mode:card._mode,fill:getComputedStyle(card.shadowRoot.querySelector('.hpf-room-floor')).fill,buttonBg:getComputedStyle(card.shadowRoot.querySelector('.hpf-zone')).backgroundColor,buttonOpacity:getComputedStyle(card.shadowRoot.querySelector('.hpf-zone')).opacity})),null,2));await s.screenshot({path:path.join(out,`private-${width}-${dark?'dark':'light'}.png`)});}
   await s.locator('[data-mode=covers]').click();await s.screenshot({path:path.join(out,'private-covers.png')});
   fs.writeFileSync(path.join(out,'private-style-debug.json'),JSON.stringify(await page.evaluate(()=>({mode:card._mode,floor:[...card.shadowRoot.querySelectorAll('.hpf-room-floor')].slice(0,3).map(e=>({cl:e.getAttribute('class'),fill:getComputedStyle(e).fill,opacity:getComputedStyle(e).opacity,variable:getComputedStyle(e).getPropertyValue('--hp-floor')})),errors:card._error,feedback:card._feedback})),null,2));
+  await s.locator('[data-mode=""]').click();
+  for(const width of [320,390,736]){await page.setViewportSize({width,height:1100});for(const roomId of ['salon','cuisine']){await page.evaluate(id=>card._select(card._rooms().find(r=>r.id===id)),roomId);await page.evaluate(()=>card.updateComplete);await s.screenshot({path:path.join(out,`private-${roomId}-${width}.png`)});await s.locator('[data-close]').click();}}
   proof.push({private_geometry_and_images_loaded:true,private_actual_services_called:false});
  }
  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'receipt.json'),JSON.stringify({proof,errors,real_services_called:false,native_ha:false},null,2));console.log(JSON.stringify({checks:proof.length,errors}));

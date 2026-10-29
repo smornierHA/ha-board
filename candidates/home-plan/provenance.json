@@ -1,31 +1,31 @@
 {
-  "version": "0.1.0-rc.2",
+  "version": "0.2.0-rc.2",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 40849,
-      "sha256": "472c33953f9e4eaf2c35af705e9c7b781b61e98c1272b602c910f7f6168cf172"
+      "bytes": 57684,
+      "sha256": "49edf200a427bab25d62abf2ea303cf9bac473f39b66e9d67867b1d3f0599afb"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 17591,
-      "sha256": "dd16d2114845f86d02ea0f0d05323a23e2a1b2bf0e5fc3d5e7a773c17bae6f62"
+      "bytes": 22864,
+      "sha256": "04f8d43dadb176d813c7031cd932a137722a18a4fec7c68554f7018314fc4121"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "f35118f659bdcc14cc72f0f5deb6c8cee366cffdcde5bf82da8717dad493931a"
+      "sha256": "7df638d8b34d90f34de06a610b2ebc9d9b7b956558774c1b50a4324dbabb6ea2"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 15954,
-      "sha256": "ae59ca016e37149f202698a92fe8447ad003872ee6088477e8b17f61bb993320"
+      "bytes": 24792,
+      "sha256": "afd4430db573c9b7e285d797d1a50e6ea283e86f70690f1412935a1d370f0877"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 91363,
-      "sha256": "17c13bca30fb5f89922c5f60a22fbd6f023f960bb773e19309a1bfb30d211b75"
+      "bytes": 116224,
+      "sha256": "bac58c85c8c0dd0727ba6d73c1109cf24bab5e5df09c0f8c6a9b71011711b143"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "local browser contracts and simulated HA, no real motor actuation",
+  "tests": "Local Chromium: 320/390/736 light/dark; simulated HA; explicit ambient temperature, enum doors, native icon binding, leaf-group dedupe, screen limits, room/floor batches, pointer/keyboard positioning, service/lifecycle failures. No real motor actuation.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,

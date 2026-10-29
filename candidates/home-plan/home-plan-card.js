@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.1.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.2.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-// ../ha-board-weather/node_modules/@lit/reactive-element/css-tag.js
+// ha-board-weather/node_modules/@lit/reactive-element/css-tag.js
 var t = globalThis;
 var e = t.ShadowRoot && (void 0 === t.ShadyCSS || t.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype;
 var s = Symbol();
@@ -75,7 +75,7 @@ var c = e ? (t6) => t6 : (t6) => t6 instanceof CSSStyleSheet ? ((t7) => {
   return r(e6);
 })(t6) : t6;
 
-// ../ha-board-weather/node_modules/@lit/reactive-element/reactive-element.js
+// ha-board-weather/node_modules/@lit/reactive-element/reactive-element.js
 var { is: i2, defineProperty: e2, getOwnPropertyDescriptor: h, getOwnPropertyNames: r2, getOwnPropertySymbols: o2, getPrototypeOf: n2 } = Object;
 var a = globalThis;
 var c2 = a.trustedTypes;
@@ -297,7 +297,7 @@ var y = class extends HTMLElement {
 };
 y.elementStyles = [], y.shadowRootOptions = { mode: "open" }, y[d("elementProperties")] = /* @__PURE__ */ new Map(), y[d("finalized")] = /* @__PURE__ */ new Map(), p?.({ ReactiveElement: y }), (a.reactiveElementVersions ??= []).push("2.1.2");
 
-// ../ha-board-weather/node_modules/lit-html/lit-html.js
+// ha-board-weather/node_modules/lit-html/lit-html.js
 var t2 = globalThis;
 var i3 = (t6) => t6;
 var s2 = t2.trustedTypes;
@@ -552,7 +552,7 @@ var D = (t6, i7, s5) => {
   return h4._$AI(t6), h4;
 };
 
-// ../ha-board-weather/node_modules/lit-element/lit-element.js
+// ha-board-weather/node_modules/lit-element/lit-element.js
 var s3 = globalThis;
 var i4 = class extends y {
   constructor() {
@@ -581,7 +581,7 @@ var o4 = s3.litElementPolyfillSupport;
 o4?.({ LitElement: i4 });
 (s3.litElementVersions ??= []).push("4.2.0");
 
-// ../ha-board-weather/node_modules/lit-html/directive.js
+// ha-board-weather/node_modules/lit-html/directive.js
 var t3 = { ATTRIBUTE: 1, CHILD: 2, PROPERTY: 3, BOOLEAN_ATTRIBUTE: 4, EVENT: 5, ELEMENT: 6 };
 var e4 = (t6) => (...e6) => ({ _$litDirective$: t6, values: e6 });
 var i5 = class {
@@ -601,7 +601,7 @@ var i5 = class {
   }
 };
 
-// ../ha-board-weather/node_modules/lit-html/directive-helpers.js
+// ha-board-weather/node_modules/lit-html/directive-helpers.js
 var { I: t4 } = j;
 var i6 = (o7) => o7;
 var s4 = () => document.createComment("");
@@ -634,7 +634,7 @@ var h3 = (o7) => {
   o7._$AR(), o7._$AA.remove();
 };
 
-// ../ha-board-weather/node_modules/lit-html/directives/repeat.js
+// ha-board-weather/node_modules/lit-html/directives/repeat.js
 var u4 = (e6, s5, t6) => {
   const r4 = /* @__PURE__ */ new Map();
   for (let l3 = s5; l3 <= t6; l3++) r4.set(e6[l3], l3);
@@ -687,7 +687,7 @@ var c4 = e4(class extends i5 {
   }
 });
 
-// ../ha-board-weather/node_modules/lit-html/directives/unsafe-html.js
+// ha-board-weather/node_modules/lit-html/directives/unsafe-html.js
 var e5 = class extends i5 {
   constructor(i7) {
     if (super(i7), this.it = A, i7.type !== t3.CHILD) throw Error(this.constructor.directiveName + "() can only be used in child bindings");
@@ -705,21 +705,20 @@ var e5 = class extends i5 {
 e5.directiveName = "unsafeHTML", e5.resultType = 1;
 var o5 = e4(e5);
 
-// ../ha-board-weather/node_modules/lit-html/directives/unsafe-svg.js
+// ha-board-weather/node_modules/lit-html/directives/unsafe-svg.js
 var t5 = class extends e5 {
 };
 t5.directiveName = "unsafeSVG", t5.resultType = 2;
 var o6 = e4(t5);
 
-// src/candidate/home-plan-card.css
-var home_plan_card_default = '\n    :host { display:block; color-scheme:light; } :host([dark]) {color-scheme:dark;}\n    .hpf-home {\n      --hp-paper: light-dark(#fbfbfc,#1d2026); --hp-ink: light-dark(#20242b,#f4f5f8);\n      --hp-secondary: light-dark(#626b76,#aab2bf); --hp-line: light-dark(#e7e9ee,#353b46);\n      --hp-soft: light-dark(#f0f2f6,#2b303a); --hp-blue: light-dark(#2673e7,#74adff);\n      --hp-selected: light-dark(#e2ecff,#273e5b); --hp-warm: light-dark(#fff0c8,#55472c);\n      --hp-amber: light-dark(#926000,#f9cc6e); --hp-orange: light-dark(#b8561c,#ffb187);\n      --hp-alert-bg: light-dark(#fff1e7,#473428); --hp-floor: light-dark(#efede6,#30353c);\n      --hp-wall: light-dark(#bcbdb8,#68727e); --hp-furniture: light-dark(#dedbd2,#424a55);\n      --hp-furniture-line: light-dark(#c7c4bb,#5a6572); --hp-water: light-dark(#9fd0d8,#346472);\n      --hp-glass: light-dark(#c4dce5,#5b7b8d); --hp-good: light-dark(#367258,#89c6aa);\n      position: relative; max-width: 680px; margin: 0 auto; overflow: hidden; isolation: isolate;\n      background: var(--hp-paper); color: var(--hp-ink); border-radius: 26px;\n      box-shadow: 0 8px 34px light-dark(#202b4212,#00000026);\n      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 14px;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .hpf-home * { box-sizing: border-box; }\n    button, input { font: inherit; }\n    button { color: inherit; }\n    button:disabled { opacity: .5; }\n    .hpf-head { padding: 21px 22px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }\n    .hpf-heading { display: flex; align-items: center; gap: 11px; }\n    .hpf-home-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; color: var(--hp-blue); background: var(--hp-selected); }\n    .hpf-home-mark svg { width: 21px; height: 21px; }\n    h2 { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -.5px; }\n    .hpf-floor-name { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-preview-mark { margin-right: 4px; font-size: 11px; color: var(--hp-secondary); white-space: nowrap; }\n    .hpf-tools { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; padding: 0 22px 8px; }\n    .hpf-glance { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: nowrap; }\n    .hpf-glance button { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; border: 0; border-radius: 12px; background: transparent; padding: 4px 7px; font-size: 12px; white-space: nowrap; }\n    .hpf-glance button:first-child { margin-left: -7px; }\n    .hpf-glance svg { width: 15px; height: 15px; }\n    .hpf-glance button[data-light-count] { color: var(--hp-amber); }\n    .hpf-glance button[data-open-count] { color: var(--hp-orange); }\n    .hpf-glance button[aria-pressed="true"] { background: var(--hp-soft); }\n    .hpf-view { display: flex; padding: 3px; margin-left: auto; border-radius: 11px; background: var(--hp-soft); }\n    .hpf-view button { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 35px; padding: 5px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--hp-secondary); font-size: 12px; }\n    .hpf-view button svg { width: 17px; height: 17px; }\n    .hpf-view button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px #00000013; }\n    .hpf-map { position: relative; margin: 0 auto; width: calc(100% - 24px); max-width: 560px; aspect-ratio: 1000 / 660; }\n    .hpf-aperture-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; pointer-events: none; }\n    .hpf-aperture-layer [data-map-aperture] { pointer-events: stroke; }\n    .hpf-drawing { display: block; width: 100%; height: 100%; overflow: visible; }\n    .hpf-room-floor { fill: var(--hp-floor); transition: fill .2s; }\n    .hpf-room-floor.is-lit { fill: var(--hp-warm); }\n    .hpf-room-floor.is-selected { fill: var(--hp-selected); }\n    .hpf-room-floor.is-muted { opacity: .28; }\n    .hpf-drawing .wall { fill: none; stroke: var(--hp-wall); stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }\n    .hpf-drawing .inner-wall { fill: none; stroke: var(--hp-wall); stroke-width: 5; }\n    .hpf-drawing .thin { fill: none; stroke: var(--hp-glass); stroke-width: 1.6; opacity: .55; }\n    .hpf-drawing .door { fill: none; stroke: var(--hp-wall); stroke-width: 2.6; opacity: .75; }\n    .hpf-drawing .window { fill: none; stroke: var(--hp-glass); stroke-width: 5; }\n    .hpf-drawing .furniture { fill: var(--hp-furniture); stroke: var(--hp-furniture-line); stroke-width: 1.6; }\n    .hpf-drawing .furniture-line, .hpf-drawing .stairs { fill: none; stroke: var(--hp-furniture-line); stroke-width: 2; }\n    .hpf-drawing .plant { fill: none; stroke: var(--hp-good); stroke-width: 2; opacity: .4; }\n    .hpf-drawing .pool { fill: var(--hp-water); stroke: var(--hp-glass); stroke-width: 2; }\n    .hpf-drawing .pool-line { fill: none; stroke: var(--hp-paper); stroke-width: 2; opacity: .38; }\n    .hpf-drawing .trace-wall { fill: var(--hp-wall); }\n    .hpf-drawing .trace-door { fill: var(--hp-good); opacity: .7; }\n    .hpf-drawing .trace-window { fill: var(--hp-glass); }\n    .hpf-drawing .trace-stair { fill: var(--hp-furniture); }\n    .hpf-drawing .terrace { fill: var(--hp-soft); opacity: .7; }\n    .hpf-modebar { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 3px; margin: 2px 16px 8px; padding: 3px; border-radius: 14px; background: var(--hp-soft); }\n    .hpf-modebar button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 49px; padding: 6px 1px; border: 0; border-radius: 11px; background: transparent; color: var(--hp-secondary); font-size: 11px; }\n    .hpf-modebar svg { width: 19px; height: 19px; }\n    .hpf-modebar button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px light-dark(#00000012,#00000026); }\n    .hpf-mode-short { display: none; }\n    .hpf-aperture-layer .aperture-line { fill: none; stroke: var(--hp-glass); stroke-width: 6; stroke-linecap: butt; }\n    .hpf-aperture-layer .aperture-halo { fill: none; stroke: var(--hp-orange); stroke-width: 20; opacity: .18; }\n    .hpf-aperture-layer .aperture-line.is-open, .hpf-aperture-layer .aperture-leaf { stroke: var(--hp-orange); }\n    .hpf-aperture-layer .aperture-leaf { fill: none; stroke-width: 4; }\n    .hpf-aperture-layer .shutter-track { fill: none; stroke: var(--hp-glass); stroke-width: 12; opacity: .5; }\n    .hpf-aperture-layer .shutter-fill { fill: none; stroke: var(--hp-blue); stroke-width: 12; }\n    .hpf-aperture-layer .aperture-leader { fill: none; stroke: var(--hp-blue); stroke-width: 1.4; opacity: .55; }\n    .hpf-aperture { position: absolute; z-index: 3; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; transform: translate(-50%,-50%); border: 0; border-radius: 12px; background: transparent; }\n    .hpf-aperture-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 22px; min-height: 23px; padding: 3px 5px; border-radius: 7px; background: var(--hp-paper); color: var(--hp-blue); box-shadow: 0 1px 5px light-dark(#1d2a4525,#00000055); font-size: 11px; font-variant-numeric: tabular-nums; }\n    .hpf-aperture-mark svg { width: 14px; height: 14px; }\n    .hpf-aperture.is-open:not(.has-cover) .hpf-aperture-mark { color: var(--hp-orange); background: var(--hp-alert-bg); }\n    .hpf-aperture:not(.show-value) .hpf-aperture-mark > span { display: none; }\n    .hpf-aperture.is-muted { opacity: .32; }\n    .hpf-map-legend { min-height: 30px; padding: 3px 17px 9px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-map-legend span { display: inline-flex; gap: 5px; align-items: center; }\n    .hpf-map-legend svg { width: 13px; height: 13px; }\n    .hpf-map-legend .opening-key { color: var(--hp-orange); }\n    .hpf-map-legend .cover-key { color: var(--hp-blue); }\n    .hpf-room-tile .hpf-tile-cover { color: var(--hp-blue); }\n    .hpf-photo-style { position: absolute; left: 9px; bottom: 9px; border: 0; border-radius: 9px; min-height: 34px; padding: 5px 10px; background: var(--hp-paper); color: var(--hp-ink); font-size: 11px; }\n    .hpf-cover-state { font-size: 12px; margin-left: auto; color: var(--hp-blue); font-variant-numeric: tabular-nums; }\n    .hpf-quick-room { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; background: transparent; padding: 10px; min-height: 44px; width: 100%; color: var(--hp-blue); font-size: 12px; }\n    .hpf-quick-room svg { width: 15px; height: 15px; }\n    .hpf-photo-shortcut { position: absolute; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1px solid var(--hp-line); border-radius: 16px; background: var(--hp-paper); text-align: left; }\n    .hpf-photo-shortcut img { width: 100%; flex: 1 1 0; min-height: 0; object-fit: cover; }\n    .hpf-photo-caption { display: flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; padding: 9px 10px; font-size: 12px; font-weight: 600; }\n    .hpf-photo-caption svg { flex: 0 0 auto; width: 14px; height: 14px; }\n    .hpf-room-photo { position: relative; height: 160px; margin: 0 0 14px; overflow: hidden; border-radius: 15px; background: var(--hp-soft); }\n    .hpf-room-photo img { width: 100%; height: 100%; object-fit: cover; }\n    .hpf-photo-next { position: absolute; right: 9px; bottom: 9px; min-width: 44px; min-height: 36px; border: 0; border-radius: 10px; background: #15202dcc; color: #fff; padding: 6px 10px; font-size: 12px; }\n    .hpf-zone { position: absolute; margin: 0; border: 0; padding: 0; background: transparent; overflow: visible; border-radius: 4px; }\n    .hpf-zone.is-muted { opacity: .36; }\n    .hpf-room-name { position: absolute; display: flex; align-items: center; flex-direction: column; gap: 3px; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }\n    .hpf-room-name strong { font-size: clamp(11px,1.8vw,14px); line-height: 1.15; font-weight: 620; letter-spacing: -.2px; text-shadow: 0 1px 8px var(--hp-floor); }\n    .hpf-room-name small { font-size: 11px; line-height: 1.1; color: var(--hp-secondary); }\n    .hpf-name-micro { display: none; }\n    .hpf-zone.has-opening strong, .hpf-zone.has-opening small { color: var(--hp-orange); }\n    .hpf-zone[aria-pressed="true"] strong { color: var(--hp-blue); }\n    .hpf-room-name .hpf-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hp-amber); }\n    .hpf-room-alert { display: inline-grid; place-items: center; margin-left: 3px; width: 12px; height: 12px; font-size: 10px; color: var(--hp-paper); background: var(--hp-orange); border-radius: 50%; text-shadow: none; vertical-align: 1px; }\n    .hpf-room-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 9px 20px 18px; }\n    .hpf-room-grid[hidden], [hidden] { display: none !important; }\n    .hpf-room-tile { min-width: 0; padding: 15px; min-height: 99px; text-align: left; border: 0; border-radius: 17px; background: var(--hp-soft); }\n    .hpf-room-tile svg { display: block; width: 20px; height: 20px; margin-bottom: 10px; color: var(--hp-secondary); }\n    .hpf-room-tile strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-room-tile small { display: block; margin-top: 4px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-room-tile.is-lit { background: var(--hp-warm); }\n    .hpf-room-tile.has-opening { background: var(--hp-alert-bg); }\n    .hpf-room-tile.has-opening small { color: var(--hp-orange); }\n    .hpf-footer { display: flex; align-items: center; gap: 8px; padding: 12px 21px 17px; border-top: 1px solid var(--hp-line); }\n    .hpf-footer > svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--hp-orange); }\n    .hpf-footer-copy { font-size: 12px; min-width: 0; flex: 1; color: var(--hp-secondary); }\n    .hpf-footer button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; flex: 0 0 auto; border: 0; padding: 6px 0 6px 9px; background: transparent; color: var(--hp-ink); font-size: 12px; font-weight: 600; }\n    .hpf-footer button svg { width: 14px; height: 14px; }\n    .hpf-sheet { position: absolute; z-index: 5; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: 100%; padding: 18px 22px 21px; border: 1px solid var(--hp-line); border-bottom: 0; border-radius: 23px 23px 0 0; background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 -15px 50px #00000022; overflow-y: auto; }\n    .hpf-sheet::backdrop { background: transparent; }\n    .hpf-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }\n    .hpf-sheet h3 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -.4px; }\n    .hpf-sheet-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-close { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; background: var(--hp-soft); }\n    .hpf-close svg { width: 18px; height: 18px; }\n    .hpf-device-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }\n    .hpf-device { display: flex; align-items: center; gap: 11px; min-height: 68px; border: 0; border-radius: 16px; background: var(--hp-soft); padding: 13px 14px; text-align: left; }\n    .hpf-device > svg { width: 23px; height: 23px; flex: 0 0 auto; }\n    .hpf-device.is-lit { background: var(--hp-warm); color: var(--hp-amber); }\n    .hpf-device strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-device small { display: block; margin-top: 4px; font-size: 12px; }\n    .hpf-cover { margin-top: 10px; padding: 13px 15px; border-radius: 16px; background: var(--hp-soft); }\n    .hpf-cover-caption { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }\n    .hpf-cover-caption svg { width: 17px; height: 17px; }\n    .hpf-cover-caption output { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; }\n    .hpf-cover input { width: 100%; margin: 9px 0 5px; min-height: 30px; accent-color: var(--hp-blue); }\n    .hpf-cover-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }\n    .hpf-cover-actions button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 9px; background: var(--hp-paper); font-size: 12px; }\n    .hpf-cover-actions svg { width: 14px; height: 14px; }\n    .hpf-opening { display: flex; align-items: center; gap: 9px; padding: 12px 1px 2px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-opening svg { width: 17px; height: 17px; flex: 0 0 auto; }\n    .hpf-opening.is-open { color: var(--hp-orange); }\n    .hpf-opening strong { margin-left: auto; font-weight: 600; }\n    .hpf-sheet details { margin-top: 13px; border-top: 1px solid var(--hp-line); padding-top: 6px; }\n    .hpf-sheet summary { padding: 9px 0; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-extra { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 12px; }\n    .hpf-extra svg { width: 16px; height: 16px; color: var(--hp-secondary); }\n    .hpf-extra span:last-child { margin-left: auto; color: var(--hp-secondary); }\n    .hpf-empty { padding: 20px 0 14px; font-size: 13px; color: var(--hp-secondary); }\n    .hpf-alerts { display: grid; gap: 8px; }\n    .hpf-alert-item { display: flex; align-items: center; gap: 12px; min-height: 61px; padding: 11px 14px; background: var(--hp-alert-bg); border: 0; border-radius: 15px; text-align: left; }\n    .hpf-alert-item > svg { width: 20px; height: 20px; color: var(--hp-orange); }\n    .hpf-alert-item strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-alert-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-orange); }\n    .hpf-announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }\n    @media (max-width: 460px) {\n      .hpf-head { padding: 18px 16px 10px; }\n      .hpf-tools { padding: 0 16px 7px; gap: 6px; }\n      .hpf-preview-mark { font-size: 11px; }\n      .hpf-room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 6px 14px 14px; gap: 8px; }\n      .hpf-room-tile { min-height: 91px; padding: 12px; }\n      .hpf-footer { padding: 8px 15px 12px; }\n      .hpf-sheet { padding: 16px; }\n      .hpf-room-name strong { font-size: 11px; }\n      .hpf-view button { min-width: 35px; padding: 5px 7px; }\n      .hpf-glance { gap: 3px; }\n      .hpf-glance button { padding-inline: 5px; font-size: 11px; gap: 4px; }\n      .hpf-room-photo { height: 120px; }\n      .hpf-photo-caption { padding: 8px; font-size: 11px; }\n      .hpf-photo-shortcut { border-radius: 12px; }\n    }\n    @media (pointer: coarse) {\n      .hpf-glance button, .hpf-view button, .hpf-cover-actions button, .hpf-footer button { min-height: 44px; }\n      .hpf-view button { min-width: 42px; }\n    }\n    @media (max-width: 360px) {\n      .hpf-name-full { display: none; }\n      .hpf-name-micro { display: inline; }\n      .hpf-mode-long { display: none; }\n      .hpf-mode-short { display: inline; }\n    }\n    @media (prefers-reduced-motion: reduce) { .hpf-room-floor { transition: none; } }\n  ';
+// ha-board-plan/src/candidate/home-plan-card.css
+var home_plan_card_default = '\n    :host { display:block; color-scheme:light; } :host([dark]) {color-scheme:dark;}\n    .hpf-home {\n      --hp-paper: light-dark(#fbfbfc,#1d2026); --hp-ink: light-dark(#20242b,#f4f5f8);\n      --hp-secondary: light-dark(#626b76,#aab2bf); --hp-line: light-dark(#e7e9ee,#353b46);\n      --hp-soft: light-dark(#f0f2f6,#2b303a); --hp-blue: light-dark(#2673e7,#74adff);\n      --hp-selected: light-dark(#e2ecff,#273e5b); --hp-warm: light-dark(#fff0c8,#55472c);\n      --hp-amber: light-dark(#926000,#f9cc6e); --hp-orange: light-dark(#b8561c,#ffb187);\n      --hp-alert-bg: light-dark(#fff1e7,#473428); --hp-floor: light-dark(#efede6,#30353c);\n      --hp-wall: light-dark(#bcbdb8,#68727e); --hp-furniture: light-dark(#dedbd2,#424a55);\n      --hp-furniture-line: light-dark(#c7c4bb,#5a6572); --hp-water: light-dark(#9fd0d8,#346472);\n      --hp-glass: light-dark(#c4dce5,#5b7b8d); --hp-good: light-dark(#367258,#89c6aa);\n      position: relative; max-width: 680px; margin: 0 auto; overflow: hidden; isolation: isolate;\n      background: var(--hp-paper); color: var(--hp-ink); border-radius: 26px;\n      box-shadow: 0 8px 34px light-dark(#202b4212,#00000026);\n      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 14px;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .hpf-home * { box-sizing: border-box; }\n    button, input { font: inherit; }\n    button { color: inherit; }\n    button:disabled { opacity: .5; }\n    .hpf-head { padding: 21px 22px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }\n    .hpf-heading { display: flex; align-items: center; gap: 11px; }\n    .hpf-home-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; color: var(--hp-blue); background: var(--hp-selected); }\n    .hpf-home-mark svg { width: 21px; height: 21px; }\n    h2 { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -.5px; }\n    .hpf-floor-name { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-preview-mark { margin-right: 4px; font-size: 11px; color: var(--hp-secondary); white-space: nowrap; }\n    .hpf-tools { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; padding: 0 22px 8px; }\n    .hpf-glance { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: nowrap; }\n    .hpf-glance button { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; border: 0; border-radius: 12px; background: transparent; padding: 4px 7px; font-size: 12px; white-space: nowrap; }\n    .hpf-glance button:first-child { margin-left: -7px; }\n    .hpf-glance svg { width: 15px; height: 15px; }\n    .hpf-glance button[data-light-count] { color: var(--hp-amber); }\n    .hpf-glance button[data-open-count] { color: var(--hp-orange); }\n    .hpf-glance button[aria-pressed="true"] { background: var(--hp-soft); }\n    .hpf-view { display: flex; padding: 3px; margin-left: auto; border-radius: 11px; background: var(--hp-soft); }\n    .hpf-view button { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 35px; padding: 5px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--hp-secondary); font-size: 12px; }\n    .hpf-view button svg { width: 17px; height: 17px; }\n    .hpf-view button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px #00000013; }\n    .hpf-map { position: relative; margin: 0 auto; width: calc(100% - 24px); max-width: 560px; aspect-ratio: 1000 / 660; }\n    .hpf-aperture-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; pointer-events: none; }\n    .hpf-aperture-layer [data-map-aperture] { pointer-events: stroke; }\n    .hpf-drawing { display: block; width: 100%; height: 100%; overflow: visible; }\n    .hpf-room-floor { fill: var(--hp-floor); transition: fill .2s; }\n    .hpf-room-floor.is-lit { fill: var(--hp-warm); }\n    .hpf-room-floor.is-selected { fill: var(--hp-selected); }\n    .hpf-room-floor.is-muted { opacity: .28; }\n    .hpf-drawing .wall { fill: none; stroke: var(--hp-wall); stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }\n    .hpf-drawing .inner-wall { fill: none; stroke: var(--hp-wall); stroke-width: 5; }\n    .hpf-drawing .thin { fill: none; stroke: var(--hp-glass); stroke-width: 1.6; opacity: .55; }\n    .hpf-drawing .door { fill: none; stroke: var(--hp-wall); stroke-width: 2.6; opacity: .75; }\n    .hpf-drawing .window { fill: none; stroke: var(--hp-glass); stroke-width: 5; }\n    .hpf-drawing .furniture { fill: var(--hp-furniture); stroke: var(--hp-furniture-line); stroke-width: 1.6; }\n    .hpf-drawing .furniture-line, .hpf-drawing .stairs { fill: none; stroke: var(--hp-furniture-line); stroke-width: 2; }\n    .hpf-drawing .plant { fill: none; stroke: var(--hp-good); stroke-width: 2; opacity: .4; }\n    .hpf-drawing .pool { fill: var(--hp-water); stroke: var(--hp-glass); stroke-width: 2; }\n    .hpf-drawing .pool-line { fill: none; stroke: var(--hp-paper); stroke-width: 2; opacity: .38; }\n    .hpf-drawing .trace-wall { fill: var(--hp-wall); }\n    .hpf-drawing .trace-door { fill: var(--hp-good); opacity: .7; }\n    .hpf-drawing .trace-window { fill: var(--hp-glass); }\n    .hpf-drawing .trace-stair { fill: var(--hp-furniture); }\n    .hpf-drawing .terrace { fill: var(--hp-soft); opacity: .7; }\n    .hpf-modebar { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 3px; margin: 2px 16px 8px; padding: 3px; border-radius: 14px; background: var(--hp-soft); }\n    .hpf-modebar button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 49px; padding: 6px 1px; border: 0; border-radius: 11px; background: transparent; color: var(--hp-secondary); font-size: 11px; }\n    .hpf-modebar svg { width: 19px; height: 19px; }\n    .hpf-modebar button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px light-dark(#00000012,#00000026); }\n    .hpf-mode-short { display: none; }\n    .hpf-aperture-layer .aperture-line { fill: none; stroke: var(--hp-glass); stroke-width: 6; stroke-linecap: butt; }\n    .hpf-aperture-layer .aperture-halo { fill: none; stroke: var(--hp-orange); stroke-width: 20; opacity: .18; }\n    .hpf-aperture-layer .aperture-line.is-open, .hpf-aperture-layer .aperture-leaf { stroke: var(--hp-orange); }\n    .hpf-aperture-layer .aperture-leaf { fill: none; stroke-width: 4; }\n    .hpf-aperture-layer .shutter-track { fill: none; stroke: var(--hp-glass); stroke-width: 12; opacity: .5; }\n    .hpf-aperture-layer .shutter-fill { fill: none; stroke: var(--hp-blue); stroke-width: 12; }\n    .hpf-aperture-layer .aperture-leader { fill: none; stroke: var(--hp-blue); stroke-width: 1.4; opacity: .55; }\n    .hpf-aperture { position: absolute; z-index: 3; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; transform: translate(-50%,-50%); border: 0; border-radius: 12px; background: transparent; }\n    .hpf-aperture-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 22px; min-height: 23px; padding: 3px 5px; border-radius: 7px; background: var(--hp-paper); color: var(--hp-blue); box-shadow: 0 1px 5px light-dark(#1d2a4525,#00000055); font-size: 11px; font-variant-numeric: tabular-nums; }\n    .hpf-aperture-mark svg { width: 14px; height: 14px; }\n    .hpf-aperture.is-open:not(.has-cover) .hpf-aperture-mark { color: var(--hp-orange); background: var(--hp-alert-bg); }\n    .hpf-aperture:not(.show-value) .hpf-aperture-mark > span { display: none; }\n    .hpf-aperture.is-muted { opacity: .32; }\n    .hpf-map-legend { min-height: 30px; padding: 3px 17px 9px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-map-legend span { display: inline-flex; gap: 5px; align-items: center; }\n    .hpf-map-legend svg { width: 13px; height: 13px; }\n    .hpf-map-legend .opening-key { color: var(--hp-orange); }\n    .hpf-map-legend .cover-key { color: var(--hp-blue); }\n    .hpf-room-tile .hpf-tile-cover { color: var(--hp-blue); }\n    .hpf-photo-style { position: absolute; left: 9px; bottom: 9px; border: 0; border-radius: 9px; min-height: 34px; padding: 5px 10px; background: var(--hp-paper); color: var(--hp-ink); font-size: 11px; }\n    .hpf-cover-state { font-size: 12px; margin-left: auto; color: var(--hp-blue); font-variant-numeric: tabular-nums; }\n    .hpf-quick-room { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; background: transparent; padding: 10px; min-height: 44px; width: 100%; color: var(--hp-blue); font-size: 12px; }\n    .hpf-quick-room svg { width: 15px; height: 15px; }\n    .hpf-photo-shortcut { position: absolute; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1px solid var(--hp-line); border-radius: 16px; background: var(--hp-paper); text-align: left; }\n    .hpf-photo-shortcut img { width: 100%; flex: 1 1 0; min-height: 0; object-fit: cover; }\n    .hpf-photo-caption { display: flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; padding: 9px 10px; font-size: 12px; font-weight: 600; }\n    .hpf-photo-caption svg { flex: 0 0 auto; width: 14px; height: 14px; }\n    .hpf-room-photo { position: relative; height: 160px; margin: 0 0 14px; overflow: hidden; border-radius: 15px; background: var(--hp-soft); }\n    .hpf-room-photo img { width: 100%; height: 100%; object-fit: cover; }\n    .hpf-photo-next { position: absolute; right: 9px; bottom: 9px; min-width: 44px; min-height: 36px; border: 0; border-radius: 10px; background: #15202dcc; color: #fff; padding: 6px 10px; font-size: 12px; }\n    .hpf-zone { position: absolute; margin: 0; border: 0; padding: 0; background: transparent; overflow: visible; border-radius: 4px; }\n    .hpf-zone.is-muted { opacity: .36; }\n    .hpf-room-name { position: absolute; display: flex; align-items: center; flex-direction: column; gap: 3px; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }\n    .hpf-room-name strong { font-size: clamp(11px,1.8vw,14px); line-height: 1.15; font-weight: 620; letter-spacing: -.2px; text-shadow: 0 1px 8px var(--hp-floor); }\n    .hpf-room-name small { font-size: 11px; line-height: 1.1; color: var(--hp-secondary); }\n    .hpf-name-micro { display: none; }\n    .hpf-zone.has-opening strong, .hpf-zone.has-opening small { color: var(--hp-orange); }\n    .hpf-zone[aria-pressed="true"] strong { color: var(--hp-blue); }\n    .hpf-room-name .hpf-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hp-amber); }\n    .hpf-room-alert { display: inline-grid; place-items: center; margin-left: 3px; width: 12px; height: 12px; font-size: 10px; color: var(--hp-paper); background: var(--hp-orange); border-radius: 50%; text-shadow: none; vertical-align: 1px; }\n    .hpf-room-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 9px 20px 18px; }\n    .hpf-room-grid[hidden], [hidden] { display: none !important; }\n    .hpf-room-tile { min-width: 0; padding: 15px; min-height: 99px; text-align: left; border: 0; border-radius: 17px; background: var(--hp-soft); }\n    .hpf-room-tile svg { display: block; width: 20px; height: 20px; margin-bottom: 10px; color: var(--hp-secondary); }\n    .hpf-room-tile strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-room-tile small { display: block; margin-top: 4px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-room-tile.is-lit { background: var(--hp-warm); }\n    .hpf-room-tile.has-opening { background: var(--hp-alert-bg); }\n    .hpf-room-tile.has-opening small { color: var(--hp-orange); }\n    .hpf-footer { display: flex; align-items: center; gap: 8px; padding: 12px 21px 17px; border-top: 1px solid var(--hp-line); }\n    .hpf-footer > svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--hp-orange); }\n    .hpf-footer-copy { font-size: 12px; min-width: 0; flex: 1; color: var(--hp-secondary); }\n    .hpf-footer button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; flex: 0 0 auto; border: 0; padding: 6px 0 6px 9px; background: transparent; color: var(--hp-ink); font-size: 12px; font-weight: 600; }\n    .hpf-footer button svg { width: 14px; height: 14px; }\n    .hpf-sheet { position: absolute; z-index: 5; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: 100%; padding: 18px 22px 21px; border: 1px solid var(--hp-line); border-bottom: 0; border-radius: 23px 23px 0 0; background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 -15px 50px #00000022; overflow-y: auto; }\n    .hpf-sheet::backdrop { background: transparent; }\n    .hpf-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }\n    .hpf-sheet h3 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -.4px; }\n    .hpf-sheet-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-close { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; background: var(--hp-soft); }\n    .hpf-close svg { width: 18px; height: 18px; }\n    .hpf-device-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }\n    .hpf-device { display: flex; align-items: center; gap: 11px; min-height: 68px; border: 0; border-radius: 16px; background: var(--hp-soft); padding: 13px 14px; text-align: left; }\n    .hpf-device > svg { width: 23px; height: 23px; flex: 0 0 auto; }\n    .hpf-device.is-lit { background: var(--hp-warm); color: var(--hp-amber); }\n    .hpf-device strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-device small { display: block; margin-top: 4px; font-size: 12px; }\n    .hpf-cover { margin-top: 10px; padding: 13px 15px; border-radius: 16px; background: var(--hp-soft); }\n    .hpf-cover-caption { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }\n    .hpf-cover-caption svg { width: 17px; height: 17px; }\n    .hpf-cover-caption output { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; }\n    .hpf-cover input { width: 100%; margin: 9px 0 5px; min-height: 30px; accent-color: var(--hp-blue); }\n    .hpf-cover-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }\n    .hpf-cover-actions button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 9px; background: var(--hp-paper); font-size: 12px; }\n    .hpf-cover-actions svg { width: 14px; height: 14px; }\n    .hpf-opening { display: flex; align-items: center; gap: 9px; padding: 12px 1px 2px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-opening svg { width: 17px; height: 17px; flex: 0 0 auto; }\n    .hpf-opening.is-open { color: var(--hp-orange); }\n    .hpf-opening strong { margin-left: auto; font-weight: 600; }\n    .hpf-sheet details { margin-top: 13px; border-top: 1px solid var(--hp-line); padding-top: 6px; }\n    .hpf-sheet summary { padding: 9px 0; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-extra { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 12px; }\n    .hpf-extra svg { width: 16px; height: 16px; color: var(--hp-secondary); }\n    .hpf-extra span:last-child { margin-left: auto; color: var(--hp-secondary); }\n    .hpf-empty { padding: 20px 0 14px; font-size: 13px; color: var(--hp-secondary); }\n    .hpf-alerts { display: grid; gap: 8px; }\n    ha-state-icon { --mdc-icon-size:18px; width:18px; height:18px; display:inline-flex; flex-shrink:0; }\n    .hpf-device ha-state-icon { --mdc-icon-size:22px; width:22px; height:22px; }\n    .hpf-more > span:first-of-type { flex:1; min-width:0; overflow-wrap:anywhere; }\n    .hpf-more > span:last-child { flex:0 0 auto; max-width:44%; overflow-wrap:anywhere; }\n    .hpf-sheet .hpf-room-photo { height:106px; margin:10px 0; }\n    .hpf-sheet-tabs { display:flex; padding:3px; gap:3px; border-radius:11px; background:var(--hp-soft); margin:0 0 10px; }\n    .hpf-sheet-tabs button { flex:1; min-height:38px; padding:6px 8px; border:0; border-radius:8px; background:transparent; font-size:12px; }\n    .hpf-sheet-tabs button[aria-pressed="true"] { background:var(--hp-paper); }\n    .hpf-group { margin:9px 0; padding:10px 12px; border-radius:14px; background:var(--hp-selected); }\n    .hpf-group-caption { display:flex; justify-content:space-between; gap:8px; font-size:12px; margin-bottom:8px; }\n    .hpf-group-caption span { color:var(--hp-secondary); }\n    .hpf-group-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }\n    .hpf-group-actions.two { grid-template-columns:repeat(2,minmax(0,1fr)); }\n    .hpf-group-actions button { display:flex; align-items:center; justify-content:center; gap:5px; border:0; border-radius:8px; background:var(--hp-paper); min-height:44px; padding:5px; font-size:12px; }\n    .hpf-group-actions ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }\n    .hpf-position-control { display:grid; grid-template-columns:35px minmax(0,1fr); gap:12px; align-items:center; margin:4px 0 10px; }\n    .hpf-cover-preview { width:32px; height:41px; display:block; position:relative; overflow:hidden; background:var(--hp-paper); border:2px solid var(--hp-glass); border-radius:3px; }\n    .hpf-cover-preview::after { content:""; position:absolute; inset:0 0 auto; height:var(--closed); background:repeating-linear-gradient(to bottom,var(--hp-blue) 0 3px,var(--hp-selected) 3px 5px); }\n    .hpf-cover-preview.is-screen::after { top:auto; bottom:0; height:calc(100% - var(--closed)); background:var(--hp-blue); opacity:.65; }\n    .hpf-range-labels { display:flex; justify-content:space-between; gap:6px; color:var(--hp-secondary); font-size:11px; }\n    .hpf-cover .hpf-cover-caption { gap:6px; flex-wrap:nowrap; }\n    .hpf-cover .hpf-cover-caption > span { min-width:0; overflow-wrap:anywhere; }\n    .hpf-cover-info { display:grid; place-items:center; flex:0 0 auto; width:32px; height:38px; padding:0; border:0; border-radius:8px; background:transparent; }\n    .hpf-equipment-group > summary { display:flex; align-items:center; gap:10px; min-height:52px; list-style:none; }\n    .hpf-equipment-group > summary::-webkit-details-marker { display:none; }\n    .hpf-equipment-group > summary > span { flex:1; min-width:0; }\n    .hpf-equipment-group strong,.hpf-equipment-group small { display:block; overflow-wrap:anywhere; }\n    .hpf-equipment-group strong { color:var(--hp-ink); font-weight:500; font-size:13px; }\n    .hpf-equipment-group small { margin-top:3px; font-size:11px; }\n    .hpf-sheet details.hpf-equipment-group { margin:0; padding:0; }\n    .hpf-equipment-group[open] > summary > ha-icon { transform:rotate(180deg); }\n    .hpf-floor-covers { display:flex; align-items:center; justify-content:center; gap:8px; width:calc(100% - 32px); margin:0 16px 4px; min-height:38px; padding:5px 10px; border:0; border-radius:10px; background:var(--hp-selected); font-size:12px; }\n    .hpf-map .hpf-room-marker.is-light ha-state-icon { color:var(--hp-secondary); background:var(--hp-paper); padding:4px; border-radius:50%; width:25px; height:25px; box-sizing:content-box; box-shadow:0 1px 5px #0002; }\n    .hpf-map .hpf-room-marker.is-light.is-on ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); box-shadow:0 0 14px var(--hp-warm); }\n    .hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { color:var(--hp-secondary); padding:3px; border-radius:7px; background:var(--hp-paper); box-sizing:content-box; }\n    .hpf-map .hpf-room-marker.is-alert ha-state-icon { color:var(--error-color,#b3261e); background:var(--hp-alert-bg); }\n    .hpf-aperture-layer .aperture-swing { fill:none; stroke:var(--hp-wall); stroke-width:2; stroke-dasharray:4 4; opacity:.6; }\n    .hpf-aperture-layer .aperture-leaf { stroke:var(--hp-wall); }\n    .hpf-aperture-layer .aperture-leaf.is-open,.hpf-aperture-layer .aperture-swing.is-open { stroke:var(--hp-orange); }\n    .hpf-placement .hpf-map { width:100%; }\n    .hpf-placement .hpf-zone { pointer-events:none; }\n    .hpf-map.is-editing .hpf-aperture,.hpf-map.is-editing .hpf-room-marker { touch-action:none; cursor:grab; z-index:4; }\n    .hpf-map.is-editing [data-edit-selected="true"] { outline:2px solid var(--hp-blue); outline-offset:-2px; background:var(--hp-selected); }\n    .hpf-placement-caption { padding:5px 12px 10px; font-size:11px; text-align:center; color:var(--hp-secondary); }\n    .hpf-alert-item { display: flex; align-items: center; gap: 12px; min-height: 61px; padding: 11px 14px; background: var(--hp-alert-bg); border: 0; border-radius: 15px; text-align: left; }\n    .hpf-alert-item > svg { width: 20px; height: 20px; color: var(--hp-orange); }\n    .hpf-alert-item strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-alert-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-orange); }\n    .hpf-announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }\n    @media (max-width: 460px) {\n      .hpf-head { padding: 18px 16px 10px; }\n      .hpf-tools { padding: 0 16px 7px; gap: 6px; }\n      .hpf-preview-mark { font-size: 11px; }\n      .hpf-room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 6px 14px 14px; gap: 8px; }\n      .hpf-room-tile { min-height: 91px; padding: 12px; }\n      .hpf-footer { padding: 8px 15px 12px; }\n      .hpf-sheet { padding: 16px; }\n      .hpf-room-name strong { font-size: 11px; }\n      .hpf-view button { min-width: 35px; padding: 5px 7px; }\n      .hpf-glance { gap: 3px; }\n      .hpf-glance button { padding-inline: 5px; font-size: 11px; gap: 4px; }\n      .hpf-room-photo { height: 120px; }\n      .hpf-photo-caption { padding: 8px; font-size: 11px; }\n      .hpf-photo-shortcut { border-radius: 12px; }\n    }\n    @media (pointer: coarse) {\n      .hpf-glance button, .hpf-view button, .hpf-cover-actions button, .hpf-footer button { min-height: 44px; }\n      .hpf-view button { min-width: 42px; }\n    }\n    @media (max-width: 360px) {\n      .hpf-name-full { display: none; }\n      .hpf-name-micro { display: inline; }\n      .hpf-mode-long { display: none; }\n      .hpf-mode-short { display: inline; }\n    }\n    @media (prefers-reduced-motion: reduce) { .hpf-room-floor { transition: none; } }\n\n    .hpf-level-picker { display:flex; gap:12px; align-items:center; font-size:12px; margin:8px 0; }\n    .hpf-level-picker select { flex:1; min-width:0; min-height:44px; font:inherit; color:var(--hp-ink); background:var(--hp-soft); border:1px solid var(--hp-line); border-radius:10px; padding:8px; }\n';
 
-// src/candidate/home-plan-card.js
-var VERSION = "0.1.0-rc.2";
+// ha-board-plan/src/candidate/home-plan-card.js
+var VERSION = "0.2.0-rc.2";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var ALERT_CLASSES = /* @__PURE__ */ new Set(["smoke", "gas", "moisture", "problem", "tamper", "battery", "safety"]);
-var OPEN_CLASSES = /* @__PURE__ */ new Set(["door", "window", "opening", "garage_door"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
 var ICON = { home: "mdi:home-outline", house: "mdi:home-outline", lightbulb: "mdi:lightbulb-outline", thermometer: "mdi:thermometer", "door-open": "mdi:door-open", blinds: "mdi:blinds-horizontal", sofa: "mdi:sofa-outline", waves: "mdi:pool", sun: "mdi:white-balance-sunny", armchair: "mdi:seat-outline", bath: "mdi:bathtub-outline", "washing-machine": "mdi:washing-machine", "cooking-pot": "mdi:countertop-outline", utensils: "mdi:silverware-fork-knife", "briefcase-business": "mdi:desk", "bed-double": "mdi:bed-outline", "door-closed": "mdi:door-closed", x: "mdi:close", "chevron-right": "mdi:chevron-right", "chevron-up": "mdi:chevron-up", "chevron-down": "mdi:chevron-down", square: "mdi:stop", "shield-check": "mdi:shield-check-outline", "circle-alert": "mdi:alert-circle-outline", tv: "mdi:television", bot: "mdi:robot-vacuum", refrigerator: "mdi:fridge-outline", "panels-top-left": "mdi:window-closed-variant", smoke: "mdi:smoke-detector-variant", plus: "mdi:plus", settings: "mdi:cog-outline" };
 var icon = (name) => b2`<ha-icon icon=${ICON[name] || name || "mdi:circle-small"} aria-hidden="true"></ha-icon>`;
@@ -745,17 +744,21 @@ function coverText(state) {
 function validateConfig(config) {
   if (!config || typeof config !== "object") throw Error("Configuration du plan requise.");
   const result = copy(config);
-  for (const key of ["rooms", "apertures", "markers"]) {
+  for (const key of ["rooms", "apertures", "markers", "cover_options", "cover_groups"]) {
     if (result[key] !== void 0 && !Array.isArray(result[key])) throw Error(`${key} doit être une liste.`);
     result[key] ||= [];
     if (result[key].length > 200) throw Error("Trop d’éléments dans le plan.");
     const seen = /* @__PURE__ */ new Set();
     for (const item of result[key]) {
-      if (!item.id || typeof item.id !== "string" || seen.has(item.id)) throw Error(`Identifiant ${key} absent ou dupliqué.`);
-      seen.add(item.id);
+      const identity = key === "cover_options" ? item.entity : item.id;
+      if (!identity || typeof identity !== "string" || seen.has(identity)) throw Error(`Identifiant ${key} absent ou dupliqué.`);
+      seen.add(identity);
+      if (key === "cover_groups" && item.id === "current") throw Error("Identifiant de groupe réservé.");
+      if (key === "cover_options" && item.max_position !== void 0 && (!Number.isFinite(item.max_position) || item.max_position < 1 || item.max_position > 100)) throw Error("Limite de course invalide.");
       for (const [field, value] of Object.entries(item)) if (field.endsWith("_entity") && value && !validEntity(value)) throw Error(`Entité invalide : ${field}`);
       if (item.entity && !validEntity(item.entity)) throw Error("Équipement de repère invalide.");
       if (item.excluded_entities && (!Array.isArray(item.excluded_entities) || item.excluded_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’exclusions invalide.");
+      if (item.favorite_entities && (!Array.isArray(item.favorite_entities) || item.favorite_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’accès rapides invalide.");
       if (item.entities && (!Array.isArray(item.entities) || item.entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’équipements invalide.");
       if (item.point && (!Array.isArray(item.point) || item.point.length !== 2 || !item.point.every(Number.isFinite))) throw Error("Position de repère invalide.");
     }
@@ -790,7 +793,7 @@ function validateModel(model) {
   return { ...copy(model), artwork: sanitizeArtwork(model.artwork) };
 }
 var HomePlanCard = class extends i4 {
-  static properties = { hass: {}, _config: { state: true }, _model: { state: true }, _registry: { state: true }, _registryError: { state: true }, _selected: { state: true }, _quick: { state: true }, _view: { state: true }, _mode: { state: true }, _error: { state: true }, _feedback: { state: true }, _busy: { state: true }, _photoMode: { state: true }, _photos: { state: true }, _showAlerts: { state: true } };
+  static properties = { hass: {}, editMode: { type: Boolean }, _config: { state: true }, _model: { state: true }, _registry: { state: true }, _registryError: { state: true }, _selected: { state: true }, _quick: { state: true }, _view: { state: true }, _mode: { state: true }, _error: { state: true }, _feedback: { state: true }, _busy: { state: true }, _photoMode: { state: true }, _photos: { state: true }, _showAlerts: { state: true }, _floorCovers: { state: true }, _floorGroup: { state: true }, _equipmentTab: { state: true }, _editSelection: { state: true } };
   static styles = [r(home_plan_card_default), i`
     :host{--ha-card-border-width:0} .hpf-home{max-width:none;border-radius:var(--ha-card-border-radius,24px);box-shadow:none;background:var(--ha-card-background,var(--card-background-color,#fff));--hp-paper:var(--ha-card-background,var(--card-background-color,#fff));--hp-ink:var(--primary-text-color);--hp-secondary:var(--secondary-text-color)}
     ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:inline-flex;flex-shrink:0}button{cursor:pointer}button:focus-visible{outline:2px solid var(--hp-blue);outline-offset:2px}
@@ -838,6 +841,9 @@ var HomePlanCard = class extends i4 {
     this._selected = null;
     this._quick = null;
     this._showAlerts = false;
+    this._floorCovers = false;
+    this._equipmentTab = false;
+    this._drag = null;
     this._error = "";
     this._loadModel();
   }
@@ -854,6 +860,7 @@ var HomePlanCard = class extends i4 {
     this._startRegistry();
   }
   disconnectedCallback() {
+    this._drag = null;
     this._epoch++;
     this._modelRequest?.abort();
     this._modelRequest = null;
@@ -881,6 +888,7 @@ var HomePlanCard = class extends i4 {
   }
   async _loadModel() {
     if (!this.isConnected) return;
+    if (this._model && this._config.model_url && this._loadedSource === this._config.model_url && !this._config.model) return;
     this._modelRequest?.abort();
     const abort = new AbortController();
     this._modelRequest = abort;
@@ -900,7 +908,9 @@ var HomePlanCard = class extends i4 {
       const prepared = validateModel(model);
       if (abort.signal.aborted || epoch !== this._epoch || !this.isConnected) return;
       this._model = prepared;
+      this._loadedSource = this._config.model_url;
       this._error = "";
+      this.dispatchEvent(new CustomEvent("plan-model-loaded", { detail: { model: prepared }, bubbles: true, composed: true }));
     } catch (e6) {
       if (e6.name !== "AbortError" && epoch === this._epoch && this.isConnected) this._error = e6.message;
     }
@@ -946,6 +956,15 @@ var HomePlanCard = class extends i4 {
     if (id) this._observed.add(id);
     return this.hass?.states?.[id];
   }
+  set editorConfig(value) {
+    if (value !== this._editorConfig) {
+      this._editorConfig = value;
+      this.setConfig(value);
+    }
+  }
+  _entityIcon(id, override) {
+    return b2`<ha-state-icon .hass=${this.hass} .stateObj=${this._state(id)} .icon=${override || this._registry.entities[id]?.icon || void 0} aria-hidden="true"></ha-state-icon>`;
+  }
   _name(id) {
     const s5 = this._state(id);
     return s5?.attributes?.friendly_name || id;
@@ -974,33 +993,43 @@ var HomePlanCard = class extends i4 {
   }
   _entities(r4) {
     if (this._roomEntityCache?.has(r4.id)) return this._roomEntityCache.get(r4.id);
-    const explicit = [...r4.entities || [], r4.temperature_entity, r4.light_entity, ...this._apertures().filter((a3) => a3.room === r4.id).flatMap((a3) => [a3.cover_entity, a3.opening_entity, a3.command_entity]), ...this._markers().filter((a3) => a3.room === r4.id).map((a3) => a3.entity)];
+    const explicit = [...r4.entities || [], ...r4.favorite_entities || [], r4.temperature_entity, r4.light_entity, ...this._apertures().filter((a3) => a3.room === r4.id).flatMap((a3) => [a3.cover_entity, a3.opening_entity, a3.command_entity]), ...this._markers().filter((a3) => a3.room === r4.id).map((a3) => a3.entity)];
     const reg = this._registry.entities, devices = this._registry.devices;
     if (r4.auto_area && r4.area_id) for (const e6 of Object.values(reg)) {
       if (e6.disabled_by || e6.hidden_by || e6.entity_category || r4.excluded_entities?.includes(e6.entity_id)) continue;
       const area = e6.area_id || devices[e6.device_id]?.area_id;
       if (area !== r4.area_id) continue;
-      const s5 = this.hass?.states?.[e6.entity_id], d3 = e6.entity_id.split(".")[0], cls = s5?.attributes?.device_class;
-      if (["light", "cover", "fan", "climate", "vacuum", "media_player"].includes(d3) || d3 === "sensor" && ["temperature", "humidity", "battery", "power", "energy", "carbon_dioxide", "volatile_organic_compounds"].includes(cls) || d3 === "binary_sensor" && (OPEN_CLASSES.has(cls) || ALERT_CLASSES.has(cls))) explicit.push(e6.entity_id);
+      const d3 = e6.entity_id.split(".")[0];
+      if (["light", "cover", "fan", "climate", "vacuum", "media_player", "sensor", "binary_sensor", "switch", "select", "number", "button", "scene", "humidifier", "water_heater", "lock"].includes(d3)) explicit.push(e6.entity_id);
     }
     const ids = [...new Set(explicit.filter(validEntity))];
     ids.forEach((id) => this._observed.add(id));
     this._roomEntityCache?.set(r4.id, ids);
     return ids;
   }
+  _leaves(ids, domain, excluded = []) {
+    const result = /* @__PURE__ */ new Set(), seen = /* @__PURE__ */ new Set();
+    const visit = (id) => {
+      if (seen.has(id) || excluded.includes(id) || !id.startsWith(domain + ".")) return;
+      seen.add(id);
+      const members = this._state(id)?.attributes?.entity_id;
+      if (Array.isArray(members) && members.length) members.forEach(visit);
+      else result.add(id);
+    };
+    ids.forEach(visit);
+    return [...result];
+  }
   _lights(r4) {
-    const ids = this._entities(r4).filter((e6) => e6.startsWith("light."));
-    const members = new Set(ids.flatMap((id) => this._state(id)?.attributes?.entity_id || []));
-    return ids.filter((id) => !members.has(id));
+    return this._leaves(this._entities(r4), "light", r4.excluded_entities);
   }
   _covers(r4) {
-    return this._entities(r4).filter((e6) => e6.startsWith("cover."));
+    return this._leaves(this._entities(r4), "cover", r4.excluded_entities);
   }
   _openings(r4) {
     return [...new Set(this._apertures().filter((a3) => a3.room === r4.id && a3.opening_entity).map((a3) => a3.opening_entity))];
   }
   _temperature(r4) {
-    return r4.temperature_entity || this._entities(r4).find((id) => this._state(id)?.attributes?.device_class === "temperature" && id.startsWith("sensor."));
+    return r4.temperature_entity || void 0;
   }
   _problems(r4) {
     return this._entities(r4).filter((id) => {
@@ -1017,7 +1046,7 @@ var HomePlanCard = class extends i4 {
     if (o7.length) return `${o7.length} ouverture${o7.length > 1 ? "s" : ""}`;
     if (temp) return this._format(temp);
     const c5 = this._covers(r4);
-    return c5.length === 1 ? coverText(this._state(c5[0])) : c5.length ? `${c5.length} volets` : this._entities(r4).length ? "Équipements de la pièce" : "Aucun équipement associé";
+    return c5.length === 1 ? this._coverLabel(c5[0]) : c5.length ? `${c5.length} volets` : this._entities(r4).length ? "Équipements de la pièce" : "Aucun équipement associé";
   }
   _photo(r4) {
     return safeImage(r4.illustration && !this._photoMode.has(r4.id) ? r4.illustration : r4.photos?.[this._photos[r4.id] || 0]);
@@ -1026,16 +1055,21 @@ var HomePlanCard = class extends i4 {
     this.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: id }, bubbles: true, composed: true }));
   }
   _select(r4, opener) {
+    if (this.editMode) return;
     this._opener = opener;
     this._selected = r4.id;
     this._quick = null;
+    this._floorCovers = false;
+    this._equipmentTab = false;
     this._showAlerts = false;
     this._focusSheet();
   }
   _aperture(a3, opener) {
+    if (this.editMode) return;
     this._opener = opener;
     this._selected = a3.room;
     this._quick = a3.id;
+    this._floorCovers = false;
     this._showAlerts = false;
     this._focusSheet();
   }
@@ -1048,15 +1082,69 @@ var HomePlanCard = class extends i4 {
     this._selected = null;
     this._quick = null;
     this._showAlerts = false;
+    this._floorCovers = false;
     this.updateComplete.then(() => this._opener?.isConnected && this._opener.focus({ preventScroll: true }));
   }
+  _policy(entity) {
+    return (this._config.cover_options || []).find((p4) => p4.entity === entity) || {};
+  }
+  _coverValue(entity) {
+    const p4 = coverPosition(this._state(entity));
+    return p4 === null ? null : this._policy(entity).invert_position ? 100 - p4 : p4;
+  }
+  _coverLabel(entity) {
+    const s5 = this._state(entity), p4 = this._coverValue(entity);
+    if (this._policy(entity).kind !== "screen") {
+      if (!this._policy(entity).invert_position || !known(s5) || p4 === null) return coverText(s5);
+      return p4 === 0 ? "Fermé" : p4 === 100 ? "Ouvert" : `${p4} % ouvert`;
+    }
+    if (!known(s5) || p4 === null) return !s5 ? "Entité introuvable" : s5.state === "unavailable" ? "Indisponible" : "Déploiement inconnu";
+    return p4 === 0 ? "Rentré" : `${p4} % déployé`;
+  }
+  _shutters(ids) {
+    return [...new Set(ids)].filter((id) => this._policy(id).kind !== "screen" && !["awning", "garage", "gate", "door"].includes(this._state(id)?.attributes?.device_class));
+  }
+  _windowCovers(rooms) {
+    return this._shutters(rooms.flatMap((r4) => this._covers(r4)));
+  }
+  _coverGroups(rooms) {
+    return [{ id: "current", name: this._config.floor || this._model.floor || "Ce niveau", ids: this._windowCovers(rooms) }, ...(this._config.cover_groups || []).map((g2) => ({ ...g2, ids: this._shutters(this._leaves(g2.entities || [], "cover")) }))];
+  }
+  async _batch(ids, action) {
+    const feature = { open_cover: 1, close_cover: 2, stop_cover: 8, turn_on: 0, turn_off: 0 }[action], unique = [...new Set(ids)], available = unique.filter((id) => {
+      const s5 = this._state(id);
+      return s5 && s5.state !== "unavailable" && !this._busy.has(id) && (!feature || s5.attributes.supported_features & feature);
+    }), epoch = this._epoch, generation = this._commandEpoch;
+    const result = await Promise.all(available.map((id) => this._send(id, id.split(".")[0] + "." + action)));
+    if (epoch !== this._epoch || generation !== this._commandEpoch || !this.isConnected) return;
+    this._feedback = `${result.filter(Boolean).length}/${unique.length} commande${unique.length > 1 ? "s" : ""} envoyée${unique.length > 1 ? "s" : ""}${unique.length > available.length ? " · équipements indisponibles ou non compatibles ignorés" : ""}${result.some((v3) => !v3) ? " · au moins un échec" : ""}`;
+  }
   async _send(entity, service, data = {}) {
-    const [domain, action] = service.split(".");
+    let [domain, action] = service.split(".");
     const state = this._state(entity);
-    if (!validEntity(entity) || !state || state.state === "unavailable") return;
+    if (!validEntity(entity) || !state || state.state === "unavailable") return false;
     const allowed = { light: ["turn_on", "turn_off"], cover: ["open_cover", "close_cover", "stop_cover", "set_cover_position"], switch: ["turn_on", "turn_off"] };
     if (!allowed[domain]?.includes(action) || entity.split(".")[0] !== domain) throw Error("Commande non autorisée.");
-    if (this._busy.has(entity)) return;
+    if (domain === "cover") {
+      const policy = this._policy(entity), limit = policy.max_position || 100;
+      if (action === "open_cover" && (limit < 100 || policy.invert_position)) {
+        action = "set_cover_position";
+        data = { position: limit };
+      }
+      if (action === "close_cover" && policy.invert_position) {
+        action = "set_cover_position";
+        data = { position: 0 };
+      }
+      if (action === "set_cover_position") {
+        const p4 = Number(data.position);
+        if (!Number.isFinite(p4)) return false;
+        const logical = Math.max(0, Math.min(limit, p4));
+        data = { ...data, position: policy.invert_position ? 100 - logical : logical };
+      }
+      const bit = { open_cover: 1, close_cover: 2, stop_cover: 8, set_cover_position: 4 }[action];
+      if (!(state.attributes.supported_features & bit)) return false;
+    }
+    if (this._busy.has(entity)) return false;
     const epoch = this._epoch, generation = this._commandEpoch;
     this._busy = /* @__PURE__ */ new Set([...this._busy, entity]);
     this._feedback = "Envoi de la commande…";
@@ -1064,8 +1152,10 @@ var HomePlanCard = class extends i4 {
     try {
       await this.hass.callService(domain, action, data, { entity_id: entity });
       if (epoch === this._epoch && generation === this._commandEpoch && this.isConnected) this._feedback = domain === "switch" ? "Impulsion envoyée · état physique non suivi" : "Commande envoyée · état affiché selon le retour de l’équipement";
+      return true;
     } catch (e6) {
       if (epoch === this._epoch && generation === this._commandEpoch && this.isConnected) this._feedback = "Échec de la commande : " + (e6.message || String(e6));
+      return false;
     } finally {
       if (epoch === this._epoch && generation === this._commandEpoch && this.isConnected) {
         if (domain === "switch") {
@@ -1082,47 +1172,120 @@ var HomePlanCard = class extends i4 {
     }
   }
   _cover(entity, name) {
-    const s5 = this._state(entity), p4 = coverPosition(s5), f3 = s5?.attributes?.supported_features || 0, disabled = !s5 || s5.state === "unavailable" || this._busy.has(entity);
-    return b2`<div class="hpf-cover" data-entity=${entity}><label class="hpf-cover-caption">${icon("blinds")}<span>${name || this._name(entity)}</span><output>${coverText(s5)}</output></label><input aria-label=${"Pourcentage d’ouverture de " + (name || this._name(entity))} type="range" min="0" max="100" .value=${String(p4 ?? 50)} ?disabled=${disabled || p4 === null || !(f3 & 4)} @change=${(e6) => this._send(entity, "cover.set_cover_position", { position: Number(e6.target.value) })}><div class="hpf-cover-actions"><button ?disabled=${disabled || !(f3 & 1)} @click=${() => this._send(entity, "cover.open_cover")}>${icon("chevron-up")}Ouvrir</button><button ?disabled=${disabled || !(f3 & 8)} @click=${() => this._send(entity, "cover.stop_cover")}>${icon("square")}Arrêter</button><button ?disabled=${disabled || !(f3 & 2)} @click=${() => this._send(entity, "cover.close_cover")}>${icon("chevron-down")}Fermer</button></div></div>`;
+    const s5 = this._state(entity), p4 = this._coverValue(entity), f3 = s5?.attributes?.supported_features || 0, policy = this._policy(entity), screen = policy.kind === "screen", max = policy.max_position || 100, disabled = !s5 || s5.state === "unavailable" || this._busy.has(entity);
+    return b2`<div class="hpf-cover" data-entity=${entity}><div class="hpf-cover-caption">${this._entityIcon(entity, screen ? "mdi:projector-screen-outline" : void 0)}<span>${name || this._name(entity)}</span><output>${this._coverLabel(entity)}</output><button class="hpf-cover-info" aria-label=${"Détails de " + this._name(entity)} @click=${() => this._more(entity)}>${icon("settings")}</button></div><div class="hpf-position-control"><span class=${"hpf-cover-preview " + (screen ? "is-screen" : "")} style=${`--closed:${p4 === null ? 50 : 100 - p4}%`} aria-hidden="true"></span><div><input aria-label=${(screen ? "Déploiement de " : "Pourcentage d’ouverture de ") + (name || this._name(entity))} type="range" min="0" max=${max} .value=${String(p4 ?? max / 2)} ?disabled=${disabled || p4 === null || !(f3 & 4)} @change=${(e6) => this._send(entity, "cover.set_cover_position", { position: Number(e6.target.value) })}><div class="hpf-range-labels"><span>${screen ? "Rentré" : "Fermé"}</span><span>${screen ? `Course limitée à ${max} %` : "Ouvert"}</span></div></div></div><div class="hpf-cover-actions"><button ?disabled=${disabled || !(f3 & (max < 100 || policy.invert_position ? 4 : 1))} @click=${() => this._send(entity, "cover.open_cover")}>${icon(screen ? "chevron-down" : "chevron-up")}${screen ? "Déployer" : "Ouvrir"}</button><button ?disabled=${disabled || !(f3 & 8)} @click=${() => this._send(entity, "cover.stop_cover")}>${icon("square")}Arrêter</button><button ?disabled=${disabled || !(f3 & (policy.invert_position ? 4 : 2))} @click=${() => this._send(entity, "cover.close_cover")}>${icon(screen ? "chevron-up" : "chevron-down")}${screen ? "Rentrer" : "Fermer"}</button></div></div>`;
+  }
+  _groupControls(ids, label, domain = "cover") {
+    if (ids.length < 2) return A;
+    const actions = domain === "light" ? [["turn_on", "Tout allumer", "lightbulb"], ["turn_off", "Tout éteindre", "lightbulb"]] : [["open_cover", "Tout ouvrir", "chevron-up"], ["stop_cover", "Tout arrêter", "square"], ["close_cover", "Tout fermer", "chevron-down"]];
+    return b2`<div class="hpf-group" data-group=${domain}><div class="hpf-group-caption"><strong>${label}</strong><span>${ids.length} ${domain === "light" ? "lumières" : "volets"}</span></div><div class=${"hpf-group-actions " + (domain === "light" ? "two" : "")}>${actions.map(([action, label2, i7]) => b2`<button ?disabled=${ids.every((id) => {
+      const s5 = this._state(id);
+      return !s5 || s5.state === "unavailable" || this._busy.has(id);
+    })} @click=${() => this._batch(ids, action)}>${icon(i7)}${label2}</button>`)}</div></div>`;
   }
   _opening(entity, name) {
     const s5 = this._state(entity);
-    return b2`<div class=${"hpf-opening " + (s5?.state === "on" ? "is-open" : "")}>${icon(s5?.attributes?.device_class === "window" ? "panels-top-left" : "door-open")}<span>${name || this._name(entity)}</span><strong>${known(s5) ? s5.state === "on" ? "Ouverte" : "Fermée" : s5?.state === "unavailable" ? "Indisponible" : "État inconnu"}</strong></div>`;
+    return b2`<div class=${"hpf-opening " + (s5?.state === "on" ? "is-open" : "")}>${this._entityIcon(entity)}<span>${name || this._name(entity)}</span><strong>${known(s5) ? s5.state === "on" ? "Ouverte" : "Fermée" : s5?.state === "unavailable" ? "Indisponible" : "État inconnu"}</strong></div>`;
   }
   _equipment(id) {
-    const s5 = this._state(id);
-    return b2`<button class="hpf-more" @click=${() => this._more(id)}>${icon(s5?.attributes?.icon || (s5?.attributes?.device_class === "smoke" ? "smoke" : "settings"))}<span>${this._name(id)}</span><span>${this._format(id)}</span></button>`;
+    return b2`<button class="hpf-more" data-equipment=${id} @click=${() => this._more(id)}>${this._entityIcon(id)}<span>${this._name(id)}</span><span>${this._format(id)}</span></button>`;
+  }
+  _equipmentGroups(r4) {
+    const groups = /* @__PURE__ */ new Map();
+    for (const id of this._entities(r4)) {
+      const e6 = this._registry.entities[id], d3 = this._registry.devices[e6?.device_id], key = d3?.id || d3?.device_id || (id.startsWith("light.") || id.startsWith("scene.") ? id.split(".")[0] : id), name = d3?.name_by_user || d3?.name || (key === "light" ? "Éclairages" : key === "scene" ? "Scènes" : this._name(id));
+      if (!groups.has(key)) groups.set(key, { key, name, ids: [] });
+      groups.get(key).ids.push(id);
+    }
+    return b2`<div class="hpf-equipment-groups">${[...groups.values()].sort((a3, b3) => a3.name.localeCompare(b3.name)).map((g2) => b2`<details class="hpf-equipment-group"><summary>${this._entityIcon(g2.ids[0])}<span><strong>${g2.name}</strong><small>${g2.ids.length} information${g2.ids.length > 1 ? "s" : ""}</small></span>${icon("chevron-down")}</summary>${g2.ids.map((id) => this._equipment(id))}</details>`)}</div>`;
   }
   _sheet(rooms) {
     const r4 = rooms.find((r5) => r5.id === this._selected), a3 = this._apertures().find((a4) => a4.id === this._quick);
-    if (this._showAlerts) return b2`<section class="hpf-sheet" role="region" aria-label="Alertes"><div class="hpf-sheet-head"><h3>À vérifier</h3><button class="hpf-close" data-close aria-label="Revenir au plan" @click=${this._close}>${icon("x")}</button></div>${rooms.map((r5) => b2`${this._problems(r5).map((id) => this._equipment(id))}${this._openings(r5).filter((id) => this._state(id)?.state === "on").map((id) => this._equipment(id))}`)}</section>`;
+    const close = () => b2`<button class="hpf-close" data-close aria-label="Revenir au plan" @click=${this._close}>${icon("x")}</button>`;
+    if (this._floorCovers) {
+      const groups = this._coverGroups(rooms), group = groups.find((g2) => g2.id === this._floorGroup) || groups[0], ids = group.ids;
+      return b2`<section class="hpf-sheet" role="region" aria-label="Volets du niveau" @keydown=${(e6) => {
+        if (e6.key === "Escape") this._close();
+      }}><div class="hpf-sheet-head"><div><h3>Volets</h3><span class="hpf-sheet-sub">${ids.length} volets</span></div>${close()}</div>${groups.length > 1 ? b2`<label class="hpf-level-picker">Niveau<select aria-label="Niveau des volets" .value=${group.id} @change=${(e6) => this._floorGroup = e6.target.value}>${groups.map((g2) => b2`<option value=${g2.id}>${g2.name}</option>`)}</select></label>` : A}${this._groupControls(ids, group.name)}${ids.map((id) => this._cover(id))}</section>`;
+    }
+    if (this._showAlerts) return b2`<section class="hpf-sheet" role="region" aria-label="Alertes"><div class="hpf-sheet-head"><h3>À vérifier</h3>${close()}</div>${[...new Set(rooms.flatMap((r5) => [...this._problems(r5), ...this._openings(r5).filter((id) => this._state(id)?.state === "on")]))].map((id) => this._equipment(id))}</section>`;
     if (!r4) return A;
-    const covered = a3?.cover_entity ? [a3.cover_entity] : this._covers(r4), opening = a3?.opening_entity ? [a3.opening_entity] : this._openings(r4), lights = this._lights(r4), photo = this._photo(r4);
-    const main = /* @__PURE__ */ new Set([...covered, ...opening, ...lights, this._temperature(r4)]);
-    const rest = this._entities(r4).filter((id) => !main.has(id) && id !== a3?.command_entity);
+    const covered = a3?.cover_entity ? [a3.cover_entity] : this._covers(r4), opening = a3?.opening_entity ? [a3.opening_entity] : this._openings(r4), lights = this._lights(r4), photo = this._photo(r4), shutters = this._windowCovers([r4]);
+    const favorite = r4.favorite_entities || this._entities(r4).filter((id) => ["fan", "vacuum", "media_player", "climate"].includes(id.split(".")[0])).slice(0, 3);
     return b2`<section class="hpf-sheet" role="region" aria-label=${a3?.name || r4.name} @keydown=${(e6) => {
       if (e6.key === "Escape") this._close();
-    }}><div class="hpf-sheet-head"><div><h3>${a3?.name || r4.name}</h3><span class="hpf-sheet-sub">${a3 ? r4.name : this._temperature(r4) ? this._format(this._temperature(r4)) : this._config.floor || this._model?.floor || ""}</span></div><button class="hpf-close" data-close aria-label="Revenir au plan" @click=${this._close}>${icon("x")}</button></div>
-      ${!a3 && photo ? b2`<div class="hpf-room-photo"><img src=${photo} alt=${(r4.illustration && !this._photoMode.has(r4.id) ? "Illustration de " : "Photo de ") + r4.name}>${r4.illustration ? b2`<button class="hpf-photo-style" @click=${() => {
+    }}><div class="hpf-sheet-head"><div><h3>${a3?.name || r4.name}</h3><span class="hpf-sheet-sub">${a3 ? r4.name : this._temperature(r4) ? this._format(this._temperature(r4)) : this._config.floor || this._model?.floor || ""}</span></div>${close()}</div>
+      ${!a3 ? b2`<div class="hpf-sheet-tabs" role="group" aria-label="Vue de la pièce"><button aria-pressed=${!this._equipmentTab} @click=${() => this._equipmentTab = false}>Commandes</button><button aria-pressed=${!!this._equipmentTab} @click=${() => this._equipmentTab = true}>Équipements</button></div>` : A}
+      ${!a3 && this._equipmentTab ? this._equipmentGroups(r4) : b2`
+        ${!a3 && photo ? b2`<div class="hpf-room-photo"><img src=${photo} alt=${(r4.illustration && !this._photoMode.has(r4.id) ? "Illustration de " : "Photo de ") + r4.name}>${r4.illustration ? b2`<button class="hpf-photo-style" @click=${() => {
       const set = new Set(this._photoMode);
       set.has(r4.id) ? set.delete(r4.id) : set.add(r4.id);
       this._photoMode = set;
     }}>${this._photoMode.has(r4.id) ? "Voir l’illustration" : "Voir la photo"}</button>` : A}${r4.photos?.length > 1 && this._photoMode.has(r4.id) ? b2`<button class="hpf-photo-next" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + 1) % r4.photos.length }}>${(this._photos[r4.id] || 0) + 1} / ${r4.photos.length}</button>` : A}</div>` : A}
-      ${!a3 && lights.length ? b2`<div class="hpf-device-grid">${c4(lights, (id) => id, (id) => {
+        ${!a3 ? this._groupControls(lights, "Éclairages", "light") : A}
+        ${!a3 && lights.length ? b2`<div class="hpf-device-grid">${c4(lights, (id) => id, (id) => {
       const s5 = this._state(id);
-      return b2`<button class=${"hpf-device " + (s5?.state === "on" ? "is-lit" : "")} ?disabled=${!known(s5) || this._busy.has(id)} aria-pressed=${s5?.state === "on"} @click=${() => this._send(id, s5.state === "on" ? "light.turn_off" : "light.turn_on")}>${icon("lightbulb")}<span><strong>${this._name(id)}</strong><small>${this._format(id)}</small></span></button>`;
+      return b2`<button class=${"hpf-device " + (s5?.state === "on" ? "is-lit" : "")} data-light=${id} ?disabled=${!known(s5) || this._busy.has(id)} aria-pressed=${s5?.state === "on"} @click=${() => this._send(id, s5.state === "on" ? "light.turn_off" : "light.turn_on")}>${this._entityIcon(id)}<span><strong>${this._name(id)}</strong><small>${this._format(id)}</small></span></button>`;
     })}</div>` : A}
-      ${c4(covered, (id) => id, (id) => this._cover(id))}${opening.map((id) => this._opening(id))}
-      ${a3?.command_entity ? b2`<div class="hpf-cover"><div class="hpf-cover-caption">${icon("door-open")}<span>Porte motorisée</span></div><p class="hpf-sheet-sub">État physique non suivi · commande par impulsion</p><button class="hpf-device" data-command=${a3.command_entity} ?disabled=${!this._state(a3.command_entity) || this._state(a3.command_entity)?.state === "unavailable" || this._busy.has(a3.command_entity)} @click=${() => this._send(a3.command_entity, "switch.turn_on")}>${icon("door-open")}Actionner la porte</button><button class="hpf-more" @click=${() => this._more(a3.command_entity)}>${icon("settings")}Détails de l’équipement${icon("chevron-right")}</button></div>` : A}
-      ${!a3 ? b2`${rest.filter((id) => this._state(id)?.attributes?.device_class === "smoke").map((id) => this._equipment(id))}${rest.some((id) => this._state(id)?.attributes?.device_class !== "smoke") ? b2`<details><summary>Autres équipements (${rest.filter((id) => this._state(id)?.attributes?.device_class !== "smoke").length})</summary>${rest.filter((id) => this._state(id)?.attributes?.device_class !== "smoke").map((id) => this._equipment(id))}</details>` : A}` : b2`<button class="hpf-quick-room" @click=${(e6) => this._select(r4, e6.currentTarget)}>${icon(r4.icon)}Voir la pièce${icon("chevron-right")}</button>`}
+        ${!a3 ? this._groupControls(shutters, "Volets de la pièce") : A}
+        ${c4(covered, (id) => id, (id) => this._cover(id))}${opening.map((id) => this._opening(id))}
+        ${a3?.command_entity ? b2`<div class="hpf-cover"><div class="hpf-cover-caption">${this._entityIcon(a3.command_entity)}<span>Porte motorisée</span></div><p class="hpf-sheet-sub">État physique non suivi · commande par impulsion</p><button class="hpf-device" data-command=${a3.command_entity} ?disabled=${!this._state(a3.command_entity) || this._state(a3.command_entity)?.state === "unavailable" || this._busy.has(a3.command_entity)} @click=${() => this._send(a3.command_entity, "switch.turn_on")}>${icon("door-open")}Actionner la porte</button><button class="hpf-more" @click=${() => this._more(a3.command_entity)}>${icon("settings")}Détails de l’équipement${icon("chevron-right")}</button></div>` : A}
+        ${!a3 ? b2`<div class="hpf-favorites">${favorite.map((id) => this._equipment(id))}</div>${this._entities(r4).filter((id) => this._state(id)?.attributes?.device_class === "smoke").map((id) => this._equipment(id))}` : b2`<button class="hpf-quick-room" @click=${(e6) => this._select(r4, e6.currentTarget)}>${icon(r4.icon)}Voir la pièce${icon("chevron-right")}</button>`}
+      `}
       ${!this._entities(r4).length ? b2`<p class="hpf-empty">Aucun équipement associé. Ajoutez-les dans l’éditeur de la carte.</p>` : A}
     </section>`;
+  }
+  _markerTap(m3) {
+    if (this.editMode) return;
+    const s5 = this._state(m3.entity);
+    if (m3.entity?.startsWith("light.") && known(s5)) this._send(m3.entity, s5.state === "on" ? "light.turn_off" : "light.turn_on");
+    else this._more(m3.entity);
+  }
+  _editPick(kind, item) {
+    this._editSelection = kind + ":" + item.id;
+    this.dispatchEvent(new CustomEvent("plan-item-selected", { detail: { kind, id: item.id, room: item.room }, bubbles: true, composed: true }));
+  }
+  _dragStart(e6, kind, item) {
+    if (!this.editMode || e6.button > 0) return;
+    e6.preventDefault();
+    this._editPick(kind, item);
+    const el = e6.currentTarget;
+    el.setPointerCapture(e6.pointerId);
+    this._drag = { id: item.id, kind, el, pointerId: e6.pointerId, startX: e6.clientX, startY: e6.clientY, originalStyle: el.getAttribute("style"), moved: false };
+  }
+  _dragMove(e6) {
+    const d3 = this._drag;
+    if (!d3 || d3.pointerId !== e6.pointerId) return;
+    const box = this.renderRoot.querySelector(".hpf-map").getBoundingClientRect(), b3 = this._model.bounds;
+    d3.moved ||= Math.hypot(e6.clientX - d3.startX, e6.clientY - d3.startY) > 3;
+    if (!d3.moved) return;
+    const x2 = Math.max(22, Math.min(box.width - 22, e6.clientX - box.left)), y3 = Math.max(22, Math.min(box.height - 22, e6.clientY - box.top));
+    d3.point = [Math.round(b3[0] + x2 / box.width * b3[2]), Math.round(b3[1] + y3 / box.height * b3[3])];
+    d3.el.style.left = x2 / box.width * 100 + "%";
+    d3.el.style.top = y3 / box.height * 100 + "%";
+  }
+  _dragEnd(e6, cancel = false) {
+    const d3 = this._drag;
+    if (!d3 || d3.pointerId !== e6.pointerId) return;
+    this._drag = null;
+    if (d3.el.hasPointerCapture(e6.pointerId)) d3.el.releasePointerCapture(e6.pointerId);
+    if (d3.moved && !cancel) this.dispatchEvent(new CustomEvent("plan-position-changed", { detail: { kind: d3.kind, id: d3.id, point: d3.point }, bubbles: true, composed: true }));
+    else if (cancel) d3.el.setAttribute("style", d3.originalStyle);
+  }
+  _editKey(e6, kind, item) {
+    if (!this.editMode) return;
+    const delta = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e6.key];
+    if (!delta) return;
+    e6.preventDefault();
+    this._editPick(kind, item);
+    const p4 = kind === "marker" ? item.point : item.control || [(item.segment[0] + item.segment[2]) / 2, (item.segment[1] + item.segment[3]) / 2], b3 = this._model.bounds, step = e6.shiftKey ? 1 : 5;
+    this.dispatchEvent(new CustomEvent("plan-position-changed", { detail: { kind, id: item.id, point: p4.map((v3, i7) => Math.max(b3[i7], Math.min(b3[i7] + b3[i7 + 2], v3 + delta[i7] * step))) }, bubbles: true, composed: true }));
   }
   _map(rooms) {
     const b3 = this._model.bounds, apertures = this._apertures(), markers = this._markers(), pct = (v3, i7) => (v3 - b3[i7]) / b3[i7 + 2] * 100;
     const pointStyle = (p4) => `left:clamp(22px,${pct(p4[0], 0)}%,calc(100% - 22px));top:${pct(p4[1], 1)}%`;
     const selected = rooms.find((r4) => r4.id === this._selected) || rooms.find((r4) => r4.id === this._model.preview?.room);
-    return b2`<div class="hpf-map" style=${`aspect-ratio:${b3[2]}/${b3[3]}`}>
+    return b2`<div class=${"hpf-map " + (this.editMode ? "is-editing" : "")} style=${`aspect-ratio:${b3[2]}/${b3[3]}`}>
       <svg class="hpf-drawing" viewBox=${b3.join(" ")} role="img" aria-label=${"Plan du " + (this._config.floor || this._model.floor || "niveau")}><title>Pièces et équipements</title>${rooms.map((r4) => w`<path class=${`hpf-room-floor ${this._lights(r4).some((id) => this._state(id)?.state === "on") ? "is-lit" : ""} ${r4.id === this._selected ? "is-selected" : ""} ${this._matches(r4) ? "" : "is-muted"}`} d=${r4.path || ""}/>`)}${o6(this._model.artwork)}</svg>
       ${c4(rooms, (r4) => r4.id, (r4) => {
       const [x2, y3, w2, h4] = r4.hit || [r4.x, r4.y, r4.w, r4.h], l3 = r4.label || [x2 + w2 / 2, y3 + h4 / 2], temp = this._temperature(r4), opens = this._openings(r4).some((id) => this._state(id)?.state === "on"), problems = this._problems(r4);
@@ -1131,15 +1294,18 @@ var HomePlanCard = class extends i4 {
       <svg class="hpf-aperture-layer" viewBox=${b3.join(" ")} aria-hidden="true">${apertures.map((a3) => {
       const s5 = a3.segment;
       if (!s5 || s5.length !== 4) return A;
-      const p4 = `M${s5[0]} ${s5[1]}L${s5[2]} ${s5[3]}`, o7 = this._state(a3.opening_entity), c5 = this._state(a3.cover_entity), pos = coverPosition(c5), vertical = s5[0] === s5[2], shift = vertical ? -12 : 12, parallel = `M${s5[0] + (vertical ? shift : 0)} ${s5[1] + (vertical ? 0 : shift)}L${s5[2] + (vertical ? shift : 0)} ${s5[3] + (vertical ? 0 : shift)}`;
-      return w`${o7?.state === "on" ? w`<path class="aperture-halo" d=${p4}/>` : A}<path class=${"aperture-line " + (o7?.state === "on" ? "is-open" : "")} d=${p4} data-map-aperture=${a3.id} @click=${(e6) => this._aperture(a3, this.renderRoot.querySelector(`[data-aperture="${CSS.escape(a3.id)}"]`))}/>${a3.cover_entity ? w`<path class="shutter-track" d=${parallel}/>${pos !== null ? w`<path class="shutter-fill" d=${parallel} pathLength="100" stroke-dasharray=${`${100 - pos} 100`}/>` : A}${this._mode === "covers" && a3.control ? w`<path class="aperture-leader" d=${`M${(s5[0] + s5[2]) / 2} ${(s5[1] + s5[3]) / 2}L${a3.control[0]} ${a3.control[1]}`}/>` : A}` : A}`;
+      const p4 = `M${s5[0]} ${s5[1]}L${s5[2]} ${s5[3]}`, o7 = this._state(a3.opening_entity), c5 = this._state(a3.cover_entity), pos = this._coverValue(a3.cover_entity), vertical = s5[0] === s5[2], shift = vertical ? -12 : 12, parallel = `M${s5[0] + (vertical ? shift : 0)} ${s5[1] + (vertical ? 0 : shift)}L${s5[2] + (vertical ? shift : 0)} ${s5[3] + (vertical ? 0 : shift)}`;
+      return w`${o7?.state === "on" ? w`<path class="aperture-halo" d=${p4}/>` : A}<path class=${"aperture-line " + (o7?.state === "on" ? "is-open" : "")} d=${p4} data-map-aperture=${a3.id} @click=${(e6) => this._aperture(a3, this.renderRoot.querySelector(`[data-aperture="${CSS.escape(a3.id)}"]`))}/>${a3.leaf ? w`<path class=${"aperture-swing " + (o7?.state === "on" ? "is-open" : "")} d=${`M${s5[2]} ${s5[3]}Q${a3.leaf[2]} ${s5[3]} ${a3.leaf[2]} ${a3.leaf[3]}`}/><path class=${"aperture-leaf " + (o7?.state === "on" ? "is-open" : "")} d=${o7?.state === "on" ? `M${a3.leaf[0]} ${a3.leaf[1]}L${a3.leaf[2]} ${a3.leaf[3]}` : p4}/>` : A}${a3.cover_entity ? w`<path class="shutter-track" d=${parallel}/>${pos !== null ? w`<path class="shutter-fill" d=${parallel} pathLength="100" stroke-dasharray=${`${100 - pos} 100`}/>` : A}${this._mode === "covers" && a3.control ? w`<path class="aperture-leader" d=${`M${(s5[0] + s5[2]) / 2} ${(s5[1] + s5[3]) / 2}L${a3.control[0]} ${a3.control[1]}`}/>` : A}` : A}`;
     })}</svg>
       ${apertures.filter((a3) => a3.cover_entity || a3.command_entity || a3.opening_entity).map((a3) => {
       const p4 = a3.control || [(a3.segment[0] + a3.segment[2]) / 2, (a3.segment[1] + a3.segment[3]) / 2], o7 = this._state(a3.opening_entity), c5 = this._state(a3.cover_entity), r4 = rooms.find((r5) => r5.id === a3.room);
-      return b2`<button data-aperture=${a3.id} class=${`hpf-aperture ${a3.cover_entity ? "has-cover" : ""} ${this._mode === "covers" ? "show-value" : ""} ${o7?.state === "on" ? "is-open" : ""} ${r4 && this._matches(r4) ? "" : "is-muted"}`} style=${pointStyle(p4)} aria-label=${a3.name + (a3.cover_entity ? ", " + coverText(c5) : "")} @click=${(e6) => this._aperture(a3, e6.currentTarget)}><span class="hpf-aperture-mark">${icon(a3.cover_entity ? "blinds" : o7?.state === "off" ? "door-closed" : "door-open")}${a3.cover_entity ? b2`<span>${coverPosition(c5) === 0 ? "Fermé" : coverPosition(c5) === 100 ? "Ouvert" : coverPosition(c5) !== null ? coverPosition(c5) + " %" : "?"}</span>` : A}</span></button>`;
+      return b2`<button data-aperture=${a3.id} class=${`hpf-aperture ${a3.cover_entity ? "has-cover" : ""} ${this._mode === "covers" ? "show-value" : ""} ${o7?.state === "on" ? "is-open" : ""} ${r4 && this._matches(r4) ? "" : "is-muted"}`} style=${pointStyle(p4)} aria-label=${a3.name + (a3.cover_entity ? ", " + this._coverLabel(a3.cover_entity) : "")} @pointerdown=${(e6) => this._dragStart(e6, "aperture", a3)} @pointermove=${this._dragMove} @pointerup=${(e6) => this._dragEnd(e6)} @pointercancel=${(e6) => this._dragEnd(e6, true)} @keydown=${(e6) => this._editKey(e6, "aperture", a3)} @click=${(e6) => this._aperture(a3, e6.currentTarget)} data-edit-selected=${this._editSelection === "aperture:" + a3.id}><span class="hpf-aperture-mark">${icon(a3.cover_entity ? "blinds" : o7?.state === "off" ? "door-closed" : "door-open")}${a3.cover_entity ? b2`<span>${this._coverValue(a3.cover_entity) === 0 ? "Fermé" : this._coverValue(a3.cover_entity) === 100 ? "Ouvert" : this._coverValue(a3.cover_entity) !== null ? this._coverValue(a3.cover_entity) + " %" : "?"}</span>` : A}</span></button>`;
     })}
-      ${markers.filter((m3) => m3.entity && m3.point && (!this._mode || this._mode === "openings" || this._state(m3.entity)?.state === "on")).map((m3) => b2`<button class=${"hpf-room-marker " + (this._state(m3.entity)?.state === "on" ? "is-alert" : "")} style=${pointStyle(m3.point)} aria-label=${this._name(m3.entity) + ", " + this._format(m3.entity)} @click=${() => this._more(m3.entity)}>${icon(m3.icon || "smoke")}</button>`)}
-      ${selected && this._photo(selected) && this._model.preview ? b2`<button class="hpf-photo-shortcut" style=${`left:${pct(this._model.preview.x, 0)}%;top:${pct(this._model.preview.y, 1)}%;width:${this._model.preview.w / b3[2] * 100}%;height:${this._model.preview.h / b3[3] * 100}%`} @click=${(e6) => this._select(selected, e6.currentTarget)}><img src=${this._photo(selected)} alt=${selected.name}><span class="hpf-photo-caption">${selected.short || selected.name}${icon("chevron-right")}</span></button>` : A}
+      ${markers.filter((m3) => m3.entity && m3.point && (this.editMode || !this._mode || this._mode === "openings" && !m3.entity.startsWith("light.") || this._mode === "lights" && m3.entity.startsWith("light.") || this._state(m3.entity)?.state === "on")).map((m3) => {
+      const s5 = this._state(m3.entity), light = m3.entity.startsWith("light."), alert = !light && this._problems(rooms.find((r4) => r4.id === m3.room) || {}).includes(m3.entity);
+      return b2`<button data-marker=${m3.id} data-edit-selected=${this._editSelection === "marker:" + m3.id} class=${"hpf-room-marker " + (alert ? "is-alert " : "") + (light ? "is-light " : "") + (light && s5?.state === "on" ? "is-on" : "")} style=${pointStyle(m3.point)} aria-label=${this._name(m3.entity) + ", " + this._format(m3.entity)} @pointerdown=${(e6) => this._dragStart(e6, "marker", m3)} @pointermove=${this._dragMove} @pointerup=${(e6) => this._dragEnd(e6)} @pointercancel=${(e6) => this._dragEnd(e6, true)} @keydown=${(e6) => this._editKey(e6, "marker", m3)} @click=${() => this._markerTap(m3)}>${this._entityIcon(m3.entity, m3.icon && m3.icon !== "smoke" ? ICON[m3.icon] || m3.icon : void 0)}</button>`;
+    })}
+      ${!this.editMode && selected && this._photo(selected) && this._model.preview ? b2`<button class="hpf-photo-shortcut" style=${`left:${pct(this._model.preview.x, 0)}%;top:${pct(this._model.preview.y, 1)}%;width:${this._model.preview.w / b3[2] * 100}%;height:${this._model.preview.h / b3[3] * 100}%`} @click=${(e6) => this._select(selected, e6.currentTarget)}><img src=${this._photo(selected)} alt=${selected.name}><span class="hpf-photo-caption">${selected.short || selected.name}${icon("chevron-right")}</span></button>` : A}
     </div>`;
   }
   render() {
@@ -1147,9 +1313,19 @@ var HomePlanCard = class extends i4 {
     this._roomEntityCache = /* @__PURE__ */ new Map();
     if (!this._model) return b2`<ha-card><div class="hpf-empty">${this._error || "Chargement du plan…"}</div></ha-card>`;
     const rooms = this._rooms(), lights = [...new Set(rooms.flatMap((r4) => this._lights(r4)))].filter((id) => this._state(id)?.state === "on"), openingIds = [...new Set(rooms.flatMap((r4) => this._openings(r4)))], open = openingIds.filter((id) => this._state(id)?.state === "on"), unknown = openingIds.filter((id) => !known(this._state(id))), problems = [...new Set(rooms.flatMap((r4) => this._problems(r4)))];
+    if (this.editMode) return b2`<ha-card><section class="hpf-home hpf-placement">${this._map(rooms)}<div class="hpf-placement-caption">Glisser un repère · flèches du clavier pour ajuster</div></section></ha-card>`;
     return b2`<ha-card><section class="hpf-home" aria-label="Plan et commandes de la maison"><header class="hpf-head"><div class="hpf-heading"><span class="hpf-home-mark">${icon("house")}</span><div><h2>${this._config.name || "Maison"}</h2><span class="hpf-floor-name">${this._config.floor || this._model.floor}</span></div></div></header>
       <div class="hpf-tools"><div class="hpf-glance"><button data-light-count aria-pressed=${this._mode === "lights"} @click=${() => this._mode = this._mode === "lights" ? "" : "lights"}>${icon("lightbulb")}${lights.length} lumière${lights.length > 1 ? "s" : ""}</button><button data-open-count aria-pressed=${this._mode === "openings"} @click=${() => this._mode = this._mode === "openings" ? "" : "openings"}>${icon("door-open")}${open.length} ouverture${open.length > 1 ? "s" : ""}${unknown.length ? " · " + unknown.length + " ?" : ""}</button></div><div class="hpf-view" role="group" aria-label="Présentation"><button aria-pressed=${this._view === "plan"} @click=${() => this._view = "plan"}>Plan</button><button aria-pressed=${this._view === "rooms"} @click=${() => this._view = "rooms"}>Pièces</button></div></div>
       <div class="hpf-modebar" role="group" aria-label="Informations sur le plan">${MODES.map(([mode, i7, label]) => b2`<button data-mode=${mode} aria-pressed=${this._mode === mode} aria-label=${label} @click=${() => this._mode = mode}>${icon(i7)}${mode === "openings" ? b2`<span class="hpf-mode-long">${label}</span><span class="hpf-mode-short">Ouv.</span>` : label}</button>`)}</div>
+      ${this._mode === "covers" ? b2`<button class="hpf-floor-covers" data-floor-covers @click=${(e6) => {
+      this._opener = e6.currentTarget;
+      this._selected = null;
+      this._quick = null;
+      this._floorCovers = true;
+      this._floorGroup = "current";
+      this._showAlerts = false;
+      this._focusSheet();
+    }}>${icon("blinds")}Tous les volets du niveau · ${this._windowCovers(rooms).length}${icon("chevron-right")}</button>` : A}
       ${!rooms.length ? b2`<div class="hpf-empty">Ajoutez un plan local et ses pièces dans l’éditeur de la carte.</div>` : this._view === "plan" ? this._map(rooms) : b2`<div class="hpf-room-grid">${rooms.filter((r4) => this._matches(r4)).map((r4) => b2`<button class=${"hpf-room-tile " + (this._problems(r4).length ? "has-opening" : "")} data-room=${r4.id} @click=${(e6) => this._select(r4, e6.currentTarget)}>${icon(r4.icon)}<strong>${r4.name}</strong><small>${this._status(r4)}</small></button>`)}</div>`}
       ${this._view === "plan" ? b2`<div class="hpf-map-legend"><span class="opening-key">${icon("door-open")}Ouverture physique</span><span class="cover-key">${icon("blinds")}${this._mode === "covers" ? "Volet · % d’ouverture" : "Toucher pour commander"}</span></div>` : A}
       <footer class="hpf-footer">${icon(problems.length || open.length ? "circle-alert" : "shield-check")}<span class="hpf-footer-copy">${problems.length ? `${problems.length} alerte${problems.length > 1 ? "s" : ""}` : open.length ? `${open.length} ouverture${open.length > 1 ? "s" : ""} ouverte${open.length > 1 ? "s" : ""}` : unknown.length ? "État de certaines ouvertures inconnu" : "Les ouvertures suivies sont fermées"}</span>${problems.length || open.length ? b2`<button data-alerts @click=${(e6) => {
@@ -1162,8 +1338,8 @@ var HomePlanCard = class extends i4 {
   }
 };
 var HomePlanCardEditor = class extends i4 {
-  static properties = { hass: {}, _config: { state: true }, _room: { state: true }, _marker: { state: true }, _formReady: { state: true }, _formError: { state: true } };
-  static styles = i`:host{display:block} .fields{display:grid;gap:16px}select,input{box-sizing:border-box;font:inherit;width:100%;min-height:44px;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:8px;padding:8px}label{display:grid;gap:8px}h3{font-size:16px;margin:8px 0}p{font-size:13px;color:var(--secondary-text-color)}.row{display:flex;gap:8px}.row>*{flex:1}button{font:inherit;min-height:44px;border:0;border-radius:8px;padding:8px 12px;background:var(--secondary-background-color);color:var(--primary-text-color);cursor:pointer}a{color:var(--primary-color)}`;
+  static properties = { hass: {}, _config: { state: true }, _room: { state: true }, _marker: { state: true }, _formReady: { state: true }, _formError: { state: true }, _baseModel: { state: true }, _apertureId: { state: true }, _coverEdit: { state: true } };
+  static styles = i`:host{display:block} .fields{display:grid;gap:14px}.fields>home-plan-card{width:100%;min-width:0}.fields details{border-top:1px solid var(--divider-color);padding:8px 0}.fields summary{padding:8px 0;cursor:pointer}select,input{box-sizing:border-box;font:inherit;width:100%;min-height:44px;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:8px;padding:8px}label{display:grid;gap:8px}h3{font-size:16px;margin:8px 0}p{font-size:13px;color:var(--secondary-text-color)}.row{display:flex;gap:8px}.row>*{flex:1}button{font:inherit;min-height:44px;border:0;border-radius:8px;padding:8px 12px;background:var(--secondary-background-color);color:var(--primary-text-color);cursor:pointer}a{color:var(--primary-color)}`;
   constructor() {
     super();
     this._config = { rooms: [], apertures: [], markers: [] };
@@ -1215,37 +1391,103 @@ var HomePlanCardEditor = class extends i4 {
   _roomChange(patch) {
     this._change({ rooms: this._config.rooms.map((r4) => r4.id === this._room ? { ...r4, ...patch } : r4) });
   }
+  _allMarkers() {
+    const map = new Map((this._baseModel?.markers || []).map((m3) => [m3.id, m3]));
+    for (const m3 of this._config.markers) map.set(m3.id, { ...map.get(m3.id), ...m3 });
+    return [...map.values()];
+  }
+  _allApertures() {
+    const map = new Map((this._baseModel?.apertures || []).map((m3) => [m3.id, m3]));
+    for (const m3 of this._config.apertures) map.set(m3.id, { ...map.get(m3.id), ...m3 });
+    return [...map.values()];
+  }
   _markerChange(patch) {
-    this._change({ markers: this._config.markers.map((m3) => m3.id === this._marker ? { ...m3, ...patch } : m3) });
+    const merged = this._allMarkers().find((m3) => m3.id === this._marker);
+    if (!merged) return;
+    this._change({ markers: [...this._config.markers.filter((m3) => m3.id !== this._marker), { ...merged, ...patch }] });
+  }
+  _apertureChange(id, patch) {
+    const merged = this._allApertures().find((m3) => m3.id === id);
+    if (!merged) return;
+    this._change({ apertures: [...this._config.apertures.filter((m3) => m3.id !== id), { ...merged, ...patch }] });
+  }
+  _position(e6) {
+    e6.stopPropagation();
+    const { kind, id, point } = e6.detail;
+    if (kind === "marker") {
+      this._marker = id;
+      this._markerChange({ point });
+    } else {
+      this._apertureId = id;
+      this._apertureChange(id, { control: point });
+    }
+  }
+  _picked(e6) {
+    e6.stopPropagation();
+    this._room = e6.detail.room;
+    if (e6.detail.kind === "marker") {
+      this._marker = e6.detail.id;
+      this._apertureId = "";
+    } else {
+      this._apertureId = e6.detail.id;
+      this._marker = "";
+    }
+  }
+  _newMarker(entity) {
+    const r4 = this._config.rooms.find((r5) => r5.id === this._room), base = this._baseModel?.rooms?.find((x2) => x2.id === this._room), id = "marker-" + (globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + "-" + Math.random().toString(36).slice(2)), point = copy(r4?.label || base?.label || [0, 0]);
+    this._change({ markers: [...this._config.markers, { id, room: this._room, name: entity ? this.hass?.states[entity]?.attributes.friendly_name || entity : "Équipement", point, ...entity ? { entity } : {} }] });
+    this._marker = id;
+    this._apertureId = "";
+  }
+  _placeLights() {
+    const preview = this.renderRoot.querySelector("home-plan-card"), r4 = preview?._rooms().find((r5) => r5.id === this._room);
+    if (!r4) return;
+    const existing = new Set(this._allMarkers().map((m3) => m3.entity)), ids = preview._lights(r4).filter((id) => !existing.has(id));
+    const markers = ids.map((entity, i7) => ({ id: "light-" + entity.replaceAll(".", "-"), room: r4.id, entity, name: preview._name(entity), point: [(r4.label?.[0] || r4.x + r4.w / 2) + (i7 - (ids.length - 1) / 2) * 35, (r4.label?.[1] || r4.y + r4.h / 2) - 40] }));
+    this._change({ markers: [...this._config.markers, ...markers] });
+    if (markers.length) this._marker = markers[0].id;
   }
   render() {
     if (!this._formReady) return b2`<p>${this._formError || "Chargement de l’éditeur natif…"}</p>`;
-    const r4 = this._config.rooms.find((r5) => r5.id === this._room), m3 = this._config.markers.find((m4) => m4.id === this._marker);
-    return b2`<div class="fields"><label>Nom de la carte<input .value=${this._config.name || "Maison"} @change=${(e6) => this._change({ name: e6.target.value })}></label><label>Fichier du plan<input .value=${this._config.model_url || ""} placeholder="/local/maison/plan.json" @change=${(e6) => this._change({ model_url: e6.target.value })}></label><label>Pièce<select .value=${this._room} @change=${(e6) => {
+    const r4 = this._config.rooms.find((r5) => r5.id === this._room), m3 = this._allMarkers().find((m4) => m4.id === this._marker), a3 = this._allApertures().find((a4) => a4.id === this._apertureId), cover = this._coverEdit || a3?.cover_entity, policy = this._config.cover_options.find((p4) => p4.entity === cover) || { entity: cover, kind: "shutter", max_position: 100 };
+    const form = (data, schema, labels, change) => b2`<ha-form .hass=${this.hass} .data=${data} .schema=${schema} .computeLabel=${(s5) => labels[s5.name] || s5.name} @value-changed=${(e6) => {
+      e6.stopPropagation();
+      change(e6.detail.value);
+    }}></ha-form>`;
+    return b2`<div class="fields">
+      <label>Pièce<select .value=${this._room} @change=${(e6) => {
       this._room = e6.target.value;
       this._marker = "";
+      this._apertureId = "";
     }}><option value="">Choisir une pièce</option>${this._config.rooms.map((r5) => b2`<option value=${r5.id}>${r5.name || r5.id}</option>`)}</select></label>
-      ${r4 ? b2`<ha-form .hass=${this.hass} .data=${r4} .schema=${[{ name: "name", selector: { text: {} } }, { name: "area_id", selector: { area: {} } }, { name: "auto_area", selector: { boolean: {} } }, { name: "entities", selector: { entity: { multiple: true } } }, { name: "excluded_entities", selector: { entity: { multiple: true } } }, { name: "temperature_entity", selector: { entity: { filter: { domain: "sensor" } } } }, { name: "light_entity", selector: { entity: { filter: { domain: "light" } } } }]} .computeLabel=${(s5) => ({ name: "Nom de la pièce", area_id: "Zone Home Assistant", auto_area: "Afficher les équipements de cette zone", entities: "Équipements ajoutés à cette pièce", excluded_entities: "Équipements automatiques à masquer", temperature_entity: "Température principale", light_entity: "Éclairage principal" })[s5.name]} @value-changed=${(e6) => {
+      <home-plan-card .editorConfig=${this._config} .hass=${this.hass} .editMode=${true} @plan-model-loaded=${(e6) => {
       e6.stopPropagation();
-      this._roomChange(e6.detail.value);
-    }}></ha-form>
-      <h3>Fenêtres et portes</h3>${this._config.apertures.filter((a3) => a3.room === r4.id).map((a3) => b2`<details><summary>${a3.name || a3.id}</summary><ha-form .hass=${this.hass} .data=${a3} .schema=${[{ name: "opening_entity", selector: { entity: { filter: { domain: "binary_sensor" } } } }, { name: "cover_entity", selector: { entity: { filter: { domain: "cover" } } } }, { name: "command_entity", selector: { entity: { filter: { domain: "switch" } } } }]} .computeLabel=${(s5) => ({ opening_entity: "Contact physique", cover_entity: "Volet associé", command_entity: "Commande motorisée" })[s5.name]} @value-changed=${(e6) => {
-      e6.stopPropagation();
-      this._change({ apertures: this._config.apertures.map((x2) => x2.id === a3.id ? { ...x2, ...e6.detail.value } : x2) });
-    }}></ha-form></details>`)}
-      <h3>Repères sur le plan</h3><label>Équipement<select .value=${this._marker} @change=${(e6) => this._marker = e6.target.value}><option value="">Choisir un repère</option>${this._config.markers.filter((m4) => m4.room === r4.id).map((m4) => b2`<option value=${m4.id}>${m4.name || m4.entity || m4.id}</option>`)}</select></label><button @click=${() => {
-      const id = "marker-" + (globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + "-" + Math.random().toString(36).slice(2));
-      this._change({ markers: [...this._config.markers, { id, room: r4.id, name: "Équipement", point: copy(r4.label || [0, 0]), icon: "mdi:circle-small" }] });
-      this._marker = id;
-    }}>Ajouter un repère</button>
-      ${m3 ? b2`<ha-form .hass=${this.hass} .data=${m3} .schema=${[{ name: "name", selector: { text: {} } }, { name: "entity", selector: { entity: {} } }, { name: "icon", selector: { icon: {} } }]} .computeLabel=${(s5) => ({ name: "Libellé", entity: "Équipement", icon: "Icône" })[s5.name]} @value-changed=${(e6) => {
-      e6.stopPropagation();
-      this._markerChange(e6.detail.value);
-    }}></ha-form><div class="row"><label>Position X<input type="number" .value=${String(m3.point?.[0] || 0)} @change=${(e6) => this._markerChange({ point: [Number(e6.target.value), m3.point?.[1] || 0] })}></label><label>Position Y<input type="number" .value=${String(m3.point?.[1] || 0)} @change=${(e6) => this._markerChange({ point: [m3.point?.[0] || 0, Number(e6.target.value)] })}></label></div><button @click=${() => {
-      this._change({ markers: this._config.markers.filter((x2) => x2.id !== m3.id) });
+      this._baseModel = e6.detail.model;
+    }} @plan-item-selected=${this._picked} @plan-position-changed=${this._position}></home-plan-card>
+      ${r4 ? b2`<div class="row"><button @click=${() => this._newMarker()}>Ajouter un repère</button><button @click=${this._placeLights}>Placer les lumières</button></div>
+        <label>Repère<select .value=${this._marker} @change=${(e6) => {
+      this._marker = e6.target.value;
+      this._apertureId = "";
+    }}><option value="">Choisir sur le plan</option>${this._allMarkers().filter((m4) => m4.room === r4.id).map((m4) => b2`<option value=${m4.id}>${m4.name || m4.entity || m4.id}</option>`)}</select></label>
+        ${m3 ? b2`${form(m3, [{ name: "name", selector: { text: {} } }, { name: "entity", selector: { entity: {} } }, { name: "icon", selector: { icon: {} } }], { name: "Libellé", entity: "Équipement", icon: "Icône personnalisée (facultative)" }, (value) => this._markerChange(value))}<div class="row"><label>Position X<input type="number" .value=${String(m3.point?.[0] ?? 0)} @change=${(e6) => this._markerChange({ point: [Number(e6.target.value), m3.point?.[1] || 0] })}></label><label>Position Y<input type="number" .value=${String(m3.point?.[1] ?? 0)} @change=${(e6) => this._markerChange({ point: [m3.point?.[0] || 0, Number(e6.target.value)] })}></label></div><button @click=${() => {
+      this._change({ markers: this._config.markers.filter((x2) => x2.id !== m3.id), ...this._baseModel?.markers?.some((x2) => x2.id === m3.id) ? { markers: [...this._config.markers.filter((x2) => x2.id !== m3.id), { ...m3, entity: null }] } : {} });
       this._marker = "";
-    }}>Retirer ce repère</button>` : A}` : A}
-      <p>Les équipements d’une zone suivent les associations de Paramètres → Appareils et services → Zones. Les ajouts manuels et repères ci-dessus concernent cette carte.</p><a href=${this._config.documentation_url || "https://github.com/smornierHA/ha-board"} target="_blank" rel="noopener noreferrer">Documentation du plan</a></div>`;
+    }}>Retirer ce repère</button>` : A}
+        <details><summary>Équipements et zone de la pièce</summary>${form(r4, [{ name: "name", selector: { text: {} } }, { name: "area_id", selector: { area: {} } }, { name: "auto_area", selector: { boolean: {} } }, { name: "entities", selector: { entity: { multiple: true } } }, { name: "favorite_entities", selector: { entity: { multiple: true } } }, { name: "excluded_entities", selector: { entity: { multiple: true } } }, { name: "temperature_entity", selector: { entity: { filter: { domain: "sensor" } } } }, { name: "light_entity", selector: { entity: { filter: { domain: "light" } } } }], { name: "Nom de la pièce", area_id: "Zone Home Assistant", auto_area: "Suivre les équipements de cette zone", entities: "Équipements ajoutés à cette pièce", favorite_entities: "Accès rapides dans la fiche", excluded_entities: "Équipements automatiques à masquer", temperature_entity: "Température ambiante (facultative)", light_entity: "Éclairage principal" }, (value) => this._roomChange(value))}<p>La température ambiante est explicitement choisie. Les mesures du four, du réfrigérateur et autres appareils restent dans leurs fiches.</p></details>
+        <details ?open=${!!a3}><summary>Fenêtres et portes</summary><label>Ouverture<select .value=${this._apertureId || ""} @change=${(e6) => {
+      this._apertureId = e6.target.value;
+      this._marker = "";
+    }}><option value="">Choisir une ouverture</option>${this._allApertures().filter((a4) => a4.room === r4.id).map((a4) => b2`<option value=${a4.id}>${a4.name || a4.id}</option>`)}</select></label>${a3 ? b2`${form(a3, [{ name: "opening_entity", selector: { entity: { filter: { domain: "binary_sensor" } } } }, { name: "cover_entity", selector: { entity: { filter: { domain: "cover" } } } }, { name: "command_entity", selector: { entity: { filter: { domain: "switch" } } } }], { opening_entity: "Contact physique", cover_entity: "Volet associé", command_entity: "Commande motorisée" }, (value) => this._apertureChange(a3.id, value))}<div class="row">${[0, 1].map((i7) => b2`<label>${i7 ? "Position Y" : "Position X"}<input type="number" .value=${String(a3.control?.[i7] ?? 0)} @change=${(e6) => {
+      const p4 = copy(a3.control || [0, 0]);
+      p4[i7] = Number(e6.target.value);
+      this._apertureChange(a3.id, { control: p4 });
+    }}></label>`)}</div>` : A}</details>
+        <details><summary>Course et type d’un volet / écran</summary>${form({ entity: cover }, [{ name: "entity", selector: { entity: { filter: { domain: "cover" } } } }], { entity: "Volet ou écran" }, (value) => this._coverEdit = value.entity)}${cover ? form(policy, [{ name: "kind", selector: { select: { options: [{ value: "shutter", label: "Volet" }, { value: "screen", label: "Écran de projection" }] } } }, { name: "max_position", selector: { number: { min: 1, max: 100, mode: "box", unit_of_measurement: "%" } } }, { name: "invert_position", selector: { boolean: {} } }], { kind: "Type", max_position: "Course maximale depuis cette carte", invert_position: "Inverser le sens de la position" }, (value) => this._change({ cover_options: [...this._config.cover_options.filter((p4) => p4.entity !== cover), { ...policy, ...value }] })) : A}<p>Les écrans sont exclus des commandes de volets groupées. La limite s’applique aux commandes de cette carte.</p></details>
+      ` : A}
+      <details><summary>Groupes de volets par niveau</summary>${this._config.cover_groups.map((g2) => b2`${form(g2, [{ name: "name", selector: { text: {} } }, { name: "entities", selector: { entity: { multiple: true, filter: { domain: "cover" } } } }], { name: "Nom du niveau", entities: "Volets ou groupes de ce niveau" }, (value) => this._change({ cover_groups: this._config.cover_groups.map((x2) => x2.id === g2.id ? { ...x2, ...value } : x2) }))}<button @click=${() => this._change({ cover_groups: this._config.cover_groups.filter((x2) => x2.id !== g2.id) })}>Retirer ce niveau</button>`)}<button @click=${() => this._change({ cover_groups: [...this._config.cover_groups, { id: "level-" + Date.now().toString(36), name: "Autre niveau", entities: [] }] })}>Ajouter un niveau</button></details>
+      <details><summary>Réglages de la carte</summary><label>Nom de la carte<input .value=${this._config.name || "Maison"} @change=${(e6) => this._change({ name: e6.target.value })}></label><label>Fichier du plan<input .value=${this._config.model_url || ""} placeholder="/local/maison/plan.json" @change=${(e6) => this._change({ model_url: e6.target.value })}></label></details>
+      <p>Enregistrer la carte pour conserver les positions. Les associations ci-dessus concernent cette carte ; elles ne déplacent pas les appareils dans les zones HA.</p><a href=${this._config.documentation_url || "https://github.com/smornierHA/ha-board"} target="_blank" rel="noopener noreferrer">Documentation du plan</a>
+    </div>`;
   }
 };
 if (!customElements.get("home-plan-card")) customElements.define("home-plan-card", HomePlanCard);

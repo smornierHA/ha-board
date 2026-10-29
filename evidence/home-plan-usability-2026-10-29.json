@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-29",
+  "version": "0.2.0-rc.2",
+  "scope": "standalone Home Plan candidate; no HACS distribution change",
+  "installed": true,
+  "exact_bundle_readback": true,
+  "bundle": {
+    "bytes": 116224,
+    "sha256": "bac58c85c8c0dd0727ba6d73c1109cf24bab5e5df09c0f8c6a9b71011711b143"
+  },
+  "dashboard_single_card_changed": true,
+  "other_dashboard_resources_unchanged": 43,
+  "global_registry_changes": 0,
+  "physical_services_called": 0,
+  "user_confirmed_prior_render": true,
+  "native_acceptance_of_this_revision": false,
+  "local_browser_receipt": {
+    "viewport_widths": [
+      320,
+      390,
+      736
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "proof_groups": 9,
+    "errors": [],
+    "service_targets": "simulated",
+    "new_contracts": [
+      "explicit ambient temperature",
+      "enum appliance door inclusion",
+      "native entity icon state binding",
+      "nested and overlapping group deduplication",
+      "screen deployment and maximum travel",
+      "inverted position command and label",
+      "room and floor shutter batches excluding screens",
+      "additional level selection",
+      "unavailable partial batch",
+      "existing model marker positions",
+      "drag and keyboard persistence without actuation",
+      "cancelled drag preserves configuration",
+      "command movement preserves opening geometry"
+    ]
+  },
+  "interactive_preview": {
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "errors": [],
+    "placement_mode": true,
+    "commands": "local simulation"
+  },
+  "private_assets_in_repository": false,
+  "merged": false,
+  "hacs_release": false,
+  "ci_home_plan_browser": "local only; existing project CI separate",
+  "native_screenshot": {
+    "success": false,
+    "reason": "render timeout after 25 seconds; no image obtained",
+    "retried": false
+  }
+}
