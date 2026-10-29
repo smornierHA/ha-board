@@ -34,3 +34,5 @@ Les contrôles Personnes et météo restent exécutés. `scripts/check_garage.py
 ## Contrôles du Plan — signalements
 
 Le workflow applicatif existant exécute `tests/home-plan-notices.mjs` sur des données fictives : criticité, inconnus, piles et déduplication, sources/alias de TV et mode Art, consommables installés/faibles, exclusions, niveaux et récupération. Ce contrôle léger n’ajoute pas de workflow et ne remplace pas le banc navigateur local du Plan ni une recette native HA.
+
+Le lot tactile 0.3.0-rc.2 étend les contrats purs aux cycles **À récupérer** et aux robots sur base. Le banc navigateur local vérifie aussi pièces équipées au repos, niveaux d’éclairage et événements haptiques (unicité d’un groupe, propagation Shadow DOM, échec et absence en placement). Une émission DOM simulée ne prouve pas une vibration physique iOS.

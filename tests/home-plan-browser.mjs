@@ -121,6 +121,19 @@ try{
  await page.evaluate(()=>extra.remove());
  proof.push({explicit_ambient_temperature:true,enum_appliance_door:true,native_entity_icons:true,overlapping_lights_deduplicated:true,screen_deploy_retract:true,screen_90_limit:true,floor_batch_excludes_screen:true,batch_partial_unavailable:true,existing_marker_positions:true,drag_and_keyboard_persist_config:true,placement_never_actuates:true,aperture_geometry_preserved:true});
 
+ // Presence filters and light-level controls work even with every lamp off/contact closed.
+ await page.evaluate(()=>{hass={...hass,states:{...hass.states,'binary_sensor.example_window':{...hass.states['binary_sensor.example_window'],state:'off'},'light.example':{...hass.states['light.example'],state:'off'}}};card.hass=hass;window.haptics=[];window.addEventListener('haptic',e=>haptics.push({type:e.detail,bubbles:e.bubbles,composed:e.composed}));rejectService=false;});
+ await s.locator('[data-mode=lights]').click();assert.equal(await s.locator('.hpf-room-floor:not(.is-muted)').count(),1,'off lights still identify their room');
+ await s.locator('[data-mode=openings]').click();assert.equal(await s.locator('.hpf-room-floor:not(.is-muted)').count(),2,'closed contacts and motor apertures still identify equipped rooms');
+ await page.evaluate(async()=>{registry.areas=[{area_id:'west_area',name:'Ouest',floor_id:'main'},{area_id:'east_area',name:'Est',floor_id:'main'},{area_id:'upper_area',name:'Haut',floor_id:'upper'}];registry.floors=[{floor_id:'main',name:'Principal',level:0},{floor_id:'upper',name:'Supérieur',level:1}];registry.entities.push({entity_id:'light.upper',area_id:'upper_area'});hass={...hass,states:{...hass.states,'light.upper':{entity_id:'light.upper',state:'off',attributes:{friendly_name:'Lampe étage'}}}};card.hass=hass;card._registryLoaded=false;await card._startRegistry();});
+ await s.locator('[data-mode=lights]').click();await s.locator('[data-floor-lights]').click();assert.deepEqual(await s.locator('[data-light]').evaluateAll(nodes=>nodes.map(n=>n.dataset.light).sort()),['light.example','light.other'],'current level deduplicates native group members');await s.getByLabel('Niveau des lumières').selectOption('floor-upper');assert.equal(await s.locator('[data-light="light.upper"]').count(),1);
+ await s.locator('[data-light="light.upper"]').click();assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['light','turn_on',{}, {entity_id:'light.upper'}]);assert.deepEqual(await page.evaluate(()=>haptics.at(-1)),{type:'light',bubbles:true,composed:true});
+ const batchHaptics=await page.evaluate(async()=>{const start=haptics.length;await card._batch(['light.example','light.upper','light.example'],'turn_off');return haptics.slice(start).map(e=>e.type);});assert.deepEqual(batchHaptics,['light'],'one haptic per batch, no per-lamp burst');
+ const failedHaptics=await page.evaluate(async()=>{rejectService=true;const start=haptics.length;await card._send('light.upper','light.turn_on');rejectService=false;return haptics.slice(start).map(e=>e.type);});assert.deepEqual(failedHaptics,['light','failure']);
+ const skippedHaptics=await page.evaluate(async()=>{const start=haptics.length;card.editMode=true;await card._send('light.upper','light.turn_on');card.editMode=false;await card._send('cover.example','cover.set_cover_position',{position:NaN});return haptics.length-start;});assert.equal(skippedHaptics,0,'placement and rejected actions never acknowledge a command');
+ await s.locator('[data-close]').click();await s.locator('[data-mode=""]').click();
+ proof.push({equipped_rooms_highlighted_when_off_or_closed:true,light_controls_room_and_native_floor:true,haptic_event_crosses_shadow:true,single_haptic_per_batch:true,failure_haptic:true,no_placement_or_rejected_haptic:true});
+
  // Live tiered signals: location, recovery, Art mode and inventory/placement remain separate.
  await page.evaluate(async({config,states})=>{
   const cfg=structuredClone(config);cfg.notification_scope='home';cfg.notification_excluded_areas=['mobile'];
@@ -128,6 +141,9 @@ try{
   const more={
    'media_player.primary':{state:'on',attributes:{friendly_name:'TV de démonstration',device_class:'tv'}},
    'media_player.frame':{state:'on',attributes:{friendly_name:'État TV de démonstration',art_mode_status:'on'}},
+   'sensor.cycle':{state:'finished',attributes:{friendly_name:'Machine de démonstration',device_class:'enum',options:['run','finished']}},
+   'vacuum.docked':{state:'docked',attributes:{friendly_name:'Robot sur sa base',docked:true}},
+   'sensor.robot_task':{state:'drying',attributes:{}},
    'sensor.product':{state:'installed',attributes:{friendly_name:'Produit du robot'}},
    'binary_sensor.remote_leak':{state:'off',attributes:{friendly_name:'Fuite annexe',device_class:'moisture'}},
    'binary_sensor.low_battery':{state:'on',attributes:{friendly_name:'Pile faible',device_class:'battery'}},
@@ -136,13 +152,14 @@ try{
   };
   window.signalStates={...structuredClone(states),...more};Object.entries(signalStates).forEach(([id,s])=>s.entity_id=id);
   registry={entities:Object.keys(signalStates).map(entity_id=>({entity_id,area_id:entity_id.includes('remote')?'annex':entity_id.includes('mobile')?'mobile':entity_id.includes('smoke')||entity_id.includes('motor')?'east_area':'west_area',device_id:entity_id.includes('low_battery')?'same_battery':entity_id})),devices:[{id:'same_battery',name:'Capteur de démonstration',area_id:'west_area'}],areas:[{area_id:'west_area',name:'Ouest',floor_id:'main'},{area_id:'east_area',name:'Est',floor_id:'main'},{area_id:'annex',name:'Annexe',floor_id:'lower'},{area_id:'mobile',name:'Mobiles'}],floors:[{floor_id:'main',name:'Principal'},{floor_id:'lower',name:'Inférieur'}]};
-  cfg.rooms[0].entities.push('media_player.primary','sensor.product');window.signals=document.createElement('home-plan-card');signals.setConfig(cfg);signals.hass={...hass,states:signalStates};document.querySelector('main').append(signals);
+  cfg.rooms[0].entities.push('media_player.primary','sensor.product','sensor.cycle','vacuum.docked');cfg.notification_rules.push({id:'robot',entity:'vacuum.docked',state_entity:'sensor.robot_task',level:'info',states:['drying','washing','cleaning']});window.signals=document.createElement('home-plan-card');signals.setConfig(cfg);signals.hass={...hass,states:signalStates};document.querySelector('main').append(signals);
  },{config,states});await page.waitForFunction(()=>signals._model&&signals._registryLoaded);
  const sig=page.locator('home-plan-card').last();
  assert.equal(await sig.locator('[data-marker=smoke]').count(),0,'healthy detector hidden on normal plan');
  assert.equal(await sig.locator('[data-notice-summary=info]').count(),0,'Art mode is not equipment in service');
  assert.equal(await page.evaluate(()=>signals._format('media_player.primary')),'Mode Art');
  assert.match(await sig.locator('[data-notice-summary=maintenance]').innerText(),/1/,'same physical battery counted once, mobile excluded, installed product healthy');
+ assert.match(await sig.locator('[data-notice-summary=ready]').innerText(),/À récupérer/);await sig.locator('[data-notice-summary=ready]').click();assert.equal(await sig.locator('[data-notice]').count(),1);assert.match(await sig.locator('[data-notice]').innerText(),/Cycle terminé/);await sig.locator('[data-close]').click();
  const callCount=await page.evaluate(()=>calls.length);
  await page.evaluate(()=>{signalStates={...signalStates,'binary_sensor.example_smoke':{...signalStates['binary_sensor.example_smoke'],state:'on'},'binary_sensor.remote_leak':{...signalStates['binary_sensor.remote_leak'],state:'on'},'media_player.frame':{...signalStates['media_player.frame'],attributes:{art_mode_status:'off'}}};signals.hass={...hass,states:signalStates};});await page.evaluate(()=>signals.updateComplete);
  assert.equal(await sig.locator('[data-marker=smoke].is-alert').count(),1);assert.match(await sig.locator('[data-notice-summary=priority]').innerText(),/3/);assert.match(await sig.locator('[data-notice-summary=info]').innerText(),/1/);assert.equal(await sig.locator('.hpf-room-activity ha-state-icon').count(),1);

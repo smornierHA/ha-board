@@ -1,5 +1,5 @@
 /* Live presentation signals only; no recorder, notification delivery or device commands. */
-export const NOTICE_LEVELS = ['priority','maintenance','info'];
+export const NOTICE_LEVELS = ['priority','ready','maintenance','info'];
 const CRITICAL = new Set(['smoke','gas','moisture','carbon_monoxide']);
 const BAD = new Set(['unknown','unavailable']);
 const ACTIVE = new Set(['on','playing','paused','buffering','cleaning','returning']);
@@ -25,7 +25,7 @@ export function isEquipmentActive(s){
     return ['on','playing','paused','buffering'].includes(s.state);
   }
   if(domain==='fan')return s.state==='on';
-  if(domain==='vacuum')return ['cleaning','returning'].includes(s.state);
+  if(domain==='vacuum')return s.attributes?.docked!==true&&text(s.attributes?.docked)!=='true'&&['cleaning','returning'].includes(s.state);
   return false;
 }
 export function baseNotice(s,{opening=false,batteryThreshold=20}={}){
@@ -39,12 +39,15 @@ export function baseNotice(s,{opening=false,batteryThreshold=20}={}){
     if(low)return {level:'maintenance',kind:'battery',detail:n!==null?`Pile faible · ${n} %`:'Pile faible',icon:'mdi:battery-alert-variant-outline'};
   }
   if(domain==='binary_sensor'&&['problem','tamper','safety'].includes(cls)&&s.state==='on')return {level:'maintenance',kind:cls==='tamper'?'tamper':'fault',detail:cls==='tamper'?'Autoprotection à vérifier':'Défaut à vérifier',icon:'mdi:wrench-outline'};
-  if(domain==='sensor'&&cls==='enum'&&s.state==='finished'&&s.attributes.options?.includes('finished'))return {level:'maintenance',kind:'finished',detail:'Cycle terminé',icon:'mdi:check-circle-outline'};
+  if(domain==='sensor'&&cls==='enum'&&s.state==='finished'&&s.attributes.options?.includes('finished'))return {level:'ready',kind:'finished',detail:'Cycle terminé · à récupérer',icon:'mdi:check-circle-outline'};
   if(isEquipmentActive(s))return {level:'info',kind:'activity',detail:domain==='vacuum'?'Nettoyage en cours':domain==='fan'?'En fonctionnement':'En service',icon:domain==='vacuum'?'mdi:robot-vacuum':domain==='fan'?'mdi:fan':'mdi:television'};
   return null;
 }
 export function ruleNotice(rule,getState){
   if(rule.level==='ignore')return null;
+  // A station task can report washing/drying while the vacuum is docked.
+  const equipment=getState(rule.entity);
+  if(rule.level==='info'&&rule.entity?.startsWith('vacuum.')&&(!known(equipment)||['docked','charging'].includes(equipment.state)||equipment.attributes?.docked===true||text(equipment.attributes?.docked)==='true'))return null;
   const source=rule.state_entity||rule.entity;
   const condition={...rule,entity:source};
   if(rule.states===undefined&&rule.below===undefined&&rule.above===undefined)condition.states=rule.level==='info'?[...ACTIVE]:[...POSITIVE];

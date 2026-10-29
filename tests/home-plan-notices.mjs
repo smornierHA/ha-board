@@ -13,7 +13,7 @@ for(const value of ['high','21','unknown','unavailable',''])assert.equal(baseNot
 assert.equal(baseNotice(state('sensor.battery','low',{device_class:'battery'})).kind,'battery');
 assert.equal(baseNotice(state('binary_sensor.battery','on',{device_class:'battery'})).kind,'battery');
 assert.equal(baseNotice(state('binary_sensor.fault','on',{device_class:'problem'})).level,'maintenance');
-assert.equal(baseNotice(state('sensor.cycle','finished',{device_class:'enum',options:['finished','run']})).kind,'finished');
+assert.equal(baseNotice(state('sensor.cycle','finished',{device_class:'enum',options:['finished','run']})).level,'ready');
 assert.equal(baseNotice(state('sensor.cycle','run',{device_class:'enum',options:['finished','run']})),null);
 assert.equal(isEquipmentActive(state('media_player.example','on')),true);
 assert.equal(isEquipmentActive(state('media_player.example','on',{art_mode_status:'on'})),false);
@@ -53,3 +53,14 @@ states['binary_sensor.smoke'].state='off';assert.ok(!buildNotices(args).some(n=>
 assert.ok(!buildNotices({...args,scope:'plan'}).some(n=>n.entity==='binary_sensor.remote_flood'));
 const fallbackStates={'binary_sensor.aggregate':state('binary_sensor.aggregate','on'),'sensor.fluid':state('sensor.fluid','low')};const detailRules=[{id:'fluid',entity:'sensor.fluid',level:'maintenance',states:['low']},{id:'aggregate',entity:'binary_sensor.aggregate',level:'maintenance',states:['on'],fallback_for:['fluid']}];assert.equal(buildNotices({states:fallbackStates,rules:detailRules}).length,1,'aggregated helper does not duplicate a detailed issue');fallbackStates['sensor.fluid'].state='normal';assert.equal(buildNotices({states:fallbackStates,rules:detailRules}).length,1,'aggregate remains a fallback for unmodeled maintenance');
 console.log('Home Plan signals: severity, safety unknowns, current recovery, battery dedup, Art mode/alias, consumables, floors and exclusions OK.');
+
+for(const value of ['docked','charging','idle','paused','unavailable','unknown'])assert.equal(isEquipmentActive(state('vacuum.test',value)),false);
+assert.equal(isEquipmentActive(state('vacuum.test','cleaning',{docked:true})),false);
+assert.equal(isEquipmentActive(state('vacuum.test','returning',{docked:false})),true);
+const robotRule={id:'robot',entity:'vacuum.test',state_entity:'sensor.robot_task',level:'info',states:['cleaning','returning','washing','drying']};
+for(const task of ['washing','drying','cleaning'])assert.equal(ruleNotice(robotRule,id=>id==='vacuum.test'?state(id,'docked',{docked:true}):state(id,task)),null,'base overrides a station task or stale activity');
+assert.equal(ruleNotice(robotRule,id=>id==='vacuum.test'?state(id,'cleaning',{docked:false}):state(id,'cleaning')).level,'info');
+const cycleStates={'sensor.washer':state('sensor.washer','finished',{device_class:'enum',options:['run','finished']})};
+assert.equal(buildNotices({states:cycleStates,rooms:[{id:'laundry',entity_ids:Object.keys(cycleStates)}]})[0].level,'ready');
+cycleStates['sensor.washer'].state='run';assert.equal(buildNotices({states:cycleStates,rooms:[{id:'laundry',entity_ids:Object.keys(cycleStates)}]}).length,0);
+console.log('Cycles ready for collection and docked robot exclusion OK.');

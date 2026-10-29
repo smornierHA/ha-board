@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-29",
+  "version": "0.3.0-rc.2",
+  "installed": true,
+  "bundle_bytes": 145800,
+  "bundle_sha256": "93d29e2df9e2067e60b0fbf1ad67b6b8e0e34e3bcc517a20ac7fae373e2e2cf0",
+  "exact_ha_file_readback": true,
+  "dashboard_single_card_changed": true,
+  "other_resources_unchanged": 43,
+  "device_area_changes": 1,
+  "entity_identity_enabled_icon_preserved": true,
+  "user_marker_positions_and_screen_policy_preserved": true,
+  "real_equipment_service_calls": 0,
+  "browser_contracts": {
+    "proof_groups": 11,
+    "errors": [],
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "services": "simulated"
+  },
+  "haptics": {
+    "native_event_contract": "Event haptic, detail light/failure/warning, bubbles and composed true",
+    "one_initial_per_batch": true,
+    "physical_ios_test": false,
+    "sources": [
+      "home-assistant/frontend src/data/haptics.ts blob 55fab84f604a9cea50def54cc30b02d979685a36",
+      "home-assistant/frontend src/common/dom/fire_event.ts blob 3fe1f5103a5fde8d304fd538ef20d801ad56d6b4",
+      "https://companion.home-assistant.io/docs/integrations/haptics/"
+    ]
+  },
+  "changes": [
+    "ready collection category separate from maintenance",
+    "highlight equipment presence including off/closed",
+    "light groups by room and native floor",
+    "exclude docked robot including station tasks",
+    "remove decorative glass-bay arrow"
+  ],
+  "shutter_illustrations_preserved": true,
+  "native_browser_acceptance_of_this_revision": false,
+  "merged": false,
+  "hacs_release": false,
+  "private_data_in_git": false
+}
