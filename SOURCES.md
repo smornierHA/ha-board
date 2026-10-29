@@ -1,5 +1,43 @@
 # Sources de référence
 
+## Plan — alignements et activation 0.6.0-rc.2
+
+La correction utilisateur du 29 octobre et son visuel priment sur l’ancienne interprétation du profil STOP. Les six modes HVAC relus sont Chauffage ; idle désigne le repos, pas une désactivation. Référence technique primaire relue : [Climate Home Assistant](https://www.home-assistant.io/integrations/climate/) (mode et `hvac_action` distincts). La géométrie et les proportions domestiques sont conservées dans la référence privée ; aucune donnée réelle n’est ajoutée au dépôt public. Les guides HA dashboard/safe-refactoring/device-control sont relus avant la pose ciblée.
+
+## Plan — chauffage 0.6.0-rc.1
+
+La logique pure des capacités et états de thermostat vit dans `src/candidate/home-plan-climate.js`, ses contrats dans `tests/home-plan-climate.mjs`. La carte et son CSS maintenus sont reconstruits dans le bundle autonome. Les services natifs et les attributs réellement disponibles sont autoritaires ; les associations privées ne rejoignent pas Git. Documentation de référence : Home Assistant Climate et Climate entity, consultées le 29 octobre 2026. Voir `docs/HOME-PLAN.md` et la preuve du lot.
+
+## Plan — modèle annoté et progression extérieure 0.5.0-rc.2
+
+Le modèle privé corrigé suit l’annotation utilisateur qui prime sur l’ancien permis. Seul le support générique du décalage de progression, son contrat navigateur et les preuves expurgées rejoignent Git. Les géométries, placards, identités et positions domestiques restent privés. `src/candidate/home-plan-card.js` et le bundle autonome sont à 0.5.0-rc.2 ; le premier niveau et les autres cartes sont conservés.
+
+## Plan — niveaux et focus 0.5.0-rc.1
+
+Sources maintenues : `src/candidate/home-plan-card.js`, CSS et `home-plan-notices.js`. Bundle autonome figé sous `candidates/home-plan/`, provenance régénérée. Les plans, photos, illustrations, associations et positions réelles restent hors Git. La géométrie privée du second niveau dérive du PDF fourni ; les nouvelles illustrations dérivent des photos fournies. La configuration native active reste autoritaire pour les positions. Voir `docs/HOME-PLAN.md` et `evidence/home-plan-levels-2026-10-29.json`. Le package HACS et ses distributions sont inchangés.
+
+## Plan — récupération et repères d’appareil du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.4.0-rc.1** lit un suivi natif persistant de récupération : fin de programme puis ouverture réelle ultérieure de la porte, sans réapparition après reconnexion. Deux sources programme/porte vérifiées sont raccordées ; un appareil sans porte disponible reste hors de cette automatisation. Les signalements d’un même appareil partagent un seul repère, coloré selon le plus prioritaire, avec compteur et détail ordonné ; filtres indépendants et piles dédupliquées restent distincts. **Piles** devient une catégorie dédiée. Repères déplaçables, masqués sans signalement et accessibles au placement ; activité discrète et illustrations conservées. Géométrie, photos, états et identités domestiques restent privés. Automatisations créées et relues ; contrats purs et banc navigateur local sur services simulés, 12 groupes réussis. Module installé sur l’accueil, fichiers et configuration relus à l’identique ; une carte/ressource actualisée et 43 autres ressources conservées. Aucun appareil physique commandé, chargement utilisateur de cette révision et cycle complet non revendiqués. Preuve : `evidence/home-plan-collection-2026-10-29.json`. Aucune fusion/release HACS. Voir `docs/HOME-PLAN-COLLECTION.md` et `docs/HOME-PLAN.md`.
+
+
+## Plan — usages tactiles et tâches du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.3.0-rc.2** sépare les cycles terminés dans **À récupérer**, conserve **Entretien** pour piles/filtres/consommables, et exclut les robots sur leur base du compteur actif. Lumières et Ouvertures mettent en évidence les pièces équipées même au repos. Les lumières se commandent par pièce ou niveau ; les autres niveaux suivent les associations natives HA. Retour haptique natif à l’envoi d’une action, distinct en cas d’échec, sans rafale par lampe pour un groupe ; recette physique iOS non revendiquée. Une association de zone est corrigée, la flèche de baie retirée, les illustrations et positions conservées. Tests purs et 11 groupes navigateur sur services simulés réussis. Géométrie et identités domestiques restent privées. Installé sur l’accueil ; module, modèle, guide et configuration relus à l’identique, 43 autres ressources conservées. Chargement de cette révision et vibration physique à confirmer dans l’app utilisateur. Preuve : `evidence/home-plan-actions-2026-10-29.json`. Aucune fusion ni release HACS.
+
+
+## Plan — signalements du 29 octobre 2026
+
+Le candidat autonome **Plan de la maison 0.3.0-rc.1** organise les priorités, la maintenance et les informations d’activité par équipement, pièce et niveau. Les détecteurs au repos sont masqués sur le plan ; un mode Art confirmé n’est pas une TV en service. Jauges et centrage des icônes corrigés, illustrations des volets conservées et préférence consignée. Les positions modifiées par l’utilisateur sont préservées. Géométrie, associations et règles domestiques restent privées. Un seul appareil change de zone conformément à la demande. Contrats purs raccordés au workflow existant et banc navigateur local sur services simulés ; aucun moteur actionné. Voir `docs/HOME-PLAN.md` et la preuve du lot. Pas de changement du package HACS, fusion ou release.
+
+## Plan familial — améliorations du 29 octobre 2026
+
+Le retour utilisateur confirme le chargement du premier candidat et précise les corrections de géométrie/repères. Le candidat autonome **0.2.0-rc.2** ajoute le placement visuel des repères existants, les lumières sur le plan, les volets groupés par pièce/niveau, le traitement distinct des écrans avec limite de course, les équipements regroupés par appareil et la sélection explicite de température ambiante. Les icônes sont natives HA. Les originaux, géométrie et bindings domestiques restent hors Git public. Tests navigateur sur bundle figé et services simulés ; aucune commande physique de test. État d’installation et limites : `docs/HOME-PLAN.md`, preuve datée du lot. Le package HACS courant, les autres composants et les associations globales ne sont pas modifiés.
+
+## Plan familial — 25 octobre 2026
+
+Le dessin installé et son ancienne archive ne sont pas une référence géométrique valide selon la correction utilisateur. Le calque V4 annoté et les photos reçus ensuite sont les sources de la nouvelle proposition privée. Les originaux et le modèle de l’habitation restent hors Git public. La conversion brute des annotations conserve leurs pixels pour référence ; la correction suivante de l’utilisateur impose des murs droits et les seuls pans coupés indiqués. Elle prime sur les irrégularités du tracé initial. Les illustrations de pièces dérivent des photos reçues. Aucun de ces éléments ne prétend créer des mesures architecturales ou prouver une association ouverture/volet non vérifiée. La demande suivante autorise l’intégration native et corrige le volet de porte, la porte extérieure, la commande motorisée et les emplacements des détecteurs. Les associations et capacités sont relues dans HA ; le code primaire tydom2mqtt 3.5.3 confirme le TOGGLE commun aux deux payloads de ses commandes de porte. API frontend : documentation officielle cartes/éditeur consultée le 25 octobre 2026 (contributors.home-assistant.io/frontend/custom-ui/card/ et card-editor/). Voir `docs/HOME-PLAN-PREVIEW.md`.
+
 Consultation: 6 septembre 2026. Revalider avant une intervention dépendant d’une version. Les résumés sont des repères; les liens ne prouvent pas la compatibilité de notre installation.
 
 | ID | Source | Usage |

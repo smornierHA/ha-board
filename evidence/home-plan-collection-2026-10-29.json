@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-29",
+  "version": "0.4.0-rc.1",
+  "installed": true,
+  "bundle_bytes": 151713,
+  "bundle_sha256": "a3480f55c2242b456f5821e7da69bf3985a85d91137f479d375366c96bb0b143",
+  "exact_ha_file_and_dashboard_readback": true,
+  "other_resources_unchanged": 43,
+  "geometry_unchanged": true,
+  "existing_marker_positions_preserved": true,
+  "native_collection": {
+    "helpers_created": 2,
+    "automations_created": 2,
+    "exact_config_readback": true,
+    "mode": "queued",
+    "persistent_helper": "input_select without initial",
+    "door_trigger_types": [
+      "native door.opened for binary door",
+      "explicit known closed/locked to open for enum"
+    ],
+    "real_enum_door_transition_observed": true,
+    "one_time_bootstrap_from_observation": true,
+    "full_physical_cycle_tested": false,
+    "unsupported_power_only_appliance": "not automatically inferred",
+    "startup_reconciliation": true
+  },
+  "notifications": {
+    "physical_device_wrapper": true,
+    "independent_filter_actions": true,
+    "dedicated_battery_category": true,
+    "strongest_priority_color": true,
+    "count_and_ordered_detail": true,
+    "inactive_wrapper_hidden_and_editable": true,
+    "active_info_subtle": true
+  },
+  "tests": {
+    "pure_notifications": "passed",
+    "generated_native_collection_scenarios": "passed",
+    "browser_proof_groups": 12,
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "ha_services": "doubles",
+    "errors": []
+  },
+  "equipment_services_called": 0,
+  "helper_bootstrap_service_calls": 1,
+  "native_frontend_load_verified": false,
+  "private_data_in_git": false,
+  "merged": false,
+  "hacs_release": false
+}

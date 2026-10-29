@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-25",
+  "status": "rectified-private-plan-with-shutter-controls-and-room-illustrations-prepared",
+  "source": {
+    "path": "examples/home-plan-family.fragment.html",
+    "bytes": 44492,
+    "sha256": "920e7cf7c6d09e854ee591637ab79f258ef11bcca2bef1ce1d94de4dc1500373"
+  },
+  "public_fixture": "entirely fictional geometry and states; no domestic assets",
+  "browser": "Chromium 133, local Playwright harness, simulated host-provided icons",
+  "checks": [
+    {
+      "kind": "private",
+      "width": 320,
+      "scheme": "light",
+      "overflow": false,
+      "height": 678.84375
+    },
+    {
+      "kind": "private",
+      "width": 320,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 678.84375
+    },
+    {
+      "kind": "private",
+      "width": 390,
+      "scheme": "light",
+      "overflow": false,
+      "height": 740.6875
+    },
+    {
+      "kind": "private",
+      "width": 390,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 740.6875
+    },
+    {
+      "kind": "private",
+      "width": 736,
+      "scheme": "light",
+      "overflow": false,
+      "height": 942.84375
+    },
+    {
+      "kind": "private",
+      "width": 736,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 942.84375
+    },
+    {
+      "kind": "private",
+      "light_toggle": true,
+      "cover_position": true,
+      "stop_feedback": true,
+      "extra_details": true,
+      "alerts_to_room": true,
+      "rooms_view": true,
+      "filters": true,
+      "keyboard": true,
+      "native_vertical_touch": true,
+      "photos_and_reference": true,
+      "quick_shutter_controls": true,
+      "actual_window_stroke_click": true,
+      "physical_contact_independent": true,
+      "nonoverlapping_44px_targets": true,
+      "multiple_room_shutters": true,
+      "no_services": true
+    },
+    {
+      "kind": "fictional",
+      "width": 320,
+      "scheme": "light",
+      "overflow": false,
+      "height": 563.703125
+    },
+    {
+      "kind": "fictional",
+      "width": 320,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 563.703125
+    },
+    {
+      "kind": "fictional",
+      "width": 390,
+      "scheme": "light",
+      "overflow": false,
+      "height": 545.90625
+    },
+    {
+      "kind": "fictional",
+      "width": 390,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 545.90625
+    },
+    {
+      "kind": "fictional",
+      "width": 736,
+      "scheme": "light",
+      "overflow": false,
+      "height": 705.78125
+    },
+    {
+      "kind": "fictional",
+      "width": 736,
+      "scheme": "dark",
+      "overflow": false,
+      "height": 705.78125
+    },
+    {
+      "kind": "fictional",
+      "light_toggle": true,
+      "cover_position": true,
+      "stop_feedback": true,
+      "extra_details": true,
+      "alerts_to_room": true,
+      "rooms_view": true,
+      "filters": true,
+      "keyboard": true,
+      "native_vertical_touch": true,
+      "photos_and_reference": false,
+      "quick_shutter_controls": true,
+      "actual_window_stroke_click": true,
+      "physical_contact_independent": true,
+      "nonoverlapping_44px_targets": true,
+      "multiple_room_shutters": false,
+      "no_services": true
+    }
+  ],
+  "errors": [],
+  "source_correction": "User approved the overall interface, clarified that walls are straight except the specified bevels, and asked to move an opening. Corrected private geometry follows that instruction instead of raw freehand pixel contours.",
+  "structural_trace": {
+    "previous_pixel_coverage_trace": "Retained as source-reading evidence only; not the geometry of the rectified proposal.",
+    "current_method": "Straight architectural segments inferred from the supplied reference and explicit user correction; only the named bevels retained.",
+    "new_proposal_exact_pixel_coverage": false,
+    "no_architectural_measurement_claimed": true,
+    "geometry_acceptance_pending": true
+  },
+  "private_assets": "Original plan, dwelling coordinates, photos and generated room illustrations excluded from public Git",
+  "ha_changed": false,
+  "real_services_called": false,
+  "native_ha_acceptance": false,
+  "native_iphone_acceptance": false,
+  "published": false,
+  "geometry_accepted": false,
+  "illustrated_rooms": 7,
+  "shutter_control": {
+    "direct_window_stroke": true,
+    "quick_actions": [
+      "open",
+      "stop",
+      "close"
+    ],
+    "position_percent_is_open_fraction": true,
+    "contact_state_independent": true,
+    "multiple_shutters_independent": true,
+    "unverified_mapping_not_assumed": true
+  }
+}

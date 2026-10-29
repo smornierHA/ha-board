@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-29",
+  "component": "custom:home-plan-card",
+  "version": "0.6.0-rc.2",
+  "bundle": {
+    "bytes": 183478,
+    "sha256": "767a2e8bc4da936c8d681be6c8692a05eee9f5ff6e8bb1b789d9258e12160e1c"
+  },
+  "local_browser_proof_groups": 17,
+  "public_browser_proof_groups": 14,
+  "native_files_readback_equal": 3,
+  "dashboard_readback_equal": true,
+  "other_resources_unchanged": 43,
+  "native_hvac_mode_owns_activation": true,
+  "stop_preset_never_overrides_heat_mode": true,
+  "reported_idle_means_enabled_at_rest": true,
+  "native_hvac_commands_distinct_from_profiles": true,
+  "rendered_preview_dimensions_match": true,
+  "private_plan_geometry_corrected": true,
+  "shutter_screen_illustrations_preserved": true,
+  "physical_equipment_services": 0,
+  "native_frontend_load_verified": false,
+  "private_bindings_in_git": false,
+  "ci_status": "pending",
+  "merged": false,
+  "hacs_release": false
+}

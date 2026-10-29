@@ -30,3 +30,23 @@ Le workflow installe strictement `package-lock.json`, construit Garage avec `lit
 Le banc Chrome compare l’export original, la source construite et le module distribué sur données/images fictives, produit les captures et exerce sur source et bundle la reconnexion caméra sans fermer le dialogue, l’unicité de la caméra sélectionnée, l’annulation après reconfiguration/détachement et le rejet d’une erreur tardive. L’égalité visuelle du banc n’est pas une recette native HA. Les tests Python rejouent la méthode HACS installée sur trois ressources HA-BOARD fictives, une mise à jour ultérieure et le rollback Garage seul, sans rejouer la migration météo réelle.
 
 Les contrôles Personnes et météo restent exécutés. `scripts/check_garage.py` exige leurs tailles et SHA256 inchangés avant d’accepter la distribution Garage.
+
+## Contrôles du Plan — signalements
+
+Le workflow applicatif existant exécute `tests/home-plan-notices.mjs` sur des données fictives : criticité, inconnus, piles et déduplication, sources/alias de TV et mode Art, consommables installés/faibles, exclusions, niveaux et récupération. Ce contrôle léger n’ajoute pas de workflow et ne remplace pas le banc navigateur local du Plan ni une recette native HA.
+
+Le lot tactile 0.3.0-rc.2 étend les contrats purs aux cycles **À récupérer** et aux robots sur base. Le banc navigateur local vérifie aussi pièces équipées au repos, niveaux d’éclairage et événements haptiques (unicité d’un groupe, propagation Shadow DOM, échec et absence en placement). Une émission DOM simulée ne prouve pas une vibration physique iOS.
+
+Le lot 0.4.0-rc.1 ajoute `tests/home-plan-collection.mjs` au même job et étend les tests de signalements aux groupes d’appareil, causes indépendantes, ordre de priorité et piles dédiées. Les simulations navigateur restent locales ; une validation de configuration HA et une trace de porte réelle ne prouvent pas un cycle physique complet.
+
+## Contrôles Plan — 0.5.0-rc.1
+
+Le workflow existant reconstruit le bundle Plan et exige son égalité avec le candidat figé, puis exécute le banc Playwright Core verrouillé sur Chrome/Chromium disponible. Aucune donnée privée ni commande HA réelle. Douze groupes fictifs couvrent les commandes, positions et cycle de vie, les signalements, puis l’isolation des niveaux, le focus, la température ambiante du chauffage et le retour depuis un modèle en erreur. Les deux groupes supplémentaires locaux utilisant les modèles et illustrations privés ne sont pas exportés en CI. Les captures privées sont des preuves locales, pas des artefacts publics. La validation navigateur ne prouve ni chargement dans l’app HA ni mouvement physique d’un appareil.
+
+Le contrat navigateur 0.5.0-rc.2 vérifie aussi une ouverture horizontale dont la progression est dessinée au-dessus du mur, avec maintien des commandes du niveau et de la convention des ouvertures non configurées. Les corrections de modèle domestique sont contrôlées visuellement en local ; aucune géométrie réelle n’est exportée en CI.
+
+## Contrôles Plan — chauffage 0.6.0-rc.1
+
+Le workflow existant exécute les contrats purs du chauffage puis 14 groupes navigateur fictifs sur le bundle figé : ciblage des services, limites et pas, profils natifs, lecture seule/indisponibilité, distinction demande/retour, acquittement ou délai expiré, contradiction Arrêt/chauffe, périmètre du niveau, échec partiel, haptique, placement sans commande, responsive/thèmes et nettoyage. Trois groupes privés supplémentaires restent locaux (17 au total). Aucun équipement réel actionné ; géométrie et états domestiques exclus des artefacts CI.
+
+Le lot 0.6.0-rc.2 corrige l’activation : heat + STOP reste activé ; idle/off de l’activité n’éteint pas le mode Chauffage. Le banc vérifie les services HVAC même quand des profils existent et le maintien du retour natif après envoi. Les trois groupes privés comparent aussi les dimensions rendues des deux vignettes. La fausse alerte STOP/chauffe est supprimée ; un mode réellement off avec une activité de chauffe reste signalé.

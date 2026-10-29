@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "build:garage": "node scripts/build_garage.mjs",
-    "test:garage": "node tests/garage-contracts.mjs"
+    "test:garage": "node tests/garage-contracts.mjs",
+    "build:plan": "node scripts/build_home_plan.mjs",
+    "test:plan": "node tests/home-plan-browser.mjs"
   },
   "dependencies": {
     "lit-element": "4.2.0"
   },
   "devDependencies": {
-    "esbuild": "0.25.9"
+    "esbuild": "0.25.9",
+    "playwright-core": "1.62.1"
   }
 }

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-29",
+  "version": "0.3.0-rc.1",
+  "scope": "standalone Home Plan candidate",
+  "installed": true,
+  "bundle_bytes": 142228,
+  "bundle_sha256": "0f41f9c006c924785545520833fe0c9087aba3e71018ea0549e5ec861c79a368",
+  "exact_ha_file_readback": true,
+  "dashboard_single_card_changed": true,
+  "other_resources_unchanged": 43,
+  "device_area_changes": 1,
+  "inherited_entity_associations_verified": 2,
+  "identities_and_enabled_flags_preserved": true,
+  "user_marker_positions_preserved": true,
+  "real_equipment_service_calls": 0,
+  "generic_signal_contracts": "tests/home-plan-notices.mjs; added to existing workflow",
+  "browser_contracts": {
+    "proof_groups": 10,
+    "errors": [],
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "services": "simulated"
+  },
+  "visual_qa": {
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "icon_box_centering": "all measured deviations below 1px with local HA icon doubles",
+    "errors": []
+  },
+  "user_preference": "Preserve shutter and screen miniature illustrations",
+  "private_reference": "house geometry, device IDs, states and photos stay outside Git",
+  "native_browser_acceptance_of_this_revision": false,
+  "merged": false,
+  "hacs_release": false,
+  "verified_leak_signal_with_generic_device_class": "explicit priority rule; no global device-class override"
+}

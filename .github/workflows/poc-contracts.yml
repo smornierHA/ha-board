@@ -40,6 +40,16 @@ jobs:
           POC_SOURCE_DIR: ${{ github.workspace }}/src/candidate
           POC_REPORT_DIR: ${{ github.workspace }}/artifacts
         run: node tests/contracts.mjs
+      - name: Home Plan live signal contracts
+        run: |
+          node tests/home-plan-notices.mjs
+          node tests/home-plan-collection.mjs
+          node tests/home-plan-climate.mjs
+      - name: Home Plan frozen bundle and fictitious browser contracts
+        run: |
+          node scripts/build_home_plan.mjs
+          git diff --exit-code -- candidates/home-plan/home-plan-card.js
+          node tests/home-plan-browser.mjs
       - name: Historical address adapter contracts
         run: node tests/history-address-adapter.mjs
       - name: Build and test HACS entrypoint

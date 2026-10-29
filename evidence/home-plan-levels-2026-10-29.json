@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-29",
+  "component": "custom:home-plan-card",
+  "candidate_version": "0.5.0-rc.1",
+  "standalone": true,
+  "bundle": {
+    "bytes": 159308,
+    "sha256": "f4aaafbddb759211f4d6835b83f3ca8aa2f3e0ab431172fe79699ea4df2333e4"
+  },
+  "local_browser_proof_groups": 14,
+  "public_browser_groups": 12,
+  "private_browser_groups": 2,
+  "native_files_readback_equal": 19,
+  "dashboard_readback_equal": true,
+  "other_resources_unchanged": 43,
+  "physical_equipment_services": 0,
+  "native_frontend_load_verified": false,
+  "private_geometry_and_assets_in_git": false,
+  "ci_status": "pending",
+  "merged": false,
+  "hacs_release": false
+}
