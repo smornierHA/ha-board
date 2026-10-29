@@ -44,6 +44,7 @@ jobs:
         run: |
           node tests/home-plan-notices.mjs
           node tests/home-plan-collection.mjs
+          node tests/home-plan-climate.mjs
       - name: Home Plan frozen bundle and fictitious browser contracts
         run: |
           node scripts/build_home_plan.mjs

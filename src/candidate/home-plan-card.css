@@ -296,3 +296,49 @@
     .hpf-levels button { border:0; border-radius:9px; min-height:44px; padding:7px 9px; background:transparent; color:var(--hp-secondary); font:inherit; font-size:12px; font-weight:600; }
     .hpf-levels button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-ink); }
     .hpf-home > .hpf-levels { margin:12px 16px; width:fit-content; }
+    .hpf-temperature-reading { display:inline-flex; align-items:center; gap:3px; }
+    .hpf-temperature-reading ha-icon { --mdc-icon-size:11px; width:11px; height:11px; }
+    .hpf-temperature-reading.is-heating { color:var(--hp-orange); }
+    .hpf-temperature-reading.is-conflict { color:var(--hp-amber); }
+    .hpf-room-name .hpf-heat-map-target { font-size:10px; color:var(--hp-blue); }
+    .hpf-climate-shortcut { width:100%; display:flex; align-items:center; gap:10px; min-height:58px; border:0; border-radius:15px; padding:12px; margin:0 0 10px; background:var(--hp-selected); color:var(--hp-ink); text-align:left; }
+    .hpf-climate-shortcut > span { flex:1; font-size:12px; }
+    .hpf-climate-shortcut strong { display:block; margin-top:3px; font-size:12px; color:var(--hp-secondary); font-weight:500; }
+    .hpf-climate-sheet .hpf-sheet-head { margin-bottom:12px; }
+    .hpf-thermostat { padding:14px; border-radius:20px; background:var(--hp-soft); margin-bottom:10px; }
+    .hpf-thermostat-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .hpf-thermostat-head > span { display:flex; align-items:center; gap:8px; min-width:0; }
+    .hpf-thermostat-head strong { font-size:12px; line-height:1.3; }
+    .hpf-thermostat-head ha-state-icon { width:20px; height:20px; --mdc-icon-size:20px; color:var(--hp-secondary); }
+    .hpf-heat-status { display:flex; align-items:center; justify-content:center; gap:5px; margin:4px 0; font-size:12px; color:var(--hp-secondary); }
+    .hpf-heat-status ha-icon { width:14px; height:14px; --mdc-icon-size:14px; }
+    .hpf-heat-status.heating { color:var(--hp-orange); }
+    .hpf-heat-status.conflict { color:var(--hp-amber); }
+    .hpf-thermostat-dial { display:grid; grid-template-columns:48px 1fr 48px; align-items:center; gap:8px; max-width:340px; margin:10px auto 12px; }
+    .hpf-thermostat-dial > div { text-align:center; }
+    .hpf-thermostat-dial button { width:48px; height:48px; display:grid; place-items:center; border:0; border-radius:50%; background:var(--hp-paper); color:var(--hp-ink); }
+    .hpf-thermostat-dial button ha-icon { width:22px; height:22px; --mdc-icon-size:22px; }
+    .hpf-heat-setpoint-label { font-size:11px; color:var(--hp-secondary); }
+    .hpf-thermostat-dial output { display:block; font-size:clamp(38px,7vw,48px); line-height:1.2; font-weight:500; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; }
+    .hpf-heat-measurement { display:flex; align-items:baseline; justify-content:center; flex-wrap:wrap; gap:4px 6px; font-size:11px; color:var(--hp-secondary); text-align:center; }
+    .hpf-heat-measurement strong { color:var(--hp-ink); font-size:14px; }
+    .hpf-heat-measurement > span { flex-basis:100%; font-size:10px; }
+    .hpf-heat-pending,.hpf-heat-conflict { margin:10px 0; font-size:11px; color:var(--hp-amber); text-align:center; line-height:1.4; }
+    .hpf-heat-presets { display:grid; grid-template-columns:repeat(var(--preset-count,3),minmax(0,1fr)); gap:3px; margin-top:14px; padding:3px; border-radius:12px; background:var(--hp-paper); }
+    .hpf-heat-presets button { min-width:0; min-height:44px; padding:4px 2px; border:0; border-radius:9px; background:transparent; font-size:clamp(10px,2.6vw,11px); color:var(--hp-secondary); white-space:nowrap; }
+    .hpf-heat-presets button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-blue); font-weight:650; }
+    .hpf-heat-overview { display:flex; flex-wrap:wrap; gap:10px; padding:4px 0 14px; font-size:12px; color:var(--hp-secondary); }
+    .hpf-heat-room { display:flex; align-items:center; gap:10px; text-align:left; width:100%; min-height:66px; border:0; border-bottom:1px solid var(--hp-line); background:transparent; padding:10px 0; }
+    .hpf-heat-room > span:first-of-type { flex:1; min-width:0; }
+    .hpf-heat-room strong { display:block; font-size:13px; }
+    .hpf-heat-room small { display:block; margin-top:4px; font-size:11px; color:var(--hp-secondary); }
+    .hpf-heat-room-values { text-align:right; font-variant-numeric:tabular-nums; }
+    .hpf-heat-room-values small { color:var(--hp-blue); }
+    .hpf-heat-room.heating > ha-icon { color:var(--hp-orange); }
+    .hpf-heat-room.conflict > ha-icon,.hpf-heat-room.conflict > span:first-of-type small { color:var(--hp-amber); }
+    .hpf-heat-batch { border:1px solid var(--hp-line); border-radius:14px; padding:0 12px 12px; margin-top:14px; }
+    .hpf-heat-batch summary { min-height:44px; padding:14px 0 6px; cursor:pointer; font-size:12px; }
+    .hpf-heat-batch label { display:flex; flex-direction:column; gap:6px; margin-top:8px; font-size:12px; }
+    .hpf-heat-batch select { min-height:44px; width:100%; border:1px solid var(--hp-line); border-radius:10px; background:var(--hp-paper); color:var(--hp-ink); padding:8px; }
+    .hpf-heat-batch p { font-size:11px; color:var(--hp-secondary); }
+    .hpf-heat-batch > button { width:100%; min-height:44px; border:0; border-radius:11px; color:var(--hp-blue); background:var(--hp-selected); }

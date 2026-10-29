@@ -1,26 +1,26 @@
 {
-  "version": "0.5.0-rc.2",
+  "version": "0.6.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 80225,
-      "sha256": "6643b82b3453db479ac33aaebd5cbc6faf3d53e5cc731ab31f39b6a3f21cc3ea"
+      "bytes": 93015,
+      "sha256": "dc3087ee0245e7799a58326515386ddbc0a2fe2f488865ea4a5f76498de792ff"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 30114,
-      "sha256": "514fdebccdf66e3619bdb74e441c36db996254b24a64b63fda678115a2ccccdc"
+      "bytes": 35124,
+      "sha256": "1ac665edb83c630bf139b07fede322976d3c1342f7e3df69fc1abe05a29c8434"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "aacf9d3b1b61bc7804879170c081f55d53d1074a4a806ee4e923849673e23a96"
+      "sha256": "be4a857fea8204f8d1934a639512a2e0bf62545227fe95c2e362327b13381905"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 45210,
-      "sha256": "3c866b5e36319ceb44f0980e459498b60d8d34fd1344b2586335b2f814a0d462"
+      "bytes": 53380,
+      "sha256": "2d5d981c0bb40382e2c9018cad29275a6c0ef89f0063b3e397b269431491d0e6"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 159562,
-      "sha256": "08983ddcd2bf4df7e19073989c1f44c911208da4758ad6b10abc176d3e2e896c"
+      "bytes": 182150,
+      "sha256": "e907f7472aaa986959b5ea4183fb5eacfa3f4bc7f2096b7df6df53e29bb58d18"
     },
     "src/candidate/home-plan-notices.js": {
       "bytes": 9725,
@@ -47,13 +47,21 @@
       "sha256": "307db15cd68fa81f5ff8e94a4ae196dc456b894ae3e19e1f90acecab412ef9c4"
     },
     ".github/workflows/poc-contracts.yml": {
-      "bytes": 4140,
-      "sha256": "5f5664dcb67f41dedde0e51fd27b1d467af1e83bc558be7a76f5dd3c820ac422"
+      "bytes": 4183,
+      "sha256": "f8ee03a10f33a6b474a161a6af8eb3ba95b2be4a40e6a5a1db4f3e888af9bc20"
+    },
+    "src/candidate/home-plan-climate.js": {
+      "bytes": 2906,
+      "sha256": "c771ea2bf48cacd5d04666b82f92a9c0606536921e0b107e4bc0ae52f0546508"
+    },
+    "tests/home-plan-climate.mjs": {
+      "bytes": 2525,
+      "sha256": "0bfc8413d173aec18dd1bc287bbb0c014c3079e8ee74d2262802ff9738db3d45"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "12 fictitious browser groups, including outside-wall shutter progress, plus 2 private local groups (14 total). Geometry reviewed against user annotations in private. Native files and targeted card read back exactly; no physical equipment command.",
+  "tests": "14 fictitious browser proof groups plus 3 private local groups (17 total), and pure climate/notice/collection contracts. Native state is never mutated in tests; temperature request acknowledgment/timeout, capabilities, floor scope, partial failures, haptic and cleanup covered. No physical service.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,

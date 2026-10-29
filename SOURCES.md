@@ -1,5 +1,9 @@
 # Sources de référence
 
+## Plan — chauffage 0.6.0-rc.1
+
+La logique pure des capacités et états de thermostat vit dans `src/candidate/home-plan-climate.js`, ses contrats dans `tests/home-plan-climate.mjs`. La carte et son CSS maintenus sont reconstruits dans le bundle autonome. Les services natifs et les attributs réellement disponibles sont autoritaires ; les associations privées ne rejoignent pas Git. Documentation de référence : Home Assistant Climate et Climate entity, consultées le 29 octobre 2026. Voir `docs/HOME-PLAN.md` et la preuve du lot.
+
 ## Plan — modèle annoté et progression extérieure 0.5.0-rc.2
 
 Le modèle privé corrigé suit l’annotation utilisateur qui prime sur l’ancien permis. Seul le support générique du décalage de progression, son contrat navigateur et les preuves expurgées rejoignent Git. Les géométries, placards, identités et positions domestiques restent privés. `src/candidate/home-plan-card.js` et le bundle autonome sont à 0.5.0-rc.2 ; le premier niveau et les autres cartes sont conservés.

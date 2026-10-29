@@ -12,6 +12,20 @@ Une pièce peut choisir une entité `climate` et `temperature_attribute: current
 
 Les commandes groupées de volets découvrent également les autres niveaux natifs, développent les groupes en équipements terminaux et évitent un groupe identique au niveau courant. Les miniatures des volets et de l’écran restent inchangées.
 
+## Chauffage et thermostats
+
+La vue **Chauffage** remplace le libellé Temp. sur les niveaux équipés ; le mode technique `temperature` reste compatible. Le plan montre la mesure ambiante choisie, puis → la consigne en vue Chauffage. Il n’ajoute pas de repère flottant. L’activité utilise uniquement `hvac_action` : le mode `heat` et une température inférieure à la consigne ne prouvent pas une chauffe. Un retour Arrêt + chauffe est présenté **À vérifier**, y compris dans le pied du plan si aucun autre signalement n’est actif.
+
+Toucher une pièce équipée ouvre le thermostat, avec − / +, la mesure propre au régulateur, les profils fournis par l’entité et les détails HA. La fiche normale possède aussi un raccourci Chauffage. La mesure du thermostat peut différer d’un capteur indépendant explicitement choisi pour le plan ; la source est libellée. Auto, Confort, Éco, Hors-gel et Arrêt ne sont proposés que s’ils figurent dans les profils annoncés ; aucune programmation ni valeur de profil n’est inventée. Le panneau concerne le chauffage ; les autres fonctions éventuelles restent dans les détails HA.
+
+Les thermostats sont découverts par les zones natives ou ajoutés explicitement avec `climate_entities` sur la pièce (sélecteur multiple dans l’éditeur). Les entités sont dédupliquées par niveau. Une consigne respecte les limites et le pas annoncés (0,5° si aucun pas n’est fourni). Sans cible ou bornes utilisables, le réglage reste désactivé. Les modes disponibles peuvent rester accessibles.
+
+Une valeur demandée possède son propre état visuel ; elle n’est jamais écrite dans `hass.states`. Le retour HA confirme la cible. Après 15 secondes sans confirmation, la valeur native est réaffichée et la demande sans retour reste signalée. Des incréments successifs utilisent la dernière demande acceptée ; aucune relance automatique. Changer de niveau ou détacher la carte nettoie les demandes et temporisations. Les acquittements haptiques suivent le chemin de commande existant.
+
+**Chauffage du niveau** présente les zones et ouvre leur thermostat. **Mode pour tout le niveau** est replié : choisir un mode commun aux zones disponibles puis **Appliquer**. Les consignes restent individuelles. Les zones indisponibles sont ignorées et le bilan révèle les refus/échecs partiels. Aucun changement n’a lieu à la sélection d’un niveau, d’une pièce ou d’un mode dans le formulaire collectif.
+
+Sources API : [Climate](https://www.home-assistant.io/integrations/climate/) et [Climate entity](https://contributors.home-assistant.io/core/entities/climate/).
+
 ## Côté de représentation du volet
 
 Une ouverture peut définir `shutter_offset` dans le modèle ou ses associations : nombre de −40 à +40 unités du plan. Un décalage négatif place la barre à gauche d’un segment vertical ou au-dessus d’un segment horizontal ; un positif la place à droite ou en dessous. Les coordonnées du bouton restent indépendantes. Sans option, la convention existante est conservée (−12 vertical, +12 horizontal). Le décalage déplace seulement le dessin de progression ; le contact, les pourcentages et les commandes de volet ne changent pas.
