@@ -1,26 +1,26 @@
 {
-  "version": "0.6.0-rc.1",
+  "version": "0.6.0-rc.2",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 93015,
-      "sha256": "dc3087ee0245e7799a58326515386ddbc0a2fe2f488865ea4a5f76498de792ff"
+      "bytes": 93764,
+      "sha256": "b3d604c1ba17cda8fdf72f66c0fe5219f475e437d089802d6a6d8f686bd09b30"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 35124,
-      "sha256": "1ac665edb83c630bf139b07fede322976d3c1342f7e3df69fc1abe05a29c8434"
+      "bytes": 35647,
+      "sha256": "09c81813c2c39e00b2e33cc1a1d29fa4828c7cf736e08eddbdfd3e628b5e5bfb"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "be4a857fea8204f8d1934a639512a2e0bf62545227fe95c2e362327b13381905"
+      "sha256": "64bdb34144c99621cbc8458de3d604f28b194a80fbc97cff68701238caa11364"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 53380,
-      "sha256": "2d5d981c0bb40382e2c9018cad29275a6c0ef89f0063b3e397b269431491d0e6"
+      "bytes": 55341,
+      "sha256": "c2404f1b550ba9a30dfb422e13f2ce5c036f0e86209a57597268642bf15abb7a"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 182150,
-      "sha256": "e907f7472aaa986959b5ea4183fb5eacfa3f4bc7f2096b7df6df53e29bb58d18"
+      "bytes": 183478,
+      "sha256": "767a2e8bc4da936c8d681be6c8692a05eee9f5ff6e8bb1b789d9258e12160e1c"
     },
     "src/candidate/home-plan-notices.js": {
       "bytes": 9725,
@@ -51,12 +51,12 @@
       "sha256": "f8ee03a10f33a6b474a161a6af8eb3ba95b2be4a40e6a5a1db4f3e888af9bc20"
     },
     "src/candidate/home-plan-climate.js": {
-      "bytes": 2906,
-      "sha256": "c771ea2bf48cacd5d04666b82f92a9c0606536921e0b107e4bc0ae52f0546508"
+      "bytes": 3048,
+      "sha256": "30594982c46cff2ab888acb88c9033518844521a45d9acafdf0fe8afa860f666"
     },
     "tests/home-plan-climate.mjs": {
-      "bytes": 2525,
-      "sha256": "0bfc8413d173aec18dd1bc287bbb0c014c3079e8ee74d2262802ff9738db3d45"
+      "bytes": 3111,
+      "sha256": "72b054249ab7368587054de40230a0cc38c8bf8a11ab049e582a94186a3c4a6b"
     }
   },
   "domestic_assets_in_module": false,

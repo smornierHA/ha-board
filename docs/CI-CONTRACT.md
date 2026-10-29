@@ -48,3 +48,5 @@ Le contrat navigateur 0.5.0-rc.2 vérifie aussi une ouverture horizontale dont l
 ## Contrôles Plan — chauffage 0.6.0-rc.1
 
 Le workflow existant exécute les contrats purs du chauffage puis 14 groupes navigateur fictifs sur le bundle figé : ciblage des services, limites et pas, profils natifs, lecture seule/indisponibilité, distinction demande/retour, acquittement ou délai expiré, contradiction Arrêt/chauffe, périmètre du niveau, échec partiel, haptique, placement sans commande, responsive/thèmes et nettoyage. Trois groupes privés supplémentaires restent locaux (17 au total). Aucun équipement réel actionné ; géométrie et états domestiques exclus des artefacts CI.
+
+Le lot 0.6.0-rc.2 corrige l’activation : heat + STOP reste activé ; idle/off de l’activité n’éteint pas le mode Chauffage. Le banc vérifie les services HVAC même quand des profils existent et le maintien du retour natif après envoi. Les trois groupes privés comparent aussi les dimensions rendues des deux vignettes. La fausse alerte STOP/chauffe est supprimée ; un mode réellement off avec une activité de chauffe reste signalé.

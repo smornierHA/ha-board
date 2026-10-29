@@ -1,17 +1,18 @@
 // Climate capabilities and reported state. No physical activity is inferred from a setpoint.
 const bad=new Set(['unknown','unavailable']);
-export const presetLabel=value=>({auto:'Auto',comfort:'Confort',eco:'Éco',anti_frost:'Hors-gel',frost_protection:'Hors-gel',stop:'Arrêt',off:'Arrêt',none:'Sans profil',away:'Absent',home:'Présent',sleep:'Nuit',boost:'Boost'}[String(value).toLowerCase()]||value);
-export const modeLabel=value=>({heat:'Chauffage',auto:'Auto',off:'Arrêt',cool:'Climatisation'}[value]||value);
+export const presetLabel=value=>({auto:'Auto',comfort:'Confort',eco:'Éco',anti_frost:'Hors-gel',frost_protection:'Hors-gel',stop:'STOP',off:'Arrêt',none:'Sans profil',away:'Absent',home:'Présent',sleep:'Nuit',boost:'Boost'}[String(value).toLowerCase()]||value);
+export const modeLabel=value=>({heat:'Chauffage',auto:'Auto',off:'Éteint',cool:'Climatisation'}[value]||value);
 const numeric=v=>typeof v==='number'&&Number.isFinite(v)?v:null;
 export function climateInfo(state){
  const a=state?.attributes||{},available=!!state&&!bad.has(state.state),f=a.supported_features||0,current=numeric(a.current_temperature),target=numeric(a.temperature),min=numeric(a.min_temp),max=numeric(a.max_temp),step=numeric(a.target_temp_step)>0?a.target_temp_step:.5;
  const order={auto:0,comfort:1,eco:2,anti_frost:3,frost_protection:3,stop:4,off:4};
  const presets=(f&16)&&Array.isArray(a.preset_modes)?[...new Set(a.preset_modes.filter(x=>typeof x==='string'&&x.toLowerCase()!=='none'))].sort((a,b)=>(order[a.toLowerCase()]??9)-(order[b.toLowerCase()]??9)):[];
  const modes=Array.isArray(a.hvac_modes)?a.hvac_modes.filter(x=>['heat','auto','off'].includes(x)):[];
- const stopped=state?.state==='off'||['stop','off'].includes(String(a.preset_mode).toLowerCase()),action=a.hvac_action,conflict=available&&stopped&&['heating','cooling'].includes(action);
- const status=!available?'unavailable':conflict?'conflict':stopped?'off':action==='heating'?'heating':action==='cooling'?'cooling':action==='idle'?'idle':'enabled';
- const label={unavailable:state?.state==='unknown'?'État inconnu':'Indisponible',conflict:'À vérifier',off:'Arrêt',heating:'En chauffe',cooling:'Refroidit',idle:'En attente',enabled:'Activé'}[status];
- return {available,current:available?current:null,target:available?target:null,min,max,step,presets,modes,status,label,preset:a.preset_mode,action,canSet:available&&!!(f&1)&&target!==null&&min!==null&&max!==null&&max>min};
+ // HVAC mode owns activation. A preset (including STOP) never overrides that mode.
+ const stopped=state?.state==='off',enabled=available?!stopped:null,action=a.hvac_action,conflict=available&&stopped&&['heating','cooling'].includes(action);
+ const status=!available?'unavailable':conflict?'conflict':stopped?'off':action==='heating'?'heating':action==='cooling'?'cooling':['idle','off'].includes(action)?'idle':'enabled';
+ const label={unavailable:state?.state==='unknown'?'État inconnu':'Indisponible',conflict:'Éteint · À vérifier',off:'Éteint',heating:'Activé · En chauffe',cooling:'Activé · Refroidit',idle:'Activé · Au repos',enabled:'Activé · Activité inconnue'}[status];
+ return {available,enabled,current:available?current:null,target:available?target:null,min,max,step,presets,modes,status,label,preset:a.preset_mode,action,canSet:available&&!!(f&1)&&target!==null&&min!==null&&max!==null&&max>min};
 }
 export function climateCommand(state,action,data={}){
  const info=climateInfo(state);if(!info.available)return null;

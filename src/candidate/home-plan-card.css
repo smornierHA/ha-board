@@ -324,9 +324,9 @@
     .hpf-heat-measurement strong { color:var(--hp-ink); font-size:14px; }
     .hpf-heat-measurement > span { flex-basis:100%; font-size:10px; }
     .hpf-heat-pending,.hpf-heat-conflict { margin:10px 0; font-size:11px; color:var(--hp-amber); text-align:center; line-height:1.4; }
-    .hpf-heat-presets { display:grid; grid-template-columns:repeat(var(--preset-count,3),minmax(0,1fr)); gap:3px; margin-top:14px; padding:3px; border-radius:12px; background:var(--hp-paper); }
-    .hpf-heat-presets button { min-width:0; min-height:44px; padding:4px 2px; border:0; border-radius:9px; background:transparent; font-size:clamp(10px,2.6vw,11px); color:var(--hp-secondary); white-space:nowrap; }
-    .hpf-heat-presets button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-blue); font-weight:650; }
+    .hpf-heat-presets,.hpf-heat-modes { display:grid; grid-template-columns:repeat(var(--preset-count,3),minmax(0,1fr)); gap:3px; margin-top:14px; padding:3px; border-radius:12px; background:var(--hp-paper); }
+    .hpf-heat-presets button,.hpf-heat-modes button { min-width:0; min-height:44px; padding:4px 2px; border:0; border-radius:9px; background:transparent; font-size:clamp(10px,2.6vw,11px); color:var(--hp-secondary); white-space:nowrap; }
+    .hpf-heat-presets button[aria-pressed="true"],.hpf-heat-modes button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-blue); font-weight:650; }
     .hpf-heat-overview { display:flex; flex-wrap:wrap; gap:10px; padding:4px 0 14px; font-size:12px; color:var(--hp-secondary); }
     .hpf-heat-room { display:flex; align-items:center; gap:10px; text-align:left; width:100%; min-height:66px; border:0; border-bottom:1px solid var(--hp-line); background:transparent; padding:10px 0; }
     .hpf-heat-room > span:first-of-type { flex:1; min-width:0; }
@@ -342,3 +342,9 @@
     .hpf-heat-batch select { min-height:44px; width:100%; border:1px solid var(--hp-line); border-radius:10px; background:var(--hp-paper); color:var(--hp-ink); padding:8px; }
     .hpf-heat-batch p { font-size:11px; color:var(--hp-secondary); }
     .hpf-heat-batch > button { width:100%; min-height:44px; border:0; border-radius:11px; color:var(--hp-blue); background:var(--hp-selected); }
+
+    .hpf-heat-modes { margin-top:10px; }
+    .hpf-heat-status.idle,.hpf-heat-status.enabled { color:var(--hp-good); }
+    .hpf-heat-profiles { margin-top:14px; border-top:1px solid var(--hp-line); padding-top:10px; }
+    .hpf-heat-profiles summary { font-size:11px; color:var(--hp-secondary); cursor:pointer; min-height:32px; align-content:center; }
+    .hpf-heat-profiles p { font-size:10px; line-height:1.4; color:var(--hp-secondary); }

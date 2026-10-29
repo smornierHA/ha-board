@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
 import {climateInfo,climateCommand,climateIncrement,presetLabel} from '../src/candidate/home-plan-climate.js';
 const state={state:'heat',attributes:{current_temperature:20.4,temperature:21.5,min_temp:7,max_temp:35,target_temp_step:1,supported_features:401,hvac_action:'idle',hvac_modes:['off','heat','cool'],preset_mode:'AUTO',preset_modes:['none','STOP','ANTI_FROST','ECO','COMFORT','AUTO']}};
-assert.equal(climateInfo(state).label,'En attente');assert.equal(climateInfo({...state,attributes:{...state.attributes,hvac_action:undefined}}).label,'Activé','mode heat alone never claims physical heating');
-assert.equal(climateInfo({...state,attributes:{...state.attributes,preset_mode:'STOP',hvac_action:'heating'}}).status,'conflict');
+assert.equal(climateInfo(state).label,'Activé · Au repos');assert.equal(climateInfo({...state,attributes:{...state.attributes,hvac_action:undefined}}).label,'Activé · Activité inconnue','mode heat alone never claims physical heating');
+assert.equal(climateInfo({...state,attributes:{...state.attributes,preset_mode:'STOP',hvac_action:'heating'}}).status,'heating','a STOP preset does not override heat mode');
+assert.equal(climateInfo({...state,attributes:{...state.attributes,preset_mode:'STOP'}}).enabled,true);
+assert.equal(climateInfo({...state,state:'off',attributes:{...state.attributes,preset_mode:'COMFORT',hvac_action:'idle'}}).enabled,false);
+assert.equal(climateInfo({...state,state:'unavailable'}).enabled,null);
+assert.equal(climateInfo({...state,attributes:{...state.attributes,hvac_action:'off'}}).label,'Activé · Au repos','activity off does not disable an enabled thermostat');
 assert.equal(climateInfo({...state,state:'off',attributes:{...state.attributes,hvac_action:'heating'}}).status,'conflict');
 assert.equal(climateInfo({...state,attributes:{...state.attributes,hvac_action:'heating'}}).status,'heating');
 assert.deepEqual(climateInfo(state).presets,['AUTO','COMFORT','ECO','ANTI_FROST','STOP']);assert.equal(presetLabel('ANTI_FROST'),'Hors-gel');
@@ -14,4 +18,4 @@ assert.equal(climateCommand(state,'set_hvac_mode',{hvac_mode:'cool'}),null,'heat
 for(const value of ['unknown','unavailable']){const s={...state,state:value};assert.equal(climateCommand(s,'set_temperature',{temperature:20}),null);assert.equal(climateInfo(s).available,false);}
 for(const attributes of [{...state.attributes,supported_features:0},{...state.attributes,min_temp:null},{...state.attributes,temperature:null}])assert.equal(climateIncrement({...state,attributes},1),null);
 assert.equal(climateInfo({...state,attributes:{...state.attributes,current_temperature:null}}).current,null);
-console.log('Climate contracts: reported activity, STOP conflict, exact native presets, temperature bounds/step and unavailable/read-only states OK.');
+console.log('Climate contracts: reported activity, HVAC activation independent of presets, exact native presets, temperature bounds/step and unavailable/read-only states OK.');

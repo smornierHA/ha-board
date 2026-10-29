@@ -1,5 +1,9 @@
 # Sources de référence
 
+## Plan — alignements et activation 0.6.0-rc.2
+
+La correction utilisateur du 29 octobre et son visuel priment sur l’ancienne interprétation du profil STOP. Les six modes HVAC relus sont Chauffage ; idle désigne le repos, pas une désactivation. Référence technique primaire relue : [Climate Home Assistant](https://www.home-assistant.io/integrations/climate/) (mode et `hvac_action` distincts). La géométrie et les proportions domestiques sont conservées dans la référence privée ; aucune donnée réelle n’est ajoutée au dépôt public. Les guides HA dashboard/safe-refactoring/device-control sont relus avant la pose ciblée.
+
 ## Plan — chauffage 0.6.0-rc.1
 
 La logique pure des capacités et états de thermostat vit dans `src/candidate/home-plan-climate.js`, ses contrats dans `tests/home-plan-climate.mjs`. La carte et son CSS maintenus sont reconstruits dans le bundle autonome. Les services natifs et les attributs réellement disponibles sont autoritaires ; les associations privées ne rejoignent pas Git. Documentation de référence : Home Assistant Climate et Climate entity, consultées le 29 octobre 2026. Voir `docs/HOME-PLAN.md` et la preuve du lot.
