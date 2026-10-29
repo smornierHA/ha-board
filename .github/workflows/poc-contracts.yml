@@ -41,7 +41,9 @@ jobs:
           POC_REPORT_DIR: ${{ github.workspace }}/artifacts
         run: node tests/contracts.mjs
       - name: Home Plan live signal contracts
-        run: node tests/home-plan-notices.mjs
+        run: |
+          node tests/home-plan-notices.mjs
+          node tests/home-plan-collection.mjs
       - name: Historical address adapter contracts
         run: node tests/history-address-adapter.mjs
       - name: Build and test HACS entrypoint

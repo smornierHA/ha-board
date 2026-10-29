@@ -13,7 +13,7 @@ Le bouton ouvre HA-BOARD dans ton HACS et te laisse confirmer le téléchargemen
 | [Weather Combined Forecast](docs/CARDS.md#weather-combined-forecast) | Météo, prévisions, pluie, vent et risques ; ressource autonome | Éditeur visuel et YAML |
 | [Garage Control Card](docs/CARDS.md#garage-control-card) | État physique distinct, commande protégée, caméras, véhicules et événements ; ressource autonome | Éditeur visuel et YAML |
 
-**Candidat autonome Plan de la maison `0.3.0-rc.2`** : [utilisation et éditeur](docs/HOME-PLAN.md). Plan, pièces, lumières et volets groupés, contacts, détecteurs et appareils regroupés ; éditeur natif avec glisser-déposer. Installé comme candidat séparé, hors du package HACS ci-dessous ; nouveau rendu et mouvements physiques à confirmer après actualisation.
+**Candidat autonome Plan de la maison `0.4.0-rc.1`** : [utilisation et éditeur](docs/HOME-PLAN.md). Plan, pièces, lumières et volets groupés, contacts, détecteurs et appareils regroupés ; éditeur natif avec glisser-déposer. Installé comme candidat séparé, hors du package HACS ci-dessous ; nouveau rendu et mouvements physiques à confirmer après actualisation.
 
 [Catalogue et options](docs/CARDS.md) · [Releases](https://github.com/smornierHA/ha-board/releases) · [Compatibilité](docs/COMPATIBILITY.md) · [Recette](docs/ACCEPTANCE.md) · [État vérifié](docs/STATUS.md).
 

@@ -250,7 +250,7 @@
     .hpf-notice-chip.maintenance { color:var(--hp-amber); background:var(--hp-warm); }
     .hpf-notice-chip.info { color:var(--hp-blue); background:var(--hp-selected); }
     .hpf-room-notices { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 10px; }
-    .hpf-notice-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; padding:3px; border-radius:12px; background:var(--hp-soft); }
+    .hpf-notice-tabs { display:grid; grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:minmax(74px,1fr); overflow-x:auto; gap:4px; padding:3px; border-radius:12px; background:var(--hp-soft); }
     .hpf-notice-tabs button { display:grid; place-items:center; gap:2px; min-width:0; min-height:48px; padding:5px 2px; border:0; border-radius:9px; background:transparent; color:var(--hp-secondary); font-size:12px; }
     .hpf-notice-tabs button[aria-pressed="true"] { background:var(--hp-paper); color:var(--hp-ink); }
     .hpf-notice-tabs button span { font-size:11px; font-variant-numeric:tabular-nums; }
@@ -273,3 +273,17 @@
     .hpf-notice-chip.ready { color:var(--success-color,light-dark(#237244,#8ed4a7)); background:light-dark(#eaf5ee,#203c2c); }
     .hpf-notice-row.ready > ha-icon { color:var(--success-color,light-dark(#237244,#8ed4a7)); }
     @media (max-width:460px) { .hpf-notice-tabs button { font-size:11px; } }
+
+    .hpf-notice-chip.battery { color:light-dark(#9a5900,#ffd18a); background:light-dark(#fff0da,#48351d); }
+    .hpf-notice-row.battery > ha-icon { color:light-dark(#9a5900,#ffd18a); }
+    .hpf-map .hpf-equipment-notice { --notice-color:var(--hp-amber); --notice-bg:var(--hp-warm); }
+    .hpf-map .hpf-equipment-notice.priority { --notice-color:var(--hp-orange); --notice-bg:var(--hp-alert-bg); }
+    .hpf-map .hpf-equipment-notice.is-critical { --notice-color:var(--hp-danger); --notice-bg:var(--hp-danger-bg); }
+    .hpf-map .hpf-equipment-notice.ready { --notice-color:light-dark(#237244,#8ed4a7); --notice-bg:light-dark(#eaf5ee,#203c2c); }
+    .hpf-map .hpf-equipment-notice.battery { --notice-color:light-dark(#9a5900,#ffd18a); --notice-bg:light-dark(#fff0da,#48351d); }
+    .hpf-map .hpf-equipment-notice ha-state-icon { color:var(--notice-color)!important; background:var(--notice-bg)!important; border:1px solid var(--notice-color); border-radius:11px; box-shadow:0 2px 6px #0002; }
+    .hpf-notice-count { position:absolute; top:0; right:0; display:grid; place-items:center; min-width:17px; height:17px; padding:0 3px; border:2px solid var(--hp-paper); border-radius:10px; background:var(--notice-color); color:light-dark(#fff,#20242b); font-size:10px; line-height:1; font-weight:700; }
+
+    .hpf-map .hpf-equipment-notice.info { --notice-color:var(--hp-blue); --notice-bg:var(--hp-selected); }
+    .hpf-map .hpf-equipment-notice.info ha-state-icon { --mdc-icon-size:16px; width:26px; height:26px; opacity:.85; border:0; box-shadow:none; }
+    .hpf-equipment-notice.info .hpf-notice-count { display:none; }

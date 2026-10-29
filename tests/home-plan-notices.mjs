@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {baseNotice,isEquipmentActive,conditionMatches,ruleNotice,buildNotices} from '../src/candidate/home-plan-notices.js';
+import {baseNotice,isEquipmentActive,conditionMatches,ruleNotice,buildNotices,groupEquipmentNotices} from '../src/candidate/home-plan-notices.js';
 const state=(entity_id,value,attributes={})=>({entity_id,state:value,attributes});
 const smoke=state('binary_sensor.smoke','on',{device_class:'smoke'});
 assert.equal(baseNotice(smoke).level,'priority');assert.equal(baseNotice(smoke).critical,true);
@@ -8,7 +8,7 @@ assert.equal(baseNotice({...smoke,state:'unavailable'}).level,'maintenance');
 assert.equal(baseNotice(state('binary_sensor.flood','on',{device_class:'moisture'})).kind,'moisture');
 assert.equal(baseNotice(state('binary_sensor.window','on'),{opening:true}).kind,'opening');
 assert.equal(baseNotice(state('binary_sensor.appliance_door','on')),null,'appliance door is not implicitly a building opening');
-assert.equal(baseNotice(state('sensor.battery','20',{device_class:'battery'})).level,'maintenance');
+assert.equal(baseNotice(state('sensor.battery','20',{device_class:'battery'})).level,'battery');
 for(const value of ['high','21','unknown','unavailable',''])assert.equal(baseNotice(state('sensor.battery',value,{device_class:'battery'})),null);
 assert.equal(baseNotice(state('sensor.battery','low',{device_class:'battery'})).kind,'battery');
 assert.equal(baseNotice(state('binary_sensor.battery','on',{device_class:'battery'})).kind,'battery');
@@ -64,3 +64,13 @@ const cycleStates={'sensor.washer':state('sensor.washer','finished',{device_clas
 assert.equal(buildNotices({states:cycleStates,rooms:[{id:'laundry',entity_ids:Object.keys(cycleStates)}]})[0].level,'ready');
 cycleStates['sensor.washer'].state='run';assert.equal(buildNotices({states:cycleStates,rooms:[{id:'laundry',entity_ids:Object.keys(cycleStates)}]}).length,0);
 console.log('Cycles ready for collection and docked robot exclusion OK.');
+
+const grouped=groupEquipmentNotices([
+ {entity:'sensor.water_filter',entities:['sensor.water_filter'],device_id:'fridge',label:'Fridge',level:'maintenance',kind:'water-filter',icon:'mdi:filter',location:{}},
+ {entity:'sensor.air_filter',entities:['sensor.air_filter'],device_id:'fridge',label:'Fridge',level:'maintenance',kind:'air-filter',icon:'mdi:filter',location:{}},
+ {entity:'binary_sensor.leak',entities:['binary_sensor.leak'],device_id:'fridge',label:'Fridge',level:'priority',critical:true,kind:'moisture',icon:'mdi:water-alert',location:{}}
+]);
+assert.equal(grouped.length,1);assert.equal(grouped[0].notices.length,3);assert.equal(grouped[0].level,'priority');assert.equal(grouped[0].critical,true);
+assert.equal(groupEquipmentNotices(grouped[0].notices.filter(n=>n.level!=='priority'))[0].level,'maintenance');
+assert.equal(groupEquipmentNotices([]).length,0);
+console.log('Dedicated battery tier and single physical device wrapper with independent issues OK.');

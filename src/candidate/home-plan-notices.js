@@ -1,5 +1,7 @@
 /* Live presentation signals only; no recorder, notification delivery or device commands. */
-export const NOTICE_LEVELS = ['priority','ready','maintenance','info'];
+export const NOTICE_LEVELS = ['priority','ready','battery','maintenance','info'];
+const RANK={priority:0,battery:1,maintenance:2,ready:3,info:4};
+export const noticeOrder=(a,b)=>(RANK[a.level]??5)-(RANK[b.level]??5)||Number(!!b.critical)-Number(!!a.critical)||a.label.localeCompare(b.label);
 const CRITICAL = new Set(['smoke','gas','moisture','carbon_monoxide']);
 const BAD = new Set(['unknown','unavailable']);
 const ACTIVE = new Set(['on','playing','paused','buffering','cleaning','returning']);
@@ -36,7 +38,7 @@ export function baseNotice(s,{opening=false,batteryThreshold=20}={}){
   if(opening&&s.state==='on')return {level:'priority',kind:'opening',detail:'Ouvrant ouvert',icon:'mdi:door-open'};
   if(cls==='battery'){
     const n=number(s.state),low=domain==='binary_sensor'?s.state==='on':n!==null?n<=batteryThreshold:['low','very_low','critical','empty','replace'].includes(text(s.state));
-    if(low)return {level:'maintenance',kind:'battery',detail:n!==null?`Pile faible · ${n} %`:'Pile faible',icon:'mdi:battery-alert-variant-outline'};
+    if(low)return {level:'battery',kind:'battery',detail:n!==null?`Pile faible · ${n} %`:'Pile faible',icon:'mdi:battery-alert-variant-outline'};
   }
   if(domain==='binary_sensor'&&['problem','tamper','safety'].includes(cls)&&s.state==='on')return {level:'maintenance',kind:cls==='tamper'?'tamper':'fault',detail:cls==='tamper'?'Autoprotection à vérifier':'Défaut à vérifier',icon:'mdi:wrench-outline'};
   if(domain==='sensor'&&cls==='enum'&&s.state==='finished'&&s.attributes.options?.includes('finished'))return {level:'ready',kind:'finished',detail:'Cycle terminé · à récupérer',icon:'mdi:check-circle-outline'};
@@ -74,13 +76,22 @@ export function buildNotices({states={},registry={},rooms=[],apertures=[],rules=
   const add=(id,notice,rule={})=>{
     if(!notice||excludedEntities.includes(id))return;const loc=location(id,rule);if(excludedAreas.includes(loc.area_id))return;
     const deviceId=entities[id]?.device_id||'',device=devices[deviceId],key=(rule.group||deviceId||id)+'|'+notice.kind;
-    const item={...notice,key,entity:id,entities:[id],device_id:deviceId,label:rule.label||device?.name_by_user||device?.name||states[id]?.attributes?.friendly_name||id,details:[notice.detail],location:loc};
+    const item={...notice,key,entity:id,entities:[id],device_id:deviceId,equipment_key:rule.equipment_group||deviceId||rule.group||id,label:rule.label||device?.name_by_user||device?.name||states[id]?.attributes?.friendly_name||id,details:[notice.detail],location:loc};
     const previous=result.get(key);
-    if(previous){previous.entities=[...new Set([...previous.entities,id])];previous.details=[...new Set([...previous.details,notice.detail])];previous.critical ||=item.critical;if(NOTICE_LEVELS.indexOf(item.level)<NOTICE_LEVELS.indexOf(previous.level)){previous.level=item.level;previous.entity=id;previous.icon=item.icon;}}
+    if(previous){previous.entities=[...new Set([...previous.entities,id])];previous.details=[...new Set([...previous.details,notice.detail])];previous.critical ||=item.critical;if(noticeOrder(item,previous)<0){previous.level=item.level;previous.entity=id;previous.icon=item.icon;}}
     else result.set(key,item);
   };
   for(const id of wanted){if(overrides.has(id)||excludedEntities.includes(id))continue;const s=getState(id);add(id,baseNotice(s,{opening:openings.has(id)}));}
   const evaluated=rules.map(rule=>({rule,item:ruleNotice(rule,getState)}));const specificActive=new Set(evaluated.filter(({rule,item})=>item&&!rule.fallback_for?.length).map(({rule})=>rule.id));
   for(const {rule,item} of evaluated){if(rule.fallback_for?.some(id=>specificActive.has(id)))continue;add(rule.entity,item,rule);}
-  return [...result.values()].sort((a,b)=>NOTICE_LEVELS.indexOf(a.level)-NOTICE_LEVELS.indexOf(b.level)||Number(!!b.critical)-Number(!!a.critical)||a.label.localeCompare(b.label));
+  return [...result.values()].sort(noticeOrder);
+}
+export function groupEquipmentNotices(notices){
+  const groups=new Map();
+  for(const n of [...notices].sort(noticeOrder)){
+    const key=n.equipment_key||n.device_id||n.entity;
+    if(!groups.has(key))groups.set(key,{key,label:n.label,entity:n.entity,device_id:n.device_id,location:n.location,level:n.level,critical:n.critical,icon:n.icon,notices:[],entities:[]});
+    const g=groups.get(key);g.notices.push(n);g.entities=[...new Set([...g.entities,...n.entities])];
+  }
+  return [...groups.values()];
 }

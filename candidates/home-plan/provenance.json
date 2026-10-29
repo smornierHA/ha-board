@@ -1,39 +1,47 @@
 {
-  "version": "0.3.0-rc.2",
+  "version": "0.4.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 71240,
-      "sha256": "46f888ef42a3fe5fc2448b2b2336bfaf1787de69b100624224c0b77a5f5e0a7b"
+      "bytes": 74538,
+      "sha256": "c0748cc5ecafc307b3a4f4dbd181e0f0b7b68b2b7ade93048920ea889ca45231"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 27406,
-      "sha256": "43ae7fabbf08b2376367879dba6fb74f247261a937810b6656ba83deaa3d3a56"
+      "bytes": 29080,
+      "sha256": "701c5abbbd75954767e9d8ad4e70b0f1533fc95f10b6351378f3f9229cf9277b"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "653fa89efcb695c75bdaf9d1a3aa2f49416c536e2618cbb8e2a2f4f62dc9e7a5"
+      "sha256": "9d5acdb10ab22f226e5f41755d702021a0d18a43826811f2bb28732213579e31"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 34981,
-      "sha256": "b37ecdf27f2cac36b24030ed11a12c2d96f7eef1d02f795bfb6be7a6b26265e9"
+      "bytes": 38443,
+      "sha256": "3646613c720fdcafad3f909e4ffae8efa9cd948ae44921ba7815913f270f11f3"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 145800,
-      "sha256": "93d29e2df9e2067e60b0fbf1ad67b6b8e0e34e3bcc517a20ac7fae373e2e2cf0"
+      "bytes": 151713,
+      "sha256": "a3480f55c2242b456f5821e7da69bf3985a85d91137f479d375366c96bb0b143"
     },
     "src/candidate/home-plan-notices.js": {
-      "bytes": 8856,
-      "sha256": "19da679f206d9fec502b36f994bd9708ff57de4db26dd98ca9827400c05cc9c7"
+      "bytes": 9463,
+      "sha256": "f9dcd83f6863121906a5575e4d9b2195d8d58cd502e0019314fbd08164415a78"
     },
     "tests/home-plan-notices.mjs": {
-      "bytes": 8161,
-      "sha256": "a2ff4da452f73bfd57336d3b407c864994edd4cbf6a6b9c3ba258ade4ad5616a"
+      "bytes": 9154,
+      "sha256": "95a18ab2f722f17a58a1ff1d9872c02095ab5c205d54cbd944c74316ff800b41"
+    },
+    "src/candidate/home-plan-collection.js": {
+      "bytes": 2149,
+      "sha256": "6daa97b2d0a822fbdf76a0fee8e73442c7a95f405bd68bb09e9002d5907f70c0"
+    },
+    "tests/home-plan-collection.mjs": {
+      "bytes": 3413,
+      "sha256": "c76369ed089c189575658f370b7aa57dcd5a2d22bc00680a00cc781ac24e22d9"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "Pure signal contracts in existing CI; 11 local Chromium proof groups, 320/390/736 light/dark, HA doubles. Ready cycles, docked robots, equipped-room filters, floor lights and native haptic event dispatch. No physical actuation or iPhone vibration test.",
+  "tests": "Pure collection configuration and notification contracts in existing CI; 12 local browser proof groups, 320/390/736 light/dark, HA doubles. Single device wrapper, independent filters, battery category, colors/recovery, placement and existing controls. Native configuration readback separately verified; no physical appliance service.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,
