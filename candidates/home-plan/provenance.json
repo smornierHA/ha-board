@@ -1,10 +1,10 @@
 {
-  "version": "0.5.0-rc.1",
+  "version": "0.5.0-rc.2",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 79984,
-      "sha256": "48835c1da04d75d276c7f9f01fe85ff77846a2c400d898a53a51e379383c6bdc"
+      "bytes": 80225,
+      "sha256": "6643b82b3453db479ac33aaebd5cbc6faf3d53e5cc731ab31f39b6a3f21cc3ea"
     },
     "src/candidate/home-plan-card.css": {
       "bytes": 30114,
@@ -12,15 +12,15 @@
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 665,
-      "sha256": "d7474040f20cb8fda39f8a3149a9ca055992e38cf67708fb09d9d73791c1c6f3"
+      "sha256": "aacf9d3b1b61bc7804879170c081f55d53d1074a4a806ee4e923849673e23a96"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 44938,
-      "sha256": "1a3ec6dca8504645f256dfe2ea59135579a3e0ce212799fc8dcd512e121d2c60"
+      "bytes": 45210,
+      "sha256": "3c866b5e36319ceb44f0980e459498b60d8d34fd1344b2586335b2f814a0d462"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 159308,
-      "sha256": "f4aaafbddb759211f4d6835b83f3ca8aa2f3e0ab431172fe79699ea4df2333e4"
+      "bytes": 159562,
+      "sha256": "08983ddcd2bf4df7e19073989c1f44c911208da4758ad6b10abc176d3e2e896c"
     },
     "src/candidate/home-plan-notices.js": {
       "bytes": 9725,
@@ -53,7 +53,7 @@
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "12 fictitious browser proof groups in existing CI, plus 2 private local groups: levels, service scopes, editor isolation, compact/muted markers, climate ambient reading and failed model recovery; pure notices and collection contracts. No native physical device service.",
+  "tests": "12 fictitious browser groups, including outside-wall shutter progress, plus 2 private local groups (14 total). Geometry reviewed against user annotations in private. Native files and targeted card read back exactly; no physical equipment command.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,

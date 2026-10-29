@@ -1,5 +1,9 @@
 # Sources de référence
 
+## Plan — modèle annoté et progression extérieure 0.5.0-rc.2
+
+Le modèle privé corrigé suit l’annotation utilisateur qui prime sur l’ancien permis. Seul le support générique du décalage de progression, son contrat navigateur et les preuves expurgées rejoignent Git. Les géométries, placards, identités et positions domestiques restent privés. `src/candidate/home-plan-card.js` et le bundle autonome sont à 0.5.0-rc.2 ; le premier niveau et les autres cartes sont conservés.
+
 ## Plan — niveaux et focus 0.5.0-rc.1
 
 Sources maintenues : `src/candidate/home-plan-card.js`, CSS et `home-plan-notices.js`. Bundle autonome figé sous `candidates/home-plan/`, provenance régénérée. Les plans, photos, illustrations, associations et positions réelles restent hors Git. La géométrie privée du second niveau dérive du PDF fourni ; les nouvelles illustrations dérivent des photos fournies. La configuration native active reste autoritaire pour les positions. Voir `docs/HOME-PLAN.md` et `evidence/home-plan-levels-2026-10-29.json`. Le package HACS et ses distributions sont inchangés.

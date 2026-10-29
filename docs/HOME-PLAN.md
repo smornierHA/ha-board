@@ -12,6 +12,10 @@ Une pièce peut choisir une entité `climate` et `temperature_attribute: current
 
 Les commandes groupées de volets découvrent également les autres niveaux natifs, développent les groupes en équipements terminaux et évitent un groupe identique au niveau courant. Les miniatures des volets et de l’écran restent inchangées.
 
+## Côté de représentation du volet
+
+Une ouverture peut définir `shutter_offset` dans le modèle ou ses associations : nombre de −40 à +40 unités du plan. Un décalage négatif place la barre à gauche d’un segment vertical ou au-dessus d’un segment horizontal ; un positif la place à droite ou en dessous. Les coordonnées du bouton restent indépendantes. Sans option, la convention existante est conservée (−12 vertical, +12 horizontal). Le décalage déplace seulement le dessin de progression ; le contact, les pourcentages et les commandes de volet ne changent pas.
+
 ## Utilisation
 
 - Plan / Pièces change la présentation. Pièces, Lumières, Temp., Ouvertures et Volets sélectionne les informations mises en évidence. Lumières et Ouvertures montrent toutes les pièces équipées, même éteintes ou fermées ; les couleurs continuent de porter les états réels.

@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.5.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.5.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -850,7 +850,7 @@ function groupEquipmentNotices(notices) {
 }
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.5.0-rc.1";
+var VERSION = "0.5.0-rc.2";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
@@ -918,6 +918,7 @@ function validateConfig(config) {
       if (item.excluded_entities && (!Array.isArray(item.excluded_entities) || item.excluded_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’exclusions invalide.");
       if (item.favorite_entities && (!Array.isArray(item.favorite_entities) || item.favorite_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’accès rapides invalide.");
       if (item.entities && (!Array.isArray(item.entities) || item.entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’équipements invalide.");
+      if (item.shutter_offset !== void 0 && (!Number.isFinite(item.shutter_offset) || Math.abs(item.shutter_offset) > 40)) throw Error("Décalage de volet invalide.");
       if (item.point && (!Array.isArray(item.point) || item.point.length !== 2 || !item.point.every(Number.isFinite))) throw Error("Position de repère invalide.");
     }
   }
@@ -1635,7 +1636,7 @@ var HomePlanCard = class extends i4 {
       <svg class="hpf-aperture-layer" viewBox=${b3.join(" ")} aria-hidden="true">${apertures.map((a3) => {
       const s5 = a3.segment;
       if (!s5 || s5.length !== 4) return A;
-      const p4 = `M${s5[0]} ${s5[1]}L${s5[2]} ${s5[3]}`, o7 = this._state(a3.opening_entity), c5 = this._state(a3.cover_entity), pos = this._coverValue(a3.cover_entity), vertical = s5[0] === s5[2], shift = vertical ? -12 : 12, parallel = `M${s5[0] + (vertical ? shift : 0)} ${s5[1] + (vertical ? 0 : shift)}L${s5[2] + (vertical ? shift : 0)} ${s5[3] + (vertical ? 0 : shift)}`;
+      const p4 = `M${s5[0]} ${s5[1]}L${s5[2]} ${s5[3]}`, o7 = this._state(a3.opening_entity), c5 = this._state(a3.cover_entity), pos = this._coverValue(a3.cover_entity), vertical = s5[0] === s5[2], shift = Number.isFinite(a3.shutter_offset) ? Math.max(-40, Math.min(40, a3.shutter_offset)) : vertical ? -12 : 12, parallel = `M${s5[0] + (vertical ? shift : 0)} ${s5[1] + (vertical ? 0 : shift)}L${s5[2] + (vertical ? shift : 0)} ${s5[3] + (vertical ? 0 : shift)}`;
       return w`${o7?.state === "on" ? w`<path class="aperture-halo" d=${p4}/>` : A}<path class=${"aperture-line " + (o7?.state === "on" ? "is-open" : "")} d=${p4} data-map-aperture=${a3.cover_entity || a3.command_entity || a3.opening_entity ? a3.id : A} @click=${(e6) => this._aperture(a3, this.renderRoot.querySelector(`[data-aperture="${CSS.escape(a3.id)}"]`))}/>${a3.leaf ? w`${a3.show_swing === false ? A : w`<path class=${"aperture-swing " + (o7?.state === "on" ? "is-open" : "")} d=${`M${s5[2]} ${s5[3]}Q${a3.leaf[2]} ${s5[3]} ${a3.leaf[2]} ${a3.leaf[3]}`}/>`}<path class=${"aperture-leaf " + (o7?.state === "on" ? "is-open" : "")} d=${o7?.state === "on" ? `M${a3.leaf[0]} ${a3.leaf[1]}L${a3.leaf[2]} ${a3.leaf[3]}` : p4}/>` : A}${a3.cover_entity ? w`<path class="shutter-track" d=${parallel}/>${pos !== null ? w`<path class="shutter-fill" d=${parallel} pathLength="100" stroke-dasharray=${`${100 - pos} 100`}/>` : A}${this._mode === "covers" && a3.control ? w`<path class="aperture-leader" d=${`M${(s5[0] + s5[2]) / 2} ${(s5[1] + s5[3]) / 2}L${a3.control[0]} ${a3.control[1]}`}/>` : A}` : A}`;
     })}</svg>
       ${apertures.filter((a3) => a3.cover_entity || a3.command_entity || a3.opening_entity).map((a3) => {
