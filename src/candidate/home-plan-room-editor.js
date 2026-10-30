@@ -30,7 +30,7 @@ export class HomePlanRoomEditor extends LitElement {
    ${this._error?html`<p class="error" role="alert">${this._error}</p>`:nothing}
    ${scene?html`
     <home-plan-room-scene .scene=${scene} .mode=${this._view} .editMode=${true} .editMarkers=${markers} .activeKey=${markers?key:undefined} .selectedObject=${this._index}
-     .signals=${Object.fromEntries(Object.entries(this.room.scene_entities||{}).map(([k,id])=>[k,this.hass?.states?.[id]]))}
+     .environment=${{sun:this.hass?.states?.[this.room.scene_sun_entity||'sun.sun']}} .signals=${Object.fromEntries(Object.entries(this.room.scene_entities||{}).map(([k,id])=>[k,this.hass?.states?.[id]]))}
      @room-object-selected=${e=>{e.stopPropagation();this._index=e.detail.index;this._binding='';}}
      @room-object-moved=${e=>{e.stopPropagation();this._index=e.detail.index;this._patch({at:e.detail.at});}}
      @room-marker-selected=${e=>{e.stopPropagation();this._binding=e.detail.key;}}

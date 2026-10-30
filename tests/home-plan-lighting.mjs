@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {roomLighting,solarDaylight,coverOpening,lightColor,roomRenderSize} from '../src/candidate/home-plan-room-lighting.js';
+const scene={size:[4,3.5],objects:[{type:'window',at:[0,1.3,1.7],size:[1.4,1.6,.1],rotation:180,cover:'blind'},{type:'blocks',at:[1,1.5,-1.6],size:[.5,.5,.05],bind:'lamp'}],hotspots:[{key:'lamp',at:[1,1.5,-1.6]}]};
+const sun=e=>({state:e>=0?'above_horizon':'below_horizon',attributes:{elevation:e}}),lamp=(brightness=255,rgb=[50,100,255])=>({entity_id:'light.example',state:'on',attributes:{brightness,rgb_color:rgb}}),signals=p=>({blind:{state:p?'open':'closed',attributes:{current_position:p}}});
+const dayOpen=roomLighting(scene,signals(100),{sun:sun(25)}),dayClosed=roomLighting(scene,signals(0),{sun:sun(25)}),night=roomLighting(scene,signals(100),{sun:sun(-18)});
+assert.ok(dayOpen.ambient[0]>dayClosed.ambient[0]);assert.ok(dayClosed.ambient[0]>night.ambient[0]);assert.ok(dayOpen.direct>dayClosed.direct);assert.equal(night.sources.length,0);assert.ok(dayOpen.sources[0].intensity>0);assert.equal(dayClosed.sources.length,0);
+const half=roomLighting(scene,signals(50),{sun:sun(25)});assert.ok(half.direct>dayClosed.direct&&half.direct<dayOpen.direct);
+const coloredNight=roomLighting(scene,{...signals(0),lamp:lamp()},{sun:sun(-18)}),coloredDay=roomLighting(scene,{...signals(100),lamp:lamp()},{sun:sun(25)});assert.deepEqual(coloredNight.sources[0].rgb,[50/255,100/255,1]);assert.ok(coloredNight.sources[0].intensity>coloredDay.sources.find(s=>s.key==='lamp').intensity,'artificial spill has stronger contrast in darkness');
+assert.ok(roomLighting(scene,{...signals(0),lamp:lamp(50)},{sun:sun(-18)}).sources[0].intensity<coloredNight.sources[0].intensity);
+assert.equal(roomLighting(scene,{...signals(0),lamp:{...lamp(),state:'unavailable'}},{sun:sun(-18)}).sources.length,0);
+assert.equal(roomLighting(scene,{...signals(0),lamp:lamp(0)},{sun:sun(-18)}).sources.length,0);
+const duplicate={...scene,objects:[...scene.objects,scene.objects[1]]};assert.equal(roomLighting(duplicate,{...signals(0),lamp:lamp()},{sun:sun(-18)}).sources[0].intensity,coloredNight.sources[0].intensity,'one entity is not counted once per mesh');
+const movedIcon={...scene,hotspots:scene.hotspots.map(h=>({...h,plan:[15,15]}))};assert.deepEqual(roomLighting(movedIcon,{...signals(0),lamp:lamp()},{sun:sun(-18)}).sources,coloredNight.sources,'2D marker placement does not move lighting sources');
+const many={...scene,objects:[...scene.objects,...Array.from({length:30},(_,i)=>({...scene.objects[1],bind:'lamp'+i}))]};assert.equal(roomLighting(many,{...signals(100),...Object.fromEntries(Array.from({length:30},(_,i)=>['lamp'+i,lamp()]))},{sun:sun(20)}).sources.length,8);
+assert.equal(coverOpening({state:'unavailable',attributes:{current_position:100}}),null);assert.equal(coverOpening({state:'closed',attributes:{}}),0);assert.equal(coverOpening({state:'open',attributes:{}}),1);assert.equal(coverOpening({state:'opening',attributes:{current_position:30}}),.3);
+assert.equal(solarDaylight({state:'unavailable',attributes:{elevation:20}}).known,false);assert.equal(solarDaylight(sun(-18)).label,'Nuit');assert.equal(solarDaylight(sun(0)).label,'Crépuscule');assert.equal(solarDaylight(sun(25)).label,'Jour');
+assert.ok(lightColor({attributes:{color_temp_kelvin:2200}})[2]<lightColor({attributes:{color_temp_kelvin:6500}})[2]);assert.deepEqual(lightColor({attributes:{hs_color:[120,100]}}),[0,1,0]);
+for(const fine of [true,false])for(const dpr of [1,1.25,2,3])for(const [w,h]of [[390,330],[605,526],[1800,900]]){const q=roomRenderSize(w,h,dpr,fine);assert.ok(q.width*q.height<=(fine?2600000:1200000));assert.ok(q.width<=4096&&q.height<=4096);assert.ok(q.shadowSize<=(fine?2048:1024));}
+assert.ok(roomRenderSize(600,500,1,true).width>=900,'desktop supersampling improves 1x definition');assert.equal(roomRenderSize(390,330,3,false).width,780,'touch rendering keeps the 2x cap');assert.ok(roomRenderSize(1800,900,3,true,512).width<=512);
+console.log('Room lighting: day/twilight/night, shutter transmission, RGB/brightness, missing states, emitter dedup/budget and desktop/touch resolution budgets passed.');

@@ -1,3 +1,7 @@
+## Plan — ambiance lumineuse 0.12.0-rc.1
+
+L’inspection du renderer confirme un éclairage constant, un dessin sans suréchantillonnage sur écran 1x et des ombres 1024 px. Cela peut contribuer au manque de netteté signalé, sans prouver à lui seul le rendu du PC utilisateur. Les états solaires et la position du volet natifs ont été lus ; leurs valeurs et identifiants domestiques sont conservés uniquement dans la référence privée. Le module pur `home-plan-room-lighting.js` calcule l’ambiance à partir des snapshots HA existants. Tests : `tests/home-plan-lighting.mjs`, `tests/home-plan-ambience.mjs` et contrats de pièce existants. Les effets sont une approximation visuelle, pas une mesure photométrique. Aucun changement des géométries privées.
+
 ## Plan — équipements 2D 0.11.0-rc.1
 
 Le retour utilisateur du 30 octobre constate que le mobilier est modifiable mais que les repères d’entités ne le sont pas, et demande le masquage du dressing depuis l’arrière. Inspection du renderer : les icônes étaient exclues en édition. L’éditeur et le renderer maintenus sont dans `src/candidate/` ; contrat fictif dans `tests/home-plan-object-interaction.mjs`. La scène réelle conserve sa géométrie et ajoute une normale de masquage au dressing. La référence privée conserve source, associations, installation et retour arrière ; aucun inventaire domestique dans Git.

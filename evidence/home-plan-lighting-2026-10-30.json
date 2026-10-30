@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-30T14:38:49.758799+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.12.0-rc.1",
+  "bundle_bytes": 283278,
+  "bundle_sha256": "6ced70961e749a446db8fecac8570741b3249d5b1c7492040d9d5ff67e6654f8",
+  "native": {
+    "versioned_files_readback_equal": 2,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "scene_models_positions_bindings_preserved": true,
+    "patch_scope": [
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_validation": {
+    "pure_lighting": [
+      "day/twilight/night",
+      "shutter transmission 0/50/100",
+      "RGB, white temperature, HS and brightness",
+      "unknown/unavailable neutral fallbacks",
+      "entity emitter deduplication",
+      "eight-source bound",
+      "2D plan override does not move light",
+      "desktop/touch pixel and texture budgets"
+    ],
+    "browser_ambience": [
+      "higher desktop buffer definition and 2048px shadows",
+      "room mean pixels darken with closed shutter and night",
+      "localized RGB floor spill stronger near source",
+      "brightness modifies floor pixels",
+      "solar update changes uniforms without geometry upload",
+      "no static render loop or service",
+      "resolution watcher and GPU cleanup",
+      "touch 2x/1.2MP/1024px budgets"
+    ],
+    "existing_browser_groups": 17,
+    "fictitious_groups": 14,
+    "private_groups": 3,
+    "retained": [
+      "GPU picking and cutaways",
+      "PC/TV animation cap measured against elapsed time rather than screenshot duration",
+      "three opening views/fallback",
+      "native equipment placement and reset/reload",
+      "1000 HA updates and 100 mounts cleanup",
+      "climate/notices/collection contracts"
+    ],
+    "private_visual": [
+      "day shutter closed/open",
+      "night off and three colored light groups",
+      "GL without error",
+      "320/390/736 px layouts"
+    ]
+  },
+  "limits": "Visual lighting approximation; user PC blur cause and physical iOS performance not directly measured. No per-lamp shadow map.",
+  "private_assets": "House geometry, photos, actual entity IDs/states and internal QA screenshots excluded from public Git.",
+  "ci": "Local verification only; skip-ci draft.",
+  "merged": false,
+  "hacs_release": false
+}
