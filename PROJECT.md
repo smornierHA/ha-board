@@ -1,3 +1,11 @@
+## Plan — objets interactifs et éditeur de pièce du 30 octobre 2026
+
+Le candidat autonome **0.8.0-rc.1** sélectionne directement la géométrie des objets en 3D, sans pictogrammes flottants. Ajoute un éditeur de pièce natif accessible après le choix du niveau et de la pièce : déplacement en 2D, groupes, clavier, dimensions, rotation, couleur, cadrage, associations et états actifs. Les écrans du PC et la lampe restent indépendants ; une détection réseau conserve son libellé de détection, sans prétendre mesurer l’alimentation. L’écran TV affiche une animation originale de style manga, bornée à 10 images/s, arrêtée hors visibilité et en réduction des animations. Le mobilier et la fenêtre sont reconstruits dans le modèle privé selon l’annotation et les photos. Code et tests fictifs restent publics ; photos, annotation, géométrie et associations domestiques sont exclus de Git. Pas de release HACS ni fusion ; installation ciblée et preuve dans `evidence/home-plan-objects-2026-10-30.json`.
+
+## Météo — reprise limitée du 29 octobre 2026
+
+Le candidat autonome **0.4.0-rc.3** corrige une amplification reproductible des tentatives après échec de l’abonnement quotidien : reprise au prochain état HA après 30/60/120/240/300 secondes, remise à zéro à la reconnexion ou au changement de source. Aucun timer supplémentaire ; nettoyage existant conservé. Source iOS figée reprise du module effectivement installé, sans changement visuel ; source historique corrigée également. 22 contrats historiques, trois groupes de reprise et contrôle du plan sur 1 000 états / 100 cycles réussis sur doubles. Ce défaut ne prouve pas la cause de la saturation mémoire observée. Installé : fichier relu à l’identique, ressource météo existante actualisée, 43 autres ressources conservées. Le chargement dans les clients déjà ouverts reste soumis au rechargement de leur vue. Preuve : `evidence/weather-backoff-2026-10-29.json`.
+
 # Projet HA-BOARD
 
 ## Plan — alignements et activation du chauffage du 29 octobre 2026

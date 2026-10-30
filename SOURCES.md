@@ -1,3 +1,7 @@
+## Plan — objets et configuration 0.8.0-rc.1
+
+L’annotation reçue et les photos originales sont autoritaires pour la disposition de la pièce pilote. Le code générique vit dans `src/candidate/home-plan-room-scene.js` et `home-plan-room-editor.js`. Sélection GPU, états indépendants, animation bornée et édition sans service sont contrôlés sur données fictives dans `tests/home-plan-object-interaction.mjs`. Les entités natives ont été recherchées avant association ; le PC utilise une présence réseau et le capteur de couleurs du téléviseur est associé à son éclairage d’ambiance. Les données réelles restent dans la référence privée, hors Git public.
+
 # Sources de référence
 
 ## Plan — alignements et activation 0.6.0-rc.2

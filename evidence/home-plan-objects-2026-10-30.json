@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-30T11:43:26.209708+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.8.0-rc.1",
+  "bundle_bytes": 260367,
+  "bundle_sha256": "598e55fcb55719e6922d9127f626ea608e45a1b3866964a8aca2749f865e4cc1",
+  "native": {
+    "versioned_files_readback_equal": 3,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "existing_plan_positions_preserved": true,
+    "patch_scope": [
+      "pilot room scene_url",
+      "pilot room scene_entities",
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_validation": {
+    "existing_browser_groups": 17,
+    "fictitious_groups": 14,
+    "private_groups": 3,
+    "object_interaction": [
+      "GPU picking by real pointer",
+      "object highlight without service call",
+      "PC state independent from desk lamp",
+      "screen faces room",
+      "original animated TV art",
+      "animation cap near 10 fps",
+      "reduced-motion stop",
+      "off-state stop",
+      "dedicated native room editor",
+      "numeric and grouped movement",
+      "keyboard placement",
+      "actual drag and drop",
+      "entity binding preservation",
+      "320/390/736 px editor"
+    ],
+    "room_explorer": [
+      "no floating icons in 3D",
+      "2D/3D and no WebGL fallback",
+      "zoom/swipe/reset",
+      "1000 HA states without model refetch",
+      "GPU/frame/observer/request cleanup"
+    ],
+    "lifecycle": {
+      "mount_cycles": 100,
+      "updates": 1000,
+      "detached_listeners": 0,
+      "service_calls": 0
+    },
+    "offline_preview": [
+      "TV simulation",
+      "PC simulation",
+      "room configuration",
+      "return to visit"
+    ]
+  },
+  "private_assets": "Annotation, original photos, actual room geometry, bindings, names and screenshots excluded from public Git.",
+  "semantics": "Network detection is labelled as detection, never a measured PC power state. A color-sampling camera shares its ambient-light entity; no camera stream is invented.",
+  "ci": "Local checks only; skip-ci used for this draft.",
+  "merged": false,
+  "hacs_release": false
+}

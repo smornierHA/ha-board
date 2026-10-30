@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.7.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.8.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -908,17 +908,33 @@ function project(p4, m3) {
 function validateRoomScene(scene) {
   if (!scene || scene.version !== 1 || !Array.isArray(scene.size) || scene.size.length !== 2 || scene.size.some((n5) => !Number.isFinite(n5) || n5 < 1 || n5 > 20)) throw Error("Dimensions de la pièce invalides.");
   if (!Array.isArray(scene.objects) || scene.objects.length > 120 || !Array.isArray(scene.hotspots) || scene.hotspots.length > 30) throw Error("Modèle de pièce trop complexe.");
-  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope"]);
+  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope", "camera", "lamp", "backlight", "floor-heat"]);
   for (const o7 of scene.objects) {
     if (!kinds.has(o7.type) || !Array.isArray(o7.at) || o7.at.length !== 3 || o7.at.some((x2) => !Number.isFinite(x2) || Math.abs(x2) > 25) || !Array.isArray(o7.size) || o7.size.length !== 3 || o7.size.some((x2) => !Number.isFinite(x2) || x2 <= 0 || x2 > 20) || o7.rotation !== void 0 && !Number.isFinite(o7.rotation)) throw Error("Objet de pièce invalide.");
   }
   if (scene.outline && (!Array.isArray(scene.outline) || scene.outline.length < 3 || scene.outline.length > 32 || scene.outline.some((p4) => !Array.isArray(p4) || p4.length !== 2 || p4.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 20)))) throw Error("Contour de pièce invalide.");
+  const objectIds = /* @__PURE__ */ new Set();
+  for (const o7 of scene.objects) {
+    if (o7.id && (typeof o7.id !== "string" || objectIds.has(o7.id))) throw Error("Identifiant d’objet invalide.");
+    if (o7.id) objectIds.add(o7.id);
+  }
   const seen = /* @__PURE__ */ new Set();
   for (const h4 of scene.hotspots) {
     if (typeof h4.key !== "string" || seen.has(h4.key) || !Array.isArray(h4.at) || h4.at.length !== 3 || h4.at.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 25)) throw Error("Repère de pièce invalide.");
+    if (h4.states && (!Array.isArray(h4.states) || h4.states.length > 20 || h4.states.some((v3) => typeof v3 !== "string" || v3.length > 80))) throw Error("États actifs invalides.");
     seen.add(h4.key);
   }
   return scene;
+}
+function sceneActive(scene, signals, key) {
+  const states = scene?.hotspots?.find((h4) => h4.key === key)?.states || ["on", "playing", "paused", "buffering"];
+  return states.includes(signals?.[key]?.state);
+}
+function roomAnchor(scene, h4) {
+  const o7 = h4.object && scene.objects.find((o8) => o8.id === h4.object);
+  if (!o7) return h4.at;
+  const a3 = (o7.rotation || 0) * Math.PI / 180, p4 = h4.offset || [0, 0, 0];
+  return [o7.at[0] + p4[0] * Math.cos(a3) + p4[2] * Math.sin(a3), o7.at[1] + p4[1], o7.at[2] - p4[0] * Math.sin(a3) + p4[2] * Math.cos(a3)];
 }
 function triangulate(points) {
   const ids = points.map((_2, i7) => i7), tri = [], area = points.reduce((s5, a3, i7) => {
@@ -949,10 +965,15 @@ var Mesh = class {
     this.vertices = [];
     this.origin = [0, 0, 0];
     this.angle = 0;
+    this.objectId = 0;
   }
-  vertex(p4, n5, c5, material = 0) {
+  vertex(p4, n5, c5, material = 0, uv = [0, 0]) {
     const co = Math.cos(this.angle), si = Math.sin(this.angle), q = [p4[0] * co + p4[2] * si, p4[1], -p4[0] * si + p4[2] * co], nn = [n5[0] * co + n5[2] * si, n5[1], -n5[0] * si + n5[2] * co];
-    this.vertices.push(...q.map((v3, i7) => v3 + this.origin[i7]), ...nn, ...hex(c5), material);
+    this.vertices.push(...q.map((v3, i7) => v3 + this.origin[i7]), ...nn, ...hex(c5), material, this.objectId, ...uv);
+  }
+  panel(x2, y3, z2, w2, h4, color, mat = 0) {
+    const p4 = [[x2 - w2 / 2, y3 - h4 / 2, z2], [x2 + w2 / 2, y3 - h4 / 2, z2], [x2 + w2 / 2, y3 + h4 / 2, z2], [x2 - w2 / 2, y3 + h4 / 2, z2]], uv = [[0, 0], [1, 0], [1, 1], [0, 1]];
+    for (const k2 of [0, 1, 2, 0, 2, 3]) this.vertex(p4[k2], [0, 0, 1], color, mat, uv[k2]);
   }
   face(a3, b3, c5, d3, color, mat = 0) {
     const n5 = norm(cross(sub(b3, a3), sub(c5, a3)));
@@ -1000,8 +1021,8 @@ var Mesh = class {
     }
   }
 };
-function furnish(mesh, o7, signals) {
-  const [w2, h4, d3] = o7.size, c5 = o7.color || "#ddd9d1", s5 = signals[o7.bind], on = s5?.state === "on" || s5?.state === "playing", glow = on ? s5?.attributes?.rgb_color ? "#" + s5.attributes.rgb_color.map((v3) => clamp(Math.round(v3), 0, 255).toString(16).padStart(2, "0")).join("") : "#78dcca" : "#9da4a3";
+function furnish(mesh, o7, signals, scene) {
+  const [w2, h4, d3] = o7.size, c5 = o7.color || "#ddd9d1", s5 = signals[o7.bind], on = sceneActive(scene, signals, o7.bind), glow = on ? s5?.attributes?.rgb_color ? "#" + s5.attributes.rgb_color.map((v3) => clamp(Math.round(v3), 0, 255).toString(16).padStart(2, "0")).join("") : "#78dcca" : "#9da4a3";
   mesh.origin = o7.at;
   mesh.angle = (o7.rotation || 0) * Math.PI / 180;
   const box = (x2, y3, z2, ww, hh, dd, cc = c5, r4 = 0, mat = 0) => mesh.box(x2, y3, z2, ww, hh, dd, cc, r4, mat);
@@ -1023,7 +1044,7 @@ function furnish(mesh, o7, signals) {
       for (const y3 of [0.2, 0.4, 0.6]) box(x2, y3, -d3 * 0.451, 0.22, 0.018, 0.012, "#b8b6ae");
     }
     box(-0.15, 1.13, -d3 * 0.26, 0.87, 0.47, 0.043, "#222c32", 0.018);
-    box(-0.15, 1.13, -d3 * 0.285, 0.79, 0.39, 0.014, on ? "#538f91" : "#344047", 6e-3, on ? 1 : 0);
+    mesh.panel(-0.15, 1.13, -d3 * 0.26 + 0.029, 0.79, 0.39, on ? "#538f91" : "#182329", on ? 5 : 0);
     box(-0.15, 0.86, -d3 * 0.24, 0.055, 0.18, 0.035, "#484e52");
     box(-0.15, 0.796, -d3 * 0.2, 0.35, 0.025, 0.19, "#42484a", 0.012);
     box(-0.15, 0.79, d3 * 0.11, 0.56, 0.024, 0.2, "#333b41", 0.01);
@@ -1031,17 +1052,23 @@ function furnish(mesh, o7, signals) {
   } else if (o7.type === "pc") {
     box(0, h4 / 2, 0, w2, h4, d3, "#25323a", 0.025);
     box(w2 / 2 + 2e-3, h4 * 0.52, 0, 7e-3, h4 * 0.8, d3 * 0.84, "#334952");
-    box(w2 * 0.2, h4 * 0.53, d3 / 2 + 0.012, 0.018, h4 * 0.81, 0.013, on ? glow : "#65afa9", 6e-3, on ? 1 : 0);
+    box(w2 * 0.2, h4 * 0.53, d3 / 2 + 0.012, 0.018, h4 * 0.81, 0.013, on ? glow : "#43535a", 6e-3, on ? 1 : 0);
     for (const y3 of [h4 * 0.28, h4 * 0.64]) mesh.cylinder(0, y3, 0, 0.09, 0.035, "#73939a");
   } else if (o7.type === "chair") {
-    box(0, 0.48, 0, w2, 0.12, d3 * 0.8, c5, 0.06);
-    box(0, 0.85, -d3 * 0.32, w2 * 0.9, 0.65, 0.12, c5, 0.06);
+    box(0, 0.48, 0, w2, 0.09, d3 * 0.8, c5, 0.065);
+    box(0, 0.85, -d3 * 0.32, w2 * 0.86, 0.6, 0.065, c5, 0.04);
+    for (let j2 = 0; j2 < 9; j2++) box(0, 0.6 + j2 * 0.057, -d3 * 0.32 + 0.037, w2 * 0.74, 8e-3, 8e-3, "#a2acaa");
     box(0, 1.21, -d3 * 0.35, w2 * 0.64, 0.16, 0.1, c5, 0.04);
     mesh.cylinder(0, 0.25, 0, 0.035, 0.4, "#aeb3b2");
-    for (const x2 of [-0.24, 0.24]) {
-      box(x2, 0.08, 0, 0.07, 0.04, 0.45, "#aeb3b2", 0.012);
-      box(x2, 0.69, 0, 0.04, 0.04, 0.29, "#838d90", 0.01);
+    for (let j2 = 0; j2 < 5; j2++) {
+      const a3 = j2 * Math.PI * 2 / 5;
+      const save = mesh.angle;
+      mesh.angle += a3;
+      box(0, 0.1, 0.15, 0.045, 0.035, 0.3, "#aeb3b2", 0.01);
+      mesh.cylinder(0, 0.055, 0.3, 0.032, 0.06, "#485459", 12);
+      mesh.angle = save;
     }
+    for (const x2 of [-0.24, 0.24]) box(x2, 0.69, 0, 0.04, 0.04, 0.29, "#838d90", 0.01);
   } else if (o7.type === "dresser" || o7.type === "wardrobe") {
     box(0, h4 / 2, 0, w2, h4, d3, c5, 0.018);
     const leaves = o7.leaves || 2;
@@ -1049,7 +1076,7 @@ function furnish(mesh, o7, signals) {
     for (let i7 = 0; i7 < leaves; i7++) box(-w2 / 2 + w2 * (i7 + 0.5) / leaves, h4 * 0.63, d3 / 2 + 0.016, 0.015, 0.15, 0.02, o7.type === "dresser" ? "#7b2c31" : "#90989a", 5e-3);
   } else if (o7.type === "tv") {
     box(0, 0, 0, w2, h4, d3, "#20292f", 0.035);
-    box(0, 0, d3 / 2 + 6e-3, w2 - 0.045, h4 - 0.045, 0.015, on ? "#40647b" : "#23333b", 0.018, on ? 1 : 0);
+    mesh.panel(0, 0, d3 / 2 + 0.012, w2 - 0.045, h4 - 0.045, on ? "#40647b" : "#182329", on ? 4 : 0);
     box(0, -h4 / 2 + 0.012, d3 / 2 + 0.018, 0.06, 8e-3, 0.01, "#bac2c2");
   } else if (o7.type === "window") {
     box(-w2 / 2, 0, 0, 0.065, h4, 0.16, "#f9f7ee");
@@ -1058,11 +1085,16 @@ function furnish(mesh, o7, signals) {
     box(0, -h4 / 2, 0, w2 + 0.15, 0.07, 0.31, "#f9f7ee");
     box(0, 0, 0, 0.045, h4, 0.12, "#f9f7ee");
     for (const x2 of [-w2 * 0.36, w2 * 0.36]) box(x2, 0, -0.025, 0.02, h4 - 0.12, 0.012, "#bad6d4");
+    mesh.panel(0, 0, 0.055, w2 - 0.08, h4 - 0.09, "#adcace", 6);
+    const frameId = mesh.objectId;
+    if (!mesh.editMode) mesh.objectId = scene.hotspots.findIndex((h5) => h5.key === o7.cover) + 1;
+    box(0, h4 / 2 + 0.055, 0.04, w2 + 0.13, 0.11, 0.18, "#eae9e0", 0.016);
     const pos = signals[o7.cover]?.attributes?.current_position, closed = typeof pos === "number" ? (100 - clamp(pos, 0, 100)) / 100 : 0;
     if (closed > 0) {
       box(0, h4 / 2 - h4 * closed / 2, 0.072, w2 - 0.09, h4 * closed, 0.025, "#b0b4ae");
       for (let j2 = 0; j2 < Math.floor(h4 * closed / 0.065); j2++) box(0, h4 / 2 - j2 * 0.065, 0.089, w2 - 0.1, 8e-3, 8e-3, "#909995");
     }
+    mesh.objectId = frameId;
   } else if (o7.type === "door") {
     box(-w2 / 2, 0, 0, 0.055, h4, 0.14, "#f7f4ed");
     box(w2 / 2, 0, 0, 0.055, h4, 0.14, "#f7f4ed");
@@ -1076,10 +1108,8 @@ function furnish(mesh, o7, signals) {
     const mat = on ? 1 : 0;
     box(0, 0, 0.02, 0.045, h4, 0.035, glow, 0.015, mat);
     for (const sign of [-1, 1]) {
-      const save = mesh.angle;
-      mesh.angle += sign * Math.PI / 3;
-      box(sign * h4 * 0.15, h4 * 0.14, 0.022, 0.04, h4 * 0.48, 0.035, glow, 0.012, mat);
-      mesh.angle = save;
+      const start = [0, 0, 0.022], end = [sign * h4 * 0.4, h4 * 0.28, 0.022], dx = end[0], dy = end[1], len = Math.hypot(dx, dy), nx = -dy / len * 0.02, ny = dx / len * 0.02;
+      mesh.face([nx, ny, 0.04], [dx + nx, dy + ny, 0.04], [dx - nx, dy - ny, 0.04], [-nx, -ny, 0.04], glow, mat);
     }
   } else if (o7.type === "blocks") {
     for (let i7 = 0; i7 < 4; i7++) box((i7 % 2 - 0.5) * w2 * 0.48, (Math.floor(i7 / 2) - 0.5) * h4 * 0.48, 0.03, w2 * 0.45, h4 * 0.45, 0.05, glow, 0.018, on ? 1 : 0);
@@ -1087,13 +1117,26 @@ function furnish(mesh, o7, signals) {
     mesh.ring(0, 0, 0, w2 / 2, 0.025, "#f1e9cf");
     mesh.cylinder(0, 0.23, 0, 9e-3, 0.46, "#626b6a");
   } else if (o7.type === "collection") {
-    for (let level = 0; level < 2; level++) {
-      box(0, level * 0.24 + 0.12, 0, w2, 0.018, d3, "#d5d0c5");
-      for (let i7 = 0; i7 < 8; i7++) {
-        const x2 = -w2 / 2 + 0.1 + i7 * (w2 - 0.2) / 7;
-        box(x2, level * 0.24 + 0.06, 0, 0.12, 0.12, 0.12, ["#566c6a", "#9b7970", "#9e9d77"][i7 % 3], 0.015);
-      }
+    for (let level = 0; level < 2; level++) for (let i7 = 0; i7 < 8; i7++) {
+      const x2 = -w2 / 2 + 0.1 + i7 * (w2 - 0.2) / 7, y3 = level * 0.24;
+      box(x2, y3 + 0.115, 0, 0.17, 0.23, 0.16, "#d8d5c8", 8e-3);
+      box(x2, y3 + 0.13, d3 / 2 + 2e-3, 0.135, 0.15, 0.012, "#53606a");
+      box(x2, y3 + 0.125, d3 / 2 + 0.013, 0.07, 0.07, 0.016, ["#a6b6ad", "#cba48d", "#af9d77"][i7 % 3], 0.018);
+      box(x2, y3 + 0.2, d3 / 2 + 0.014, 0.1, 0.025, 8e-3, "#e8e6db");
     }
+  } else if (o7.type === "camera") {
+    box(0, 0, 0, w2, h4, d3, "#283138", 0.045);
+    box(0, 0, d3 / 2 + 5e-3, w2 * 0.42, h4 * 0.48, 0.012, "#101e29", 0.03);
+    box(0, -h4 * 0.65, -0.02, 0.045, h4 * 0.4, 0.05, "#485357");
+  } else if (o7.type === "lamp") {
+    mesh.cylinder(0, 0.02, 0, 0.11, 0.035, "#d7dcda");
+    box(0, 0.23, 0, 0.025, 0.42, 0.025, c5, 0.01);
+    box(0, 0.44, -0.05, 0.29, 0.045, 0.13, on ? glow : c5, 0.02, on ? 1 : 0);
+  } else if (o7.type === "backlight") {
+    for (const x2 of [-w2 / 2, w2 / 2]) box(x2, 0, 0.015, 0.035, h4, 0.03, glow, 0.01, on ? 1 : 0);
+    for (const y3 of [-h4 / 2, h4 / 2]) box(0, y3, 0.015, w2, 0.035, 0.03, glow, 0.01, on ? 1 : 0);
+  } else if (o7.type === "floor-heat") {
+    for (let j2 = 0; j2 < 6; j2++) box(0, 0.03, -d3 / 2 + (j2 + 0.5) * d3 / 6, w2, 0.015, 0.018, glow, 8e-3, on ? 1 : 0);
   } else if (o7.type === "poster") {
     box(0, 0, 0, w2, h4, 0.018, "#c7c6b7");
     box(0, 0, 0.014, w2 * 0.94, h4 * 0.96, 0.012, c5);
@@ -1105,17 +1148,17 @@ function furnish(mesh, o7, signals) {
   } else box(0, 0, 0, w2, h4, d3, c5, o7.radius || 0, o7.material || 0);
 }
 var VERT = `#version 300 es
-in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
+in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;in float aObject;in vec2 aUv;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;flat out float vObject;out vec2 vUv;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vObject=aObject;vUv=aUv;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
 var FRAG = `#version 300 es
-precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;out vec4 outColor;
-void main(){vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
+precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;out vec4 outColor;
+void main(){if(uPick>.5){outColor=vec4(vObject/255.,0.,0.,1.);return;}if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){col=mix(vec3(.05,.14,.22),vec3(.1,.45,.5),vUv.y);float grid=step(.96,fract(vUv.x*11.))*step(.12,vUv.y)*step(vUv.y,.85);col+=grid*.12;col=mix(col,vec3(.64,.9,.88),step(.93,vUv.y));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
 var SHADOW_V = `#version 300 es
-in vec3 aPosition;uniform mat4 uVP;void main(){gl_Position=uVP*vec4(aPosition,1.);}`;
+in vec3 aPosition;in float aMaterial;uniform mat4 uVP;out float vSkip;void main(){vSkip=aMaterial;gl_Position=uVP*vec4(aPosition,1.);}`;
 var SHADOW_F = `#version 300 es
-precision highp float;void main(){}`;
+precision highp float;in float vSkip;void main(){if(vSkip>5.5&&vSkip<6.5)discard;}`;
 var HomePlanRoomScene = class extends i4 {
-  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, _failed: { state: true }, _positions: { state: true } };
-  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:19px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;max-width:44%}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, _failed: { state: true }, _positions: { state: true } };
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:19px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;max-width:44%}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
   constructor() {
     super();
     this.mode = "3d";
@@ -1126,19 +1169,35 @@ var HomePlanRoomScene = class extends i4 {
     this.zoom = 1;
     this._epoch = 0;
     this._pointers = /* @__PURE__ */ new Map();
+    this._visible = true;
+    this._visibility = () => this._requestDraw();
+    this._motion = () => this._requestDraw();
   }
   connectedCallback() {
     super.connectedCallback();
     const epoch = ++this._epoch;
     this.updateComplete.then(() => {
-      if (this.isConnected && epoch === this._epoch) this._init();
+      if (this.isConnected && epoch === this._epoch) {
+        this._init();
+        this._intersection = new IntersectionObserver((entries) => {
+          this._visible = entries[0]?.isIntersecting !== false;
+          this._requestDraw();
+        });
+        this._intersection.observe(this);
+      }
     });
+    document.addEventListener("visibilitychange", this._visibility);
+    this._reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    this._reduced.addEventListener("change", this._motion);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     this._epoch++;
     this._dispose();
     this._pointers.clear();
+    this._intersection?.disconnect();
+    document.removeEventListener("visibilitychange", this._visibility);
+    this._reduced?.removeEventListener("change", this._motion);
   }
   updated(changed) {
     if (changed.has("scene")) {
@@ -1192,6 +1251,11 @@ var HomePlanRoomScene = class extends i4 {
       if (!gl) throw Error("WebGL indisponible");
       this._gl = gl;
       this._canvas = canvas;
+      this._contextLost = () => {
+        this._dispose();
+        this._failed = true;
+      };
+      canvas.addEventListener("webglcontextlost", this._contextLost);
       this._main = this._program(VERT, FRAG);
       this._shadowProgram = this._program(SHADOW_V, SHADOW_F);
       this._buffer = gl.createBuffer();
@@ -1219,10 +1283,14 @@ var HomePlanRoomScene = class extends i4 {
     }
   }
   _dispose() {
+    clearTimeout(this._animationTimer);
+    this._animationTimer = 0;
     cancelAnimationFrame(this._frame);
     this._frame = 0;
     this._resize?.disconnect();
     this._resize = null;
+    this._canvas?.removeEventListener("webglcontextlost", this._contextLost);
+    this._objectDrag = null;
     const g2 = this._gl;
     if (g2) {
       for (const p4 of [this._main, this._shadowProgram]) if (p4) g2.deleteProgram(p4);
@@ -1249,6 +1317,7 @@ var HomePlanRoomScene = class extends i4 {
   }
   _geometry() {
     const mesh = new Mesh(), [w2, d3] = this.scene.size;
+    mesh.editMode = this.editMode;
     if (this.scene.outline) {
       const points = this.scene.outline;
       for (const t6 of triangulate(points)) {
@@ -1263,17 +1332,21 @@ var HomePlanRoomScene = class extends i4 {
       mesh.box(0, -0.1, 0, w2 + 0.16, 0.2, d3 + 0.16, "#f0eee8", 0.025);
       mesh.box(0, 8e-3, 0, w2, 0.035, d3, "#a7aaa5", 0, 2);
     }
-    for (const o7 of this.scene.objects) furnish(mesh, o7, this.signals || {});
+    this._keys = this.scene.hotspots.map((h4) => h4.key);
+    for (const [i7, o7] of this.scene.objects.entries()) {
+      mesh.objectId = this.editMode ? i7 + 1 : this._keys.indexOf(o7.select || o7.bind) + 1;
+      furnish(mesh, o7, this.signals || {}, this.scene);
+    }
     return new Float32Array(mesh.vertices);
   }
   _attributes(program) {
     const gl = this._gl;
     gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
-    for (const [name, size, offset] of [["aPosition", 3, 0], ["aNormal", 3, 12], ["aColor", 3, 24], ["aMaterial", 1, 36]]) {
+    for (const [name, size, offset] of [["aPosition", 3, 0], ["aNormal", 3, 12], ["aColor", 3, 24], ["aMaterial", 1, 36], ["aObject", 1, 40], ["aUv", 2, 44]]) {
       const loc = gl.getAttribLocation(program, name);
       if (loc < 0) continue;
       gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 40, offset);
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 52, offset);
     }
   }
   _draw() {
@@ -1282,7 +1355,7 @@ var HomePlanRoomScene = class extends i4 {
       const top = this.renderRoot.querySelector("svg.top"), matrix = top?.getScreenCTM(), rect = this.renderRoot.querySelector(".stage")?.getBoundingClientRect();
       if (!matrix || !rect) return;
       const positions2 = this.scene.hotspots.map((h4) => {
-        const p4 = new DOMPoint(h4.at[0], h4.at[2]).matrixTransform(matrix);
+        const p4 = new DOMPoint(roomAnchor(this.scene, h4)[0], roomAnchor(this.scene, h4)[2]).matrixTransform(matrix);
         return { ...h4, x: (p4.x - rect.left) / rect.width * 100, y: (p4.y - rect.top) / rect.height * 100 };
       });
       if (JSON.stringify(positions2) !== JSON.stringify(this._positions)) this._positions = positions2;
@@ -1293,26 +1366,33 @@ var HomePlanRoomScene = class extends i4 {
     const canvas = this._canvas, box = canvas.getBoundingClientRect();
     if (!box.width || !box.height) return;
     const ratio = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.round(box.width * ratio);
-    canvas.height = Math.round(box.height * ratio);
-    const signature = JSON.stringify([this.scene, this.signals]);
+    const cw = Math.round(box.width * ratio), ch = Math.round(box.height * ratio);
+    if (canvas.width !== cw || canvas.height !== ch) {
+      canvas.width = cw;
+      canvas.height = ch;
+    }
+    const signature = JSON.stringify([this.scene, this.signals, this.editMode]);
     if (signature !== this._signature) {
       const vertices = this._geometry();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
       gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-      this._count = vertices.length / 10;
+      this._count = vertices.length / 13;
       this._signature = signature;
+      this._shadowDirty = true;
     }
     const span = Math.max(...this.scene.size) * 1.48 / this.zoom, eye = [Math.sin(this.yaw) * 12 * Math.cos(this.pitch), 12 * Math.sin(this.pitch), Math.cos(this.yaw) * 12 * Math.cos(this.pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0])), lp = multiply(ortho(11, 11), lookAt([-3.5, 8, 4.5], [0, 0, 0]));
     gl.enable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
-    gl.viewport(0, 0, 1024, 1024);
-    gl.clear(gl.DEPTH_BUFFER_BIT);
-    gl.useProgram(this._shadowProgram);
-    this._attributes(this._shadowProgram);
-    gl.uniformMatrix4fv(gl.getUniformLocation(this._shadowProgram, "uVP"), false, lp);
-    gl.drawArrays(gl.TRIANGLES, 0, this._count);
+    if (this._shadowDirty) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
+      gl.viewport(0, 0, 1024, 1024);
+      gl.clear(gl.DEPTH_BUFFER_BIT);
+      gl.useProgram(this._shadowProgram);
+      this._attributes(this._shadowProgram);
+      gl.uniformMatrix4fv(gl.getUniformLocation(this._shadowProgram, "uVP"), false, lp);
+      gl.drawArrays(gl.TRIANGLES, 0, this._count);
+      this._shadowDirty = false;
+    }
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 0);
@@ -1324,22 +1404,56 @@ var HomePlanRoomScene = class extends i4 {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this._depth);
     gl.uniform1i(gl.getUniformLocation(this._main, "uShadow"), 0);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uPick"), 0);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uSelected"), this.editMode ? Number.isInteger(this.selectedObject) ? this.selectedObject + 1 : 0 : this._keys.indexOf(this.activeKey) + 1);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uTime"), this._reduced?.matches ? 0 : performance.now() / 1e3);
+    gl.uniform3fv(gl.getUniformLocation(this._main, "uEye"), eye);
     gl.drawArrays(gl.TRIANGLES, 0, this._count);
     const positions = this.scene.hotspots.map((h4) => {
-      const p4 = project(h4.at, vp);
+      const p4 = project(roomAnchor(this.scene, h4), vp);
       return { ...h4, x: (p4[0] + 1) * 50, y: (1 - p4[1]) * 50 };
     });
     if (JSON.stringify(positions) !== JSON.stringify(this._positions)) this._positions = positions;
+    this._animate();
+  }
+  _animate() {
+    clearTimeout(this._animationTimer);
+    this._animationTimer = 0;
+    if (!this.isConnected || this.mode !== "3d" || this._failed || this.editMode || !this._visible || document.visibilityState === "hidden" || this._reduced?.matches) return;
+    if (this.scene.objects.some((o7) => o7.type === "tv" && sceneActive(this.scene, this.signals, o7.bind))) this._animationTimer = setTimeout(() => {
+      this._animationTimer = 0;
+      this._requestDraw();
+    }, 100);
+  }
+  _pick(x2, y3) {
+    const gl = this._gl, canvas = this._canvas;
+    if (!gl || !this._main) return;
+    const b3 = canvas.getBoundingClientRect();
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(this._main);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uPick"), 1);
+    gl.drawArrays(gl.TRIANGLES, 0, this._count);
+    const pixel = new Uint8Array(4);
+    gl.readPixels(clamp(Math.floor((x2 - b3.left) / b3.width * canvas.width), 0, canvas.width - 1), clamp(Math.floor((b3.bottom - y3) / b3.height * canvas.height), 0, canvas.height - 1), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+    this._draw();
+    const id = pixel[0];
+    if (this.editMode) {
+      if (id > 0 && id <= this.scene.objects.length) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: id - 1 }, bubbles: true, composed: true }));
+    } else if (id > 0 && id <= this._keys.length) this._select(this._keys[id - 1]);
+    return id;
   }
   _down(e6) {
     if (e6.button > 0 || e6.target.closest("button") || this.mode !== "3d") return;
     e6.currentTarget.setPointerCapture(e6.pointerId);
+    this._tap = { x: e6.clientX, y: e6.clientY, moved: false };
     this._pointers.set(e6.pointerId, { x: e6.clientX, y: e6.clientY });
+    if (this._pointers.size > 1) this._tap.moved = true;
     this._lastDistance = null;
   }
   _move(e6) {
     const old = this._pointers.get(e6.pointerId);
     if (!old) return;
+    if (Math.hypot(e6.clientX - this._tap.x, e6.clientY - this._tap.y) > 5) this._tap.moved = true;
     this._pointers.set(e6.pointerId, { x: e6.clientX, y: e6.clientY });
     if (this._pointers.size === 2) {
       const [a3, b3] = [...this._pointers.values()], distance = Math.hypot(a3.x - b3.x, a3.y - b3.y);
@@ -1352,6 +1466,7 @@ var HomePlanRoomScene = class extends i4 {
     this._requestDraw();
   }
   _up(e6) {
+    if (this._pointers.has(e6.pointerId) && this._pointers.size === 1 && !this._tap?.moved && e6.type !== "pointercancel") this._pick(e6.clientX, e6.clientY);
     this._pointers.delete(e6.pointerId);
     this._lastDistance = null;
     if (e6.currentTarget.hasPointerCapture(e6.pointerId)) e6.currentTarget.releasePointerCapture(e6.pointerId);
@@ -1364,9 +1479,43 @@ var HomePlanRoomScene = class extends i4 {
   _select(key) {
     this.dispatchEvent(new CustomEvent("room-equipment-selected", { detail: { key }, bubbles: true, composed: true }));
   }
+  _objectDown(e6, o7) {
+    if (!this.editMode || e6.button > 0) return;
+    e6.stopPropagation();
+    e6.preventDefault();
+    const svg = e6.currentTarget.ownerSVGElement;
+    this._objectDrag = { index: this.scene.objects.indexOf(o7), o: o7, el: e6.currentTarget, matrix: svg.getScreenCTM().inverse(), start: new DOMPoint(e6.clientX, e6.clientY), point: [...o7.at] };
+    e6.currentTarget.setPointerCapture(e6.pointerId);
+    this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this._objectDrag.index }, bubbles: true, composed: true }));
+  }
+  _objectMove(e6) {
+    const drag = this._objectDrag;
+    if (!drag) return;
+    const start = drag.start.matrixTransform(drag.matrix), end = new DOMPoint(e6.clientX, e6.clientY).matrixTransform(drag.matrix), x2 = clamp(drag.o.at[0] + end.x - start.x, -this.scene.size[0] / 2, this.scene.size[0] / 2), z2 = clamp(drag.o.at[2] + end.y - start.y, -this.scene.size[1] / 2, this.scene.size[1] / 2);
+    drag.point = [Math.round(x2 * 100) / 100, drag.o.at[1], Math.round(z2 * 100) / 100];
+    drag.el.setAttribute("transform", `translate(${x2} ${z2}) rotate(${-(drag.o.rotation || 0)})`);
+  }
+  _objectUp(e6, cancel = false) {
+    const d3 = this._objectDrag;
+    if (!d3) return;
+    this._objectDrag = null;
+    if (d3.el.hasPointerCapture(e6.pointerId)) d3.el.releasePointerCapture(e6.pointerId);
+    d3.el.setAttribute("transform", `translate(${d3.o.at[0]} ${d3.o.at[2]}) rotate(${-(d3.o.rotation || 0)})`);
+    if (!cancel) this.dispatchEvent(new CustomEvent("room-object-moved", { detail: { index: d3.index, at: d3.point }, bubbles: true, composed: true }));
+  }
+  _objectKey(e6, o7) {
+    if (!this.editMode) return;
+    const d3 = { ArrowLeft: [-0.05, 0], ArrowRight: [0.05, 0], ArrowUp: [0, -0.05], ArrowDown: [0, 0.05] }[e6.key];
+    if (!d3) return;
+    e6.preventDefault();
+    this.dispatchEvent(new CustomEvent("room-object-moved", { detail: { index: this.scene.objects.indexOf(o7), at: [o7.at[0] + d3[0], o7.at[1], o7.at[2] + d3[1]] }, bubbles: true, composed: true }));
+  }
   _top() {
     const [w2, d3] = this.scene.size;
-    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope"].includes(o7.type)).map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect class="object" x=${-o7.size[0] / 2} y=${-o7.size[2] / 2} width=${o7.size[0]} height=${o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
+    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
+      if (this.editMode) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this.scene.objects.indexOf(o7) }, bubbles: true, composed: true }));
+      else if (o7.select || o7.bind) this._select(o7.select || o7.bind);
+    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${-o7.size[2] / 2} width=${o7.size[0]} height=${o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
   }
   render() {
     if (!this.scene) return A;
@@ -1375,10 +1524,10 @@ var HomePlanRoomScene = class extends i4 {
         e6.preventDefault();
         this._zoom(e6.deltaY > 0 ? -0.08 : 0.08);
       }
-    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${this._positions.map((h4) => {
+    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${(this.mode === "2d" || this._failed || this.showMarkers) && !this.editMode ? this._positions.map((h4) => {
       const s5 = this.signals?.[h4.key], on = ["on", "playing", "heat"].includes(s5?.state);
       return b2`<button class=${"hotspot " + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @click=${() => this._select(h4.key)} data-scene-hotspot=${h4.key}><ha-icon icon=${h4.icon || "mdi:circle-outline"}></ha-icon><span>${h4.label}</span></button>`;
-    })}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
+    }) : A}${this.activeKey && this.mode === "3d" && !this.showMarkers ? b2`<span class="selected-label" role="status">${this.scene.hotspots.find((h4) => h4.key === this.activeKey)?.label}</span>` : A}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
       this.yaw = this.scene.camera?.yaw ?? -0.57;
       this.pitch = 0.83;
       this.zoom = 1;
@@ -1387,13 +1536,142 @@ var HomePlanRoomScene = class extends i4 {
     }}>↺</button>${this.mode === "3d" && !this._failed ? b2`<button aria-label="Tourner la pièce" @click=${() => {
       this.yaw += Math.PI / 2;
       this._requestDraw();
-    }}>↻</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Glisser pour tourner · pincer pour zoomer" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
+    }}>↻</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
   }
 };
 if (!customElements.get("home-plan-room-scene")) customElements.define("home-plan-room-scene", HomePlanRoomScene);
 
+// src/candidate/home-plan-room-editor.js
+var HomePlanRoomEditor = class extends i4 {
+  static properties = { hass: {}, room: {}, _scene: { state: true }, _index: { state: true }, _view: { state: true }, _error: { state: true }, _group: { state: true }, _binding: { state: true } };
+  static styles = i`:host{display:block}.panel{display:grid;gap:12px}.intro{font-size:12px;line-height:1.5;color:var(--secondary-text-color)}.toolbar{display:flex;gap:6px;flex-wrap:wrap}button,select,input{font:inherit;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color,#d3dce4);border-radius:9px;min-height:44px;padding:8px;box-sizing:border-box}button{cursor:pointer}button[aria-pressed=true]{background:var(--primary-color,#2c679e);color:var(--text-primary-color,#fff)}button:disabled{opacity:.4}.fields{display:grid;gap:10px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}label{display:grid;gap:5px;font-size:12px}input,select{width:100%;min-width:0}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}h4{font-size:14px;margin:5px 0}.status{font-size:12px;color:var(--secondary-text-color)}.error{color:var(--error-color)}.actions{display:flex;gap:8px}.actions>*{flex:1}home-plan-room-scene{max-width:620px;width:100%;margin:auto}.note{padding:10px;border-radius:10px;background:var(--secondary-background-color)}@media(max-width:420px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}`;
+  constructor() {
+    super();
+    this._index = 0;
+    this._view = "2d";
+    this._group = true;
+    this._error = "";
+    this._revision = 0;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this._load();
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._abort?.abort();
+    this._revision++;
+  }
+  updated(changed) {
+    if (changed.has("room")) this._load();
+  }
+  async _load() {
+    if (!this.isConnected || !this.room) return;
+    const source = this.room.scene || this.room.scene_url;
+    if (source === this._source) return;
+    this._source = source;
+    this._abort?.abort();
+    const abort = new AbortController();
+    this._abort = abort;
+    const revision = ++this._revision;
+    this._error = "";
+    try {
+      let scene = this.room.scene;
+      if (!scene) {
+        const u5 = new URL(this.room.scene_url, location.origin);
+        if (u5.origin !== location.origin || !u5.pathname.startsWith("/local/")) throw Error("Choisissez un modèle local.");
+        const response = await fetch(u5, { signal: abort.signal });
+        if (!response.ok) throw Error(`Modèle : HTTP ${response.status}`);
+        const text2 = await response.text();
+        if (text2.length > 1e6) throw Error("Modèle trop volumineux.");
+        scene = JSON.parse(text2);
+      }
+      validateRoomScene(scene);
+      if (abort.signal.aborted || revision !== this._revision || !this.isConnected) return;
+      this._scene = structuredClone(scene);
+      this._index = Math.min(this._index, scene.objects.length - 1);
+      if (scene.objects[this._index]?.locked) this._index = scene.objects.findIndex((o7) => !o7.locked);
+      this._binding = "";
+    } catch (e6) {
+      if (!abort.signal.aborted && revision === this._revision) this._error = e6.message;
+    }
+  }
+  _save(scene) {
+    try {
+      validateRoomScene(scene);
+    } catch (e6) {
+      this._error = e6.message;
+      return;
+    }
+    this._scene = scene;
+    this._source = scene;
+    this.dispatchEvent(new CustomEvent("room-scene-changed", { detail: { scene }, bubbles: true, composed: true }));
+  }
+  _patch(patch) {
+    const selected = this._scene?.objects[this._index];
+    if (!selected || selected.locked) return;
+    const scene = structuredClone(this._scene), target = scene.objects[this._index];
+    if (patch.at && patch.at.some((v3) => !Number.isFinite(v3))) return;
+    if (patch.at && this._group && target.group) {
+      const delta = patch.at.map((v3, i7) => v3 - target.at[i7]);
+      for (const [i7, o7] of scene.objects.entries()) if (i7 !== this._index && o7.group === target.group && !o7.locked) o7.at = o7.at.map((v3, j2) => Math.round((v3 + delta[j2]) * 100) / 100);
+    }
+    if (patch.rotation !== void 0 && this._group && target.group) {
+      const delta = (patch.rotation - (target.rotation || 0)) * Math.PI / 180;
+      for (const [i7, o7] of scene.objects.entries()) if (i7 !== this._index && o7.group === target.group && !o7.locked) {
+        const x2 = o7.at[0] - target.at[0], z2 = o7.at[2] - target.at[2];
+        o7.at = [target.at[0] + x2 * Math.cos(delta) + z2 * Math.sin(delta), o7.at[1], target.at[2] - x2 * Math.sin(delta) + z2 * Math.cos(delta)];
+        o7.rotation = (o7.rotation || 0) + patch.rotation - (target.rotation || 0);
+      }
+    }
+    Object.assign(target, patch);
+    this._save(scene);
+  }
+  _value(field, index, value) {
+    const o7 = this._scene.objects[this._index], a3 = [...o7[field]], n5 = Number(value);
+    if (!Number.isFinite(n5)) return;
+    a3[index] = n5;
+    this._patch({ [field]: a3 });
+  }
+  _bindings(key, value) {
+    const entities = { ...this.room.scene_entities };
+    if (value) entities[key] = value;
+    else delete entities[key];
+    this.dispatchEvent(new CustomEvent("room-binding-changed", { detail: { entities }, bubbles: true, composed: true }));
+  }
+  _setCamera() {
+    const r4 = this.renderRoot.querySelector("home-plan-room-scene");
+    if (r4) this._save({ ...this._scene, camera: { yaw: r4.yaw, pitch: r4.pitch } });
+  }
+  render() {
+    const scene = this._scene, o7 = scene?.objects[this._index], keys = scene?.hotspots || [], key = this._binding || o7?.select || o7?.bind || keys[0]?.key, h4 = keys.find((h5) => h5.key === key);
+    return b2`<div class="panel"><p class="intro">Choisir un objet dans le plan ou la liste. En 2D, glisser pour le déplacer ; les flèches du clavier ajustent de 5 cm. Les modifications sont conservées avec <strong>Enregistrer</strong> dans l’éditeur Home Assistant.</p><div class="toolbar" role="group" aria-label="Configuration de la pièce"><button data-room-editor-view="2d" aria-pressed=${this._view === "2d"} @click=${() => this._view = "2d"}>Disposition 2D</button><button data-room-editor-view="3d" aria-pressed=${this._view === "3d"} @click=${() => this._view = "3d"}>Aperçu 3D</button></div>${this._error ? b2`<p class="error" role="alert">${this._error}</p>` : A}${scene ? b2`<home-plan-room-scene .scene=${scene} .mode=${this._view} .editMode=${true} .selectedObject=${this._index} .signals=${Object.fromEntries(Object.entries(this.room.scene_entities || {}).map(([k2, id]) => [k2, this.hass?.states?.[id]]))} @room-object-selected=${(e6) => {
+      e6.stopPropagation();
+      this._index = e6.detail.index;
+      this._binding = "";
+    }} @room-object-moved=${(e6) => {
+      e6.stopPropagation();
+      this._index = e6.detail.index;
+      this._patch({ at: e6.detail.at });
+    }}></home-plan-room-scene><label>Objet<select data-room-object-picker .value=${String(this._index)} @change=${(e6) => {
+      this._index = Number(e6.target.value);
+      this._binding = "";
+    }}>${scene.objects.map((obj, i7) => !obj.locked ? b2`<option value=${String(i7)}>${obj.label || obj.id || obj.type}</option>` : A)}</select></label>${o7 ? b2`<h4>${o7.label || o7.id || o7.type}</h4>${o7.locked ? b2`<p class="status">Élément d’architecture conservé. Choisir un meuble ou un équipement.</p>` : b2`<label class="check"><input type="checkbox" .checked=${this._group} @change=${(e6) => this._group = e6.target.checked}>Déplacer / faire pivoter l’ensemble associé ${o7.group ? "(" + o7.group + ")" : ""}</label><div class="grid">${[["at", 0, "Position X (m)"], ["at", 2, "Position Y du plan (m)"], ["at", 1, "Hauteur au sol (m)"], ["size", 0, "Largeur (m)"], ["size", 2, "Profondeur (m)"], ["size", 1, "Hauteur (m)"]].map(([field, i7, label]) => b2`<label>${label}<input data-object-field=${field + "-" + i7} type="number" step="0.05" .value=${String(o7[field][i7])} @change=${(e6) => this._value(field, i7, e6.target.value)}></label>`)}<label>Rotation (°)<input data-object-rotation type="number" step="5" .value=${String(o7.rotation || 0)} @change=${(e6) => {
+      if (Number.isFinite(Number(e6.target.value))) this._patch({ rotation: Number(e6.target.value) });
+    }}></label><label>Couleur<input type="color" .value=${o7.color || "#b5bebd"} @change=${(e6) => this._patch({ color: e6.target.value })}></label></div>`}` : A}<h4>Associations Home Assistant</h4><label>Composant<select data-room-binding-key .value=${key || ""} @change=${(e6) => this._binding = e6.target.value}>${keys.map((k2) => b2`<option value=${k2.key}>${k2.label}</option>`)}</select></label>${key ? b2`<ha-form .hass=${this.hass} .data=${{ entity: this.room.scene_entities?.[key] || "" }} .schema=${[{ name: "entity", selector: { entity: {} } }]} .computeLabel=${() => h4?.label || "Équipement"} @value-changed=${(e6) => {
+      e6.stopPropagation();
+      this._bindings(key, e6.detail.value.entity);
+    }}></ha-form><label>États qui animent le composant<input data-room-active-states .value=${(h4?.states || ["on", "playing", "paused", "buffering"]).join(", ")} @change=${(e6) => {
+      const states = e6.target.value.split(",").map((v3) => v3.trim()).filter(Boolean), next = structuredClone(scene);
+      next.hotspots = next.hotspots.map((x2) => x2.key === key ? { ...x2, states } : x2);
+      this._save(next);
+    }}></label><p class="status">Exemple : <code>home</code> pour une présence réseau de PC. Une présence réseau ne confirme pas à elle seule l’alimentation de l’ordinateur.</p>` : A}<div class="actions"><button ?disabled=${this._view !== "3d"} @click=${this._setCamera}>Garder ce cadrage</button><button ?disabled=${!this.room.scene_url} @click=${() => this.dispatchEvent(new CustomEvent("room-scene-reset", { bubbles: true, composed: true }))}>Rétablir le modèle initial</button></div><p class="status note">Cet éditeur modifie la scène et ses associations. Il ne commande aucun appareil.</p>` : b2`<p class="status">Chargement du modèle…</p>`}</div>`;
+  }
+};
+if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
+
 // src/candidate/home-plan-card.js
-var VERSION = "0.7.0-rc.2";
+var VERSION = "0.8.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
@@ -2333,10 +2611,11 @@ var HomePlanCard = class extends i4 {
   }
   _sceneControl(r4) {
     const key = this._activeHotspot, id = r4.scene_entities?.[key];
-    if (!id) return A;
+    if (!key) return A;
+    if (!id) return b2`<section class="hpf-scene-control"><strong>${this._roomScene?.hotspots.find((h4) => h4.key === key)?.label || "Composant"}</strong><p>Associer un équipement dans Modifier la carte → Pièce 2D / 3D.</p></section>`;
     const s5 = this._state(id), domain = id.split(".")[0], label = this._roomScene?.hotspots.find((h4) => h4.key === key)?.label || this._name(id);
     return b2`<section class="hpf-scene-control" aria-label=${label} data-focused-equipment=${key}><div class="hpf-scene-control-title"><strong>${label}</strong><button aria-label="Fermer la commande sélectionnée" @click=${() => this._activeHotspot = null}>${icon("x")}</button></div>
-      ${domain === "light" ? b2`${this._light(id)}${known2(s5) && s5.attributes?.supported_color_modes?.some((m3) => !["onoff", "unknown"].includes(m3)) ? b2`<label class="hpf-brightness">Luminosité<output>${s5.state === "on" && Number.isFinite(s5.attributes.brightness) ? Math.round(s5.attributes.brightness / 255 * 100) + " %" : "Éteint"}</output><input type="range" min="1" max="100" .value=${String(Math.round((s5.attributes.brightness || 128) / 255 * 100))} aria-label=${"Luminosité " + label} ?disabled=${this._busy.has(id)} @change=${(e6) => this._send(id, "light.turn_on", { brightness_pct: Number(e6.target.value) })}></label>` : A}<button class="hpf-more" @click=${() => this._more(id)}>${icon("settings")}Couleurs et détails${icon("chevron-right")}</button>` : domain === "cover" ? this._cover(id) : domain === "climate" ? this._thermostat(id) : domain === "binary_sensor" ? this._opening(id) : domain === "media_player" ? b2`<div class="hpf-tv-control"><span>${this._format(id)}</span><button ?disabled=${!known2(s5) || this._busy.has(id) || !(s5.attributes.supported_features & (s5.state === "off" ? 128 : 256))} @click=${() => this._send(id, s5.state === "off" ? "media_player.turn_on" : "media_player.turn_off")}>${icon("mdi:power")}${s5?.state === "off" ? "Allumer" : "Éteindre"}</button></div>${this._equipment(id)}` : this._equipment(id)}
+      ${domain === "light" ? b2`${this._light(id)}${known2(s5) && s5.attributes?.supported_color_modes?.some((m3) => !["onoff", "unknown"].includes(m3)) ? b2`<label class="hpf-brightness">Luminosité<output>${s5.state === "on" && Number.isFinite(s5.attributes.brightness) ? Math.round(s5.attributes.brightness / 255 * 100) + " %" : "Éteint"}</output><input type="range" min="1" max="100" .value=${String(Math.round((s5.attributes.brightness || 128) / 255 * 100))} aria-label=${"Luminosité " + label} ?disabled=${this._busy.has(id)} @change=${(e6) => this._send(id, "light.turn_on", { brightness_pct: Number(e6.target.value) })}></label>` : A}<button class="hpf-more" @click=${() => this._more(id)}>${icon("settings")}Couleurs et détails${icon("chevron-right")}</button>` : domain === "cover" ? this._cover(id) : domain === "climate" ? this._thermostat(id) : domain === "binary_sensor" ? this._opening(id) : domain === "device_tracker" ? b2`<p class="hpf-sheet-sub">${known2(s5) ? s5.state === "home" ? "PC détecté sur le réseau" : "PC non détecté sur le réseau" : "État du PC indisponible"}</p>${this._equipment(id)}` : domain === "media_player" ? b2`<div class="hpf-tv-control"><span>${this._format(id)}</span><button ?disabled=${!known2(s5) || this._busy.has(id) || !(s5.attributes.supported_features & (s5.state === "off" ? 128 : 256))} @click=${() => this._send(id, s5.state === "off" ? "media_player.turn_on" : "media_player.turn_off")}>${icon("mdi:power")}${s5?.state === "off" ? "Allumer" : "Éteindre"}</button></div>${this._equipment(id)}` : this._equipment(id)}
     </section>`;
   }
   _roomPlan(r4) {
@@ -2355,8 +2634,8 @@ var HomePlanCard = class extends i4 {
       this._activeHotspot = e6.detail.key;
       this.updateComplete.then(() => this.renderRoot.querySelector("[data-focused-equipment]")?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     }}></home-plan-room-scene>` : view === "3d" ? b2`<div class="hpf-room-flat" role="status">${this._sceneError || "Préparation de la pièce…"}${this._sceneError ? b2`<button @click=${() => this._roomView = "2d"}>Afficher le plan 2D</button>` : A}</div>` : view === "2d" ? this._roomPlan(r4) : b2`<div class="hpf-explorer-photo"><img src=${view === "photos" ? photo : illustration} alt=${(view === "photos" ? "Photo de " : "Illustration de ") + r4.name}>${view === "photos" && r4.photos?.length > 1 ? b2`<div class="hpf-gallery-controls"><button aria-label="Photo précédente" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + r4.photos.length - 1) % r4.photos.length }}>‹</button><span>${(this._photos[r4.id] || 0) + 1} / ${r4.photos.length}</span><button aria-label="Photo suivante" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + 1) % r4.photos.length }}>›</button></div>` : A}</div>`}
-        <div class="hpf-scene-caption">${hasScene ? "La pièce se commande depuis les repères ou les commandes ci-dessous." : "La pièce et ses commandes, réunies dans une seule vue."}</div>
-        ${hasScene && this._roomScene ? b2`<div class="hpf-scene-equipment" role="group" aria-label="Équipements représentés">${this._roomScene.hotspots.filter((h4) => r4.scene_entities?.[h4.key]).map((h4) => b2`<button aria-pressed=${this._activeHotspot === h4.key} @click=${() => this._activeHotspot = h4.key}>${icon(h4.icon)}${h4.label}</button>`)}</div>` : A}
+        <div class="hpf-scene-caption">${hasScene ? "Toucher un objet pour le sélectionner et afficher ses commandes." : "La pièce et ses commandes, réunies dans une seule vue."}</div>
+        ${hasScene && this._roomScene ? b2`<div class="hpf-scene-equipment" role="group" aria-label="Équipements représentés">${this._roomScene.hotspots.filter((h4) => r4.scene_entities?.[h4.key]).map((h4) => b2`<button data-scene-equipment=${h4.key} aria-pressed=${this._activeHotspot === h4.key} @click=${() => this._activeHotspot = h4.key}>${icon(h4.icon)}${h4.label}</button>`)}</div>` : A}
       </div><div class="hpf-room-commands">${this._sceneControl(r4)}${this._sheet(rooms)}</div></div>
       ${this._feedback ? b2`<div class="hpf-state" role="status" aria-live="polite">${this._feedback}</div>` : A}${this._error ? b2`<div class="hpf-state is-error" role="alert">${this._error}</div>` : A}
     </section></ha-card>`;
@@ -2542,8 +2821,8 @@ var HomePlanCard = class extends i4 {
   }
 };
 var HomePlanCardEditor = class extends i4 {
-  static properties = { hass: {}, _config: { state: true }, _room: { state: true }, _marker: { state: true }, _formReady: { state: true }, _formError: { state: true }, _baseModel: { state: true }, _apertureId: { state: true }, _coverEdit: { state: true }, _noticeDraft: { state: true } };
-  static styles = i`:host{display:block} .fields{display:grid;gap:14px}.fields>home-plan-card{width:100%;min-width:0}.fields details{border-top:1px solid var(--divider-color);padding:8px 0}.fields summary{padding:8px 0;cursor:pointer}select,input{box-sizing:border-box;font:inherit;width:100%;min-height:44px;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:8px;padding:8px}label{display:grid;gap:8px}h3{font-size:16px;margin:8px 0}p{font-size:13px;color:var(--secondary-text-color)}.row{display:flex;gap:8px}.row>*{flex:1}button{font:inherit;min-height:44px;border:0;border-radius:8px;padding:8px 12px;background:var(--secondary-background-color);color:var(--primary-text-color);cursor:pointer}a{color:var(--primary-color)}`;
+  static properties = { hass: {}, _config: { state: true }, _room: { state: true }, _marker: { state: true }, _formReady: { state: true }, _formError: { state: true }, _baseModel: { state: true }, _apertureId: { state: true }, _coverEdit: { state: true }, _noticeDraft: { state: true }, _editorTab: { state: true } };
+  static styles = i`:host{display:block} .fields{display:grid;gap:14px}.fields>[hidden]{display:none!important}.fields>home-plan-card{width:100%;min-width:0}.fields details{border-top:1px solid var(--divider-color);padding:8px 0}.fields summary{padding:8px 0;cursor:pointer}select,input{box-sizing:border-box;font:inherit;width:100%;min-height:44px;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color);border-radius:8px;padding:8px}label{display:grid;gap:8px}h3{font-size:16px;margin:8px 0}p{font-size:13px;color:var(--secondary-text-color)}.row{display:flex;gap:8px}.row>*{flex:1}button{font:inherit;min-height:44px;border:0;border-radius:8px;padding:8px 12px;background:var(--secondary-background-color);color:var(--primary-text-color);cursor:pointer}a{color:var(--primary-color)}`;
   constructor() {
     super();
     this._config = { rooms: [], apertures: [], markers: [] };
@@ -2552,6 +2831,7 @@ var HomePlanCardEditor = class extends i4 {
     this._formReady = !!customElements.get("ha-form");
     this._formError = "";
     this._editorEpoch = 0;
+    this._editorTab = "plan";
   }
   connectedCallback() {
     super.connectedCallback();
@@ -2716,7 +2996,23 @@ var HomePlanCardEditor = class extends i4 {
       this._marker = "";
       this._apertureId = "";
     }}><option value="">Choisir une pièce</option>${this._config.rooms.map((r5) => b2`<option value=${r5.id}>${r5.name || r5.id}</option>`)}</select></label>
-      <home-plan-card .editorConfig=${this._config} .hass=${this.hass} .editMode=${true} @plan-model-loaded=${(e6) => {
+      ${r4 && (r4.scene_url || r4.scene) ? b2`<div class="row" role="group" aria-label="Écrans de configuration"><button data-editor-tab="plan" aria-pressed=${this._editorTab === "plan"} @click=${() => this._editorTab = "plan"}>Plan et repères</button><button data-editor-tab="scene" aria-pressed=${this._editorTab === "scene"} @click=${() => this._editorTab = "scene"}>Pièce 2D / 3D</button></div>` : A}
+      ${this._editorTab === "scene" && r4 && (r4.scene_url || r4.scene) ? b2`<home-plan-room-editor .room=${r4} .hass=${this.hass} @room-scene-changed=${(e6) => {
+      e6.stopPropagation();
+      this._roomChange({ scene: e6.detail.scene });
+    }} @room-binding-changed=${(e6) => {
+      e6.stopPropagation();
+      this._roomChange({ scene_entities: e6.detail.entities });
+    }} @room-scene-reset=${(e6) => {
+      e6.stopPropagation();
+      this._change({ rooms: this._config.rooms.map((x2) => {
+        if (x2.id !== r4.id) return x2;
+        const next = { ...x2 };
+        delete next.scene;
+        return next;
+      }) });
+    }}></home-plan-room-editor>` : A}
+      <home-plan-card ?hidden=${this._editorTab === "scene" && !!(r4?.scene_url || r4?.scene)} .editorConfig=${this._config} .hass=${this.hass} .editMode=${true} @plan-model-loaded=${(e6) => {
       e6.stopPropagation();
       this._baseModel = e6.detail.model;
     }} @plan-item-selected=${this._picked} @plan-position-changed=${this._position}></home-plan-card>
