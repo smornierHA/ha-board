@@ -20,6 +20,8 @@ await renderer.locator('[data-scene-hotspot=desk]').click();await card.locator('
 await card.locator('[data-focused-equipment=desk] input').fill('63');await card.locator('[data-focused-equipment=desk] input').dispatchEvent('change');assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['light','turn_on',{brightness_pct:63},{entity_id:'light.example'}]);
 assert.equal(await page.evaluate(()=>hass.states['light.example'].state),'off','no optimistic state');
 for(const width of [320,390,736,1100]){await page.setViewportSize({width,height:1100});await page.evaluate(()=>card.updateComplete);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await card.screenshot({path:path.join(out,`room-${width}.png`)});}
+// While adjusting a device on mobile, scrolling keeps the compact scene visible.
+await page.setViewportSize({width:390,height:700});await page.evaluate(()=>window.scrollTo(0,250));const pinned=await card.locator('home-plan-room-scene').boundingBox();assert.ok(pinned.y>=-2&&pinned.y+pinned.height<=700,'mobile scene remains visible beside the selected controls');await page.evaluate(()=>window.scrollTo(0,0));
 // 2D/3D transitions allocate and release GPU contexts; no frame loop is retained.
 for(let i=0;i<5;i++){await card.locator('[data-room-view="2d"]').click();await renderer.locator('.top').waitFor();await card.locator('[data-room-view="3d"]').click();await renderer.locator('canvas').waitFor();}
 await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>!!card.shadowRoot.querySelector('home-plan-room-scene')._gl),true);

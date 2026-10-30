@@ -18,7 +18,7 @@
     "physical_device_commands": 0
   },
   "local_tests": {
-    "existing_browser_groups": 14,
+    "existing_browser_groups": 17,
     "room_explorer": [
       "WebGL2 real browser",
       "320/390/736/1100 px",
@@ -31,7 +31,8 @@
       "no optimistic state",
       "1000 HA updates without refetch",
       "bounded cache",
-      "GPU/observer/frame/request cleanup"
+      "GPU/observer/frame/request cleanup",
+      "compact mobile scene remains visible while scrolling controls"
     ],
     "existing_lifecycle": {
       "updates": 1000,
@@ -43,7 +44,9 @@
       "climate",
       "notices",
       "collection"
-    ]
+    ],
+    "fictitious_browser_groups": 14,
+    "private_browser_groups": 3
   },
   "private_assets": "Room geometry, photographs, household names, bindings and screenshots excluded from public Git.",
   "release": false,
