@@ -1,3 +1,7 @@
+## Plan — objets interactifs et éditeur de pièce du 30 octobre 2026
+
+Le candidat autonome **0.8.0-rc.1** sélectionne directement la géométrie des objets en 3D, sans pictogrammes flottants. Ajoute un éditeur de pièce natif accessible après le choix du niveau et de la pièce : déplacement en 2D, groupes, clavier, dimensions, rotation, couleur, cadrage, associations et états actifs. Les écrans du PC et la lampe restent indépendants ; une détection réseau conserve son libellé de détection, sans prétendre mesurer l’alimentation. L’écran TV affiche une animation originale de style manga, bornée à 10 images/s, arrêtée hors visibilité et en réduction des animations. Le mobilier et la fenêtre sont reconstruits dans le modèle privé selon l’annotation et les photos. Code et tests fictifs restent publics ; photos, annotation, géométrie et associations domestiques sont exclus de Git. Pas de release HACS ni fusion ; installation ciblée et preuve dans `evidence/home-plan-objects-2026-10-30.json`.
+
 # Roadmap HA-BOARD — base candidate validée v0.2.0-rc.1
 
 ## Plan — alignements et activation du chauffage du 29 octobre 2026

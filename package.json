@@ -8,7 +8,8 @@
     "test:garage": "node tests/garage-contracts.mjs",
     "build:plan": "node scripts/build_home_plan.mjs",
     "test:plan": "node tests/home-plan-browser.mjs",
-    "test:plan:room": "node tests/home-plan-room-explorer.mjs"
+    "test:plan:room": "node tests/home-plan-room-explorer.mjs",
+    "test:plan:objects": "node tests/home-plan-object-interaction.mjs"
   },
   "dependencies": {
     "lit-element": "4.2.0"
