@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-30T21:47:04.369235+00:00",
+  "candidate_version": "0.14.0-rc.1",
+  "scope": [
+    "canonical media state and explicit Art command",
+    "appliance icons and notices anchored to existing components",
+    "exact room contours and local heating navigation",
+    "separate light details action",
+    "dedicated room entry cards",
+    "bounded sofa/headboard/decor and two-sided active screens",
+    "persistent window/shutter geometry"
+  ],
+  "verification": {
+    "pure_media": "Art inactivity, canonical alias, dedicated Art service instead of hard off, unknown/unavailable and event consumables passed.",
+    "browser_refinements": "Concave room pointer selection, separate details without actuation, media target/service payload, heating return, window notice anchor, oven/dishwasher icons, dedicated startup, rear screen material and fixed window normals passed.",
+    "existing": "14 fictitious card groups; notices, lighting, browser ambience, room models, object picking/editor/default view, explorer 1000 updates, lifecycle 100 mounts/1000 updates, climate and collection passed.",
+    "private": "Both room scenes at 320/390/736/1150 px, night/light/PC/TV simulation, editor and return; actual dedicated configurations load with registry reads denied; actual upper-room click and compact floor verified.",
+    "physical_device_commands": 0,
+    "physical_ios": "not tested",
+    "real_child_sessions": "not tested"
+  },
+  "installation": {
+    "native_files": 4,
+    "all_read_back_equal": true,
+    "targeted_dashboard_delta_verified": true,
+    "personal_room_cards_added": 2,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "bundle_sha256": "bfe8db293bb094857a17ead78a64a387f536264ce59ac9bd3d02d02927430a64",
+    "client_reload_required": true
+  },
+  "privacy": {
+    "repository": "public code and fictitious tests",
+    "private_only": [
+      "plans and photos",
+      "entity/device/user identities",
+      "geometry and private configuration",
+      "QA screenshots"
+    ]
+  },
+  "limits": [
+    "Numbered annotation was not attached; private layout follows photo evidence and described relationships.",
+    "PC detection remains a network signal, not a power measurement.",
+    "Native Art route verified in source/catalogue and on a service double; physical TV response awaits user action.",
+    "Visibility conditions do not grant or restrict HA permissions."
+  ],
+  "delivery": {
+    "ci": "Local checks only, skip-ci draft PR; no CI success claimed",
+    "merged": false,
+    "released": false
+  }
+}

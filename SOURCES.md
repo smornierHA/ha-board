@@ -1,3 +1,7 @@
+## Plan — commandes, signalements et pièces du 30 octobre 2026
+
+Le retour utilisateur gouverne les corrections du modèle privé. Le code et les tests fictifs restent publics ; photos, plans, comptes et associations restent privés. Le service Art et la différence entre arrêt complet et mode Art ont été vérifiés dans le catalogue natif et le code de l’intégration installée. Les capteurs de consommables et leurs états possibles ont été relus. Les anciens rectangles de clic et le basculement du focus global depuis le détail chauffage expliquent les collisions et l’absence de retour ; ils sont remplacés par des clips de contour et un panneau local. Aucun essai physique de TV n’a été lancé.
+
 ## Plan — deuxième pièce et détails du 30 octobre 2026
 
 Les corrections explicites de l’utilisateur et treize nouvelles photos gouvernent les modèles privés ; les cotes restent une reconstitution visuelle. Les sources natives ont été découvertes et relues avant association, sans renommer ni commander les appareils. Les géométries et les photos sont absentes du dépôt public ; leur référence privée conserve provenance et retour arrière. Primitives maintenues : `home-plan-room-scene.js`, contrat fictif : `tests/home-plan-room-models.mjs`.
