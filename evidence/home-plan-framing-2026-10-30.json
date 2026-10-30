@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-30T13:28:17.777804+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.10.0-rc.1",
+  "bundle_bytes": 267536,
+  "bundle_sha256": "59e6c49f04f37f83b07da32e208daa81b8a22d0d3a91f2ab1cd65d662f33e19a",
+  "native": {
+    "versioned_files_readback_equal": 3,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "existing_plan_positions_and_bindings_preserved": true,
+    "patch_scope": [
+      "pilot room scene_url",
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_validation": {
+    "existing_browser_groups": 17,
+    "fictitious_groups": 14,
+    "private_groups": 3,
+    "objects": [
+      "real GPU pointer selection without action",
+      "solid wall occlusion and selection through hidden wall",
+      "hidden wall pixels identical to scene without wall",
+      "PC/TV independent animations and bounded timer",
+      "native default-view selector persistence",
+      "illustration/2D/3D opening defaults",
+      "missing 3D falls back to 2D",
+      "native editor grouped/keyboard/drag placement and bindings"
+    ],
+    "private_visual": [
+      "four camera angles with GL error check",
+      "2D floor fully visible and centered at 320/390/736/1150 px",
+      "upper-right toolbar without marker overlap",
+      "opening in 2D preserves initial 3D zoom",
+      "offline default-view setting and editor return",
+      "game/TV simulation"
+    ],
+    "room_explorer": [
+      "2D/3D/fallback",
+      "zoom/swipe/reset",
+      "1000 HA states without extra scene fetch",
+      "GPU/frame/observer cleanup"
+    ],
+    "lifecycle": {
+      "mount_cycles": 100,
+      "updates": 1000,
+      "detached_listeners": 0,
+      "service_calls": 0
+    },
+    "pure_contracts": [
+      "climate",
+      "notices",
+      "collection"
+    ]
+  },
+  "private_assets": "User screenshot, photo references, actual geometry, names, associations and QA screenshots excluded from public Git.",
+  "semantics": "Camera walls are hidden, not partially transparent. Scene zoom is distinct by 2D/3D mode. PC uses the configured signal and network detection is not measured power.",
+  "ci": "Local checks only; skip-ci on draft commit.",
+  "merged": false,
+  "hacs_release": false
+}

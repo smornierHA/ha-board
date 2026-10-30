@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.9.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.10.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -920,6 +920,7 @@ function validateRoomScene(scene) {
     if (o7.openRight !== void 0 && typeof o7.openRight !== "boolean") throw Error("Piètement de bureau invalide.");
     if (o7.screen !== void 0 && typeof o7.screen !== "boolean") throw Error("Option écran invalide.");
   }
+  if (scene.camera?.zoom !== void 0 && (!Number.isFinite(scene.camera.zoom) || scene.camera.zoom < 0.7 || scene.camera.zoom > 2.6)) throw Error("Zoom initial invalide.");
   const objectIds = /* @__PURE__ */ new Set();
   for (const o7 of scene.objects) {
     if (o7.id && (typeof o7.id !== "string" || objectIds.has(o7.id))) throw Error("Identifiant d’objet invalide.");
@@ -1190,15 +1191,15 @@ function furnish(mesh, o7, signals, scene) {
 var VERT = `#version 300 es
 in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;in float aObject;in vec2 aUv;in vec2 aWall;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;flat out float vObject;out vec2 vUv;flat out vec2 vWall;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vObject=aObject;vUv=aUv;vWall=aWall;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
 var FRAG = `#version 300 es
-precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;flat in vec2 vWall;uniform float uWallFade;uniform float uWallPass;out vec4 outColor;
-void main(){bool wall=length(vWall)>.1;float opacity=wall&&uWallFade>.5?.10+.90*smoothstep(-.08,.22,dot(normalize(uEye.xz),normalize(vWall))):1.;if(uPick>.5){if(opacity<.995)discard;outColor=vec4(vObject/255.,0.,0.,1.);return;}if((uWallPass<.5&&opacity<.995)||(uWallPass>.5&&(!wall||opacity>=.995)))discard;if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){vec2 uv=vUv;float t=uTime*.9;col=mix(vec3(.018,.035,.10),vec3(.025,.13,.25),uv.y);vec2 stars=vec2(fract(uv.x+t*.08),uv.y);float star=step(.985,fract(sin(dot(floor(stars*vec2(30.,18.)),vec2(12.989,78.233)))*43758.5));col+=vec3(.5,.7,.8)*star*.65;float py=.5+sin(t*1.6)*.18;vec2 ship=(uv-vec2(.26,py))/vec2(.09,.055);float body=step(abs(ship.y),1.-abs(ship.x)*.75)*step(abs(ship.x),1.);col=mix(col,vec3(.18,.85,.94),body);float flame=step(abs(uv.y-py),.015+sin(t*23.)*.004)*step(.12,uv.x)*step(uv.x,.18);col=mix(col,vec3(1.,.48,.15),flame);for(int j=0;j<3;j++){float x=1.-fract(t*.15+float(j)*.33),y=.28+float(j)*.22+sin(t+float(j))* .055;float enemy=step(abs(uv.x-x),.035)*step(abs(uv.y-y),.027);col=mix(col,vec3(.94,.24,.42),enemy);}float bolt=step(abs(uv.y-py),.006)*step(.33,uv.x)*step(fract((uv.x-t*.8)*4.),.22);col+=vec3(.22,.82,.9)*bolt;float hud=step(.92,uv.y)*step(.04,uv.x)*step(uv.x,.34);col=mix(col,vec3(.18,.83,.65),hud);col=mix(col,vec3(.32,.48,.7),step(uv.y,.035));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,opacity);}`;
+precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;flat in vec2 vWall;uniform float uWallFade;out vec4 outColor;
+void main(){if(length(vWall)>.1&&uWallFade>.5&&dot(normalize(uEye.xz),normalize(vWall))<.22)discard;if(uPick>.5){outColor=vec4(vObject/255.,0.,0.,1.);return;}if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){vec2 uv=vUv;float t=uTime*.9;col=mix(vec3(.018,.035,.10),vec3(.025,.13,.25),uv.y);vec2 stars=vec2(fract(uv.x+t*.08),uv.y);float star=step(.985,fract(sin(dot(floor(stars*vec2(30.,18.)),vec2(12.989,78.233)))*43758.5));col+=vec3(.5,.7,.8)*star*.65;float py=.5+sin(t*1.6)*.18;vec2 ship=(uv-vec2(.26,py))/vec2(.09,.055);float body=step(abs(ship.y),1.-abs(ship.x)*.75)*step(abs(ship.x),1.);col=mix(col,vec3(.18,.85,.94),body);float flame=step(abs(uv.y-py),.015+sin(t*23.)*.004)*step(.12,uv.x)*step(uv.x,.18);col=mix(col,vec3(1.,.48,.15),flame);for(int j=0;j<3;j++){float x=1.-fract(t*.15+float(j)*.33),y=.28+float(j)*.22+sin(t+float(j))* .055;float enemy=step(abs(uv.x-x),.035)*step(abs(uv.y-y),.027);col=mix(col,vec3(.94,.24,.42),enemy);}float bolt=step(abs(uv.y-py),.006)*step(.33,uv.x)*step(fract((uv.x-t*.8)*4.),.22);col+=vec3(.22,.82,.9)*bolt;float hud=step(.92,uv.y)*step(.04,uv.x)*step(uv.x,.34);col=mix(col,vec3(.18,.83,.65),hud);col=mix(col,vec3(.32,.48,.7),step(uv.y,.035));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
 var SHADOW_V = `#version 300 es
 in vec3 aPosition;in float aMaterial;uniform mat4 uVP;in vec2 aWall;out vec2 vShadowWall;out float vSkip;void main(){vShadowWall=aWall;vSkip=aMaterial;gl_Position=uVP*vec4(aPosition,1.);}`;
 var SHADOW_F = `#version 300 es
 precision highp float;in float vSkip;in vec2 vShadowWall;uniform float uWallFade;uniform vec3 uEye;void main(){if(uWallFade>.5&&length(vShadowWall)>.1&&dot(normalize(uEye.xz),normalize(vShadowWall))<.22)discard;if(vSkip>5.5&&vSkip<6.5)discard;}`;
 var HomePlanRoomScene = class extends i4 {
   static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
-  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{box-sizing:border-box;padding:62px 14px 22px}.stage.is-2d .tools{top:9px;right:9px;left:auto;bottom:auto}.stage.is-2d .hint{bottom:6px;left:14px;right:14px;max-width:none;text-align:center}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage.is-3d{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
   constructor() {
     super();
     this.mode = "3d";
@@ -1208,6 +1209,7 @@ var HomePlanRoomScene = class extends i4 {
     this.yaw = -0.57;
     this.pitch = 0.83;
     this.zoom = 1;
+    this._zooms = {};
     this._epoch = 0;
     this._pointers = /* @__PURE__ */ new Map();
     this._visible = true;
@@ -1246,11 +1248,17 @@ var HomePlanRoomScene = class extends i4 {
         validateRoomScene(this.scene);
         this.yaw = this.scene.camera?.yaw ?? -0.57;
         this.pitch = this.scene.camera?.pitch ?? 0.83;
-        this.zoom = 1;
+        this._zooms = {};
+        this.zoom = this._initialZoom();
       }
       this._signature = "";
     }
-    if (changed.has("mode")) this._dispose();
+    if (changed.has("mode")) {
+      if (changed.get("mode") && !changed.has("scene")) this._zooms[changed.get("mode")] = this.zoom;
+      this.zoom = this._zooms[this.mode] ?? this._initialZoom();
+      this._dispose();
+    }
+    if (changed.has("_failed") && this._failed) this.zoom = 1;
     if (this.mode === "3d") this._init();
     this._requestDraw();
   }
@@ -1374,13 +1382,10 @@ var HomePlanRoomScene = class extends i4 {
       mesh.box(0, 8e-3, 0, w2, 0.035, d3, "#a7aaa5", 0, 2);
     }
     this._keys = this.scene.hotspots.map((h4) => h4.key);
-    this._wallRanges = [];
     for (const [i7, o7] of this.scene.objects.entries()) {
-      const first = mesh.vertices.length / 15;
       mesh.wall = o7.wallNormal || [0, 0];
       mesh.objectId = this.editMode ? i7 + 1 : this._keys.indexOf(o7.select || o7.bind) + 1;
       furnish(mesh, o7, this.signals || {}, this.scene);
-      if (o7.wallNormal) this._wallRanges.push({ first, count: mesh.vertices.length / 15 - first, at: o7.at });
     }
     return new Float32Array(mesh.vertices);
   }
@@ -1462,18 +1467,7 @@ var HomePlanRoomScene = class extends i4 {
     gl.uniform1f(gl.getUniformLocation(this._main, "uTime"), this._reduced?.matches ? 0 : performance.now() / 1e3);
     gl.uniform3fv(gl.getUniformLocation(this._main, "uEye"), eye);
     gl.uniform1f(gl.getUniformLocation(this._main, "uWallFade"), fade);
-    gl.uniform1f(gl.getUniformLocation(this._main, "uWallPass"), 0);
     gl.drawArrays(gl.TRIANGLES, 0, this._count);
-    if (fade && this._wallRanges?.length) {
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.depthMask(false);
-      gl.uniform1f(gl.getUniformLocation(this._main, "uWallPass"), 1);
-      const distance = (o7) => o7.at.reduce((sum, v3, i7) => sum + (v3 - eye[i7]) ** 2, 0);
-      for (const range of [...this._wallRanges].sort((a3, b3) => distance(b3) - distance(a3))) gl.drawArrays(gl.TRIANGLES, range.first, range.count);
-      gl.depthMask(true);
-      gl.disable(gl.BLEND);
-    }
     const positions = this.scene.hotspots.map((h4) => {
       const p4 = project(roomAnchor(this.scene, h4), vp);
       return { ...h4, x: (p4[0] + 1) * 50, y: (1 - p4[1]) * 50 };
@@ -1538,6 +1532,9 @@ var HomePlanRoomScene = class extends i4 {
     this._lastDistance = null;
     if (e6.currentTarget.hasPointerCapture(e6.pointerId)) e6.currentTarget.releasePointerCapture(e6.pointerId);
   }
+  _initialZoom() {
+    return this.mode === "3d" && !this._failed ? this.scene?.camera?.zoom ?? 1.12 : 1;
+  }
   _zoom(delta) {
     this.zoom = clamp(this.zoom + delta, 0.7, 2.6);
     this.requestUpdate();
@@ -1582,11 +1579,11 @@ var HomePlanRoomScene = class extends i4 {
     return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
       if (this.editMode) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this.scene.objects.indexOf(o7) }, bubbles: true, composed: true }));
       else if (o7.select || o7.bind) this._select(o7.select || o7.bind);
-    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${o7.type === "wardrobe-inset" ? -0.035 : -o7.size[2] / 2} width=${o7.size[0]} height=${o7.type === "wardrobe-inset" ? 0.07 : o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
+    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<g transform=${`scale(${o7.size[0] / 0.65} ${o7.size[2] / 0.65})`}><circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/></g>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${o7.type === "wardrobe-inset" ? -0.035 : -o7.size[2] / 2} width=${o7.size[0]} height=${o7.type === "wardrobe-inset" ? 0.07 : o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}</svg>`;
   }
   render() {
     if (!this.scene) return A;
-    return b2`<div class=${"stage " + (this.mode === "3d" && !this._failed ? "is-3d" : "")} @pointerdown=${this._down} @pointermove=${this._move} @pointerup=${this._up} @pointercancel=${this._up} @wheel=${(e6) => {
+    return b2`<div class=${"stage " + (this.mode === "3d" && !this._failed ? "is-3d" : "is-2d")} @pointerdown=${this._down} @pointermove=${this._move} @pointerup=${this._up} @pointercancel=${this._up} @wheel=${(e6) => {
       if (e6.ctrlKey) {
         e6.preventDefault();
         this._zoom(e6.deltaY > 0 ? -0.08 : 0.08);
@@ -1597,13 +1594,13 @@ var HomePlanRoomScene = class extends i4 {
     }) : A}${this.activeKey && this.mode === "3d" && !this.showMarkers ? b2`<span class="selected-label" role="status">${this.scene.hotspots.find((h4) => h4.key === this.activeKey)?.label}</span>` : A}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
       this.yaw = this.scene.camera?.yaw ?? -0.57;
       this.pitch = this.scene.camera?.pitch ?? 0.83;
-      this.zoom = 1;
+      this.zoom = this._initialZoom();
       this.requestUpdate();
       this._requestDraw();
     }}>↺</button>${this.mode === "3d" && !this._failed ? b2`<button aria-label="Tourner la pièce" @click=${() => {
       this.yaw += Math.PI / 2;
       this._requestDraw();
-    }}>↻</button><button data-walls aria-pressed=${this.wallMode !== "solid"} aria-label="Transparence automatique des murs" @click=${() => this.wallMode = this.wallMode === "solid" ? "auto" : "solid"}>Murs</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
+    }}>↻</button><button data-walls aria-pressed=${this.wallMode !== "solid"} aria-label="Masquage automatique des murs" @click=${() => this.wallMode = this.wallMode === "solid" ? "auto" : "solid"}>Murs</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
   }
 };
 if (!customElements.get("home-plan-room-scene")) customElements.define("home-plan-room-scene", HomePlanRoomScene);
@@ -1708,7 +1705,7 @@ var HomePlanRoomEditor = class extends i4 {
   }
   _setCamera() {
     const r4 = this.renderRoot.querySelector("home-plan-room-scene");
-    if (r4) this._save({ ...this._scene, camera: { yaw: r4.yaw, pitch: r4.pitch } });
+    if (r4) this._save({ ...this._scene, camera: { ...this._scene.camera, yaw: r4.yaw, pitch: r4.pitch, zoom: r4.zoom } });
   }
   render() {
     const scene = this._scene, o7 = scene?.objects[this._index], keys = scene?.hotspots || [], key = this._binding || o7?.select || o7?.bind || keys[0]?.key, h4 = keys.find((h5) => h5.key === key);
@@ -1738,7 +1735,7 @@ var HomePlanRoomEditor = class extends i4 {
 if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.9.0-rc.1";
+var VERSION = "0.10.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
@@ -1807,6 +1804,7 @@ function validateConfig(config) {
       if (item.climate_entities && (!Array.isArray(item.climate_entities) || item.climate_entities.some((e6) => !validEntity(e6) || !e6.startsWith("climate.")))) throw Error("Thermostats invalides.");
       if (item.favorite_entities && (!Array.isArray(item.favorite_entities) || item.favorite_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’accès rapides invalide.");
       if (item.entities && (!Array.isArray(item.entities) || item.entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’équipements invalide.");
+      if (item.default_view !== void 0 && !["illustration", "2d", "3d"].includes(item.default_view)) throw Error("Vue initiale de pièce invalide.");
       if (item.scene) validateRoomScene(item.scene);
       if (item.scene_url && (typeof item.scene_url !== "string" || !/^\/local\//.test(item.scene_url) || item.scene_url.includes(".."))) throw Error("La scène doit être locale.");
       if (item.scene_entities && (typeof item.scene_entities !== "object" || Array.isArray(item.scene_entities) || Object.keys(item.scene_entities).length > 30 || Object.entries(item.scene_entities).some(([k2, v3]) => !/^[-a-z0-9_]{1,40}$/.test(k2) || !validEntity(v3)))) throw Error("Associations de la scène invalides.");
@@ -2391,7 +2389,8 @@ var HomePlanCard = class extends i4 {
   _select(r4, opener) {
     if (this.editMode || performance.now() < (this._suppressMapClick || 0)) return;
     this._activeHotspot = null;
-    this._roomView = r4.scene_url || r4.scene ? "3d" : this._photo(r4) ? "illustration" : "2d";
+    const hasScene = !!(r4.scene_url || r4.scene), hasImage = !!(safeImage(r4.illustration) || safeImage(r4.photos?.[0])), preferred = r4.default_view;
+    this._roomView = preferred === "2d" ? "2d" : preferred === "illustration" ? hasImage ? "illustration" : "2d" : preferred === "3d" ? hasScene ? "3d" : "2d" : hasScene ? "3d" : hasImage ? "illustration" : "2d";
     this._loadScene(r4);
     this._opener = opener;
     this._selected = r4.id;
@@ -3063,6 +3062,7 @@ var HomePlanCardEditor = class extends i4 {
       this._marker = "";
       this._apertureId = "";
     }}><option value="">Choisir une pièce</option>${this._config.rooms.map((r5) => b2`<option value=${r5.id}>${r5.name || r5.id}</option>`)}</select></label>
+      ${r4 ? b2`<label>Vue par défaut de cette pièce<select data-room-default-view .value=${r4.default_view || (r4.scene_url || r4.scene ? "3d" : "illustration")} @change=${(e6) => this._roomChange({ default_view: e6.target.value })}><option value="illustration">Illustration</option><option value="2d">Plan 2D</option><option value="3d" ?disabled=${!(r4.scene_url || r4.scene)}>Vue 3D</option></select></label>` : A}
       ${r4 && (r4.scene_url || r4.scene) ? b2`<div class="row" role="group" aria-label="Écrans de configuration"><button data-editor-tab="plan" aria-pressed=${this._editorTab === "plan"} @click=${() => this._editorTab = "plan"}>Plan et repères</button><button data-editor-tab="scene" aria-pressed=${this._editorTab === "scene"} @click=${() => this._editorTab = "scene"}>Pièce 2D / 3D</button></div>` : A}
       ${this._editorTab === "scene" && r4 && (r4.scene_url || r4.scene) ? b2`<home-plan-room-editor .room=${r4} .hass=${this.hass} @room-scene-changed=${(e6) => {
       e6.stopPropagation();

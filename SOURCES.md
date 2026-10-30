@@ -1,3 +1,7 @@
+## Plan — cadrage 0.10.0-rc.1
+
+Le retour utilisateur et la capture du 30 octobre corrigent la position du dressing et demandent le retrait des pans mansardés, le masquage complet des murs proches, le retour des éclairages muraux, le cadrage et la vue d’ouverture configurable. Ces corrections priment sur l’interprétation précédente des photos. La capture, les photos et le modèle restent privés. Le renderer et l’éditeur sont dans `src/candidate/` ; contrats fictifs dans `tests/home-plan-object-interaction.mjs`, preuve expurgée dans `evidence/home-plan-framing-2026-10-30.json`. Référence privée actualisée dans le même incrément.
+
 ## Plan — reconstitution 0.9.0-rc.1
 
 Les huit nouvelles photos fournies par l’utilisateur le 30 octobre complètent l’annotation et les plans privés. Elles font autorité pour l’orientation de la façade et le mobilier ; aucune cote exacte n’en est déduite. Les images et coordonnées domestiques restent hors Git public. Renderer générique : `home-plan-room-scene.js` ; contrat GPU et animation : `tests/home-plan-object-interaction.mjs` ; preuve : `evidence/home-plan-photo-layout-2026-10-30.json`. La référence privée conserve provenance, configuration et retour arrière dans le même incrément.

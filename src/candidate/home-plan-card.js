@@ -9,7 +9,7 @@ import { climateInfo, climateCommand, climateIncrement, presetLabel, modeLabel }
 import {validateRoomScene} from './home-plan-room-scene.js';
 import './home-plan-room-editor.js';
 
-export const VERSION = '0.9.0-rc.1';
+export const VERSION = '0.10.0-rc.1';
 const ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 const BAD = new Set(['unknown', 'unavailable']);
 const ALERT_CLASSES = new Set(['smoke','gas','moisture','problem','tamper','battery','safety']);
@@ -71,6 +71,7 @@ export function validateConfig(config) {
       if(item.climate_entities&&(!Array.isArray(item.climate_entities)||item.climate_entities.some(e=>!validEntity(e)||!e.startsWith('climate.'))))throw Error('Thermostats invalides.');
       if(item.favorite_entities&&(!Array.isArray(item.favorite_entities)||item.favorite_entities.some(e=>!validEntity(e))))throw Error('Liste d’accès rapides invalide.');
       if(item.entities && (!Array.isArray(item.entities)||item.entities.some(e=>!validEntity(e)))) throw Error('Liste d’équipements invalide.');
+      if(item.default_view!==undefined&&!['illustration','2d','3d'].includes(item.default_view))throw Error('Vue initiale de pièce invalide.');
       if(item.scene)validateRoomScene(item.scene);
       if(item.scene_url&&(typeof item.scene_url!=='string'||!/^\/local\//.test(item.scene_url)||item.scene_url.includes('..')))throw Error('La scène doit être locale.');
       if(item.scene_entities&&(typeof item.scene_entities!=='object'||Array.isArray(item.scene_entities)||Object.keys(item.scene_entities).length>30||Object.entries(item.scene_entities).some(([k,v])=>!/^[-a-z0-9_]{1,40}$/.test(k)||!validEntity(v))))throw Error('Associations de la scène invalides.');
@@ -273,7 +274,7 @@ export class HomePlanCard extends LitElement {
   _status(r){const p=this._problems(r),o=this._openings(r).filter(id=>this._state(id)?.state==='on'),temp=this._temperature(r);if(p.length)return `${p.length} alerte${p.length>1?'s':''}`;if(o.length)return `${o.length} ouverture${o.length>1?'s':''}`;if(temp)return this._temperatureText(r);const c=this._covers(r);return c.length===1?this._coverLabel(c[0]):c.length?`${c.length} volets`:this._entities(r).length?'Équipements de la pièce':'Aucun équipement associé';}
   _photo(r){return safeImage(r.illustration&&!this._photoMode.has(r.id)?r.illustration:r.photos?.[this._photos[r.id]||0]);}
   _more(id){this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:id},bubbles:true,composed:true}));}
-  _select(r,opener){if(this.editMode||performance.now()<(this._suppressMapClick||0))return;this._activeHotspot=null;this._roomView=r.scene_url||r.scene?"3d":this._photo(r)?"illustration":"2d";this._loadScene(r);this._opener=opener;this._selected=r.id;this._quick=null;this._floorCovers=false;this._floorLights=false;this._floorClimate=false;this._equipmentTab=false;this._showAlerts=false;this._focusSheet();}
+  _select(r,opener){if(this.editMode||performance.now()<(this._suppressMapClick||0))return;this._activeHotspot=null;const hasScene=!!(r.scene_url||r.scene),hasImage=!!(safeImage(r.illustration)||safeImage(r.photos?.[0])),preferred=r.default_view;this._roomView=preferred==='2d'?'2d':preferred==='illustration'?(hasImage?'illustration':'2d'):preferred==='3d'?(hasScene?'3d':'2d'):hasScene?'3d':hasImage?'illustration':'2d';this._loadScene(r);this._opener=opener;this._selected=r.id;this._quick=null;this._floorCovers=false;this._floorLights=false;this._floorClimate=false;this._equipmentTab=false;this._showAlerts=false;this._focusSheet();}
   _aperture(a,opener){if(this.editMode||performance.now()<(this._suppressMapClick||0))return;this._opener=opener;this._selected=a.room;this._quick=a.id;this._floorCovers=false;this._floorLights=false;this._floorClimate=false;this._showAlerts=false;this._focusSheet();}
   async _focusSheet(){await this.updateComplete;this.renderRoot.querySelector('.hpf-sheet [data-close]')?.focus({preventScroll:true});if(this._isRoomWorkspace())this.renderRoot.querySelector('[data-room-back]')?.focus({preventScroll:true});else this.renderRoot.querySelector('.hpf-sheet')?.scrollIntoView({behavior:'auto',block:'nearest'});}
   _close(){this._cancelScene();this._selected=null;this._quick=null;this._showAlerts=false;this._floorCovers=false;this._floorLights=false;this._floorClimate=false;this.updateComplete.then(()=>this._opener?.isConnected&&this._opener.focus({preventScroll:true}));}
@@ -490,6 +491,7 @@ export class HomePlanCardEditor extends LitElement {
     return html`<div class="fields">
       ${planLevels(this._rootConfig||this._config).length>1?html`<label>Niveau<select data-editor-level .value=${this._level} @change=${e=>this._switchLevel(e.target.value)}>${planLevels(this._rootConfig).map(l=>html`<option value=${l.id}>${l.name}</option>`)}</select></label>`:nothing}
       <label>Pièce<select .value=${this._room} @change=${e=>{this._room=e.target.value;this._marker='';this._apertureId='';}}><option value="">Choisir une pièce</option>${this._config.rooms.map(r=>html`<option value=${r.id}>${r.name||r.id}</option>`)}</select></label>
+      ${r?html`<label>Vue par défaut de cette pièce<select data-room-default-view .value=${r.default_view||((r.scene_url||r.scene)?'3d':'illustration')} @change=${e=>this._roomChange({default_view:e.target.value})}><option value="illustration">Illustration</option><option value="2d">Plan 2D</option><option value="3d" ?disabled=${!(r.scene_url||r.scene)}>Vue 3D</option></select></label>`:nothing}
       ${r&&(r.scene_url||r.scene)?html`<div class="row" role="group" aria-label="Écrans de configuration"><button data-editor-tab="plan" aria-pressed=${this._editorTab==='plan'} @click=${()=>this._editorTab='plan'}>Plan et repères</button><button data-editor-tab="scene" aria-pressed=${this._editorTab==='scene'} @click=${()=>this._editorTab='scene'}>Pièce 2D / 3D</button></div>`:nothing}
       ${this._editorTab==='scene'&&r&&(r.scene_url||r.scene)?html`<home-plan-room-editor .room=${r} .hass=${this.hass} @room-scene-changed=${e=>{e.stopPropagation();this._roomChange({scene:e.detail.scene});}} @room-binding-changed=${e=>{e.stopPropagation();this._roomChange({scene_entities:e.detail.entities});}} @room-scene-reset=${e=>{e.stopPropagation();this._change({rooms:this._config.rooms.map(x=>{if(x.id!==r.id)return x;const next={...x};delete next.scene;return next;})});}}></home-plan-room-editor>`:nothing}
       <home-plan-card ?hidden=${this._editorTab==='scene'&&!!(r?.scene_url||r?.scene)} .editorConfig=${this._config} .hass=${this.hass} .editMode=${true} @plan-model-loaded=${e=>{e.stopPropagation();this._baseModel=e.detail.model;}} @plan-item-selected=${this._picked} @plan-position-changed=${this._position}></home-plan-card>
