@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.6.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.7.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -712,7 +712,7 @@ t5.directiveName = "unsafeSVG", t5.resultType = 2;
 var o6 = e4(t5);
 
 // src/candidate/home-plan-card.css
-var home_plan_card_default = '\n    :host { display:block; color-scheme:light; } :host([dark]) {color-scheme:dark;}\n    .hpf-home {\n      --hp-paper: light-dark(#fbfbfc,#1d2026); --hp-ink: light-dark(#20242b,#f4f5f8);\n      --hp-secondary: light-dark(#626b76,#aab2bf); --hp-line: light-dark(#e7e9ee,#353b46);\n      --hp-soft: light-dark(#f0f2f6,#2b303a); --hp-blue: light-dark(#2673e7,#74adff);\n      --hp-selected: light-dark(#e2ecff,#273e5b); --hp-warm: light-dark(#fff0c8,#55472c);\n      --hp-amber: light-dark(#926000,#f9cc6e); --hp-orange: light-dark(#b8561c,#ffb187);\n      --hp-alert-bg: light-dark(#fff1e7,#473428); --hp-floor: light-dark(#efede6,#30353c);\n      --hp-wall: light-dark(#bcbdb8,#68727e); --hp-furniture: light-dark(#dedbd2,#424a55);\n      --hp-furniture-line: light-dark(#c7c4bb,#5a6572); --hp-water: light-dark(#9fd0d8,#346472);\n      --hp-glass: light-dark(#c4dce5,#5b7b8d); --hp-good: light-dark(#367258,#89c6aa);\n      position: relative; max-width: 680px; margin: 0 auto; overflow: hidden; isolation: isolate;\n      background: var(--hp-paper); color: var(--hp-ink); border-radius: 26px;\n      box-shadow: 0 8px 34px light-dark(#202b4212,#00000026);\n      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 14px;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .hpf-home * { box-sizing: border-box; }\n    button, input { font: inherit; }\n    button { color: inherit; }\n    button:disabled { opacity: .5; }\n    .hpf-head { padding: 21px 22px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }\n    .hpf-heading { display: flex; align-items: center; gap: 11px; }\n    .hpf-home-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; color: var(--hp-blue); background: var(--hp-selected); }\n    .hpf-home-mark svg { width: 21px; height: 21px; }\n    h2 { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -.5px; }\n    .hpf-floor-name { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-preview-mark { margin-right: 4px; font-size: 11px; color: var(--hp-secondary); white-space: nowrap; }\n    .hpf-tools { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; padding: 0 22px 8px; }\n    .hpf-glance { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: nowrap; }\n    .hpf-glance button { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; border: 0; border-radius: 12px; background: transparent; padding: 4px 7px; font-size: 12px; white-space: nowrap; }\n    .hpf-glance button:first-child { margin-left: -7px; }\n    .hpf-glance svg { width: 15px; height: 15px; }\n    .hpf-glance button[data-light-count] { color: var(--hp-amber); }\n    .hpf-glance button[data-open-count] { color: var(--hp-orange); }\n    .hpf-glance button[aria-pressed="true"] { background: var(--hp-soft); }\n    .hpf-view { display: flex; padding: 3px; margin-left: auto; border-radius: 11px; background: var(--hp-soft); }\n    .hpf-view button { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 35px; padding: 5px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--hp-secondary); font-size: 12px; }\n    .hpf-view button svg { width: 17px; height: 17px; }\n    .hpf-view button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px #00000013; }\n    .hpf-map { position: relative; margin: 0 auto; width: calc(100% - 24px); max-width: 560px; aspect-ratio: 1000 / 660; }\n    .hpf-aperture-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; pointer-events: none; }\n    .hpf-aperture-layer [data-map-aperture] { pointer-events: stroke; }\n    .hpf-drawing { display: block; width: 100%; height: 100%; overflow: visible; }\n    .hpf-room-floor { fill: var(--hp-floor); transition: fill .2s; }\n    .hpf-room-floor.is-lit { fill: var(--hp-warm); }\n    .hpf-room-floor.is-selected { fill: var(--hp-selected); }\n    .hpf-room-floor.is-muted { opacity: .28; }\n    .hpf-drawing .wall { fill: none; stroke: var(--hp-wall); stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }\n    .hpf-drawing .inner-wall { fill: none; stroke: var(--hp-wall); stroke-width: 5; }\n    .hpf-drawing .thin { fill: none; stroke: var(--hp-glass); stroke-width: 1.6; opacity: .55; }\n    .hpf-drawing .door { fill: none; stroke: var(--hp-wall); stroke-width: 2.6; opacity: .75; }\n    .hpf-drawing .window { fill: none; stroke: var(--hp-glass); stroke-width: 5; }\n    .hpf-drawing .furniture { fill: var(--hp-furniture); stroke: var(--hp-furniture-line); stroke-width: 1.6; }\n    .hpf-drawing .furniture-line, .hpf-drawing .stairs { fill: none; stroke: var(--hp-furniture-line); stroke-width: 2; }\n    .hpf-drawing .plant { fill: none; stroke: var(--hp-good); stroke-width: 2; opacity: .4; }\n    .hpf-drawing .pool { fill: var(--hp-water); stroke: var(--hp-glass); stroke-width: 2; }\n    .hpf-drawing .pool-line { fill: none; stroke: var(--hp-paper); stroke-width: 2; opacity: .38; }\n    .hpf-drawing .trace-wall { fill: var(--hp-wall); }\n    .hpf-drawing .trace-door { fill: var(--hp-good); opacity: .7; }\n    .hpf-drawing .trace-window { fill: var(--hp-glass); }\n    .hpf-drawing .trace-stair { fill: var(--hp-furniture); }\n    .hpf-drawing .terrace { fill: var(--hp-soft); opacity: .7; }\n    .hpf-modebar { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 3px; margin: 2px 16px 8px; padding: 3px; border-radius: 14px; background: var(--hp-soft); }\n    .hpf-modebar button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 49px; padding: 6px 1px; border: 0; border-radius: 11px; background: transparent; color: var(--hp-secondary); font-size: 11px; }\n    .hpf-modebar svg { width: 19px; height: 19px; }\n    .hpf-modebar button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px light-dark(#00000012,#00000026); }\n    .hpf-mode-short { display: none; }\n    .hpf-aperture-layer .aperture-line { fill: none; stroke: var(--hp-glass); stroke-width: 6; stroke-linecap: butt; }\n    .hpf-aperture-layer .aperture-halo { fill: none; stroke: var(--hp-orange); stroke-width: 20; opacity: .18; }\n    .hpf-aperture-layer .aperture-line.is-open, .hpf-aperture-layer .aperture-leaf { stroke: var(--hp-orange); }\n    .hpf-aperture-layer .aperture-leaf { fill: none; stroke-width: 4; }\n    .hpf-aperture-layer .shutter-track { fill: none; stroke: var(--hp-glass); stroke-width: 12; opacity: .5; }\n    .hpf-aperture-layer .shutter-fill { fill: none; stroke: var(--hp-blue); stroke-width: 12; }\n    .hpf-aperture-layer .aperture-leader { fill: none; stroke: var(--hp-blue); stroke-width: 1.4; opacity: .55; }\n    .hpf-aperture { position: absolute; z-index: 3; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; transform: translate(-50%,-50%); border: 0; border-radius: 12px; background: transparent; }\n    .hpf-aperture-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 22px; min-height: 23px; padding: 3px 5px; border-radius: 7px; background: var(--hp-paper); color: var(--hp-blue); box-shadow: 0 1px 5px light-dark(#1d2a4525,#00000055); font-size: 11px; font-variant-numeric: tabular-nums; }\n    .hpf-aperture-mark svg { width: 14px; height: 14px; }\n    .hpf-aperture.is-open:not(.has-cover) .hpf-aperture-mark { color: var(--hp-orange); background: var(--hp-alert-bg); }\n    .hpf-aperture:not(.show-value) .hpf-aperture-mark > span { display: none; }\n    .hpf-aperture.is-muted { opacity: .32; }\n    .hpf-map-legend { min-height: 30px; padding: 3px 17px 9px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-map-legend span { display: inline-flex; gap: 5px; align-items: center; }\n    .hpf-map-legend svg { width: 13px; height: 13px; }\n    .hpf-map-legend .opening-key { color: var(--hp-orange); }\n    .hpf-map-legend .cover-key { color: var(--hp-blue); }\n    .hpf-room-tile .hpf-tile-cover { color: var(--hp-blue); }\n    .hpf-photo-style { position: absolute; left: 9px; bottom: 9px; border: 0; border-radius: 9px; min-height: 34px; padding: 5px 10px; background: var(--hp-paper); color: var(--hp-ink); font-size: 11px; }\n    .hpf-cover-state { font-size: 12px; margin-left: auto; color: var(--hp-blue); font-variant-numeric: tabular-nums; }\n    .hpf-quick-room { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; background: transparent; padding: 10px; min-height: 44px; width: 100%; color: var(--hp-blue); font-size: 12px; }\n    .hpf-quick-room svg { width: 15px; height: 15px; }\n    .hpf-photo-shortcut { position: absolute; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1px solid var(--hp-line); border-radius: 16px; background: var(--hp-paper); text-align: left; }\n    .hpf-photo-shortcut img { width: 100%; flex: 1 1 0; min-height: 0; object-fit: cover; }\n    .hpf-photo-caption { display: flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; padding: 9px 10px; font-size: 12px; font-weight: 600; }\n    .hpf-photo-caption svg { flex: 0 0 auto; width: 14px; height: 14px; }\n    .hpf-room-photo { position: relative; height: 160px; margin: 0 0 14px; overflow: hidden; border-radius: 15px; background: var(--hp-soft); }\n    .hpf-room-photo img { width: 100%; height: 100%; object-fit: cover; }\n    .hpf-photo-next { position: absolute; right: 9px; bottom: 9px; min-width: 44px; min-height: 36px; border: 0; border-radius: 10px; background: #15202dcc; color: #fff; padding: 6px 10px; font-size: 12px; }\n    .hpf-zone { position: absolute; margin: 0; border: 0; padding: 0; background: transparent; overflow: visible; border-radius: 4px; }\n    .hpf-zone.is-muted { opacity: .36; }\n    .hpf-room-name { position: absolute; display: flex; align-items: center; flex-direction: column; gap: 3px; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }\n    .hpf-room-name strong { font-size: clamp(11px,1.8vw,14px); line-height: 1.15; font-weight: 620; letter-spacing: -.2px; text-shadow: 0 1px 8px var(--hp-floor); }\n    .hpf-room-name small { font-size: 11px; line-height: 1.1; color: var(--hp-secondary); }\n    .hpf-name-micro { display: none; }\n    .hpf-zone.has-opening strong, .hpf-zone.has-opening small { color: var(--hp-orange); }\n    .hpf-zone[aria-pressed="true"] strong { color: var(--hp-blue); }\n    .hpf-room-name .hpf-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hp-amber); }\n    .hpf-room-alert { display: inline-grid; place-items: center; margin-left: 3px; width: 12px; height: 12px; font-size: 10px; color: var(--hp-paper); background: var(--hp-orange); border-radius: 50%; text-shadow: none; vertical-align: 1px; }\n    .hpf-room-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 9px 20px 18px; }\n    .hpf-room-grid[hidden], [hidden] { display: none !important; }\n    .hpf-room-tile { min-width: 0; padding: 15px; min-height: 99px; text-align: left; border: 0; border-radius: 17px; background: var(--hp-soft); }\n    .hpf-room-tile svg { display: block; width: 20px; height: 20px; margin-bottom: 10px; color: var(--hp-secondary); }\n    .hpf-room-tile strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-room-tile small { display: block; margin-top: 4px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-room-tile.is-lit { background: var(--hp-warm); }\n    .hpf-room-tile.has-opening { background: var(--hp-alert-bg); }\n    .hpf-room-tile.has-opening small { color: var(--hp-orange); }\n    .hpf-footer { display: flex; align-items: center; gap: 8px; padding: 12px 21px 17px; border-top: 1px solid var(--hp-line); }\n    .hpf-footer > svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--hp-orange); }\n    .hpf-footer-copy { font-size: 12px; min-width: 0; flex: 1; color: var(--hp-secondary); }\n    .hpf-footer button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; flex: 0 0 auto; border: 0; padding: 6px 0 6px 9px; background: transparent; color: var(--hp-ink); font-size: 12px; font-weight: 600; }\n    .hpf-footer button svg { width: 14px; height: 14px; }\n    .hpf-sheet { position: absolute; z-index: 5; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: 100%; padding: 18px 22px 21px; border: 1px solid var(--hp-line); border-bottom: 0; border-radius: 23px 23px 0 0; background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 -15px 50px #00000022; overflow-y: auto; }\n    .hpf-sheet::backdrop { background: transparent; }\n    .hpf-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }\n    .hpf-sheet h3 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -.4px; }\n    .hpf-sheet-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-close { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; background: var(--hp-soft); }\n    .hpf-close svg { width: 18px; height: 18px; }\n    .hpf-device-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }\n    .hpf-device { display: flex; align-items: center; gap: 11px; min-height: 68px; border: 0; border-radius: 16px; background: var(--hp-soft); padding: 13px 14px; text-align: left; }\n    .hpf-device > svg { width: 23px; height: 23px; flex: 0 0 auto; }\n    .hpf-device.is-lit { background: var(--hp-warm); color: var(--hp-amber); }\n    .hpf-device strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-device small { display: block; margin-top: 4px; font-size: 12px; }\n    .hpf-cover { margin-top: 10px; padding: 13px 15px; border-radius: 16px; background: var(--hp-soft); }\n    .hpf-cover-caption { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }\n    .hpf-cover-caption svg { width: 17px; height: 17px; }\n    .hpf-cover-caption output { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; }\n    .hpf-cover input { width: 100%; margin: 9px 0 5px; min-height: 30px; accent-color: var(--hp-blue); }\n    .hpf-cover-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }\n    .hpf-cover-actions button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 9px; background: var(--hp-paper); font-size: 12px; }\n    .hpf-cover-actions svg { width: 14px; height: 14px; }\n    .hpf-opening { display: flex; align-items: center; gap: 9px; padding: 12px 1px 2px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-opening svg { width: 17px; height: 17px; flex: 0 0 auto; }\n    .hpf-opening.is-open { color: var(--hp-orange); }\n    .hpf-opening strong { margin-left: auto; font-weight: 600; }\n    .hpf-sheet details { margin-top: 13px; border-top: 1px solid var(--hp-line); padding-top: 6px; }\n    .hpf-sheet summary { padding: 9px 0; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-extra { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 12px; }\n    .hpf-extra svg { width: 16px; height: 16px; color: var(--hp-secondary); }\n    .hpf-extra span:last-child { margin-left: auto; color: var(--hp-secondary); }\n    .hpf-empty { padding: 20px 0 14px; font-size: 13px; color: var(--hp-secondary); }\n    .hpf-alerts { display: grid; gap: 8px; }\n    ha-state-icon { --mdc-icon-size:18px; width:18px; height:18px; display:inline-flex; flex-shrink:0; }\n    .hpf-device ha-state-icon { --mdc-icon-size:22px; width:22px; height:22px; }\n    .hpf-more > span:first-of-type { flex:1; min-width:0; overflow-wrap:anywhere; }\n    .hpf-more > span:last-child { flex:0 0 auto; max-width:44%; overflow-wrap:anywhere; }\n    .hpf-sheet .hpf-room-photo { height:106px; margin:10px 0; }\n    .hpf-sheet-tabs { display:flex; padding:3px; gap:3px; border-radius:11px; background:var(--hp-soft); margin:0 0 10px; }\n    .hpf-sheet-tabs button { flex:1; min-height:38px; padding:6px 8px; border:0; border-radius:8px; background:transparent; font-size:12px; }\n    .hpf-sheet-tabs button[aria-pressed="true"] { background:var(--hp-paper); }\n    .hpf-group { margin:9px 0; padding:10px 12px; border-radius:14px; background:var(--hp-selected); }\n    .hpf-group-caption { display:flex; justify-content:space-between; gap:8px; font-size:12px; margin-bottom:8px; }\n    .hpf-group-caption span { color:var(--hp-secondary); }\n    .hpf-group-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }\n    .hpf-group-actions.two { grid-template-columns:repeat(2,minmax(0,1fr)); }\n    .hpf-group-actions button { display:flex; align-items:center; justify-content:center; gap:5px; border:0; border-radius:8px; background:var(--hp-paper); min-height:44px; padding:5px; font-size:12px; }\n    .hpf-group-actions ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }\n    .hpf-position-control { display:grid; grid-template-columns:35px minmax(0,1fr); gap:12px; align-items:center; margin:4px 0 10px; }\n    .hpf-cover-preview { width:32px; height:41px; display:block; position:relative; overflow:hidden; background:var(--hp-paper); border:2px solid var(--hp-glass); border-radius:3px; }\n    .hpf-cover-preview::after { content:""; position:absolute; inset:0 0 auto; height:var(--closed); background:repeating-linear-gradient(to bottom,var(--hp-blue) 0 3px,var(--hp-selected) 3px 5px); }\n    .hpf-cover-preview.is-screen::after { top:auto; bottom:0; height:calc(100% - var(--closed)); background:var(--hp-blue); opacity:.65; }\n    .hpf-range-labels { display:flex; justify-content:space-between; gap:6px; color:var(--hp-secondary); font-size:11px; }\n    .hpf-cover .hpf-cover-caption { gap:6px; flex-wrap:nowrap; }\n    .hpf-cover .hpf-cover-caption > span { min-width:0; overflow-wrap:anywhere; }\n    .hpf-cover-info { display:grid; place-items:center; flex:0 0 auto; width:32px; height:38px; padding:0; border:0; border-radius:8px; background:transparent; }\n    .hpf-equipment-group > summary { display:flex; align-items:center; gap:10px; min-height:52px; list-style:none; }\n    .hpf-equipment-group > summary::-webkit-details-marker { display:none; }\n    .hpf-equipment-group > summary > span { flex:1; min-width:0; }\n    .hpf-equipment-group strong,.hpf-equipment-group small { display:block; overflow-wrap:anywhere; }\n    .hpf-equipment-group strong { color:var(--hp-ink); font-weight:500; font-size:13px; }\n    .hpf-equipment-group small { margin-top:3px; font-size:11px; }\n    .hpf-sheet details.hpf-equipment-group { margin:0; padding:0; }\n    .hpf-equipment-group[open] > summary > ha-icon { transform:rotate(180deg); }\n    .hpf-floor-covers { display:flex; align-items:center; justify-content:center; gap:8px; width:calc(100% - 32px); margin:0 16px 4px; min-height:38px; padding:5px 10px; border:0; border-radius:10px; background:var(--hp-selected); font-size:12px; }\n    .hpf-map .hpf-room-marker.is-light ha-state-icon { color:var(--hp-secondary); background:var(--hp-paper); padding:4px; border-radius:50%; width:25px; height:25px; box-sizing:content-box; box-shadow:0 1px 5px #0002; }\n    .hpf-map .hpf-room-marker.is-light.is-on ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); box-shadow:0 0 14px var(--hp-warm); }\n    .hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { color:var(--hp-secondary); padding:3px; border-radius:7px; background:var(--hp-paper); box-sizing:content-box; }\n    .hpf-map .hpf-room-marker.is-alert ha-state-icon { color:var(--error-color,#b3261e); background:var(--hp-alert-bg); }\n    .hpf-aperture-layer .aperture-swing { fill:none; stroke:var(--hp-wall); stroke-width:2; stroke-dasharray:4 4; opacity:.6; }\n    .hpf-aperture-layer .aperture-leaf { stroke:var(--hp-wall); }\n    .hpf-aperture-layer .aperture-leaf.is-open,.hpf-aperture-layer .aperture-swing.is-open { stroke:var(--hp-orange); }\n    .hpf-placement .hpf-map { width:100%; }\n    .hpf-placement .hpf-zone { pointer-events:none; }\n    .hpf-map.is-editing .hpf-aperture,.hpf-map.is-editing .hpf-room-marker { touch-action:none; cursor:grab; z-index:4; }\n    .hpf-map.is-editing [data-edit-selected="true"] { outline:2px solid var(--hp-blue); outline-offset:-2px; background:var(--hp-selected); }\n    .hpf-placement-caption { padding:5px 12px 10px; font-size:11px; text-align:center; color:var(--hp-secondary); }\n    .hpf-alert-item { display: flex; align-items: center; gap: 12px; min-height: 61px; padding: 11px 14px; background: var(--hp-alert-bg); border: 0; border-radius: 15px; text-align: left; }\n    .hpf-alert-item > svg { width: 20px; height: 20px; color: var(--hp-orange); }\n    .hpf-alert-item strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-alert-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-orange); }\n    .hpf-announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }\n    @media (max-width: 460px) {\n      .hpf-head { padding: 18px 16px 10px; }\n      .hpf-tools { padding: 0 16px 7px; gap: 6px; }\n      .hpf-preview-mark { font-size: 11px; }\n      .hpf-room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 6px 14px 14px; gap: 8px; }\n      .hpf-room-tile { min-height: 91px; padding: 12px; }\n      .hpf-footer { padding: 8px 15px 12px; }\n      .hpf-sheet { padding: 16px; }\n      .hpf-room-name strong { font-size: 11px; }\n      .hpf-view button { min-width: 35px; padding: 5px 7px; }\n      .hpf-glance { gap: 3px; }\n      .hpf-glance button { padding-inline: 5px; font-size: 11px; gap: 4px; }\n      .hpf-room-photo { height: 120px; }\n      .hpf-photo-caption { padding: 8px; font-size: 11px; }\n      .hpf-photo-shortcut { border-radius: 12px; }\n    }\n    @media (pointer: coarse) {\n      .hpf-glance button, .hpf-view button, .hpf-cover-actions button, .hpf-footer button { min-height: 44px; }\n      .hpf-view button { min-width: 42px; }\n    }\n    @media (max-width: 360px) {\n      .hpf-name-full { display: none; }\n      .hpf-name-micro { display: inline; }\n      .hpf-mode-long { display: none; }\n      .hpf-mode-short { display: inline; }\n    }\n    @media (prefers-reduced-motion: reduce) { .hpf-room-floor { transition: none; } }\n\n    .hpf-level-picker { display:flex; gap:12px; align-items:center; font-size:12px; margin:8px 0; }\n    .hpf-level-picker select { flex:1; min-width:0; min-height:44px; font:inherit; color:var(--hp-ink); background:var(--hp-soft); border:1px solid var(--hp-line); border-radius:10px; padding:8px; }\n    /* Keep the slatted shutter/screen illustration; range fill represents closure/deployment. */\n    .hpf-home :is(ha-icon,ha-state-icon) { display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; flex-shrink:0; }\n    .hpf-home button :is(ha-icon,ha-state-icon) { align-self:center; }\n    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:18px; width:32px; height:32px; box-sizing:border-box; padding:0; display:flex; align-items:center; justify-content:center; }\n    .hpf-map .hpf-room-marker.is-maintenance ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); }\n    .hpf-room-activity { display:inline-flex; align-items:center; justify-content:center; gap:3px; color:var(--hp-blue); font-size:11px; }\n    .hpf-room-activity ha-state-icon { --mdc-icon-size:12px; width:12px; height:12px; }\n    .hpf-home { --hp-danger:light-dark(#b3261e,#ffb4ab); --hp-danger-bg:light-dark(#ffedeb,#48272b); }\n    .hpf-notice-footer { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:6px; min-height:53px; padding:8px 12px; border-top:1px solid var(--hp-line); }\n    .hpf-notice-footer .hpf-footer-copy:empty { display:none; }\n    .hpf-notice-chip { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:36px; padding:5px 8px; border:0; border-radius:10px; background:var(--hp-soft); font-size:12px; color:var(--hp-secondary); }\n    .hpf-notice-chip ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }\n    .hpf-notice-chip strong { font-weight:600; font-variant-numeric:tabular-nums; }\n    .hpf-notice-chip.priority { color:var(--hp-orange); background:var(--hp-alert-bg); }\n    .hpf-notice-chip.priority.is-critical { color:var(--hp-danger); background:var(--hp-danger-bg); }\n    .hpf-notice-chip.maintenance { color:var(--hp-amber); background:var(--hp-warm); }\n    .hpf-notice-chip.info { color:var(--hp-blue); background:var(--hp-selected); }\n    .hpf-room-notices { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 10px; }\n    .hpf-notice-tabs { display:grid; grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:minmax(74px,1fr); overflow-x:auto; gap:4px; padding:3px; border-radius:12px; background:var(--hp-soft); }\n    .hpf-notice-tabs button { display:grid; place-items:center; gap:2px; min-width:0; min-height:48px; padding:5px 2px; border:0; border-radius:9px; background:transparent; color:var(--hp-secondary); font-size:12px; }\n    .hpf-notice-tabs button[aria-pressed="true"] { background:var(--hp-paper); color:var(--hp-ink); }\n    .hpf-notice-tabs button span { font-size:11px; font-variant-numeric:tabular-nums; }\n    .hpf-notice-filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:12px 0; }\n    .hpf-notice-filters label { display:grid; gap:5px; font-size:11px; color:var(--hp-secondary); }\n    .hpf-notice-filters select { width:100%; min-width:0; min-height:42px; padding:8px; border:1px solid var(--hp-line); border-radius:9px; background:var(--hp-soft); color:var(--hp-ink); font:inherit; font-size:12px; }\n    .hpf-notice-list { display:grid; gap:7px; }\n    .hpf-notice-row { display:flex; align-items:center; gap:10px; width:100%; min-height:72px; padding:12px; border:0; border-radius:12px; background:var(--hp-soft); text-align:left; }\n    .hpf-notice-row > span { display:grid; flex:1; min-width:0; gap:4px; }\n    .hpf-notice-row strong { font-weight:600; font-size:13px; overflow-wrap:anywhere; }\n    .hpf-notice-row .hpf-notice-reason { font-size:12px; overflow-wrap:anywhere; }\n    .hpf-notice-row small { font-size:11px; color:var(--hp-secondary); }\n    .hpf-notice-row.is-critical { background:var(--hp-danger-bg); }\n    .hpf-notice-row.is-critical > ha-icon,.hpf-notice-row.is-critical .hpf-notice-reason { color:var(--hp-danger); }\n    .hpf-notice-row.priority:not(.is-critical) > ha-icon { color:var(--hp-orange); }\n    .hpf-notice-row.maintenance > ha-icon { color:var(--hp-amber); }\n    .hpf-drawing .sliding-track { fill:none; stroke:var(--hp-glass); stroke-width:3; }\n    .hpf-drawing .sliding-panel { fill:none; stroke:var(--hp-glass); stroke-width:2; }\n\n    .hpf-notice-chip.ready { color:var(--success-color,light-dark(#237244,#8ed4a7)); background:light-dark(#eaf5ee,#203c2c); }\n    .hpf-notice-row.ready > ha-icon { color:var(--success-color,light-dark(#237244,#8ed4a7)); }\n    @media (max-width:460px) { .hpf-notice-tabs button { font-size:11px; } }\n\n    .hpf-notice-chip.battery { color:light-dark(#9a5900,#ffd18a); background:light-dark(#fff0da,#48351d); }\n    .hpf-notice-row.battery > ha-icon { color:light-dark(#9a5900,#ffd18a); }\n    .hpf-map .hpf-equipment-notice { --notice-color:var(--hp-amber); --notice-bg:var(--hp-warm); }\n    .hpf-map .hpf-equipment-notice.priority { --notice-color:var(--hp-orange); --notice-bg:var(--hp-alert-bg); }\n    .hpf-map .hpf-equipment-notice.is-critical { --notice-color:var(--hp-danger); --notice-bg:var(--hp-danger-bg); }\n    .hpf-map .hpf-equipment-notice.ready { --notice-color:light-dark(#237244,#8ed4a7); --notice-bg:light-dark(#eaf5ee,#203c2c); }\n    .hpf-map .hpf-equipment-notice.battery { --notice-color:light-dark(#9a5900,#ffd18a); --notice-bg:light-dark(#fff0da,#48351d); }\n    .hpf-map .hpf-equipment-notice ha-state-icon { color:var(--notice-color)!important; background:var(--notice-bg)!important; border:1px solid var(--notice-color); border-radius:11px; box-shadow:0 2px 6px #0002; }\n    .hpf-notice-count { position:absolute; top:0; right:0; display:grid; place-items:center; min-width:17px; height:17px; padding:0 3px; border:2px solid var(--hp-paper); border-radius:10px; background:var(--notice-color); color:light-dark(#fff,#20242b); font-size:10px; line-height:1; font-weight:700; }\n\n    .hpf-map .hpf-equipment-notice.info { --notice-color:var(--hp-blue); --notice-bg:var(--hp-selected); }\n    .hpf-map .hpf-equipment-notice.info ha-state-icon { opacity:.85; border:0; box-shadow:none; }\n    .hpf-equipment-notice.info .hpf-notice-count { display:none; }\n    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:14px; width:24px; height:24px; border-radius:7px; }\n    .hpf-map .hpf-room-marker.is-muted { opacity:.32; }\n    .hpf-map .hpf-room-marker.is-muted:is(:hover,:focus-visible) { opacity:1; }\n    .hpf-map .hpf-room-marker.is-muted .hpf-notice-count { box-shadow:none; }\n    .hpf-map .hpf-room-marker:not(.is-light) .hpf-notice-count { width:13px; height:13px; min-width:13px; font-size:9px; top:5px; right:5px; }\n    .hpf-levels { display:flex; flex-wrap:nowrap; flex-shrink:0; gap:2px; padding:3px; background:var(--hp-soft); border-radius:12px; }\n    .hpf-levels button { border:0; border-radius:9px; min-height:44px; padding:7px 9px; background:transparent; color:var(--hp-secondary); font:inherit; font-size:12px; font-weight:600; }\n    .hpf-levels button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-ink); }\n    .hpf-home > .hpf-levels { margin:12px 16px; width:fit-content; }\n    .hpf-temperature-reading { display:inline-flex; align-items:center; gap:3px; }\n    .hpf-temperature-reading ha-icon { --mdc-icon-size:11px; width:11px; height:11px; }\n    .hpf-temperature-reading.is-heating { color:var(--hp-orange); }\n    .hpf-temperature-reading.is-conflict { color:var(--hp-amber); }\n    .hpf-room-name .hpf-heat-map-target { font-size:10px; color:var(--hp-blue); }\n    .hpf-climate-shortcut { width:100%; display:flex; align-items:center; gap:10px; min-height:58px; border:0; border-radius:15px; padding:12px; margin:0 0 10px; background:var(--hp-selected); color:var(--hp-ink); text-align:left; }\n    .hpf-climate-shortcut > span { flex:1; font-size:12px; }\n    .hpf-climate-shortcut strong { display:block; margin-top:3px; font-size:12px; color:var(--hp-secondary); font-weight:500; }\n    .hpf-climate-sheet .hpf-sheet-head { margin-bottom:12px; }\n    .hpf-thermostat { padding:14px; border-radius:20px; background:var(--hp-soft); margin-bottom:10px; }\n    .hpf-thermostat-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }\n    .hpf-thermostat-head > span { display:flex; align-items:center; gap:8px; min-width:0; }\n    .hpf-thermostat-head strong { font-size:12px; line-height:1.3; }\n    .hpf-thermostat-head ha-state-icon { width:20px; height:20px; --mdc-icon-size:20px; color:var(--hp-secondary); }\n    .hpf-heat-status { display:flex; align-items:center; justify-content:center; gap:5px; margin:4px 0; font-size:12px; color:var(--hp-secondary); }\n    .hpf-heat-status ha-icon { width:14px; height:14px; --mdc-icon-size:14px; }\n    .hpf-heat-status.heating { color:var(--hp-orange); }\n    .hpf-heat-status.conflict { color:var(--hp-amber); }\n    .hpf-thermostat-dial { display:grid; grid-template-columns:48px 1fr 48px; align-items:center; gap:8px; max-width:340px; margin:10px auto 12px; }\n    .hpf-thermostat-dial > div { text-align:center; }\n    .hpf-thermostat-dial button { width:48px; height:48px; display:grid; place-items:center; border:0; border-radius:50%; background:var(--hp-paper); color:var(--hp-ink); }\n    .hpf-thermostat-dial button ha-icon { width:22px; height:22px; --mdc-icon-size:22px; }\n    .hpf-heat-setpoint-label { font-size:11px; color:var(--hp-secondary); }\n    .hpf-thermostat-dial output { display:block; font-size:clamp(38px,7vw,48px); line-height:1.2; font-weight:500; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; }\n    .hpf-heat-measurement { display:flex; align-items:baseline; justify-content:center; flex-wrap:wrap; gap:4px 6px; font-size:11px; color:var(--hp-secondary); text-align:center; }\n    .hpf-heat-measurement strong { color:var(--hp-ink); font-size:14px; }\n    .hpf-heat-measurement > span { flex-basis:100%; font-size:10px; }\n    .hpf-heat-pending,.hpf-heat-conflict { margin:10px 0; font-size:11px; color:var(--hp-amber); text-align:center; line-height:1.4; }\n    .hpf-heat-presets,.hpf-heat-modes { display:grid; grid-template-columns:repeat(var(--preset-count,3),minmax(0,1fr)); gap:3px; margin-top:14px; padding:3px; border-radius:12px; background:var(--hp-paper); }\n    .hpf-heat-presets button,.hpf-heat-modes button { min-width:0; min-height:44px; padding:4px 2px; border:0; border-radius:9px; background:transparent; font-size:clamp(10px,2.6vw,11px); color:var(--hp-secondary); white-space:nowrap; }\n    .hpf-heat-presets button[aria-pressed="true"],.hpf-heat-modes button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-blue); font-weight:650; }\n    .hpf-heat-overview { display:flex; flex-wrap:wrap; gap:10px; padding:4px 0 14px; font-size:12px; color:var(--hp-secondary); }\n    .hpf-heat-room { display:flex; align-items:center; gap:10px; text-align:left; width:100%; min-height:66px; border:0; border-bottom:1px solid var(--hp-line); background:transparent; padding:10px 0; }\n    .hpf-heat-room > span:first-of-type { flex:1; min-width:0; }\n    .hpf-heat-room strong { display:block; font-size:13px; }\n    .hpf-heat-room small { display:block; margin-top:4px; font-size:11px; color:var(--hp-secondary); }\n    .hpf-heat-room-values { text-align:right; font-variant-numeric:tabular-nums; }\n    .hpf-heat-room-values small { color:var(--hp-blue); }\n    .hpf-heat-room.heating > ha-icon { color:var(--hp-orange); }\n    .hpf-heat-room.conflict > ha-icon,.hpf-heat-room.conflict > span:first-of-type small { color:var(--hp-amber); }\n    .hpf-heat-batch { border:1px solid var(--hp-line); border-radius:14px; padding:0 12px 12px; margin-top:14px; }\n    .hpf-heat-batch summary { min-height:44px; padding:14px 0 6px; cursor:pointer; font-size:12px; }\n    .hpf-heat-batch label { display:flex; flex-direction:column; gap:6px; margin-top:8px; font-size:12px; }\n    .hpf-heat-batch select { min-height:44px; width:100%; border:1px solid var(--hp-line); border-radius:10px; background:var(--hp-paper); color:var(--hp-ink); padding:8px; }\n    .hpf-heat-batch p { font-size:11px; color:var(--hp-secondary); }\n    .hpf-heat-batch > button { width:100%; min-height:44px; border:0; border-radius:11px; color:var(--hp-blue); background:var(--hp-selected); }\n\n    .hpf-heat-modes { margin-top:10px; }\n    .hpf-heat-status.idle,.hpf-heat-status.enabled { color:var(--hp-good); }\n    .hpf-heat-profiles { margin-top:14px; border-top:1px solid var(--hp-line); padding-top:10px; }\n    .hpf-heat-profiles summary { font-size:11px; color:var(--hp-secondary); cursor:pointer; min-height:32px; align-content:center; }\n    .hpf-heat-profiles p { font-size:10px; line-height:1.4; color:var(--hp-secondary); }\n';
+var home_plan_card_default = '\n    :host { display:block; color-scheme:light; } :host([dark]) {color-scheme:dark;}\n    .hpf-home {\n      --hp-paper: light-dark(#fbfbfc,#1d2026); --hp-ink: light-dark(#20242b,#f4f5f8);\n      --hp-secondary: light-dark(#626b76,#aab2bf); --hp-line: light-dark(#e7e9ee,#353b46);\n      --hp-soft: light-dark(#f0f2f6,#2b303a); --hp-blue: light-dark(#2673e7,#74adff);\n      --hp-selected: light-dark(#e2ecff,#273e5b); --hp-warm: light-dark(#fff0c8,#55472c);\n      --hp-amber: light-dark(#926000,#f9cc6e); --hp-orange: light-dark(#b8561c,#ffb187);\n      --hp-alert-bg: light-dark(#fff1e7,#473428); --hp-floor: light-dark(#efede6,#30353c);\n      --hp-wall: light-dark(#bcbdb8,#68727e); --hp-furniture: light-dark(#dedbd2,#424a55);\n      --hp-furniture-line: light-dark(#c7c4bb,#5a6572); --hp-water: light-dark(#9fd0d8,#346472);\n      --hp-glass: light-dark(#c4dce5,#5b7b8d); --hp-good: light-dark(#367258,#89c6aa);\n      position: relative; max-width: 680px; margin: 0 auto; overflow: hidden; isolation: isolate;\n      background: var(--hp-paper); color: var(--hp-ink); border-radius: 26px;\n      box-shadow: 0 8px 34px light-dark(#202b4212,#00000026);\n      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size: 14px;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .hpf-home * { box-sizing: border-box; }\n    button, input { font: inherit; }\n    button { color: inherit; }\n    button:disabled { opacity: .5; }\n    .hpf-head { padding: 21px 22px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }\n    .hpf-heading { display: flex; align-items: center; gap: 11px; }\n    .hpf-home-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px; color: var(--hp-blue); background: var(--hp-selected); }\n    .hpf-home-mark svg { width: 21px; height: 21px; }\n    h2 { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -.5px; }\n    .hpf-floor-name { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-preview-mark { margin-right: 4px; font-size: 11px; color: var(--hp-secondary); white-space: nowrap; }\n    .hpf-tools { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; padding: 0 22px 8px; }\n    .hpf-glance { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: nowrap; }\n    .hpf-glance button { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; border: 0; border-radius: 12px; background: transparent; padding: 4px 7px; font-size: 12px; white-space: nowrap; }\n    .hpf-glance button:first-child { margin-left: -7px; }\n    .hpf-glance svg { width: 15px; height: 15px; }\n    .hpf-glance button[data-light-count] { color: var(--hp-amber); }\n    .hpf-glance button[data-open-count] { color: var(--hp-orange); }\n    .hpf-glance button[aria-pressed="true"] { background: var(--hp-soft); }\n    .hpf-view { display: flex; padding: 3px; margin-left: auto; border-radius: 11px; background: var(--hp-soft); }\n    .hpf-view button { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 35px; padding: 5px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--hp-secondary); font-size: 12px; }\n    .hpf-view button svg { width: 17px; height: 17px; }\n    .hpf-view button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px #00000013; }\n    .hpf-map { position: relative; margin: 0 auto; width: calc(100% - 24px); max-width: 560px; aspect-ratio: 1000 / 660; }\n    .hpf-aperture-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; pointer-events: none; }\n    .hpf-aperture-layer [data-map-aperture] { pointer-events: stroke; }\n    .hpf-drawing { display: block; width: 100%; height: 100%; overflow: visible; }\n    .hpf-room-floor { fill: var(--hp-floor); transition: fill .2s; }\n    .hpf-room-floor.is-lit { fill: var(--hp-warm); }\n    .hpf-room-floor.is-selected { fill: var(--hp-selected); }\n    .hpf-room-floor.is-muted { opacity: .28; }\n    .hpf-drawing .wall { fill: none; stroke: var(--hp-wall); stroke-width: 7; stroke-linecap: square; stroke-linejoin: miter; }\n    .hpf-drawing .inner-wall { fill: none; stroke: var(--hp-wall); stroke-width: 5; }\n    .hpf-drawing .thin { fill: none; stroke: var(--hp-glass); stroke-width: 1.6; opacity: .55; }\n    .hpf-drawing .door { fill: none; stroke: var(--hp-wall); stroke-width: 2.6; opacity: .75; }\n    .hpf-drawing .window { fill: none; stroke: var(--hp-glass); stroke-width: 5; }\n    .hpf-drawing .furniture { fill: var(--hp-furniture); stroke: var(--hp-furniture-line); stroke-width: 1.6; }\n    .hpf-drawing .furniture-line, .hpf-drawing .stairs { fill: none; stroke: var(--hp-furniture-line); stroke-width: 2; }\n    .hpf-drawing .plant { fill: none; stroke: var(--hp-good); stroke-width: 2; opacity: .4; }\n    .hpf-drawing .pool { fill: var(--hp-water); stroke: var(--hp-glass); stroke-width: 2; }\n    .hpf-drawing .pool-line { fill: none; stroke: var(--hp-paper); stroke-width: 2; opacity: .38; }\n    .hpf-drawing .trace-wall { fill: var(--hp-wall); }\n    .hpf-drawing .trace-door { fill: var(--hp-good); opacity: .7; }\n    .hpf-drawing .trace-window { fill: var(--hp-glass); }\n    .hpf-drawing .trace-stair { fill: var(--hp-furniture); }\n    .hpf-drawing .terrace { fill: var(--hp-soft); opacity: .7; }\n    .hpf-modebar { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 3px; margin: 2px 16px 8px; padding: 3px; border-radius: 14px; background: var(--hp-soft); }\n    .hpf-modebar button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 49px; padding: 6px 1px; border: 0; border-radius: 11px; background: transparent; color: var(--hp-secondary); font-size: 11px; }\n    .hpf-modebar svg { width: 19px; height: 19px; }\n    .hpf-modebar button[aria-pressed="true"] { background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 1px 4px light-dark(#00000012,#00000026); }\n    .hpf-mode-short { display: none; }\n    .hpf-aperture-layer .aperture-line { fill: none; stroke: var(--hp-glass); stroke-width: 6; stroke-linecap: butt; }\n    .hpf-aperture-layer .aperture-halo { fill: none; stroke: var(--hp-orange); stroke-width: 20; opacity: .18; }\n    .hpf-aperture-layer .aperture-line.is-open, .hpf-aperture-layer .aperture-leaf { stroke: var(--hp-orange); }\n    .hpf-aperture-layer .aperture-leaf { fill: none; stroke-width: 4; }\n    .hpf-aperture-layer .shutter-track { fill: none; stroke: var(--hp-glass); stroke-width: 12; opacity: .5; }\n    .hpf-aperture-layer .shutter-fill { fill: none; stroke: var(--hp-blue); stroke-width: 12; }\n    .hpf-aperture-layer .aperture-leader { fill: none; stroke: var(--hp-blue); stroke-width: 1.4; opacity: .55; }\n    .hpf-aperture { position: absolute; z-index: 3; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; transform: translate(-50%,-50%); border: 0; border-radius: 12px; background: transparent; }\n    .hpf-aperture-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 22px; min-height: 23px; padding: 3px 5px; border-radius: 7px; background: var(--hp-paper); color: var(--hp-blue); box-shadow: 0 1px 5px light-dark(#1d2a4525,#00000055); font-size: 11px; font-variant-numeric: tabular-nums; }\n    .hpf-aperture-mark svg { width: 14px; height: 14px; }\n    .hpf-aperture.is-open:not(.has-cover) .hpf-aperture-mark { color: var(--hp-orange); background: var(--hp-alert-bg); }\n    .hpf-aperture:not(.show-value) .hpf-aperture-mark > span { display: none; }\n    .hpf-aperture.is-muted { opacity: .32; }\n    .hpf-map-legend { min-height: 30px; padding: 3px 17px 9px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-map-legend span { display: inline-flex; gap: 5px; align-items: center; }\n    .hpf-map-legend svg { width: 13px; height: 13px; }\n    .hpf-map-legend .opening-key { color: var(--hp-orange); }\n    .hpf-map-legend .cover-key { color: var(--hp-blue); }\n    .hpf-room-tile .hpf-tile-cover { color: var(--hp-blue); }\n    .hpf-photo-style { position: absolute; left: 9px; bottom: 9px; border: 0; border-radius: 9px; min-height: 34px; padding: 5px 10px; background: var(--hp-paper); color: var(--hp-ink); font-size: 11px; }\n    .hpf-cover-state { font-size: 12px; margin-left: auto; color: var(--hp-blue); font-variant-numeric: tabular-nums; }\n    .hpf-quick-room { display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; background: transparent; padding: 10px; min-height: 44px; width: 100%; color: var(--hp-blue); font-size: 12px; }\n    .hpf-quick-room svg { width: 15px; height: 15px; }\n    .hpf-photo-shortcut { position: absolute; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1px solid var(--hp-line); border-radius: 16px; background: var(--hp-paper); text-align: left; }\n    .hpf-photo-shortcut img { width: 100%; flex: 1 1 0; min-height: 0; object-fit: cover; }\n    .hpf-photo-caption { display: flex; align-items: center; justify-content: space-between; gap: 4px; width: 100%; padding: 9px 10px; font-size: 12px; font-weight: 600; }\n    .hpf-photo-caption svg { flex: 0 0 auto; width: 14px; height: 14px; }\n    .hpf-room-photo { position: relative; height: 160px; margin: 0 0 14px; overflow: hidden; border-radius: 15px; background: var(--hp-soft); }\n    .hpf-room-photo img { width: 100%; height: 100%; object-fit: cover; }\n    .hpf-photo-next { position: absolute; right: 9px; bottom: 9px; min-width: 44px; min-height: 36px; border: 0; border-radius: 10px; background: #15202dcc; color: #fff; padding: 6px 10px; font-size: 12px; }\n    .hpf-zone { position: absolute; margin: 0; border: 0; padding: 0; background: transparent; overflow: visible; border-radius: 4px; }\n    .hpf-zone.is-muted { opacity: .36; }\n    .hpf-room-name { position: absolute; display: flex; align-items: center; flex-direction: column; gap: 3px; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; }\n    .hpf-room-name strong { font-size: clamp(11px,1.8vw,14px); line-height: 1.15; font-weight: 620; letter-spacing: -.2px; text-shadow: 0 1px 8px var(--hp-floor); }\n    .hpf-room-name small { font-size: 11px; line-height: 1.1; color: var(--hp-secondary); }\n    .hpf-name-micro { display: none; }\n    .hpf-zone.has-opening strong, .hpf-zone.has-opening small { color: var(--hp-orange); }\n    .hpf-zone[aria-pressed="true"] strong { color: var(--hp-blue); }\n    .hpf-room-name .hpf-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hp-amber); }\n    .hpf-room-alert { display: inline-grid; place-items: center; margin-left: 3px; width: 12px; height: 12px; font-size: 10px; color: var(--hp-paper); background: var(--hp-orange); border-radius: 50%; text-shadow: none; vertical-align: 1px; }\n    .hpf-room-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 9px 20px 18px; }\n    .hpf-room-grid[hidden], [hidden] { display: none !important; }\n    .hpf-room-tile { min-width: 0; padding: 15px; min-height: 99px; text-align: left; border: 0; border-radius: 17px; background: var(--hp-soft); }\n    .hpf-room-tile svg { display: block; width: 20px; height: 20px; margin-bottom: 10px; color: var(--hp-secondary); }\n    .hpf-room-tile strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-room-tile small { display: block; margin-top: 4px; font-size: 11px; color: var(--hp-secondary); }\n    .hpf-room-tile.is-lit { background: var(--hp-warm); }\n    .hpf-room-tile.has-opening { background: var(--hp-alert-bg); }\n    .hpf-room-tile.has-opening small { color: var(--hp-orange); }\n    .hpf-footer { display: flex; align-items: center; gap: 8px; padding: 12px 21px 17px; border-top: 1px solid var(--hp-line); }\n    .hpf-footer > svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--hp-orange); }\n    .hpf-footer-copy { font-size: 12px; min-width: 0; flex: 1; color: var(--hp-secondary); }\n    .hpf-footer button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; flex: 0 0 auto; border: 0; padding: 6px 0 6px 9px; background: transparent; color: var(--hp-ink); font-size: 12px; font-weight: 600; }\n    .hpf-footer button svg { width: 14px; height: 14px; }\n    .hpf-sheet { position: absolute; z-index: 5; inset: auto 0 0; margin: 0; width: 100%; max-width: none; max-height: 100%; padding: 18px 22px 21px; border: 1px solid var(--hp-line); border-bottom: 0; border-radius: 23px 23px 0 0; background: var(--hp-paper); color: var(--hp-ink); box-shadow: 0 -15px 50px #00000022; overflow-y: auto; }\n    .hpf-sheet::backdrop { background: transparent; }\n    .hpf-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }\n    .hpf-sheet h3 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -.4px; }\n    .hpf-sheet-sub { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-close { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; background: var(--hp-soft); }\n    .hpf-close svg { width: 18px; height: 18px; }\n    .hpf-device-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }\n    .hpf-device { display: flex; align-items: center; gap: 11px; min-height: 68px; border: 0; border-radius: 16px; background: var(--hp-soft); padding: 13px 14px; text-align: left; }\n    .hpf-device > svg { width: 23px; height: 23px; flex: 0 0 auto; }\n    .hpf-device.is-lit { background: var(--hp-warm); color: var(--hp-amber); }\n    .hpf-device strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-device small { display: block; margin-top: 4px; font-size: 12px; }\n    .hpf-cover { margin-top: 10px; padding: 13px 15px; border-radius: 16px; background: var(--hp-soft); }\n    .hpf-cover-caption { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }\n    .hpf-cover-caption svg { width: 17px; height: 17px; }\n    .hpf-cover-caption output { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums; }\n    .hpf-cover input { width: 100%; margin: 9px 0 5px; min-height: 30px; accent-color: var(--hp-blue); }\n    .hpf-cover-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }\n    .hpf-cover-actions button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 9px; background: var(--hp-paper); font-size: 12px; }\n    .hpf-cover-actions svg { width: 14px; height: 14px; }\n    .hpf-opening { display: flex; align-items: center; gap: 9px; padding: 12px 1px 2px; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-opening svg { width: 17px; height: 17px; flex: 0 0 auto; }\n    .hpf-opening.is-open { color: var(--hp-orange); }\n    .hpf-opening strong { margin-left: auto; font-weight: 600; }\n    .hpf-sheet details { margin-top: 13px; border-top: 1px solid var(--hp-line); padding-top: 6px; }\n    .hpf-sheet summary { padding: 9px 0; font-size: 12px; color: var(--hp-secondary); }\n    .hpf-extra { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 12px; }\n    .hpf-extra svg { width: 16px; height: 16px; color: var(--hp-secondary); }\n    .hpf-extra span:last-child { margin-left: auto; color: var(--hp-secondary); }\n    .hpf-empty { padding: 20px 0 14px; font-size: 13px; color: var(--hp-secondary); }\n    .hpf-alerts { display: grid; gap: 8px; }\n    ha-state-icon { --mdc-icon-size:18px; width:18px; height:18px; display:inline-flex; flex-shrink:0; }\n    .hpf-device ha-state-icon { --mdc-icon-size:22px; width:22px; height:22px; }\n    .hpf-more > span:first-of-type { flex:1; min-width:0; overflow-wrap:anywhere; }\n    .hpf-more > span:last-child { flex:0 0 auto; max-width:44%; overflow-wrap:anywhere; }\n    .hpf-sheet .hpf-room-photo { height:106px; margin:10px 0; }\n    .hpf-sheet-tabs { display:flex; padding:3px; gap:3px; border-radius:11px; background:var(--hp-soft); margin:0 0 10px; }\n    .hpf-sheet-tabs button { flex:1; min-height:38px; padding:6px 8px; border:0; border-radius:8px; background:transparent; font-size:12px; }\n    .hpf-sheet-tabs button[aria-pressed="true"] { background:var(--hp-paper); }\n    .hpf-group { margin:9px 0; padding:10px 12px; border-radius:14px; background:var(--hp-selected); }\n    .hpf-group-caption { display:flex; justify-content:space-between; gap:8px; font-size:12px; margin-bottom:8px; }\n    .hpf-group-caption span { color:var(--hp-secondary); }\n    .hpf-group-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }\n    .hpf-group-actions.two { grid-template-columns:repeat(2,minmax(0,1fr)); }\n    .hpf-group-actions button { display:flex; align-items:center; justify-content:center; gap:5px; border:0; border-radius:8px; background:var(--hp-paper); min-height:44px; padding:5px; font-size:12px; }\n    .hpf-group-actions ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }\n    .hpf-position-control { display:grid; grid-template-columns:35px minmax(0,1fr); gap:12px; align-items:center; margin:4px 0 10px; }\n    .hpf-cover-preview { width:32px; height:41px; display:block; position:relative; overflow:hidden; background:var(--hp-paper); border:2px solid var(--hp-glass); border-radius:3px; }\n    .hpf-cover-preview::after { content:""; position:absolute; inset:0 0 auto; height:var(--closed); background:repeating-linear-gradient(to bottom,var(--hp-blue) 0 3px,var(--hp-selected) 3px 5px); }\n    .hpf-cover-preview.is-screen::after { top:auto; bottom:0; height:calc(100% - var(--closed)); background:var(--hp-blue); opacity:.65; }\n    .hpf-range-labels { display:flex; justify-content:space-between; gap:6px; color:var(--hp-secondary); font-size:11px; }\n    .hpf-cover .hpf-cover-caption { gap:6px; flex-wrap:nowrap; }\n    .hpf-cover .hpf-cover-caption > span { min-width:0; overflow-wrap:anywhere; }\n    .hpf-cover-info { display:grid; place-items:center; flex:0 0 auto; width:32px; height:38px; padding:0; border:0; border-radius:8px; background:transparent; }\n    .hpf-equipment-group > summary { display:flex; align-items:center; gap:10px; min-height:52px; list-style:none; }\n    .hpf-equipment-group > summary::-webkit-details-marker { display:none; }\n    .hpf-equipment-group > summary > span { flex:1; min-width:0; }\n    .hpf-equipment-group strong,.hpf-equipment-group small { display:block; overflow-wrap:anywhere; }\n    .hpf-equipment-group strong { color:var(--hp-ink); font-weight:500; font-size:13px; }\n    .hpf-equipment-group small { margin-top:3px; font-size:11px; }\n    .hpf-sheet details.hpf-equipment-group { margin:0; padding:0; }\n    .hpf-equipment-group[open] > summary > ha-icon { transform:rotate(180deg); }\n    .hpf-floor-covers { display:flex; align-items:center; justify-content:center; gap:8px; width:calc(100% - 32px); margin:0 16px 4px; min-height:38px; padding:5px 10px; border:0; border-radius:10px; background:var(--hp-selected); font-size:12px; }\n    .hpf-map .hpf-room-marker.is-light ha-state-icon { color:var(--hp-secondary); background:var(--hp-paper); padding:4px; border-radius:50%; width:25px; height:25px; box-sizing:content-box; box-shadow:0 1px 5px #0002; }\n    .hpf-map .hpf-room-marker.is-light.is-on ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); box-shadow:0 0 14px var(--hp-warm); }\n    .hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { color:var(--hp-secondary); padding:3px; border-radius:7px; background:var(--hp-paper); box-sizing:content-box; }\n    .hpf-map .hpf-room-marker.is-alert ha-state-icon { color:var(--error-color,#b3261e); background:var(--hp-alert-bg); }\n    .hpf-aperture-layer .aperture-swing { fill:none; stroke:var(--hp-wall); stroke-width:2; stroke-dasharray:4 4; opacity:.6; }\n    .hpf-aperture-layer .aperture-leaf { stroke:var(--hp-wall); }\n    .hpf-aperture-layer .aperture-leaf.is-open,.hpf-aperture-layer .aperture-swing.is-open { stroke:var(--hp-orange); }\n    .hpf-placement .hpf-map { width:100%; }\n    .hpf-placement .hpf-zone { pointer-events:none; }\n    .hpf-map.is-editing .hpf-aperture,.hpf-map.is-editing .hpf-room-marker { touch-action:none; cursor:grab; z-index:4; }\n    .hpf-map.is-editing [data-edit-selected="true"] { outline:2px solid var(--hp-blue); outline-offset:-2px; background:var(--hp-selected); }\n    .hpf-placement-caption { padding:5px 12px 10px; font-size:11px; text-align:center; color:var(--hp-secondary); }\n    .hpf-alert-item { display: flex; align-items: center; gap: 12px; min-height: 61px; padding: 11px 14px; background: var(--hp-alert-bg); border: 0; border-radius: 15px; text-align: left; }\n    .hpf-alert-item > svg { width: 20px; height: 20px; color: var(--hp-orange); }\n    .hpf-alert-item strong { display: block; font-size: 13px; font-weight: 600; }\n    .hpf-alert-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--hp-orange); }\n    .hpf-announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }\n    @media (max-width: 460px) {\n      .hpf-head { padding: 18px 16px 10px; }\n      .hpf-tools { padding: 0 16px 7px; gap: 6px; }\n      .hpf-preview-mark { font-size: 11px; }\n      .hpf-room-grid { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 6px 14px 14px; gap: 8px; }\n      .hpf-room-tile { min-height: 91px; padding: 12px; }\n      .hpf-footer { padding: 8px 15px 12px; }\n      .hpf-sheet { padding: 16px; }\n      .hpf-room-name strong { font-size: 11px; }\n      .hpf-view button { min-width: 35px; padding: 5px 7px; }\n      .hpf-glance { gap: 3px; }\n      .hpf-glance button { padding-inline: 5px; font-size: 11px; gap: 4px; }\n      .hpf-room-photo { height: 120px; }\n      .hpf-photo-caption { padding: 8px; font-size: 11px; }\n      .hpf-photo-shortcut { border-radius: 12px; }\n    }\n    @media (pointer: coarse) {\n      .hpf-glance button, .hpf-view button, .hpf-cover-actions button, .hpf-footer button { min-height: 44px; }\n      .hpf-view button { min-width: 42px; }\n    }\n    @media (max-width: 360px) {\n      .hpf-name-full { display: none; }\n      .hpf-name-micro { display: inline; }\n      .hpf-mode-long { display: none; }\n      .hpf-mode-short { display: inline; }\n    }\n    @media (prefers-reduced-motion: reduce) { .hpf-room-floor { transition: none; } }\n\n    .hpf-level-picker { display:flex; gap:12px; align-items:center; font-size:12px; margin:8px 0; }\n    .hpf-level-picker select { flex:1; min-width:0; min-height:44px; font:inherit; color:var(--hp-ink); background:var(--hp-soft); border:1px solid var(--hp-line); border-radius:10px; padding:8px; }\n    /* Keep the slatted shutter/screen illustration; range fill represents closure/deployment. */\n    .hpf-home :is(ha-icon,ha-state-icon) { display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; flex-shrink:0; }\n    .hpf-home button :is(ha-icon,ha-state-icon) { align-self:center; }\n    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:18px; width:32px; height:32px; box-sizing:border-box; padding:0; display:flex; align-items:center; justify-content:center; }\n    .hpf-map .hpf-room-marker.is-maintenance ha-state-icon { color:var(--hp-amber); background:var(--hp-warm); }\n    .hpf-room-activity { display:inline-flex; align-items:center; justify-content:center; gap:3px; color:var(--hp-blue); font-size:11px; }\n    .hpf-room-activity ha-state-icon { --mdc-icon-size:12px; width:12px; height:12px; }\n    .hpf-home { --hp-danger:light-dark(#b3261e,#ffb4ab); --hp-danger-bg:light-dark(#ffedeb,#48272b); }\n    .hpf-notice-footer { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:6px; min-height:53px; padding:8px 12px; border-top:1px solid var(--hp-line); }\n    .hpf-notice-footer .hpf-footer-copy:empty { display:none; }\n    .hpf-notice-chip { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:36px; padding:5px 8px; border:0; border-radius:10px; background:var(--hp-soft); font-size:12px; color:var(--hp-secondary); }\n    .hpf-notice-chip ha-icon { --mdc-icon-size:15px; width:15px; height:15px; }\n    .hpf-notice-chip strong { font-weight:600; font-variant-numeric:tabular-nums; }\n    .hpf-notice-chip.priority { color:var(--hp-orange); background:var(--hp-alert-bg); }\n    .hpf-notice-chip.priority.is-critical { color:var(--hp-danger); background:var(--hp-danger-bg); }\n    .hpf-notice-chip.maintenance { color:var(--hp-amber); background:var(--hp-warm); }\n    .hpf-notice-chip.info { color:var(--hp-blue); background:var(--hp-selected); }\n    .hpf-room-notices { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 10px; }\n    .hpf-notice-tabs { display:grid; grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:minmax(74px,1fr); overflow-x:auto; gap:4px; padding:3px; border-radius:12px; background:var(--hp-soft); }\n    .hpf-notice-tabs button { display:grid; place-items:center; gap:2px; min-width:0; min-height:48px; padding:5px 2px; border:0; border-radius:9px; background:transparent; color:var(--hp-secondary); font-size:12px; }\n    .hpf-notice-tabs button[aria-pressed="true"] { background:var(--hp-paper); color:var(--hp-ink); }\n    .hpf-notice-tabs button span { font-size:11px; font-variant-numeric:tabular-nums; }\n    .hpf-notice-filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; margin:12px 0; }\n    .hpf-notice-filters label { display:grid; gap:5px; font-size:11px; color:var(--hp-secondary); }\n    .hpf-notice-filters select { width:100%; min-width:0; min-height:42px; padding:8px; border:1px solid var(--hp-line); border-radius:9px; background:var(--hp-soft); color:var(--hp-ink); font:inherit; font-size:12px; }\n    .hpf-notice-list { display:grid; gap:7px; }\n    .hpf-notice-row { display:flex; align-items:center; gap:10px; width:100%; min-height:72px; padding:12px; border:0; border-radius:12px; background:var(--hp-soft); text-align:left; }\n    .hpf-notice-row > span { display:grid; flex:1; min-width:0; gap:4px; }\n    .hpf-notice-row strong { font-weight:600; font-size:13px; overflow-wrap:anywhere; }\n    .hpf-notice-row .hpf-notice-reason { font-size:12px; overflow-wrap:anywhere; }\n    .hpf-notice-row small { font-size:11px; color:var(--hp-secondary); }\n    .hpf-notice-row.is-critical { background:var(--hp-danger-bg); }\n    .hpf-notice-row.is-critical > ha-icon,.hpf-notice-row.is-critical .hpf-notice-reason { color:var(--hp-danger); }\n    .hpf-notice-row.priority:not(.is-critical) > ha-icon { color:var(--hp-orange); }\n    .hpf-notice-row.maintenance > ha-icon { color:var(--hp-amber); }\n    .hpf-drawing .sliding-track { fill:none; stroke:var(--hp-glass); stroke-width:3; }\n    .hpf-drawing .sliding-panel { fill:none; stroke:var(--hp-glass); stroke-width:2; }\n\n    .hpf-notice-chip.ready { color:var(--success-color,light-dark(#237244,#8ed4a7)); background:light-dark(#eaf5ee,#203c2c); }\n    .hpf-notice-row.ready > ha-icon { color:var(--success-color,light-dark(#237244,#8ed4a7)); }\n    @media (max-width:460px) { .hpf-notice-tabs button { font-size:11px; } }\n\n    .hpf-notice-chip.battery { color:light-dark(#9a5900,#ffd18a); background:light-dark(#fff0da,#48351d); }\n    .hpf-notice-row.battery > ha-icon { color:light-dark(#9a5900,#ffd18a); }\n    .hpf-map .hpf-equipment-notice { --notice-color:var(--hp-amber); --notice-bg:var(--hp-warm); }\n    .hpf-map .hpf-equipment-notice.priority { --notice-color:var(--hp-orange); --notice-bg:var(--hp-alert-bg); }\n    .hpf-map .hpf-equipment-notice.is-critical { --notice-color:var(--hp-danger); --notice-bg:var(--hp-danger-bg); }\n    .hpf-map .hpf-equipment-notice.ready { --notice-color:light-dark(#237244,#8ed4a7); --notice-bg:light-dark(#eaf5ee,#203c2c); }\n    .hpf-map .hpf-equipment-notice.battery { --notice-color:light-dark(#9a5900,#ffd18a); --notice-bg:light-dark(#fff0da,#48351d); }\n    .hpf-map .hpf-equipment-notice ha-state-icon { color:var(--notice-color)!important; background:var(--notice-bg)!important; border:1px solid var(--notice-color); border-radius:11px; box-shadow:0 2px 6px #0002; }\n    .hpf-notice-count { position:absolute; top:0; right:0; display:grid; place-items:center; min-width:17px; height:17px; padding:0 3px; border:2px solid var(--hp-paper); border-radius:10px; background:var(--notice-color); color:light-dark(#fff,#20242b); font-size:10px; line-height:1; font-weight:700; }\n\n    .hpf-map .hpf-equipment-notice.info { --notice-color:var(--hp-blue); --notice-bg:var(--hp-selected); }\n    .hpf-map .hpf-equipment-notice.info ha-state-icon { opacity:.85; border:0; box-shadow:none; }\n    .hpf-equipment-notice.info .hpf-notice-count { display:none; }\n    .hpf-map .hpf-room-marker :is(ha-icon,ha-state-icon),.hpf-map .hpf-room-marker.is-light ha-state-icon,.hpf-map .hpf-room-marker:not(.is-light) ha-state-icon { --mdc-icon-size:14px; width:24px; height:24px; border-radius:7px; }\n    .hpf-map .hpf-room-marker.is-muted { opacity:.32; }\n    .hpf-map .hpf-room-marker.is-muted:is(:hover,:focus-visible) { opacity:1; }\n    .hpf-map .hpf-room-marker.is-muted .hpf-notice-count { box-shadow:none; }\n    .hpf-map .hpf-room-marker:not(.is-light) .hpf-notice-count { width:13px; height:13px; min-width:13px; font-size:9px; top:5px; right:5px; }\n    .hpf-levels { display:flex; flex-wrap:nowrap; flex-shrink:0; gap:2px; padding:3px; background:var(--hp-soft); border-radius:12px; }\n    .hpf-levels button { border:0; border-radius:9px; min-height:44px; padding:7px 9px; background:transparent; color:var(--hp-secondary); font:inherit; font-size:12px; font-weight:600; }\n    .hpf-levels button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-ink); }\n    .hpf-home > .hpf-levels { margin:12px 16px; width:fit-content; }\n    .hpf-temperature-reading { display:inline-flex; align-items:center; gap:3px; }\n    .hpf-temperature-reading ha-icon { --mdc-icon-size:11px; width:11px; height:11px; }\n    .hpf-temperature-reading.is-heating { color:var(--hp-orange); }\n    .hpf-temperature-reading.is-conflict { color:var(--hp-amber); }\n    .hpf-room-name .hpf-heat-map-target { font-size:10px; color:var(--hp-blue); }\n    .hpf-climate-shortcut { width:100%; display:flex; align-items:center; gap:10px; min-height:58px; border:0; border-radius:15px; padding:12px; margin:0 0 10px; background:var(--hp-selected); color:var(--hp-ink); text-align:left; }\n    .hpf-climate-shortcut > span { flex:1; font-size:12px; }\n    .hpf-climate-shortcut strong { display:block; margin-top:3px; font-size:12px; color:var(--hp-secondary); font-weight:500; }\n    .hpf-climate-sheet .hpf-sheet-head { margin-bottom:12px; }\n    .hpf-thermostat { padding:14px; border-radius:20px; background:var(--hp-soft); margin-bottom:10px; }\n    .hpf-thermostat-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }\n    .hpf-thermostat-head > span { display:flex; align-items:center; gap:8px; min-width:0; }\n    .hpf-thermostat-head strong { font-size:12px; line-height:1.3; }\n    .hpf-thermostat-head ha-state-icon { width:20px; height:20px; --mdc-icon-size:20px; color:var(--hp-secondary); }\n    .hpf-heat-status { display:flex; align-items:center; justify-content:center; gap:5px; margin:4px 0; font-size:12px; color:var(--hp-secondary); }\n    .hpf-heat-status ha-icon { width:14px; height:14px; --mdc-icon-size:14px; }\n    .hpf-heat-status.heating { color:var(--hp-orange); }\n    .hpf-heat-status.conflict { color:var(--hp-amber); }\n    .hpf-thermostat-dial { display:grid; grid-template-columns:48px 1fr 48px; align-items:center; gap:8px; max-width:340px; margin:10px auto 12px; }\n    .hpf-thermostat-dial > div { text-align:center; }\n    .hpf-thermostat-dial button { width:48px; height:48px; display:grid; place-items:center; border:0; border-radius:50%; background:var(--hp-paper); color:var(--hp-ink); }\n    .hpf-thermostat-dial button ha-icon { width:22px; height:22px; --mdc-icon-size:22px; }\n    .hpf-heat-setpoint-label { font-size:11px; color:var(--hp-secondary); }\n    .hpf-thermostat-dial output { display:block; font-size:clamp(38px,7vw,48px); line-height:1.2; font-weight:500; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; }\n    .hpf-heat-measurement { display:flex; align-items:baseline; justify-content:center; flex-wrap:wrap; gap:4px 6px; font-size:11px; color:var(--hp-secondary); text-align:center; }\n    .hpf-heat-measurement strong { color:var(--hp-ink); font-size:14px; }\n    .hpf-heat-measurement > span { flex-basis:100%; font-size:10px; }\n    .hpf-heat-pending,.hpf-heat-conflict { margin:10px 0; font-size:11px; color:var(--hp-amber); text-align:center; line-height:1.4; }\n    .hpf-heat-presets,.hpf-heat-modes { display:grid; grid-template-columns:repeat(var(--preset-count,3),minmax(0,1fr)); gap:3px; margin-top:14px; padding:3px; border-radius:12px; background:var(--hp-paper); }\n    .hpf-heat-presets button,.hpf-heat-modes button { min-width:0; min-height:44px; padding:4px 2px; border:0; border-radius:9px; background:transparent; font-size:clamp(10px,2.6vw,11px); color:var(--hp-secondary); white-space:nowrap; }\n    .hpf-heat-presets button[aria-pressed="true"],.hpf-heat-modes button[aria-pressed="true"] { background:var(--hp-selected); color:var(--hp-blue); font-weight:650; }\n    .hpf-heat-overview { display:flex; flex-wrap:wrap; gap:10px; padding:4px 0 14px; font-size:12px; color:var(--hp-secondary); }\n    .hpf-heat-room { display:flex; align-items:center; gap:10px; text-align:left; width:100%; min-height:66px; border:0; border-bottom:1px solid var(--hp-line); background:transparent; padding:10px 0; }\n    .hpf-heat-room > span:first-of-type { flex:1; min-width:0; }\n    .hpf-heat-room strong { display:block; font-size:13px; }\n    .hpf-heat-room small { display:block; margin-top:4px; font-size:11px; color:var(--hp-secondary); }\n    .hpf-heat-room-values { text-align:right; font-variant-numeric:tabular-nums; }\n    .hpf-heat-room-values small { color:var(--hp-blue); }\n    .hpf-heat-room.heating > ha-icon { color:var(--hp-orange); }\n    .hpf-heat-room.conflict > ha-icon,.hpf-heat-room.conflict > span:first-of-type small { color:var(--hp-amber); }\n    .hpf-heat-batch { border:1px solid var(--hp-line); border-radius:14px; padding:0 12px 12px; margin-top:14px; }\n    .hpf-heat-batch summary { min-height:44px; padding:14px 0 6px; cursor:pointer; font-size:12px; }\n    .hpf-heat-batch label { display:flex; flex-direction:column; gap:6px; margin-top:8px; font-size:12px; }\n    .hpf-heat-batch select { min-height:44px; width:100%; border:1px solid var(--hp-line); border-radius:10px; background:var(--hp-paper); color:var(--hp-ink); padding:8px; }\n    .hpf-heat-batch p { font-size:11px; color:var(--hp-secondary); }\n    .hpf-heat-batch > button { width:100%; min-height:44px; border:0; border-radius:11px; color:var(--hp-blue); background:var(--hp-selected); }\n\n    .hpf-heat-modes { margin-top:10px; }\n    .hpf-heat-status.idle,.hpf-heat-status.enabled { color:var(--hp-good); }\n    .hpf-heat-profiles { margin-top:14px; border-top:1px solid var(--hp-line); padding-top:10px; }\n    .hpf-heat-profiles summary { font-size:11px; color:var(--hp-secondary); cursor:pointer; min-height:32px; align-content:center; }\n    .hpf-heat-profiles p { font-size:10px; line-height:1.4; color:var(--hp-secondary); }\n\n/* The room view keeps the visual and real controls in one document flow. */\n.hpf-viewport{position:relative;width:calc(100% - 24px);max-width:560px;margin:16px auto 8px;overflow:hidden;border-radius:14px;touch-action:pan-y;isolation:isolate}\n.hpf-viewport.is-zoomed{touch-action:none;cursor:grab}\n.hpf-viewport>.hpf-map{width:100%;max-width:none;margin:0;transform-origin:center;will-change:transform}\n.hpf-plan-camera{position:absolute;z-index:4;left:10px;top:10px;display:flex;align-items:center;gap:1px;border:1px solid var(--hp-line);border-radius:12px;background:var(--hp-paper);box-shadow:0 2px 12px #0000000d}\n.hpf-plan-camera button{border:0;background:transparent;color:var(--hp-ink);min-width:38px;min-height:44px;font:600 16px system-ui}\n.hpf-plan-camera button:nth-child(2){font-size:10px;min-width:45px}.hpf-plan-camera button:disabled{opacity:.3}\n.hpf-scene-entry{z-index:4}.hpf-entry-label{position:absolute;left:7px;right:7px;bottom:34px;color:#fff;font-size:8px;letter-spacing:.04em;text-shadow:0 1px 5px #000;background:#2336457a;border-radius:6px;padding:3px 5px;text-align:center}\n.hpf-explorer-head{display:flex;align-items:center;gap:12px;padding:18px 18px 12px}.hpf-explorer-head>button{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:14px;background:var(--hp-soft);color:var(--hp-ink)}\n.hpf-explorer-head h2{font-size:22px;letter-spacing:-.5px;margin:2px 0 0}.hpf-explorer-level{font-size:10px;color:var(--hp-secondary)}.hpf-explorer-temp{margin-left:auto;font-size:18px;white-space:nowrap}\n.hpf-explorer-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr);gap:18px;padding:0 18px 18px;align-items:start}\n.hpf-room-visual{min-width:0;position:sticky;top:12px}.hpf-visual-tabs{display:flex;padding:4px;gap:3px;border-radius:12px;background:var(--hp-soft);margin:0 0 10px}.hpf-visual-tabs button{display:flex;justify-content:center;align-items:center;gap:4px;flex:1;min-width:0;min-height:40px;padding:6px;border:0;border-radius:9px;font:600 11px system-ui;background:transparent;color:var(--hp-secondary)}.hpf-visual-tabs button[aria-pressed=true]{background:var(--hp-paper);color:var(--hp-ink);box-shadow:0 1px 5px #0000000d}.hpf-visual-tabs ha-icon{--mdc-icon-size:16px;width:16px;height:16px}\n.hpf-explorer-photo{position:relative;aspect-ratio:1.15;overflow:hidden;border-radius:20px;background:var(--hp-soft)}.hpf-explorer-photo img{display:block;width:100%;height:100%;object-fit:cover}.hpf-gallery-controls{display:flex;align-items:center;gap:14px;position:absolute;bottom:12px;left:50%;transform:translateX(-50%);padding:3px 6px;border-radius:14px;color:#fff;background:#243340d6;font-size:11px}.hpf-gallery-controls button{height:38px;width:38px;border:0;background:transparent;font-size:23px;color:inherit;border-radius:10px}\n.hpf-room-workspace .hpf-room-commands{min-width:0}.hpf-room-workspace .hpf-sheet{position:relative;inset:auto;max-height:none;overflow:visible;width:100%;padding:0;margin:0;border:0;border-radius:0;box-shadow:none;background:transparent;z-index:auto}.hpf-room-workspace .hpf-sheet-head h3{font-size:14px}.hpf-room-workspace .hpf-sheet-head [data-close]{display:none}\n.hpf-scene-caption{font-size:10px;color:var(--hp-secondary);line-height:1.5;margin:10px 2px}.hpf-scene-equipment{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}.hpf-scene-equipment button{display:flex;align-items:center;gap:5px;min-height:38px;border:1px solid var(--hp-line);border-radius:10px;padding:5px 8px;background:var(--hp-paper);color:var(--hp-secondary);font-size:10px}.hpf-scene-equipment button[aria-pressed=true]{background:var(--hp-blue-soft);color:var(--hp-blue);border-color:var(--hp-blue)}.hpf-scene-equipment ha-icon{width:15px;height:15px;--mdc-icon-size:15px}\n.hpf-scene-control{border:1px solid var(--hp-blue);background:var(--hp-soft);padding:12px;border-radius:17px;margin:0 0 14px}.hpf-scene-control-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px}.hpf-scene-control-title button{border:0;border-radius:9px;width:36px;height:36px;display:grid;place-items:center;background:var(--hp-paper);color:var(--hp-ink)}.hpf-scene-control .hpf-device{width:100%}.hpf-brightness{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;margin:12px 0}.hpf-brightness output{margin-left:auto}.hpf-brightness input{width:100%;min-height:36px;accent-color:var(--hp-blue)}.hpf-tv-control{display:flex;align-items:center;justify-content:space-between;font-size:12px}.hpf-tv-control button{display:flex;gap:6px;align-items:center;min-height:44px;border:0;border-radius:10px;padding:8px 12px;background:var(--hp-paper);color:var(--hp-ink)}\n.hpf-room-flat{display:grid;place-items:center;min-height:280px;aspect-ratio:1.15;background:var(--hp-soft);border-radius:20px;padding:24px}.hpf-room-flat svg{width:100%;height:100%;max-height:400px}.hpf-room-flat>span{font-size:11px;color:var(--hp-secondary)}.hpf-room-outline{fill:none;stroke:var(--hp-wall);stroke-width:2}.hpf-room-flat .wall{fill:none;stroke:var(--hp-wall);stroke-width:3}\n@media(max-width:650px){.hpf-explorer-layout{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 12px 16px}.hpf-room-visual{position:static}.hpf-explorer-head{padding:14px 12px 12px}.hpf-explorer-head h2{font-size:20px}.hpf-explorer-temp{font-size:16px}.hpf-plan-camera{top:6px;left:6px}.hpf-plan-camera button{min-width:32px}.hpf-entry-label{display:none}.hpf-room-workspace .hpf-sheet-head{display:none}.hpf-room-flat{min-height:260px}}\n\n@media(max-width:650px){.hpf-room-workspace:has([data-focused-equipment]) .hpf-room-visual{position:sticky;top:0;z-index:4;background:var(--hp-paper);padding-bottom:6px;border-radius:14px}.hpf-room-workspace:has([data-focused-equipment]) .hpf-scene-caption,.hpf-room-workspace:has([data-focused-equipment]) .hpf-scene-equipment{display:none}}\n\n.hpf-device>span{min-width:0}.hpf-device strong{overflow-wrap:anywhere}\n\n.hpf-room-workspace{overflow:clip}\n';
 
 // src/candidate/home-plan-notices.js
 var NOTICE_LEVELS = ["priority", "ready", "battery", "maintenance", "info"];
@@ -879,8 +879,521 @@ function climateIncrement(state, direction, base) {
   return Math.round(Math.min(i7.max, Math.max(i7.min, start + direction * i7.step)) * 1e3) / 1e3;
 }
 
+// src/candidate/home-plan-room-scene.js
+var clamp = (v3, a3, b3) => Math.max(a3, Math.min(b3, v3));
+var hex = (h4) => /^#[0-9a-f]{6}$/i.test(h4 || "") ? [1, 3, 5].map((i7) => parseInt(h4.slice(i7, i7 + 2), 16) / 255) : [0.8, 0.8, 0.8];
+var sub = (a3, b3) => a3.map((v3, i7) => v3 - b3[i7]);
+var dot = (a3, b3) => a3.reduce((s5, v3, i7) => s5 + v3 * b3[i7], 0);
+var cross = (a3, b3) => [a3[1] * b3[2] - a3[2] * b3[1], a3[2] * b3[0] - a3[0] * b3[2], a3[0] * b3[1] - a3[1] * b3[0]];
+var norm = (a3) => {
+  const n5 = Math.hypot(...a3) || 1;
+  return a3.map((v3) => v3 / n5);
+};
+function multiply(a3, b3) {
+  const r4 = new Float32Array(16);
+  for (let c5 = 0; c5 < 4; c5++) for (let row = 0; row < 4; row++) for (let k2 = 0; k2 < 4; k2++) r4[c5 * 4 + row] += a3[k2 * 4 + row] * b3[c5 * 4 + k2];
+  return r4;
+}
+function lookAt(eye, target) {
+  const z2 = norm(sub(eye, target)), x2 = norm(cross([0, 1, 0], z2)), y3 = cross(z2, x2);
+  return new Float32Array([x2[0], y3[0], z2[0], 0, x2[1], y3[1], z2[1], 0, x2[2], y3[2], z2[2], 0, -dot(x2, eye), -dot(y3, eye), -dot(z2, eye), 1]);
+}
+function ortho(w2, h4, near = 0.1, far = 60) {
+  return new Float32Array([2 / w2, 0, 0, 0, 0, 2 / h4, 0, 0, 0, 0, -2 / (far - near), 0, 0, 0, -(far + near) / (far - near), 1]);
+}
+function project(p4, m3) {
+  const x2 = p4[0], y3 = p4[1], z2 = p4[2], w2 = m3[3] * x2 + m3[7] * y3 + m3[11] * z2 + m3[15];
+  return [(m3[0] * x2 + m3[4] * y3 + m3[8] * z2 + m3[12]) / w2, (m3[1] * x2 + m3[5] * y3 + m3[9] * z2 + m3[13]) / w2];
+}
+function validateRoomScene(scene) {
+  if (!scene || scene.version !== 1 || !Array.isArray(scene.size) || scene.size.length !== 2 || scene.size.some((n5) => !Number.isFinite(n5) || n5 < 1 || n5 > 20)) throw Error("Dimensions de la pièce invalides.");
+  if (!Array.isArray(scene.objects) || scene.objects.length > 120 || !Array.isArray(scene.hotspots) || scene.hotspots.length > 30) throw Error("Modèle de pièce trop complexe.");
+  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope"]);
+  for (const o7 of scene.objects) {
+    if (!kinds.has(o7.type) || !Array.isArray(o7.at) || o7.at.length !== 3 || o7.at.some((x2) => !Number.isFinite(x2) || Math.abs(x2) > 25) || !Array.isArray(o7.size) || o7.size.length !== 3 || o7.size.some((x2) => !Number.isFinite(x2) || x2 <= 0 || x2 > 20) || o7.rotation !== void 0 && !Number.isFinite(o7.rotation)) throw Error("Objet de pièce invalide.");
+  }
+  if (scene.outline && (!Array.isArray(scene.outline) || scene.outline.length < 3 || scene.outline.length > 32 || scene.outline.some((p4) => !Array.isArray(p4) || p4.length !== 2 || p4.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 20)))) throw Error("Contour de pièce invalide.");
+  const seen = /* @__PURE__ */ new Set();
+  for (const h4 of scene.hotspots) {
+    if (typeof h4.key !== "string" || seen.has(h4.key) || !Array.isArray(h4.at) || h4.at.length !== 3 || h4.at.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 25)) throw Error("Repère de pièce invalide.");
+    seen.add(h4.key);
+  }
+  return scene;
+}
+function triangulate(points) {
+  const ids = points.map((_2, i7) => i7), tri = [], area = points.reduce((s5, a3, i7) => {
+    const b3 = points[(i7 + 1) % points.length];
+    return s5 + a3[0] * b3[1] - b3[0] * a3[1];
+  }, 0), sign = area >= 0 ? 1 : -1;
+  const cross2 = (a3, b3, c5) => (b3[0] - a3[0]) * (c5[1] - a3[1]) - (b3[1] - a3[1]) * (c5[0] - a3[0]);
+  let guard = points.length ** 2;
+  while (ids.length > 3 && guard-- > 0) {
+    let cut = false;
+    for (let j2 = 0; j2 < ids.length; j2++) {
+      const a3 = ids[(j2 + ids.length - 1) % ids.length], b3 = ids[j2], c5 = ids[(j2 + 1) % ids.length];
+      if (sign * cross2(points[a3], points[b3], points[c5]) <= 0) continue;
+      const inside = ids.some((k2) => k2 !== a3 && k2 !== b3 && k2 !== c5 && [cross2(points[a3], points[b3], points[k2]), cross2(points[b3], points[c5], points[k2]), cross2(points[c5], points[a3], points[k2])].every((v3) => v3 * sign >= 0));
+      if (inside) continue;
+      tri.push([a3, b3, c5]);
+      ids.splice(j2, 1);
+      cut = true;
+      break;
+    }
+    if (!cut) break;
+  }
+  if (ids.length === 3) tri.push([...ids]);
+  return tri;
+}
+var Mesh = class {
+  constructor() {
+    this.vertices = [];
+    this.origin = [0, 0, 0];
+    this.angle = 0;
+  }
+  vertex(p4, n5, c5, material = 0) {
+    const co = Math.cos(this.angle), si = Math.sin(this.angle), q = [p4[0] * co + p4[2] * si, p4[1], -p4[0] * si + p4[2] * co], nn = [n5[0] * co + n5[2] * si, n5[1], -n5[0] * si + n5[2] * co];
+    this.vertices.push(...q.map((v3, i7) => v3 + this.origin[i7]), ...nn, ...hex(c5), material);
+  }
+  face(a3, b3, c5, d3, color, mat = 0) {
+    const n5 = norm(cross(sub(b3, a3), sub(c5, a3)));
+    for (const p4 of [a3, b3, c5, a3, c5, d3]) this.vertex(p4, n5, color, mat);
+  }
+  box(x2, y3, z2, w2, h4, d3, c5, r4 = 0, mat = 0) {
+    const half = [w2 / 2, h4 / 2, d3 / 2], center = [x2, y3, z2];
+    if (!r4) {
+      const p4 = (a3, b3, c6) => [x2 + a3 * w2 / 2, y3 + b3 * h4 / 2, z2 + c6 * d3 / 2];
+      this.face(p4(-1, -1, 1), p4(1, -1, 1), p4(1, 1, 1), p4(-1, 1, 1), c5, mat);
+      this.face(p4(1, -1, -1), p4(-1, -1, -1), p4(-1, 1, -1), p4(1, 1, -1), c5, mat);
+      this.face(p4(-1, -1, -1), p4(-1, -1, 1), p4(-1, 1, 1), p4(-1, 1, -1), c5, mat);
+      this.face(p4(1, -1, 1), p4(1, -1, -1), p4(1, 1, -1), p4(1, 1, 1), c5, mat);
+      this.face(p4(-1, 1, 1), p4(1, 1, 1), p4(1, 1, -1), p4(-1, 1, -1), c5, mat);
+      this.face(p4(-1, -1, -1), p4(1, -1, -1), p4(1, -1, 1), p4(-1, -1, 1), c5, mat);
+      return;
+    }
+    r4 = Math.min(r4, ...half);
+    const steps = 5;
+    for (let axis = 0; axis < 3; axis++) for (const sign of [-1, 1]) for (let i7 = 0; i7 < steps; i7++) for (let j2 = 0; j2 < steps; j2++) {
+      const point = (u5, v3) => {
+        const raw = [0, 0, 0], a3 = (axis + 1) % 3, b3 = (axis + 2) % 3;
+        raw[axis] = sign * half[axis];
+        raw[a3] = (u5 * 2 - 1) * half[a3];
+        raw[b3] = (v3 * 2 - 1) * half[b3];
+        const inner = raw.map((x3, k2) => clamp(x3, -half[k2] + r4, half[k2] - r4)), n5 = norm(sub(raw, inner));
+        return { p: inner.map((x3, k2) => x3 + n5[k2] * r4 + center[k2]), n: n5 };
+      };
+      const p4 = [point(i7 / steps, j2 / steps), point((i7 + 1) / steps, j2 / steps), point((i7 + 1) / steps, (j2 + 1) / steps), point(i7 / steps, (j2 + 1) / steps)];
+      for (const k2 of sign === 1 ? [0, 1, 2, 0, 2, 3] : [0, 2, 1, 0, 3, 2]) this.vertex(p4[k2].p, p4[k2].n, c5, mat);
+    }
+  }
+  cylinder(x2, y3, z2, r4, h4, color, segments = 24) {
+    for (let i7 = 0; i7 < segments; i7++) {
+      const a3 = i7 / segments * Math.PI * 2, b3 = (i7 + 1) / segments * Math.PI * 2, pa = [x2 + Math.cos(a3) * r4, y3 - h4 / 2, z2 + Math.sin(a3) * r4], pb = [x2 + Math.cos(b3) * r4, y3 - h4 / 2, z2 + Math.sin(b3) * r4], pc = [pb[0], y3 + h4 / 2, pb[2]], pd = [pa[0], y3 + h4 / 2, pa[2]];
+      this.face(pa, pb, pc, pd, color);
+      this.face([x2, y3 + h4 / 2, z2], pd, pc, [x2, y3 + h4 / 2, z2], color);
+      this.face([x2, y3 - h4 / 2, z2], pb, pa, [x2, y3 - h4 / 2, z2], color);
+    }
+  }
+  ring(x2, y3, z2, r4, t6, color) {
+    for (let i7 = 0; i7 < 48; i7++) {
+      const a3 = i7 / 48 * Math.PI * 2, b3 = (i7 + 1) / 48 * Math.PI * 2;
+      this.face([x2 + Math.cos(a3) * (r4 - t6), y3, z2 + Math.sin(a3) * (r4 - t6)], [x2 + Math.cos(a3) * r4, y3, z2 + Math.sin(a3) * r4], [x2 + Math.cos(b3) * r4, y3, z2 + Math.sin(b3) * r4], [x2 + Math.cos(b3) * (r4 - t6), y3, z2 + Math.sin(b3) * (r4 - t6)], color, 1);
+    }
+  }
+};
+function furnish(mesh, o7, signals) {
+  const [w2, h4, d3] = o7.size, c5 = o7.color || "#ddd9d1", s5 = signals[o7.bind], on = s5?.state === "on" || s5?.state === "playing", glow = on ? s5?.attributes?.rgb_color ? "#" + s5.attributes.rgb_color.map((v3) => clamp(Math.round(v3), 0, 255).toString(16).padStart(2, "0")).join("") : "#78dcca" : "#9da4a3";
+  mesh.origin = o7.at;
+  mesh.angle = (o7.rotation || 0) * Math.PI / 180;
+  const box = (x2, y3, z2, ww, hh, dd, cc = c5, r4 = 0, mat = 0) => mesh.box(x2, y3, z2, ww, hh, dd, cc, r4, mat);
+  if (o7.type === "bed") {
+    box(0, 0.24, 0, w2, 0.33, d3, "#30383d", 0.05);
+    for (const x2 of [-w2 * 0.38, w2 * 0.38]) for (const z2 of [-d3 * 0.38, d3 * 0.38]) mesh.cylinder(x2, 0.1, z2, 0.035, 0.18, "#afb4b3");
+    box(0, 0.86, -d3 / 2 + 0.02, w2 + 0.06, 1.05, 0.13, "#30383d", 0.04);
+    box(0, 0.48, 0, w2 * 0.98, 0.22, d3 * 0.96, "#e5e2d9", 0.08);
+    box(0, 0.64, 0.23, w2 * 0.99, 0.23, d3 * 0.72, "#eeeade", 0.11, 3);
+    box(-w2 * 0.25, 0.72, -d3 * 0.31, w2 * 0.45, 0.19, 0.52, "#faf7ed", 0.08, 3);
+    box(w2 * 0.25, 0.72, -d3 * 0.31, w2 * 0.45, 0.19, 0.52, "#e7e4db", 0.08, 3);
+    box(0, 0.78, -d3 * 0.13, 0.52, 0.2, 0.36, "#c5cccb", 0.09, 3);
+    box(0, 0.77, 0.67, w2 * 0.98, 0.07, 0.31, "#c6c1b5", 0.03);
+    box(0, 0.42, d3 / 2 - 0.02, w2 * 0.9, 0.014, 0.025, glow, 5e-3, on ? 1 : 0);
+  } else if (o7.type === "desk") {
+    box(0, 0.75, 0, w2, 0.05, d3, "#c4b298", 0.018);
+    for (const x2 of [-w2 / 2 + 0.18, w2 / 2 - 0.18]) {
+      box(x2, 0.36, 0, 0.36, 0.7, d3 * 0.88, "#eeeae1", 0.012);
+      for (const y3 of [0.2, 0.4, 0.6]) box(x2, y3, -d3 * 0.451, 0.22, 0.018, 0.012, "#b8b6ae");
+    }
+    box(-0.15, 1.13, -d3 * 0.26, 0.87, 0.47, 0.043, "#222c32", 0.018);
+    box(-0.15, 1.13, -d3 * 0.285, 0.79, 0.39, 0.014, on ? "#538f91" : "#344047", 6e-3, on ? 1 : 0);
+    box(-0.15, 0.86, -d3 * 0.24, 0.055, 0.18, 0.035, "#484e52");
+    box(-0.15, 0.796, -d3 * 0.2, 0.35, 0.025, 0.19, "#42484a", 0.012);
+    box(-0.15, 0.79, d3 * 0.11, 0.56, 0.024, 0.2, "#333b41", 0.01);
+    box(0.35, 0.79, d3 * 0.13, 0.075, 0.025, 0.11, "#686c6b", 0.024);
+  } else if (o7.type === "pc") {
+    box(0, h4 / 2, 0, w2, h4, d3, "#25323a", 0.025);
+    box(w2 / 2 + 2e-3, h4 * 0.52, 0, 7e-3, h4 * 0.8, d3 * 0.84, "#334952");
+    box(w2 * 0.2, h4 * 0.53, d3 / 2 + 0.012, 0.018, h4 * 0.81, 0.013, on ? glow : "#65afa9", 6e-3, on ? 1 : 0);
+    for (const y3 of [h4 * 0.28, h4 * 0.64]) mesh.cylinder(0, y3, 0, 0.09, 0.035, "#73939a");
+  } else if (o7.type === "chair") {
+    box(0, 0.48, 0, w2, 0.12, d3 * 0.8, c5, 0.06);
+    box(0, 0.85, -d3 * 0.32, w2 * 0.9, 0.65, 0.12, c5, 0.06);
+    box(0, 1.21, -d3 * 0.35, w2 * 0.64, 0.16, 0.1, c5, 0.04);
+    mesh.cylinder(0, 0.25, 0, 0.035, 0.4, "#aeb3b2");
+    for (const x2 of [-0.24, 0.24]) {
+      box(x2, 0.08, 0, 0.07, 0.04, 0.45, "#aeb3b2", 0.012);
+      box(x2, 0.69, 0, 0.04, 0.04, 0.29, "#838d90", 0.01);
+    }
+  } else if (o7.type === "dresser" || o7.type === "wardrobe") {
+    box(0, h4 / 2, 0, w2, h4, d3, c5, 0.018);
+    const leaves = o7.leaves || 2;
+    for (let i7 = 1; i7 < leaves; i7++) box(-w2 / 2 + w2 * i7 / leaves, h4 / 2, d3 / 2 + 3e-3, 0.012, h4 * 0.96, 8e-3, "#8e9595");
+    for (let i7 = 0; i7 < leaves; i7++) box(-w2 / 2 + w2 * (i7 + 0.5) / leaves, h4 * 0.63, d3 / 2 + 0.016, 0.015, 0.15, 0.02, o7.type === "dresser" ? "#7b2c31" : "#90989a", 5e-3);
+  } else if (o7.type === "tv") {
+    box(0, 0, 0, w2, h4, d3, "#20292f", 0.035);
+    box(0, 0, d3 / 2 + 6e-3, w2 - 0.045, h4 - 0.045, 0.015, on ? "#40647b" : "#23333b", 0.018, on ? 1 : 0);
+    box(0, -h4 / 2 + 0.012, d3 / 2 + 0.018, 0.06, 8e-3, 0.01, "#bac2c2");
+  } else if (o7.type === "window") {
+    box(-w2 / 2, 0, 0, 0.065, h4, 0.16, "#f9f7ee");
+    box(w2 / 2, 0, 0, 0.065, h4, 0.16, "#f9f7ee");
+    box(0, h4 / 2, 0, w2, 0.065, 0.16, "#f9f7ee");
+    box(0, -h4 / 2, 0, w2 + 0.15, 0.07, 0.31, "#f9f7ee");
+    box(0, 0, 0, 0.045, h4, 0.12, "#f9f7ee");
+    for (const x2 of [-w2 * 0.36, w2 * 0.36]) box(x2, 0, -0.025, 0.02, h4 - 0.12, 0.012, "#bad6d4");
+    const pos = signals[o7.cover]?.attributes?.current_position, closed = typeof pos === "number" ? (100 - clamp(pos, 0, 100)) / 100 : 0;
+    if (closed > 0) {
+      box(0, h4 / 2 - h4 * closed / 2, 0.072, w2 - 0.09, h4 * closed, 0.025, "#b0b4ae");
+      for (let j2 = 0; j2 < Math.floor(h4 * closed / 0.065); j2++) box(0, h4 / 2 - j2 * 0.065, 0.089, w2 - 0.1, 8e-3, 8e-3, "#909995");
+    }
+  } else if (o7.type === "door") {
+    box(-w2 / 2, 0, 0, 0.055, h4, 0.14, "#f7f4ed");
+    box(w2 / 2, 0, 0, 0.055, h4, 0.14, "#f7f4ed");
+    box(0, h4 / 2, 0, w2, 0.055, 0.14, "#f7f4ed");
+    box(0, 0, 0, w2 - 0.06, h4 - 0.025, 0.035, "#e7e5dd", 8e-3);
+    box(w2 * 0.32, -0.05, 0.04, 0.11, 0.018, 0.028, "#939e9f", 8e-3);
+  } else if (o7.type === "radiator") {
+    box(0, 0, 0, w2, h4, d3, "#f6f2e8", 0.025);
+    for (let i7 = 0; i7 < 12; i7++) box(-w2 * 0.44 + i7 * w2 * 0.08, 0, d3 / 2 + 5e-3, 0.012, h4 * 0.84, 0.012, "#d2d1c8");
+  } else if (o7.type === "lines") {
+    const mat = on ? 1 : 0;
+    box(0, 0, 0.02, 0.045, h4, 0.035, glow, 0.015, mat);
+    for (const sign of [-1, 1]) {
+      const save = mesh.angle;
+      mesh.angle += sign * Math.PI / 3;
+      box(sign * h4 * 0.15, h4 * 0.14, 0.022, 0.04, h4 * 0.48, 0.035, glow, 0.012, mat);
+      mesh.angle = save;
+    }
+  } else if (o7.type === "blocks") {
+    for (let i7 = 0; i7 < 4; i7++) box((i7 % 2 - 0.5) * w2 * 0.48, (Math.floor(i7 / 2) - 0.5) * h4 * 0.48, 0.03, w2 * 0.45, h4 * 0.45, 0.05, glow, 0.018, on ? 1 : 0);
+  } else if (o7.type === "ring") {
+    mesh.ring(0, 0, 0, w2 / 2, 0.025, "#f1e9cf");
+    mesh.cylinder(0, 0.23, 0, 9e-3, 0.46, "#626b6a");
+  } else if (o7.type === "collection") {
+    for (let level = 0; level < 2; level++) {
+      box(0, level * 0.24 + 0.12, 0, w2, 0.018, d3, "#d5d0c5");
+      for (let i7 = 0; i7 < 8; i7++) {
+        const x2 = -w2 / 2 + 0.1 + i7 * (w2 - 0.2) / 7;
+        box(x2, level * 0.24 + 0.06, 0, 0.12, 0.12, 0.12, ["#566c6a", "#9b7970", "#9e9d77"][i7 % 3], 0.015);
+      }
+    }
+  } else if (o7.type === "poster") {
+    box(0, 0, 0, w2, h4, 0.018, "#c7c6b7");
+    box(0, 0, 0.014, w2 * 0.94, h4 * 0.96, 0.012, c5);
+    box(-w2 * 0.15, h4 * 0.1, 0.025, w2 * 0.3, h4 * 0.58, 6e-3, "#c4aa79");
+    box(w2 * 0.18, -h4 * 0.1, 0.027, w2 * 0.25, h4 * 0.3, 6e-3, "#52676d");
+  } else if (o7.type === "slope") {
+    mesh.face([-w2 / 2, 0, -d3 / 2], [w2 / 2, h4, -d3 / 2], [w2 / 2, h4, d3 / 2], [-w2 / 2, 0, d3 / 2], c5);
+    mesh.face([-w2 / 2, 0, -d3 / 2], [-w2 / 2, -0.04, -d3 / 2], [w2 / 2, h4 - 0.04, -d3 / 2], [w2 / 2, h4, -d3 / 2], c5);
+  } else box(0, 0, 0, w2, h4, d3, c5, o7.radius || 0, o7.material || 0);
+}
+var VERT = `#version 300 es
+in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
+var FRAG = `#version 300 es
+precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;out vec4 outColor;
+void main(){vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
+var SHADOW_V = `#version 300 es
+in vec3 aPosition;uniform mat4 uVP;void main(){gl_Position=uVP*vec4(aPosition,1.);}`;
+var SHADOW_F = `#version 300 es
+precision highp float;void main(){}`;
+var HomePlanRoomScene = class extends i4 {
+  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, _failed: { state: true }, _positions: { state: true } };
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:19px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;max-width:44%}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  constructor() {
+    super();
+    this.mode = "3d";
+    this.signals = {};
+    this._positions = [];
+    this.yaw = -0.57;
+    this.pitch = 0.83;
+    this.zoom = 1;
+    this._epoch = 0;
+    this._pointers = /* @__PURE__ */ new Map();
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    const epoch = ++this._epoch;
+    this.updateComplete.then(() => {
+      if (this.isConnected && epoch === this._epoch) this._init();
+    });
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._epoch++;
+    this._dispose();
+    this._pointers.clear();
+  }
+  updated(changed) {
+    if (changed.has("scene")) {
+      if (this.scene) {
+        validateRoomScene(this.scene);
+        this.yaw = this.scene.camera?.yaw ?? -0.57;
+        this.pitch = this.scene.camera?.pitch ?? 0.83;
+        this.zoom = 1;
+      }
+      this._signature = "";
+    }
+    if (changed.has("mode")) this._dispose();
+    if (this.mode === "3d") this._init();
+    this._requestDraw();
+  }
+  _program(vs, fs) {
+    const gl = this._gl;
+    const shader = (type, text2) => {
+      const s5 = gl.createShader(type);
+      gl.shaderSource(s5, text2);
+      gl.compileShader(s5);
+      if (!gl.getShaderParameter(s5, gl.COMPILE_STATUS)) {
+        const error = gl.getShaderInfoLog(s5);
+        gl.deleteShader(s5);
+        throw Error(error);
+      }
+      return s5;
+    };
+    const v3 = shader(gl.VERTEX_SHADER, vs), f3 = shader(gl.FRAGMENT_SHADER, fs), p4 = gl.createProgram();
+    gl.attachShader(p4, v3);
+    gl.attachShader(p4, f3);
+    gl.linkProgram(p4);
+    gl.deleteShader(v3);
+    gl.deleteShader(f3);
+    if (!gl.getProgramParameter(p4, gl.LINK_STATUS)) throw Error("Initialisation graphique impossible");
+    return p4;
+  }
+  _init() {
+    if (this._gl || this._failed || !this.isConnected || this.mode !== "3d" || !this.scene) return;
+    let canvas = this.renderRoot.querySelector("canvas");
+    if (!canvas) return;
+    if (this._lostCanvas) {
+      const fresh = document.createElement("canvas");
+      fresh.setAttribute("aria-label", "Vue tridimensionnelle de la pièce");
+      canvas.replaceWith(fresh);
+      canvas = fresh;
+      this._lostCanvas = false;
+    }
+    try {
+      const gl = canvas.getContext("webgl2", { antialias: true, alpha: true, preserveDrawingBuffer: false, powerPreference: "low-power" });
+      if (!gl) throw Error("WebGL indisponible");
+      this._gl = gl;
+      this._canvas = canvas;
+      this._main = this._program(VERT, FRAG);
+      this._shadowProgram = this._program(SHADOW_V, SHADOW_F);
+      this._buffer = gl.createBuffer();
+      this._depth = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, this._depth);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, 1024, 1024, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      this._fb = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, this._depth, 0);
+      gl.drawBuffers([gl.NONE]);
+      gl.readBuffer(gl.NONE);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) throw Error("Ombres indisponibles");
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      this._resize = new ResizeObserver(() => this._requestDraw());
+      this._resize.observe(canvas);
+      this._signature = "";
+      this._requestDraw();
+    } catch {
+      this._dispose();
+      this._failed = true;
+    }
+  }
+  _dispose() {
+    cancelAnimationFrame(this._frame);
+    this._frame = 0;
+    this._resize?.disconnect();
+    this._resize = null;
+    const g2 = this._gl;
+    if (g2) {
+      for (const p4 of [this._main, this._shadowProgram]) if (p4) g2.deleteProgram(p4);
+      if (this._buffer) g2.deleteBuffer(this._buffer);
+      if (this._depth) g2.deleteTexture(this._depth);
+      if (this._fb) g2.deleteFramebuffer(this._fb);
+      g2.getExtension("WEBGL_lose_context")?.loseContext();
+      this._lostCanvas = true;
+    }
+    this._gl = null;
+    this._main = null;
+    this._shadowProgram = null;
+    this._buffer = null;
+    this._depth = null;
+    this._fb = null;
+    this._signature = "";
+  }
+  _requestDraw() {
+    if (!this.isConnected || this._frame) return;
+    this._frame = requestAnimationFrame(() => {
+      this._frame = 0;
+      if (this.isConnected) this._draw();
+    });
+  }
+  _geometry() {
+    const mesh = new Mesh(), [w2, d3] = this.scene.size;
+    if (this.scene.outline) {
+      const points = this.scene.outline;
+      for (const t6 of triangulate(points)) {
+        for (const i7 of t6) mesh.vertex([points[i7][0], 0.025, points[i7][1]], [0, 1, 0], "#a7aaa5", 2);
+        for (const i7 of t6) mesh.vertex([points[i7][0], -0.1, points[i7][1]], [0, -1, 0], "#eceae3");
+      }
+      for (let i7 = 0; i7 < points.length; i7++) {
+        const a3 = points[i7], b3 = points[(i7 + 1) % points.length];
+        mesh.face([a3[0], -0.1, a3[1]], [b3[0], -0.1, b3[1]], [b3[0], 0.025, b3[1]], [a3[0], 0.025, a3[1]], "#eae8e0");
+      }
+    } else {
+      mesh.box(0, -0.1, 0, w2 + 0.16, 0.2, d3 + 0.16, "#f0eee8", 0.025);
+      mesh.box(0, 8e-3, 0, w2, 0.035, d3, "#a7aaa5", 0, 2);
+    }
+    for (const o7 of this.scene.objects) furnish(mesh, o7, this.signals || {});
+    return new Float32Array(mesh.vertices);
+  }
+  _attributes(program) {
+    const gl = this._gl;
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
+    for (const [name, size, offset] of [["aPosition", 3, 0], ["aNormal", 3, 12], ["aColor", 3, 24], ["aMaterial", 1, 36]]) {
+      const loc = gl.getAttribLocation(program, name);
+      if (loc < 0) continue;
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 40, offset);
+    }
+  }
+  _draw() {
+    if (!this.scene) return;
+    if (this.mode === "2d" || this._failed) {
+      const top = this.renderRoot.querySelector("svg.top"), matrix = top?.getScreenCTM(), rect = this.renderRoot.querySelector(".stage")?.getBoundingClientRect();
+      if (!matrix || !rect) return;
+      const positions2 = this.scene.hotspots.map((h4) => {
+        const p4 = new DOMPoint(h4.at[0], h4.at[2]).matrixTransform(matrix);
+        return { ...h4, x: (p4.x - rect.left) / rect.width * 100, y: (p4.y - rect.top) / rect.height * 100 };
+      });
+      if (JSON.stringify(positions2) !== JSON.stringify(this._positions)) this._positions = positions2;
+      return;
+    }
+    const gl = this._gl;
+    if (!gl) return;
+    const canvas = this._canvas, box = canvas.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const ratio = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(box.width * ratio);
+    canvas.height = Math.round(box.height * ratio);
+    const signature = JSON.stringify([this.scene, this.signals]);
+    if (signature !== this._signature) {
+      const vertices = this._geometry();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      this._count = vertices.length / 10;
+      this._signature = signature;
+    }
+    const span = Math.max(...this.scene.size) * 1.48 / this.zoom, eye = [Math.sin(this.yaw) * 12 * Math.cos(this.pitch), 12 * Math.sin(this.pitch), Math.cos(this.yaw) * 12 * Math.cos(this.pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0])), lp = multiply(ortho(11, 11), lookAt([-3.5, 8, 4.5], [0, 0, 0]));
+    gl.enable(gl.DEPTH_TEST);
+    gl.disable(gl.CULL_FACE);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
+    gl.viewport(0, 0, 1024, 1024);
+    gl.clear(gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(this._shadowProgram);
+    this._attributes(this._shadowProgram);
+    gl.uniformMatrix4fv(gl.getUniformLocation(this._shadowProgram, "uVP"), false, lp);
+    gl.drawArrays(gl.TRIANGLES, 0, this._count);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(this._main);
+    this._attributes(this._main);
+    gl.uniformMatrix4fv(gl.getUniformLocation(this._main, "uVP"), false, vp);
+    gl.uniformMatrix4fv(gl.getUniformLocation(this._main, "uLight"), false, lp);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this._depth);
+    gl.uniform1i(gl.getUniformLocation(this._main, "uShadow"), 0);
+    gl.drawArrays(gl.TRIANGLES, 0, this._count);
+    const positions = this.scene.hotspots.map((h4) => {
+      const p4 = project(h4.at, vp);
+      return { ...h4, x: (p4[0] + 1) * 50, y: (1 - p4[1]) * 50 };
+    });
+    if (JSON.stringify(positions) !== JSON.stringify(this._positions)) this._positions = positions;
+  }
+  _down(e6) {
+    if (e6.button > 0 || e6.target.closest("button") || this.mode !== "3d") return;
+    e6.currentTarget.setPointerCapture(e6.pointerId);
+    this._pointers.set(e6.pointerId, { x: e6.clientX, y: e6.clientY });
+    this._lastDistance = null;
+  }
+  _move(e6) {
+    const old = this._pointers.get(e6.pointerId);
+    if (!old) return;
+    this._pointers.set(e6.pointerId, { x: e6.clientX, y: e6.clientY });
+    if (this._pointers.size === 2) {
+      const [a3, b3] = [...this._pointers.values()], distance = Math.hypot(a3.x - b3.x, a3.y - b3.y);
+      if (this._lastDistance) this.zoom = clamp(this.zoom * distance / this._lastDistance, 0.7, 2.6);
+      this._lastDistance = distance;
+    } else {
+      this.yaw += (e6.clientX - old.x) * 9e-3;
+      this.pitch = clamp(this.pitch + (e6.clientY - old.y) * 5e-3, 0.35, 1.35);
+    }
+    this._requestDraw();
+  }
+  _up(e6) {
+    this._pointers.delete(e6.pointerId);
+    this._lastDistance = null;
+    if (e6.currentTarget.hasPointerCapture(e6.pointerId)) e6.currentTarget.releasePointerCapture(e6.pointerId);
+  }
+  _zoom(delta) {
+    this.zoom = clamp(this.zoom + delta, 0.7, 2.6);
+    this.requestUpdate();
+    this._requestDraw();
+  }
+  _select(key) {
+    this.dispatchEvent(new CustomEvent("room-equipment-selected", { detail: { key }, bubbles: true, composed: true }));
+  }
+  _top() {
+    const [w2, d3] = this.scene.size;
+    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope"].includes(o7.type)).map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect class="object" x=${-o7.size[0] / 2} y=${-o7.size[2] / 2} width=${o7.size[0]} height=${o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
+  }
+  render() {
+    if (!this.scene) return A;
+    return b2`<div class=${"stage " + (this.mode === "3d" && !this._failed ? "is-3d" : "")} @pointerdown=${this._down} @pointermove=${this._move} @pointerup=${this._up} @pointercancel=${this._up} @wheel=${(e6) => {
+      if (e6.ctrlKey) {
+        e6.preventDefault();
+        this._zoom(e6.deltaY > 0 ? -0.08 : 0.08);
+      }
+    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${this._positions.map((h4) => {
+      const s5 = this.signals?.[h4.key], on = ["on", "playing", "heat"].includes(s5?.state);
+      return b2`<button class=${"hotspot " + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @click=${() => this._select(h4.key)} data-scene-hotspot=${h4.key}><ha-icon icon=${h4.icon || "mdi:circle-outline"}></ha-icon><span>${h4.label}</span></button>`;
+    })}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
+      this.yaw = this.scene.camera?.yaw ?? -0.57;
+      this.pitch = 0.83;
+      this.zoom = 1;
+      this.requestUpdate();
+      this._requestDraw();
+    }}>↺</button>${this.mode === "3d" && !this._failed ? b2`<button aria-label="Tourner la pièce" @click=${() => {
+      this.yaw += Math.PI / 2;
+      this._requestDraw();
+    }}>↻</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Glisser pour tourner · pincer pour zoomer" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
+  }
+};
+if (!customElements.get("home-plan-room-scene")) customElements.define("home-plan-room-scene", HomePlanRoomScene);
+
 // src/candidate/home-plan-card.js
-var VERSION = "0.6.0-rc.2";
+var VERSION = "0.7.0-rc.2";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
@@ -949,6 +1462,9 @@ function validateConfig(config) {
       if (item.climate_entities && (!Array.isArray(item.climate_entities) || item.climate_entities.some((e6) => !validEntity(e6) || !e6.startsWith("climate.")))) throw Error("Thermostats invalides.");
       if (item.favorite_entities && (!Array.isArray(item.favorite_entities) || item.favorite_entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’accès rapides invalide.");
       if (item.entities && (!Array.isArray(item.entities) || item.entities.some((e6) => !validEntity(e6)))) throw Error("Liste d’équipements invalide.");
+      if (item.scene) validateRoomScene(item.scene);
+      if (item.scene_url && (typeof item.scene_url !== "string" || !/^\/local\//.test(item.scene_url) || item.scene_url.includes(".."))) throw Error("La scène doit être locale.");
+      if (item.scene_entities && (typeof item.scene_entities !== "object" || Array.isArray(item.scene_entities) || Object.keys(item.scene_entities).length > 30 || Object.entries(item.scene_entities).some(([k2, v3]) => !/^[-a-z0-9_]{1,40}$/.test(k2) || !validEntity(v3)))) throw Error("Associations de la scène invalides.");
       if (item.shutter_offset !== void 0 && (!Number.isFinite(item.shutter_offset) || Math.abs(item.shutter_offset) > 40)) throw Error("Décalage de volet invalide.");
       if (item.point && (!Array.isArray(item.point) || item.point.length !== 2 || !item.point.every(Number.isFinite))) throw Error("Position de repère invalide.");
     }
@@ -996,7 +1512,7 @@ function validateModel(model) {
   return { ...copy(model), artwork: sanitizeArtwork(model.artwork) };
 }
 var HomePlanCard = class extends i4 {
-  static properties = { hass: {}, editMode: { type: Boolean }, _config: { state: true }, _model: { state: true }, _registry: { state: true }, _registryError: { state: true }, _selected: { state: true }, _quick: { state: true }, _view: { state: true }, _mode: { state: true }, _error: { state: true }, _feedback: { state: true }, _busy: { state: true }, _photoMode: { state: true }, _photos: { state: true }, _showAlerts: { state: true }, _noticeFilter: { state: true }, _noticeFloor: { state: true }, _noticeRoom: { state: true }, _noticeEquipmentKey: { state: true }, _floorCovers: { state: true }, _floorLights: { state: true }, _floorClimate: { state: true }, _heatPending: { state: true }, _heatBatchChoice: { state: true }, _floorGroup: { state: true }, _equipmentTab: { state: true }, _editSelection: { state: true } };
+  static properties = { hass: {}, editMode: { type: Boolean }, _config: { state: true }, _model: { state: true }, _registry: { state: true }, _registryError: { state: true }, _selected: { state: true }, _quick: { state: true }, _view: { state: true }, _mode: { state: true }, _error: { state: true }, _feedback: { state: true }, _busy: { state: true }, _photoMode: { state: true }, _photos: { state: true }, _showAlerts: { state: true }, _noticeFilter: { state: true }, _noticeFloor: { state: true }, _noticeRoom: { state: true }, _noticeEquipmentKey: { state: true }, _floorCovers: { state: true }, _floorLights: { state: true }, _floorClimate: { state: true }, _heatPending: { state: true }, _heatBatchChoice: { state: true }, _floorGroup: { state: true }, _equipmentTab: { state: true }, _editSelection: { state: true }, _zoom: { state: true }, _pan: { state: true }, _roomView: { state: true }, _roomScene: { state: true }, _sceneError: { state: true }, _activeHotspot: { state: true } };
   static styles = [r(home_plan_card_default), i`
     :host{--ha-card-border-width:0} .hpf-home{max-width:none;border-radius:var(--ha-card-border-radius,24px);box-shadow:none;background:var(--ha-card-background,var(--card-background-color,#fff));--hp-paper:var(--ha-card-background,var(--card-background-color,#fff));--hp-ink:var(--primary-text-color);--hp-secondary:var(--secondary-text-color)}
     ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:inline-flex;flex-shrink:0}button{cursor:pointer}button:focus-visible{outline:2px solid var(--hp-blue);outline-offset:2px}
@@ -1028,6 +1544,11 @@ var HomePlanCard = class extends i4 {
     this._pulseTimers = /* @__PURE__ */ new Set();
     this._observed = /* @__PURE__ */ new Set();
     this._registry = { entities: {}, devices: {}, areas: {}, floors: {} };
+    this._zoom = 1;
+    this._pan = [0, 0];
+    this._roomView = "2d";
+    this._sceneCache = /* @__PURE__ */ new Map();
+    this._sceneEpoch = 0;
   }
   static getConfigElement() {
     return document.createElement("home-plan-card-editor");
@@ -1050,6 +1571,10 @@ var HomePlanCard = class extends i4 {
     this._activateLevel();
   }
   _activateLevel() {
+    this._cancelScene();
+    this._zoom = 1;
+    this._pan = [0, 0];
+    this._gesture = null;
     this._resetHeatPending();
     this._commandEpoch = (this._commandEpoch || 0) + 1;
     clearTimeout(this._feedbackTimer);
@@ -1089,6 +1614,8 @@ var HomePlanCard = class extends i4 {
     this._startRegistry();
   }
   disconnectedCallback() {
+    this._cancelScene();
+    this._gesture = null;
     this._resetHeatPending();
     this._drag = null;
     this._epoch++;
@@ -1517,7 +2044,10 @@ var HomePlanCard = class extends i4 {
     this.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: id }, bubbles: true, composed: true }));
   }
   _select(r4, opener) {
-    if (this.editMode) return;
+    if (this.editMode || performance.now() < (this._suppressMapClick || 0)) return;
+    this._activeHotspot = null;
+    this._roomView = r4.scene_url || r4.scene ? "3d" : this._photo(r4) ? "illustration" : "2d";
+    this._loadScene(r4);
     this._opener = opener;
     this._selected = r4.id;
     this._quick = null;
@@ -1529,7 +2059,7 @@ var HomePlanCard = class extends i4 {
     this._focusSheet();
   }
   _aperture(a3, opener) {
-    if (this.editMode) return;
+    if (this.editMode || performance.now() < (this._suppressMapClick || 0)) return;
     this._opener = opener;
     this._selected = a3.room;
     this._quick = a3.id;
@@ -1542,9 +2072,11 @@ var HomePlanCard = class extends i4 {
   async _focusSheet() {
     await this.updateComplete;
     this.renderRoot.querySelector(".hpf-sheet [data-close]")?.focus({ preventScroll: true });
-    this.renderRoot.querySelector(".hpf-sheet")?.scrollIntoView({ behavior: "auto", block: "nearest" });
+    if (this._isRoomWorkspace()) this.renderRoot.querySelector("[data-room-back]")?.focus({ preventScroll: true });
+    else this.renderRoot.querySelector(".hpf-sheet")?.scrollIntoView({ behavior: "auto", block: "nearest" });
   }
   _close() {
+    this._cancelScene();
     this._selected = null;
     this._quick = null;
     this._showAlerts = false;
@@ -1620,8 +2152,13 @@ var HomePlanCard = class extends i4 {
     let [domain, action] = service.split(".");
     const state = this._state(entity);
     if (!validEntity(entity) || !state || state.state === "unavailable") return false;
-    const allowed = { light: ["turn_on", "turn_off"], cover: ["open_cover", "close_cover", "stop_cover", "set_cover_position"], switch: ["turn_on", "turn_off"], climate: ["set_temperature", "set_preset_mode", "set_hvac_mode"] };
+    const allowed = { light: ["turn_on", "turn_off"], cover: ["open_cover", "close_cover", "stop_cover", "set_cover_position"], switch: ["turn_on", "turn_off"], media_player: ["turn_on", "turn_off"], climate: ["set_temperature", "set_preset_mode", "set_hvac_mode"] };
     if (!allowed[domain]?.includes(action) || entity.split(".")[0] !== domain) throw Error("Commande non autorisée.");
+    if (domain === "media_player" && (!known2(state) || !(state.attributes.supported_features & (action === "turn_on" ? 128 : 256)))) return false;
+    if (domain === "light" && data.brightness_pct !== void 0) {
+      if (!Number.isFinite(data.brightness_pct)) return false;
+      data = { brightness_pct: Math.max(1, Math.min(100, Math.round(data.brightness_pct))) };
+    }
     if (domain === "climate") {
       const checked = climateCommand(state, action, data);
       if (!checked) return false;
@@ -1730,7 +2267,7 @@ var HomePlanCard = class extends i4 {
       ${!a3 ? this._roomNoticeButtons(r4) : A}
       ${!a3 ? b2`<div class="hpf-sheet-tabs" role="group" aria-label="Vue de la pièce"><button aria-pressed=${!this._equipmentTab} @click=${() => this._equipmentTab = false}>Commandes</button><button aria-pressed=${!!this._equipmentTab} @click=${() => this._equipmentTab = true}>Équipements</button></div>` : A}
       ${!a3 && this._equipmentTab ? this._equipmentGroups(r4) : b2`
-        ${!a3 && photo ? b2`<div class="hpf-room-photo"><img src=${photo} alt=${(r4.illustration && !this._photoMode.has(r4.id) ? "Illustration de " : "Photo de ") + r4.name}>${r4.illustration ? b2`<button class="hpf-photo-style" @click=${() => {
+        ${!a3 && photo && !this._isRoomWorkspace() ? b2`<div class="hpf-room-photo"><img src=${photo} alt=${(r4.illustration && !this._photoMode.has(r4.id) ? "Illustration de " : "Photo de ") + r4.name}>${r4.illustration ? b2`<button class="hpf-photo-style" @click=${() => {
       const set = new Set(this._photoMode);
       set.has(r4.id) ? set.delete(r4.id) : set.add(r4.id);
       this._photoMode = set;
@@ -1752,8 +2289,127 @@ var HomePlanCard = class extends i4 {
       ${!this._entities(r4).length ? b2`<p class="hpf-empty">Aucun équipement associé. Ajoutez-les dans l’éditeur de la carte.</p>` : A}
     </section>`;
   }
+  _isRoomWorkspace() {
+    return !!this._selected && !this._quick && !this._showAlerts && !this._floorCovers && !this._floorLights && !this._floorClimate;
+  }
+  _cancelScene() {
+    this._sceneEpoch++;
+    this._sceneRequest?.abort();
+    this._sceneRequest = null;
+    this._roomScene = null;
+    this._sceneError = "";
+    this._activeHotspot = null;
+  }
+  async _loadScene(r4) {
+    this._cancelScene();
+    if (r4.scene) {
+      this._roomScene = validateRoomScene(r4.scene);
+      return;
+    }
+    if (!r4.scene_url) return;
+    const epoch = this._sceneEpoch, abort = new AbortController();
+    this._sceneRequest = abort;
+    try {
+      const u5 = new URL(r4.scene_url, location.origin);
+      if (u5.origin !== location.origin || !u5.pathname.startsWith("/local/")) throw Error("La scène doit être locale.");
+      let scene = this._sceneCache.get(u5.href);
+      if (!scene) {
+        const response = await fetch(u5, { signal: abort.signal });
+        if (!response.ok) throw Error(`Vue meublée : HTTP ${response.status}`);
+        const text2 = await response.text();
+        if (text2.length > 1e6) throw Error("Scène trop volumineuse.");
+        scene = validateRoomScene(JSON.parse(text2));
+        if (abort.signal.aborted || epoch !== this._sceneEpoch || !this.isConnected) return;
+        if (this._sceneCache.size >= 8) this._sceneCache.delete(this._sceneCache.keys().next().value);
+        this._sceneCache.set(u5.href, scene);
+      }
+      if (!abort.signal.aborted && epoch === this._sceneEpoch && this.isConnected) this._roomScene = scene;
+    } catch (e6) {
+      if (e6.name !== "AbortError" && epoch === this._sceneEpoch && this.isConnected) this._sceneError = e6.message;
+    }
+  }
+  _sceneSignals(r4) {
+    return Object.fromEntries(Object.entries(r4.scene_entities || {}).map(([key, id]) => [key, this._state(id)]));
+  }
+  _sceneControl(r4) {
+    const key = this._activeHotspot, id = r4.scene_entities?.[key];
+    if (!id) return A;
+    const s5 = this._state(id), domain = id.split(".")[0], label = this._roomScene?.hotspots.find((h4) => h4.key === key)?.label || this._name(id);
+    return b2`<section class="hpf-scene-control" aria-label=${label} data-focused-equipment=${key}><div class="hpf-scene-control-title"><strong>${label}</strong><button aria-label="Fermer la commande sélectionnée" @click=${() => this._activeHotspot = null}>${icon("x")}</button></div>
+      ${domain === "light" ? b2`${this._light(id)}${known2(s5) && s5.attributes?.supported_color_modes?.some((m3) => !["onoff", "unknown"].includes(m3)) ? b2`<label class="hpf-brightness">Luminosité<output>${s5.state === "on" && Number.isFinite(s5.attributes.brightness) ? Math.round(s5.attributes.brightness / 255 * 100) + " %" : "Éteint"}</output><input type="range" min="1" max="100" .value=${String(Math.round((s5.attributes.brightness || 128) / 255 * 100))} aria-label=${"Luminosité " + label} ?disabled=${this._busy.has(id)} @change=${(e6) => this._send(id, "light.turn_on", { brightness_pct: Number(e6.target.value) })}></label>` : A}<button class="hpf-more" @click=${() => this._more(id)}>${icon("settings")}Couleurs et détails${icon("chevron-right")}</button>` : domain === "cover" ? this._cover(id) : domain === "climate" ? this._thermostat(id) : domain === "binary_sensor" ? this._opening(id) : domain === "media_player" ? b2`<div class="hpf-tv-control"><span>${this._format(id)}</span><button ?disabled=${!known2(s5) || this._busy.has(id) || !(s5.attributes.supported_features & (s5.state === "off" ? 128 : 256))} @click=${() => this._send(id, s5.state === "off" ? "media_player.turn_on" : "media_player.turn_off")}>${icon("mdi:power")}${s5?.state === "off" ? "Allumer" : "Éteindre"}</button></div>${this._equipment(id)}` : this._equipment(id)}
+    </section>`;
+  }
+  _roomPlan(r4) {
+    const margin = 10, box = [r4.x - margin, r4.y - margin, r4.w + margin * 2, r4.h + margin * 2];
+    return b2`<div class="hpf-room-flat"><svg viewBox=${box.join(" ")} role="img" aria-label=${"Plan de " + r4.name}>${w`<defs><clipPath id="room-crop"><path d=${r4.path}/></clipPath></defs><path class="hpf-room-floor" d=${r4.path}/><g clip-path="url(#room-crop)">${o6(this._model.artwork)}</g><path class="hpf-room-outline" d=${r4.path}/>`}</svg><span>${r4.name} · vue du plan</span></div>`;
+  }
+  _roomWorkspace(rooms) {
+    const r4 = rooms.find((r5) => r5.id === this._selected);
+    if (!r4) return A;
+    const hasScene = !!(r4.scene_url || r4.scene), view = this._roomView, photo = safeImage(r4.photos?.[this._photos[r4.id] || 0]), illustration = safeImage(r4.illustration) || photo, tabs = [...illustration ? [["illustration", "Illustration"]] : [], ["2d", "2D"], ...hasScene ? [["3d", "3D"]] : [], ...photo ? [["photos", "Photos"]] : []];
+    return b2`<ha-card><section class="hpf-home hpf-room-workspace" aria-label=${"Explorer " + r4.name} @keydown=${(e6) => {
+      if (e6.key === "Escape") this._close();
+    }}><header class="hpf-explorer-head"><button data-room-back @click=${this._close} aria-label="Revenir au plan">${icon("mdi:arrow-left")}</button><div><span class="hpf-explorer-level">${this._config.floor || this._model.floor}</span><h2>${r4.name}</h2></div><span class="hpf-explorer-temp">${this._temperature(r4) ? this._temperatureText(r4) : ""}</span></header>
+      <div class="hpf-explorer-layout"><div class="hpf-room-visual"><div class="hpf-visual-tabs" role="group" aria-label="Vue de la pièce">${tabs.map(([mode, label]) => b2`<button aria-pressed=${view === mode} data-room-view=${mode} @click=${() => this._roomView = mode}>${mode === "3d" ? icon("mdi:cube-outline") : A}${label}</button>`)}</div>
+        ${["3d", "2d"].includes(view) && this._roomScene ? b2`<home-plan-room-scene ?compact=${!!this._activeHotspot} .scene=${this._roomScene} .signals=${this._sceneSignals(r4)} .mode=${view} .activeKey=${this._activeHotspot} @room-equipment-selected=${(e6) => {
+      this._activeHotspot = e6.detail.key;
+      this.updateComplete.then(() => this.renderRoot.querySelector("[data-focused-equipment]")?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+    }}></home-plan-room-scene>` : view === "3d" ? b2`<div class="hpf-room-flat" role="status">${this._sceneError || "Préparation de la pièce…"}${this._sceneError ? b2`<button @click=${() => this._roomView = "2d"}>Afficher le plan 2D</button>` : A}</div>` : view === "2d" ? this._roomPlan(r4) : b2`<div class="hpf-explorer-photo"><img src=${view === "photos" ? photo : illustration} alt=${(view === "photos" ? "Photo de " : "Illustration de ") + r4.name}>${view === "photos" && r4.photos?.length > 1 ? b2`<div class="hpf-gallery-controls"><button aria-label="Photo précédente" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + r4.photos.length - 1) % r4.photos.length }}>‹</button><span>${(this._photos[r4.id] || 0) + 1} / ${r4.photos.length}</span><button aria-label="Photo suivante" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + 1) % r4.photos.length }}>›</button></div>` : A}</div>`}
+        <div class="hpf-scene-caption">${hasScene ? "La pièce se commande depuis les repères ou les commandes ci-dessous." : "La pièce et ses commandes, réunies dans une seule vue."}</div>
+        ${hasScene && this._roomScene ? b2`<div class="hpf-scene-equipment" role="group" aria-label="Équipements représentés">${this._roomScene.hotspots.filter((h4) => r4.scene_entities?.[h4.key]).map((h4) => b2`<button aria-pressed=${this._activeHotspot === h4.key} @click=${() => this._activeHotspot = h4.key}>${icon(h4.icon)}${h4.label}</button>`)}</div>` : A}
+      </div><div class="hpf-room-commands">${this._sceneControl(r4)}${this._sheet(rooms)}</div></div>
+      ${this._feedback ? b2`<div class="hpf-state" role="status" aria-live="polite">${this._feedback}</div>` : A}${this._error ? b2`<div class="hpf-state is-error" role="alert">${this._error}</div>` : A}
+    </section></ha-card>`;
+  }
+  _planZoom(delta) {
+    this._zoom = Math.max(1, Math.min(3, Math.round((this._zoom + delta) * 10) / 10));
+    this._pan = this._clampPan(this._pan);
+  }
+  _clampPan(p4) {
+    const box = this.renderRoot.querySelector(".hpf-viewport")?.getBoundingClientRect();
+    if (!box) return [0, 0];
+    return p4.map((v3, i7) => Math.max(-[box.width, box.height][i7] * (this._zoom - 1) / 2, Math.min([box.width, box.height][i7] * (this._zoom - 1) / 2, v3)));
+  }
+  _planKey(e6) {
+    if (e6.target.matches("input,select,textarea")) return;
+    if (["+", "=", "-", "0"].includes(e6.key)) {
+      e6.preventDefault();
+      e6.key === "0" ? (this._zoom = 1, this._pan = [0, 0]) : this._planZoom(e6.key === "-" ? -0.3 : 0.3);
+    }
+  }
+  _planDown(e6) {
+    if (this.editMode || e6.button > 0 || e6.target.closest(".hpf-plan-camera,.hpf-photo-shortcut,input,select") || e6.target.closest(".hpf-aperture,.hpf-room-marker") && this._zoom === 1) return;
+    this._gesture = { id: e6.pointerId, x: e6.clientX, y: e6.clientY, pan: [...this._pan], time: performance.now(), moved: false, el: e6.currentTarget };
+  }
+  _planMove(e6) {
+    const g2 = this._gesture;
+    if (!g2 || g2.id !== e6.pointerId) return;
+    const dx = e6.clientX - g2.x, dy = e6.clientY - g2.y;
+    if (Math.hypot(dx, dy) < 9) return;
+    g2.moved = true;
+    if (this._zoom > 1) {
+      if (!g2.el.hasPointerCapture(e6.pointerId)) g2.el.setPointerCapture(e6.pointerId);
+      this._pan = this._clampPan([g2.pan[0] + dx, g2.pan[1] + dy]);
+    } else if (Math.abs(dx) > Math.abs(dy) * 1.4 && Math.abs(dx) > 14) {
+      if (!g2.el.hasPointerCapture(e6.pointerId)) g2.el.setPointerCapture(e6.pointerId);
+    }
+  }
+  _planUp(e6, cancel = false) {
+    const g2 = this._gesture;
+    if (!g2 || g2.id !== e6.pointerId) return;
+    this._gesture = null;
+    if (g2.el.hasPointerCapture(e6.pointerId)) g2.el.releasePointerCapture(e6.pointerId);
+    if (!g2.moved) return;
+    this._suppressMapClick = performance.now() + 350;
+    if (cancel || this._zoom > 1) return;
+    const dx = e6.clientX - g2.x, dy = e6.clientY - g2.y;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5 && performance.now() - g2.time < 900) {
+      const levels = planLevels(this._rootConfig), i7 = levels.findIndex((l3) => l3.id === this._level), next = levels[i7 + (dx < 0 ? 1 : -1)];
+      if (next) this._switchLevel(next.id);
+    }
+  }
   _markerTap(m3) {
-    if (this.editMode) return;
+    if (this.editMode || performance.now() < (this._suppressMapClick || 0)) return;
     const s5 = this._state(m3.entity);
     if (m3.entity?.startsWith("light.") && known2(s5)) this._send(m3.entity, s5.state === "on" ? "light.turn_off" : "light.turn_on");
     else this._more(m3.entity);
@@ -1802,7 +2458,13 @@ var HomePlanCard = class extends i4 {
     const b3 = this._model.bounds, apertures = this._apertures(), markers = this._mapMarkers(rooms), pct = (v3, i7) => (v3 - b3[i7]) / b3[i7 + 2] * 100;
     const pointStyle = (p4) => `left:clamp(22px,${pct(p4[0], 0)}%,calc(100% - 22px));top:${pct(p4[1], 1)}%`;
     const selected = rooms.find((r4) => r4.id === this._selected) || rooms.find((r4) => r4.id === this._model.preview?.room);
-    return b2`<div class=${"hpf-map " + (this.editMode ? "is-editing" : "")} style=${`aspect-ratio:${b3[2]}/${b3[3]}`}>
+    return b2`<div class=${"hpf-viewport " + (this._zoom > 1 ? "is-zoomed" : "")} style=${`aspect-ratio:${b3[2]}/${b3[3]}`} @pointerdown=${this._planDown} @pointermove=${this._planMove} @pointerup=${this._planUp} @pointercancel=${(e6) => this._planUp(e6, true)} @click=${(e6) => {
+      if (performance.now() < (this._suppressMapClick || 0)) {
+        e6.preventDefault();
+        e6.stopImmediatePropagation();
+      }
+    }} @keydown=${this._planKey}>
+    <div class=${"hpf-map " + (this.editMode ? "is-editing" : "")} style=${`aspect-ratio:${b3[2]}/${b3[3]};transform:translate(${this.editMode ? 0 : this._pan[0]}px,${this.editMode ? 0 : this._pan[1]}px) scale(${this.editMode ? 1 : this._zoom})`}>
       <svg class="hpf-drawing" viewBox=${b3.join(" ")} role="img" aria-label=${"Plan du " + (this._config.floor || this._model.floor || "niveau")}><title>Pièces et équipements</title>${rooms.map((r4) => w`<path class=${`hpf-room-floor ${this._lights(r4).some((id) => this._state(id)?.state === "on") ? "is-lit" : ""} ${r4.id === this._selected ? "is-selected" : ""} ${this._matches(r4) ? "" : "is-muted"}`} d=${r4.path || ""}/>`)}${o6(this._model.artwork)}</svg>
       ${c4(rooms, (r4) => r4.id, (r4) => {
       const [x2, y3, w2, h4] = r4.hit || [r4.x, r4.y, r4.w, r4.h], l3 = r4.label || [x2 + w2 / 2, y3 + h4 / 2], temp = this._temperature(r4), opens = this._openings(r4).some((id) => this._state(id)?.state === "on"), problems = this._problems(r4);
@@ -1823,7 +2485,12 @@ var HomePlanCard = class extends i4 {
       return b2`<button data-marker=${m3.id} data-equipment-notice=${group?.key || A} data-edit-selected=${this._editSelection === "marker:" + m3.id} class=${"hpf-room-marker " + (this._markerMuted(m3) ? "is-muted " : "") + (alert ? "is-alert " : "") + (group ? "hpf-equipment-notice " + level + " " : "") + (group?.critical ? "is-critical " : "") + (light ? "is-light " : "") + (light && state?.state === "on" ? "is-on" : "")} style=${pointStyle(m3.point)} aria-label=${group ? `${m3.name || group.label}, ${group.notices.length} signalement${group.notices.length > 1 ? "s" : ""} : ${group.notices.map((n5) => n5.details.join(", ")).join("; ")}` : this._name(m3.entity) + ", " + this._format(m3.entity)} @pointerdown=${(e6) => this._dragStart(e6, "marker", m3)} @pointermove=${this._dragMove} @pointerup=${(e6) => this._dragEnd(e6)} @pointercancel=${(e6) => this._dragEnd(e6, true)} @keydown=${(e6) => this._editKey(e6, "marker", m3)} @click=${(e6) => group && !this.editMode ? this._openEquipmentNotices({ ...group, label: m3.name || group.label }, e6.currentTarget) : this._markerTap(m3)}>${this._entityIcon(m3.entity, m3.icon && m3.icon !== "smoke" ? ICON[m3.icon] || m3.icon : group?.icon)}${group ? b2`<span class="hpf-notice-count" aria-hidden="true">${group.notices.length}</span>` : A}</button>`;
     })}
 
-      ${!this.editMode && selected && this._photo(selected) && this._model.preview ? b2`<button class="hpf-photo-shortcut" style=${`left:${pct(this._model.preview.x, 0)}%;top:${pct(this._model.preview.y, 1)}%;width:${this._model.preview.w / b3[2] * 100}%;height:${this._model.preview.h / b3[3] * 100}%`} @click=${(e6) => this._select(selected, e6.currentTarget)}><img src=${this._photo(selected)} alt=${selected.name}><span class="hpf-photo-caption">${selected.short || selected.name}${icon("chevron-right")}</span></button>` : A}
+    </div>
+      ${!this.editMode && selected && this._photo(selected) && this._model.preview ? b2`<button class="hpf-photo-shortcut hpf-scene-entry" style=${`left:${pct(this._model.preview.x, 0)}%;top:${pct(this._model.preview.y, 1)}%;width:${this._model.preview.w / b3[2] * 100}%;height:${this._model.preview.h / b3[3] * 100}%`} @click=${(e6) => this._select(selected, e6.currentTarget)} aria-label=${"Explorer " + selected.name}><img src=${this._photo(selected)} alt=""><span class="hpf-photo-caption">${selected.short || selected.name}${icon("mdi:arrow-expand-all")}</span><span class="hpf-entry-label">Explorer la pièce</span></button>` : A}
+      ${!this.editMode ? b2`<div class="hpf-plan-camera" role="group" aria-label="Zoom du plan"><button data-plan-zoom="out" aria-label="Réduire le plan" ?disabled=${this._zoom <= 1} @click=${() => this._planZoom(-0.3)}>−</button><button data-plan-zoom="reset" aria-label="Recentrer le plan" @click=${() => {
+      this._zoom = 1;
+      this._pan = [0, 0];
+    }}>${Math.round(this._zoom * 100)} %</button><button data-plan-zoom="in" aria-label="Agrandir le plan" ?disabled=${this._zoom >= 3} @click=${() => this._planZoom(0.3)}>+</button></div>` : A}
     </div>`;
   }
   render() {
@@ -1833,6 +2500,7 @@ var HomePlanCard = class extends i4 {
     if (!this._model) return b2`<ha-card><section class="hpf-home">${this._levelSelector()}<div class="hpf-empty" role="status">${this._error || "Chargement du plan…"}</div></section></ha-card>`;
     const rooms = this._rooms(), lights = [...new Set(rooms.flatMap((r4) => this._lights(r4)))].filter((id) => this._state(id)?.state === "on"), openingIds = [...new Set(rooms.flatMap((r4) => this._openings(r4)))], open = openingIds.filter((id) => this._state(id)?.state === "on"), unknown = openingIds.filter((id) => !known2(this._state(id))), problems = [...new Set(rooms.flatMap((r4) => this._problems(r4)))];
     if (this.editMode) return b2`<ha-card><section class="hpf-home hpf-placement">${this._map(rooms)}<div class="hpf-placement-caption">Glisser un repère · flèches du clavier pour ajuster</div></section></ha-card>`;
+    if (this._isRoomWorkspace()) return this._roomWorkspace(rooms);
     const climateRows = this._climateRows(rooms), hasClimate = climateRows.length > 0, heatConflicts = climateRows.filter((r4) => r4.info.status === "conflict").length;
     return b2`<ha-card><section class="hpf-home" aria-label="Plan et commandes de la maison"><header class="hpf-head"><div class="hpf-heading"><span class="hpf-home-mark">${icon("house")}</span><div><h2>${this._config.name || "Maison"}</h2><span class="hpf-floor-name">${this._config.floor || this._model.floor}</span></div></div>${this._levelSelector()}</header>
       <div class="hpf-tools"><div class="hpf-glance"><button data-light-count aria-pressed=${this._mode === "lights"} @click=${() => this._mode = this._mode === "lights" ? "" : "lights"}>${icon("lightbulb")}${lights.length} lumière${lights.length > 1 ? "s" : ""}</button><button data-open-count aria-pressed=${this._mode === "openings"} @click=${() => this._mode = this._mode === "openings" ? "" : "openings"}>${icon("door-open")}${open.length} ouverture${open.length > 1 ? "s" : ""}${unknown.length ? " · " + unknown.length + " ?" : ""}</button></div><div class="hpf-view" role="group" aria-label="Présentation"><button aria-pressed=${this._view === "plan"} @click=${() => this._view = "plan"}>Plan</button><button aria-pressed=${this._view === "rooms"} @click=${() => this._view = "rooms"}>Pièces</button></div></div>

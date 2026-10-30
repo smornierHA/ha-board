@@ -1,3 +1,11 @@
+## Plan — exploration de pièce du 30 octobre 2026
+
+Le candidat autonome **0.7.0-rc.2** ajoute une vue pièce qui conserve visuel et commandes ensemble, le glissement entre niveaux, le zoom/recentrage/déplacement du plan et un renderer meublé 2D/WebGL2 local à rendu ponctuel. Les repères sélectionnent une commande ciblée ; les services conservent haptique, capacités, indisponibilité et retour natif. Tests locaux : 17 groupes navigateur existants (14 fictifs et trois privés), quatre largeurs 320–1100 px, transitions 2D/3D, repli sans WebGL, commandes simulées, cache, 1 000 changements HA et nettoyage ; cycle existant de 100 montages/démontages réussi, aucun appareil physique actionné. La scène et les associations domestiques restent privées. Installation native et preuve dans `evidence/home-plan-room-explorer-2026-10-30.json`. Aucune fusion/release HACS ni recette utilisateur revendiquée.
+
+## Météo — reprise limitée du 29 octobre 2026
+
+Le candidat autonome **0.4.0-rc.3** corrige une amplification reproductible des tentatives après échec de l’abonnement quotidien : reprise au prochain état HA après 30/60/120/240/300 secondes, remise à zéro à la reconnexion ou au changement de source. Aucun timer supplémentaire ; nettoyage existant conservé. Source iOS figée reprise du module effectivement installé, sans changement visuel ; source historique corrigée également. 22 contrats historiques, trois groupes de reprise et contrôle du plan sur 1 000 états / 100 cycles réussis sur doubles. Ce défaut ne prouve pas la cause de la saturation mémoire observée. Installé : fichier relu à l’identique, ressource météo existante actualisée, 43 autres ressources conservées. Le chargement dans les clients déjà ouverts reste soumis au rechargement de leur vue. Preuve : `../evidence/weather-backoff-2026-10-29.json`.
+
 # État courant — 9 septembre 2026
 
 ## Plan — alignements et activation du chauffage du 29 octobre 2026

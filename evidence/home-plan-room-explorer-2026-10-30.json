@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-30T10:09:12.847478+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.7.0-rc.2",
+  "bundle_bytes": 235874,
+  "bundle_sha256": "fecc377d8dbd85d97ae19227d5198dd58590942b7f382a79eda8f8aca9964066",
+  "native_installation": {
+    "versioned_files_read_back_equal": 3,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "current_user_positions_preserved": true,
+    "card_patch_scope": [
+      "selected room scene_url",
+      "selected room scene_entities",
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_tests": {
+    "existing_browser_groups": 17,
+    "room_explorer": [
+      "WebGL2 real browser",
+      "320/390/736/1100 px",
+      "map zoom/reset",
+      "horizontal floor gesture",
+      "2D/3D transitions",
+      "2D zoom",
+      "no WebGL fallback",
+      "exact simulated light/brightness service targets",
+      "no optimistic state",
+      "1000 HA updates without refetch",
+      "bounded cache",
+      "GPU/observer/frame/request cleanup",
+      "compact mobile scene remains visible while scrolling controls"
+    ],
+    "existing_lifecycle": {
+      "updates": 1000,
+      "mount_cycles": 100,
+      "detached_listeners": 0,
+      "device_commands": 0
+    },
+    "pure_contracts": [
+      "climate",
+      "notices",
+      "collection"
+    ],
+    "fictitious_browser_groups": 14,
+    "private_browser_groups": 3
+  },
+  "private_assets": "Room geometry, photographs, household names, bindings and screenshots excluded from public Git.",
+  "release": false,
+  "merged": false,
+  "ci": "Local verification; automated CI not requested."
+}

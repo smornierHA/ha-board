@@ -50,6 +50,7 @@ jobs:
           node scripts/build_home_plan.mjs
           git diff --exit-code -- candidates/home-plan/home-plan-card.js
           node tests/home-plan-browser.mjs
+          node tests/home-plan-room-explorer.mjs
       - name: Historical address adapter contracts
         run: node tests/history-address-adapter.mjs
       - name: Build and test HACS entrypoint
