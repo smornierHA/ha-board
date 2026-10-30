@@ -1,3 +1,7 @@
+## Plan — reconstitution 0.9.0-rc.1
+
+Les huit nouvelles photos fournies par l’utilisateur le 30 octobre complètent l’annotation et les plans privés. Elles font autorité pour l’orientation de la façade et le mobilier ; aucune cote exacte n’en est déduite. Les images et coordonnées domestiques restent hors Git public. Renderer générique : `home-plan-room-scene.js` ; contrat GPU et animation : `tests/home-plan-object-interaction.mjs` ; preuve : `evidence/home-plan-photo-layout-2026-10-30.json`. La référence privée conserve provenance, configuration et retour arrière dans le même incrément.
+
 ## Plan — objets et configuration 0.8.0-rc.1
 
 L’annotation reçue et les photos originales sont autoritaires pour la disposition de la pièce pilote. Le code générique vit dans `src/candidate/home-plan-room-scene.js` et `home-plan-room-editor.js`. Sélection GPU, états indépendants, animation bornée et édition sans service sont contrôlés sur données fictives dans `tests/home-plan-object-interaction.mjs`. Les entités natives ont été recherchées avant association ; le PC utilise une présence réseau et le capteur de couleurs du téléviseur est associé à son éclairage d’ambiance. Les données réelles restent dans la référence privée, hors Git public.

@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-30T12:34:33.963395+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.9.0-rc.1",
+  "bundle_bytes": 266863,
+  "bundle_sha256": "18b4a07859c5593d62fd45dc0d1f70f071a60cc27129ffbcccfe73d747cd362d",
+  "native": {
+    "versioned_files_readback_equal": 3,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "existing_plan_positions_and_bindings_preserved": true,
+    "patch_scope": [
+      "pilot room scene_url",
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_validation": {
+    "existing_browser_groups": 17,
+    "fictitious_groups": 14,
+    "private_groups": 3,
+    "objects": [
+      "real pointer GPU selection without service",
+      "near-wall opacity and solid-wall occlusion",
+      "selection through transparent wall",
+      "separate desktop monitors",
+      "PC animation independent from TV and desk lighting",
+      "original game and manga animations",
+      "shared animation timer capped near 10 fps",
+      "reduced-motion and off-state stop",
+      "native room editor",
+      "grouped movement, keyboard and drag placement",
+      "entity binding preservation"
+    ],
+    "private_visual": [
+      "four camera angles",
+      "WebGL error check",
+      "front facade and PC game",
+      "320/390/736 px layouts and toolbar spacing",
+      "offline TV/PC demo and editor return"
+    ],
+    "room_explorer": [
+      "2D/3D and fallback",
+      "zoom, swipe, reset",
+      "1000 HA state changes without model refetch",
+      "GPU/frame/observer/request cleanup"
+    ],
+    "lifecycle": {
+      "mount_cycles": 100,
+      "updates": 1000,
+      "detached_listeners": 0,
+      "service_calls": 0
+    },
+    "pure_contracts": [
+      "climate",
+      "notices",
+      "collection"
+    ]
+  },
+  "private_assets": "Eight source photos, room geometry, original plans, bindings, names and QA screenshots excluded from public Git. Geometry is an indicative photo reconstruction, not a measured survey.",
+  "semantics": "PC active source remains explicitly configured; network detection is not measured power. No extra HA polling or subscription.",
+  "ci": "Local checks only; skip-ci on this draft increment.",
+  "merged": false,
+  "hacs_release": false
+}
