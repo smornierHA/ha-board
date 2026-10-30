@@ -373,3 +373,8 @@
 .hpf-device>span{min-width:0}.hpf-device strong{overflow-wrap:anywhere}
 
 .hpf-room-workspace{overflow:clip}
+
+/* Separate details access keeps light toggles unambiguous. */
+.hpf-light-control{position:relative;min-width:0}.hpf-light-control>.hpf-device{width:100%;padding-right:48px;height:100%;box-sizing:border-box}.hpf-light-info{position:absolute;right:2px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--hp-secondary);min-width:44px;min-height:44px;display:grid;place-items:center}
+.hpf-media-control{display:flex;align-items:center;gap:8px;border-radius:13px;padding:10px;background:var(--hp-soft);margin:6px 0;min-width:0}.hpf-media-control>span{display:grid;gap:3px;flex:1;min-width:0;font-size:12px}.hpf-media-control small{font-size:10px;color:var(--hp-secondary)}.hpf-media-control>button{border:0;border-radius:9px;background:var(--hp-paper);color:var(--hp-ink);min-height:44px;min-width:44px;font-size:10px;display:inline-flex;gap:5px;align-items:center;justify-content:center}.hpf-media-control>button:disabled{opacity:.4}
+.hpf-map .hpf-room-marker.hpf-notice-anchor{margin-left:18px;margin-top:-15px;z-index:5;width:28px;height:28px;min-height:28px;border-radius:50%;background:var(--notice-bg);border:1px solid var(--notice-color);color:var(--notice-color)}.hpf-notice-anchor>ha-icon{--mdc-icon-size:14px;width:14px;height:14px}.hpf-map .hpf-notice-anchor .hpf-notice-count{top:-4px;right:-4px}

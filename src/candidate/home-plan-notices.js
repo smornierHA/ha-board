@@ -1,4 +1,5 @@
 /* Live presentation signals only; no recorder, notification delivery or device commands. */
+import {isArtMode} from './home-plan-media.js';
 export const NOTICE_LEVELS = ['priority','ready','battery','maintenance','info'];
 const RANK={priority:0,battery:1,maintenance:2,ready:3,info:4};
 export const noticeOrder=(a,b)=>(RANK[a.level]??5)-(RANK[b.level]??5)||Number(!!b.critical)-Number(!!a.critical)||a.label.localeCompare(b.label);
@@ -21,9 +22,7 @@ export function isEquipmentActive(s){
   if(!known(s))return false;
   const domain=s.entity_id?.split('.')[0];
   if(domain==='media_player'){
-    const art=s.attributes?.art_mode_status;
-    if(art===true||text(art)==='on')return false;
-    if(art===undefined&&text(s.attributes?.app_id)==='art')return false;
+    if(isArtMode(s))return false;
     return ['on','playing','paused','buffering'].includes(s.state);
   }
   if(domain==='fan')return s.state==='on';
@@ -51,6 +50,7 @@ export function ruleNotice(rule,getState){
   const equipment=getState(rule.entity);
   if(rule.level==='info'&&rule.entity?.startsWith('vacuum.')&&(!known(equipment)||['docked','charging'].includes(equipment.state)||equipment.attributes?.docked===true||text(equipment.attributes?.docked)==='true'))return null;
   const source=rule.state_entity||rule.entity;
+  if(rule.level==='info'&&source.startsWith('media_player.')&&isArtMode(getState(source)))return null;
   const condition={...rule,entity:source};
   if(rule.states===undefined&&rule.below===undefined&&rule.above===undefined)condition.states=rule.level==='info'?[...ACTIVE]:[...POSITIVE];
   if(conditionMatches(condition,getState)!==true)return null;
@@ -78,7 +78,7 @@ export function buildNotices({states={},registry={},rooms=[],apertures=[],rules=
   const add=(id,notice,rule={})=>{
     if(!notice||excludedEntities.includes(id))return;const loc=location(id,rule);if(excludedAreas.includes(loc.area_id))return;
     const deviceId=entities[id]?.device_id||'',device=devices[deviceId],key=(rule.group||deviceId||id)+'|'+notice.kind;
-    const item={...notice,key,entity:id,entities:[id],device_id:deviceId,equipment_key:rule.equipment_group||deviceId||rule.group||id,label:rule.label||device?.name_by_user||device?.name||states[id]?.attributes?.friendly_name||id,details:[notice.detail],location:loc};
+    const item={...notice,key,entity:id,entities:[id],device_id:deviceId,equipment_key:rule.equipment_group||deviceId||rule.group||id,equipment_entity:rule.equipment_entity,equipment_icon:rule.equipment_icon,label:rule.label||device?.name_by_user||device?.name||states[id]?.attributes?.friendly_name||id,details:[notice.detail],location:loc};
     const previous=result.get(key);
     if(previous){previous.entities=[...new Set([...previous.entities,id])];previous.details=[...new Set([...previous.details,notice.detail])];previous.critical ||=item.critical;if(noticeOrder(item,previous)<0){previous.level=item.level;previous.entity=id;previous.icon=item.icon;}}
     else result.set(key,item);
@@ -92,8 +92,8 @@ export function groupEquipmentNotices(notices){
   const groups=new Map();
   for(const n of [...notices].sort(noticeOrder)){
     const key=n.equipment_key||n.device_id||n.entity;
-    if(!groups.has(key))groups.set(key,{key,label:n.label,entity:n.entity,device_id:n.device_id,location:n.location,level:n.level,critical:n.critical,icon:n.icon,notices:[],entities:[]});
-    const g=groups.get(key);g.notices.push(n);g.entities=[...new Set([...g.entities,...n.entities])];
+    if(!groups.has(key))groups.set(key,{key,label:n.label,entity:n.entity,device_id:n.device_id,location:n.location,level:n.level,critical:n.critical,icon:n.icon,equipment_entity:n.equipment_entity,equipment_icon:n.equipment_icon,notices:[],entities:[]});
+    const g=groups.get(key);g.equipment_entity||=n.equipment_entity;g.equipment_icon||=n.equipment_icon;g.notices.push(n);g.entities=[...new Set([...g.entities,...n.entities])];
   }
   return [...groups.values()];
 }
