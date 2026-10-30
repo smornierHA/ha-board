@@ -9,7 +9,7 @@ import { climateInfo, climateCommand, climateIncrement, presetLabel, modeLabel }
 import {validateRoomScene} from './home-plan-room-scene.js';
 import './home-plan-room-editor.js';
 
-export const VERSION = '0.8.0-rc.1';
+export const VERSION = '0.9.0-rc.1';
 const ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 const BAD = new Set(['unknown', 'unavailable']);
 const ALERT_CLASSES = new Set(['smoke','gas','moisture','problem','tamper','battery','safety']);

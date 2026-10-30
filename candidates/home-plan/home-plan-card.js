@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.8.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.9.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -908,11 +908,18 @@ function project(p4, m3) {
 function validateRoomScene(scene) {
   if (!scene || scene.version !== 1 || !Array.isArray(scene.size) || scene.size.length !== 2 || scene.size.some((n5) => !Number.isFinite(n5) || n5 < 1 || n5 > 20)) throw Error("Dimensions de la pièce invalides.");
   if (!Array.isArray(scene.objects) || scene.objects.length > 120 || !Array.isArray(scene.hotspots) || scene.hotspots.length > 30) throw Error("Modèle de pièce trop complexe.");
-  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope", "camera", "lamp", "backlight", "floor-heat"]);
+  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor", "wardrobe-inset"]);
   for (const o7 of scene.objects) {
     if (!kinds.has(o7.type) || !Array.isArray(o7.at) || o7.at.length !== 3 || o7.at.some((x2) => !Number.isFinite(x2) || Math.abs(x2) > 25) || !Array.isArray(o7.size) || o7.size.length !== 3 || o7.size.some((x2) => !Number.isFinite(x2) || x2 <= 0 || x2 > 20) || o7.rotation !== void 0 && !Number.isFinite(o7.rotation)) throw Error("Objet de pièce invalide.");
   }
   if (scene.outline && (!Array.isArray(scene.outline) || scene.outline.length < 3 || scene.outline.length > 32 || scene.outline.some((p4) => !Array.isArray(p4) || p4.length !== 2 || p4.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 20)))) throw Error("Contour de pièce invalide.");
+  for (const o7 of scene.objects) {
+    if (o7.wallNormal && (!Array.isArray(o7.wallNormal) || o7.wallNormal.length !== 2 || o7.wallNormal.some((v3) => !Number.isFinite(v3) || Math.abs(v3) > 1) || Math.hypot(...o7.wallNormal) < 0.5)) throw Error("Orientation de mur invalide.");
+    if (o7.segments && (!Array.isArray(o7.segments) || o7.segments.length > 60 || o7.segments.some((a3) => !Array.isArray(a3) || a3.length !== 2 || a3.some((p4) => !Array.isArray(p4) || p4.length !== 2 || p4.some((v3) => !Number.isFinite(v3) || Math.abs(v3) > 10))))) throw Error("Segments lumineux invalides.");
+    if (o7.panels && (!Array.isArray(o7.panels) || o7.panels.length > 40 || o7.panels.some((a3) => !Array.isArray(a3) || a3.length !== 4 || a3.some((v3) => !Number.isFinite(v3) || Math.abs(v3) > 10) || a3[2] <= 0 || a3[3] <= 0))) throw Error("Panneaux lumineux invalides.");
+    if (o7.openRight !== void 0 && typeof o7.openRight !== "boolean") throw Error("Piètement de bureau invalide.");
+    if (o7.screen !== void 0 && typeof o7.screen !== "boolean") throw Error("Option écran invalide.");
+  }
   const objectIds = /* @__PURE__ */ new Set();
   for (const o7 of scene.objects) {
     if (o7.id && (typeof o7.id !== "string" || objectIds.has(o7.id))) throw Error("Identifiant d’objet invalide.");
@@ -966,10 +973,20 @@ var Mesh = class {
     this.origin = [0, 0, 0];
     this.angle = 0;
     this.objectId = 0;
+    this.wall = [0, 0];
   }
   vertex(p4, n5, c5, material = 0, uv = [0, 0]) {
     const co = Math.cos(this.angle), si = Math.sin(this.angle), q = [p4[0] * co + p4[2] * si, p4[1], -p4[0] * si + p4[2] * co], nn = [n5[0] * co + n5[2] * si, n5[1], -n5[0] * si + n5[2] * co];
-    this.vertices.push(...q.map((v3, i7) => v3 + this.origin[i7]), ...nn, ...hex(c5), material, this.objectId, ...uv);
+    this.vertices.push(...q.map((v3, i7) => v3 + this.origin[i7]), ...nn, ...hex(c5), material, this.objectId, ...uv, ...this.wall);
+  }
+  beam(a3, b3, width, depth, color, mat = 0) {
+    const dx = b3[0] - a3[0], dy = b3[1] - a3[1], length = Math.hypot(dx, dy);
+    if (length < 1e-3) return;
+    const nx = -dy / length * width / 2, ny = dx / length * width / 2, p4 = [[a3[0] + nx, a3[1] + ny, depth / 2], [b3[0] + nx, b3[1] + ny, depth / 2], [b3[0] - nx, b3[1] - ny, depth / 2], [a3[0] - nx, a3[1] - ny, depth / 2]];
+    this.face(...p4, color, mat);
+    const back = p4.map((q) => [q[0], q[1], -depth / 2]);
+    this.face(...[...back].reverse(), color, mat);
+    for (let i7 = 0; i7 < 4; i7++) this.face(p4[i7], back[i7], back[(i7 + 1) % 4], p4[(i7 + 1) % 4], color, mat);
   }
   panel(x2, y3, z2, w2, h4, color, mat = 0) {
     const p4 = [[x2 - w2 / 2, y3 - h4 / 2, z2], [x2 + w2 / 2, y3 - h4 / 2, z2], [x2 + w2 / 2, y3 + h4 / 2, z2], [x2 - w2 / 2, y3 + h4 / 2, z2]], uv = [[0, 0], [1, 0], [1, 1], [0, 1]];
@@ -1039,16 +1056,27 @@ function furnish(mesh, o7, signals, scene) {
     box(0, 0.42, d3 / 2 - 0.02, w2 * 0.9, 0.014, 0.025, glow, 5e-3, on ? 1 : 0);
   } else if (o7.type === "desk") {
     box(0, 0.75, 0, w2, 0.05, d3, "#c4b298", 0.018);
-    for (const x2 of [-w2 / 2 + 0.18, w2 / 2 - 0.18]) {
+    for (const x2 of o7.openRight ? [-w2 / 2 + 0.18] : [-w2 / 2 + 0.18, w2 / 2 - 0.18]) {
       box(x2, 0.36, 0, 0.36, 0.7, d3 * 0.88, "#eeeae1", 0.012);
       for (const y3 of [0.2, 0.4, 0.6]) box(x2, y3, -d3 * 0.451, 0.22, 0.018, 0.012, "#b8b6ae");
     }
-    box(-0.15, 1.13, -d3 * 0.26, 0.87, 0.47, 0.043, "#222c32", 0.018);
-    mesh.panel(-0.15, 1.13, -d3 * 0.26 + 0.029, 0.79, 0.39, on ? "#538f91" : "#182329", on ? 5 : 0);
-    box(-0.15, 0.86, -d3 * 0.24, 0.055, 0.18, 0.035, "#484e52");
-    box(-0.15, 0.796, -d3 * 0.2, 0.35, 0.025, 0.19, "#42484a", 0.012);
+    if (o7.openRight) {
+      for (const z2 of [-d3 * 0.36, d3 * 0.36]) box(w2 / 2 - 0.05, 0.37, z2, 0.045, 0.71, 0.045, "#eeece3");
+      box(w2 / 2 - 0.05, 0.05, 0, 0.045, 0.045, d3 * 0.78, "#eeece3");
+    }
+    if (o7.screen !== false) {
+      box(-0.15, 1.13, -d3 * 0.26, 0.87, 0.47, 0.043, "#222c32", 0.018);
+      mesh.panel(-0.15, 1.13, -d3 * 0.26 + 0.029, 0.79, 0.39, on ? "#538f91" : "#182329", on ? 5 : 0);
+      box(-0.15, 0.86, -d3 * 0.24, 0.055, 0.18, 0.035, "#484e52");
+      box(-0.15, 0.796, -d3 * 0.2, 0.35, 0.025, 0.19, "#42484a", 0.012);
+    }
     box(-0.15, 0.79, d3 * 0.11, 0.56, 0.024, 0.2, "#333b41", 0.01);
     box(0.35, 0.79, d3 * 0.13, 0.075, 0.025, 0.11, "#686c6b", 0.024);
+  } else if (o7.type === "monitor") {
+    box(0, 0, 0, w2, h4, d3, "#222c32", 0.018);
+    mesh.panel(0, 0, d3 / 2 + 9e-3, w2 - 0.035, h4 - 0.035, on ? "#538f91" : "#182329", on ? 5 : 0);
+    box(0, -h4 / 2 - 0.09, -0.01, 0.04, 0.18, 0.035, "#4c5357");
+    box(0, -h4 / 2 - 0.19, 0.015, w2 * 0.45, 0.025, 0.2, "#434b50", 0.012);
   } else if (o7.type === "pc") {
     box(0, h4 / 2, 0, w2, h4, d3, "#25323a", 0.025);
     box(w2 / 2 + 2e-3, h4 * 0.52, 0, 7e-3, h4 * 0.8, d3 * 0.84, "#334952");
@@ -1069,6 +1097,12 @@ function furnish(mesh, o7, signals, scene) {
       mesh.angle = save;
     }
     for (const x2 of [-0.24, 0.24]) box(x2, 0.69, 0, 0.04, 0.04, 0.29, "#838d90", 0.01);
+  } else if (o7.type === "wardrobe-inset") {
+    box(0, h4 / 2, -0.035, w2, h4, 0.045, c5);
+    for (const x2 of [-w2 / 2 - 0.045, w2 / 2 + 0.045]) box(x2, h4 / 2, 0.015, 0.09, h4 + 0.12, 0.11, "#ece9e1");
+    box(0, h4 + 0.045, 0.015, w2 + 0.18, 0.09, 0.11, "#ece9e1");
+    box(0, h4 / 2, 5e-3, 0.018, h4, 0.016, "#6c7477");
+    for (const x2 of [-0.055, 0.055]) box(x2, h4 * 0.4, 0.025, 0.012, 0.1, 0.028, "#8f999b", 4e-3);
   } else if (o7.type === "dresser" || o7.type === "wardrobe") {
     box(0, h4 / 2, 0, w2, h4, d3, c5, 0.018);
     const leaves = o7.leaves || 2;
@@ -1105,14 +1139,20 @@ function furnish(mesh, o7, signals, scene) {
     box(0, 0, 0, w2, h4, d3, "#f6f2e8", 0.025);
     for (let i7 = 0; i7 < 12; i7++) box(-w2 * 0.44 + i7 * w2 * 0.08, 0, d3 / 2 + 5e-3, 0.012, h4 * 0.84, 0.012, "#d2d1c8");
   } else if (o7.type === "lines") {
-    const mat = on ? 1 : 0;
-    box(0, 0, 0.02, 0.045, h4, 0.035, glow, 0.015, mat);
-    for (const sign of [-1, 1]) {
-      const start = [0, 0, 0.022], end = [sign * h4 * 0.4, h4 * 0.28, 0.022], dx = end[0], dy = end[1], len = Math.hypot(dx, dy), nx = -dy / len * 0.02, ny = dx / len * 0.02;
-      mesh.face([nx, ny, 0.04], [dx + nx, dy + ny, 0.04], [dx - nx, dy - ny, 0.04], [-nx, -ny, 0.04], glow, mat);
+    const mat = on ? 1 : 0, lineColor = on ? glow : "#f2f1eb";
+    if (o7.segments) {
+      for (const [a3, b3] of o7.segments) mesh.beam(a3, b3, 0.025, 0.025, lineColor, mat);
+    } else {
+      box(0, 0, 0.02, 0.045, h4, 0.035, glow, 0.015, mat);
+      for (const sign of [-1, 1]) {
+        const start = [0, 0, 0.022], end = [sign * h4 * 0.4, h4 * 0.28, 0.022], dx = end[0], dy = end[1], len = Math.hypot(dx, dy), nx = -dy / len * 0.02, ny = dx / len * 0.02;
+        mesh.face([nx, ny, 0.04], [dx + nx, dy + ny, 0.04], [dx - nx, dy - ny, 0.04], [-nx, -ny, 0.04], glow, mat);
+      }
     }
   } else if (o7.type === "blocks") {
-    for (let i7 = 0; i7 < 4; i7++) box((i7 % 2 - 0.5) * w2 * 0.48, (Math.floor(i7 / 2) - 0.5) * h4 * 0.48, 0.03, w2 * 0.45, h4 * 0.45, 0.05, glow, 0.018, on ? 1 : 0);
+    if (o7.panels) {
+      for (const [x2, y3, pw, ph] of o7.panels) box(x2, y3, 0.025, pw, ph, 0.045, on ? glow : "#eeede7", 0.015, on ? 1 : 0);
+    } else for (let i7 = 0; i7 < 4; i7++) box((i7 % 2 - 0.5) * w2 * 0.48, (Math.floor(i7 / 2) - 0.5) * h4 * 0.48, 0.03, w2 * 0.45, h4 * 0.45, 0.05, glow, 0.018, on ? 1 : 0);
   } else if (o7.type === "ring") {
     mesh.ring(0, 0, 0, w2 / 2, 0.025, "#f1e9cf");
     mesh.cylinder(0, 0.23, 0, 9e-3, 0.46, "#626b6a");
@@ -1148,20 +1188,21 @@ function furnish(mesh, o7, signals, scene) {
   } else box(0, 0, 0, w2, h4, d3, c5, o7.radius || 0, o7.material || 0);
 }
 var VERT = `#version 300 es
-in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;in float aObject;in vec2 aUv;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;flat out float vObject;out vec2 vUv;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vObject=aObject;vUv=aUv;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
+in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;in float aObject;in vec2 aUv;in vec2 aWall;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;flat out float vObject;out vec2 vUv;flat out vec2 vWall;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vObject=aObject;vUv=aUv;vWall=aWall;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
 var FRAG = `#version 300 es
-precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;out vec4 outColor;
-void main(){if(uPick>.5){outColor=vec4(vObject/255.,0.,0.,1.);return;}if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){col=mix(vec3(.05,.14,.22),vec3(.1,.45,.5),vUv.y);float grid=step(.96,fract(vUv.x*11.))*step(.12,vUv.y)*step(vUv.y,.85);col+=grid*.12;col=mix(col,vec3(.64,.9,.88),step(.93,vUv.y));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
+precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;flat in vec2 vWall;uniform float uWallFade;uniform float uWallPass;out vec4 outColor;
+void main(){bool wall=length(vWall)>.1;float opacity=wall&&uWallFade>.5?.10+.90*smoothstep(-.08,.22,dot(normalize(uEye.xz),normalize(vWall))):1.;if(uPick>.5){if(opacity<.995)discard;outColor=vec4(vObject/255.,0.,0.,1.);return;}if((uWallPass<.5&&opacity<.995)||(uWallPass>.5&&(!wall||opacity>=.995)))discard;if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){vec2 uv=vUv;float t=uTime*.9;col=mix(vec3(.018,.035,.10),vec3(.025,.13,.25),uv.y);vec2 stars=vec2(fract(uv.x+t*.08),uv.y);float star=step(.985,fract(sin(dot(floor(stars*vec2(30.,18.)),vec2(12.989,78.233)))*43758.5));col+=vec3(.5,.7,.8)*star*.65;float py=.5+sin(t*1.6)*.18;vec2 ship=(uv-vec2(.26,py))/vec2(.09,.055);float body=step(abs(ship.y),1.-abs(ship.x)*.75)*step(abs(ship.x),1.);col=mix(col,vec3(.18,.85,.94),body);float flame=step(abs(uv.y-py),.015+sin(t*23.)*.004)*step(.12,uv.x)*step(uv.x,.18);col=mix(col,vec3(1.,.48,.15),flame);for(int j=0;j<3;j++){float x=1.-fract(t*.15+float(j)*.33),y=.28+float(j)*.22+sin(t+float(j))* .055;float enemy=step(abs(uv.x-x),.035)*step(abs(uv.y-y),.027);col=mix(col,vec3(.94,.24,.42),enemy);}float bolt=step(abs(uv.y-py),.006)*step(.33,uv.x)*step(fract((uv.x-t*.8)*4.),.22);col+=vec3(.22,.82,.9)*bolt;float hud=step(.92,uv.y)*step(.04,uv.x)*step(uv.x,.34);col=mix(col,vec3(.18,.83,.65),hud);col=mix(col,vec3(.32,.48,.7),step(uv.y,.035));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,opacity);}`;
 var SHADOW_V = `#version 300 es
-in vec3 aPosition;in float aMaterial;uniform mat4 uVP;out float vSkip;void main(){vSkip=aMaterial;gl_Position=uVP*vec4(aPosition,1.);}`;
+in vec3 aPosition;in float aMaterial;uniform mat4 uVP;in vec2 aWall;out vec2 vShadowWall;out float vSkip;void main(){vShadowWall=aWall;vSkip=aMaterial;gl_Position=uVP*vec4(aPosition,1.);}`;
 var SHADOW_F = `#version 300 es
-precision highp float;in float vSkip;void main(){if(vSkip>5.5&&vSkip<6.5)discard;}`;
+precision highp float;in float vSkip;in vec2 vShadowWall;uniform float uWallFade;uniform vec3 uEye;void main(){if(uWallFade>.5&&length(vShadowWall)>.1&&dot(normalize(uEye.xz),normalize(vShadowWall))<.22)discard;if(vSkip>5.5&&vSkip<6.5)discard;}`;
 var HomePlanRoomScene = class extends i4 {
-  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, _failed: { state: true }, _positions: { state: true } };
-  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:19px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;max-width:44%}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{padding:28px 28px 62px}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
   constructor() {
     super();
     this.mode = "3d";
+    this.wallMode = "auto";
     this.signals = {};
     this._positions = [];
     this.yaw = -0.57;
@@ -1333,20 +1374,24 @@ var HomePlanRoomScene = class extends i4 {
       mesh.box(0, 8e-3, 0, w2, 0.035, d3, "#a7aaa5", 0, 2);
     }
     this._keys = this.scene.hotspots.map((h4) => h4.key);
+    this._wallRanges = [];
     for (const [i7, o7] of this.scene.objects.entries()) {
+      const first = mesh.vertices.length / 15;
+      mesh.wall = o7.wallNormal || [0, 0];
       mesh.objectId = this.editMode ? i7 + 1 : this._keys.indexOf(o7.select || o7.bind) + 1;
       furnish(mesh, o7, this.signals || {}, this.scene);
+      if (o7.wallNormal) this._wallRanges.push({ first, count: mesh.vertices.length / 15 - first, at: o7.at });
     }
     return new Float32Array(mesh.vertices);
   }
   _attributes(program) {
     const gl = this._gl;
     gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
-    for (const [name, size, offset] of [["aPosition", 3, 0], ["aNormal", 3, 12], ["aColor", 3, 24], ["aMaterial", 1, 36], ["aObject", 1, 40], ["aUv", 2, 44]]) {
+    for (const [name, size, offset] of [["aPosition", 3, 0], ["aNormal", 3, 12], ["aColor", 3, 24], ["aMaterial", 1, 36], ["aObject", 1, 40], ["aUv", 2, 44], ["aWall", 2, 52]]) {
       const loc = gl.getAttribLocation(program, name);
       if (loc < 0) continue;
       gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 52, offset);
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 60, offset);
     }
   }
   _draw() {
@@ -1376,12 +1421,16 @@ var HomePlanRoomScene = class extends i4 {
       const vertices = this._geometry();
       gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
       gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-      this._count = vertices.length / 13;
+      this._count = vertices.length / 15;
       this._signature = signature;
       this._shadowDirty = true;
     }
     const span = Math.max(...this.scene.size) * 1.48 / this.zoom, eye = [Math.sin(this.yaw) * 12 * Math.cos(this.pitch), 12 * Math.sin(this.pitch), Math.cos(this.yaw) * 12 * Math.cos(this.pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0])), lp = multiply(ortho(11, 11), lookAt([-3.5, 8, 4.5], [0, 0, 0]));
+    const fade = this.wallMode === "solid" ? 0 : 1;
+    if (this._shadowYaw !== this.yaw || this._shadowFade !== fade) this._shadowDirty = true;
     gl.enable(gl.DEPTH_TEST);
+    gl.depthMask(true);
+    gl.disable(gl.BLEND);
     gl.disable(gl.CULL_FACE);
     if (this._shadowDirty) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
@@ -1390,8 +1439,12 @@ var HomePlanRoomScene = class extends i4 {
       gl.useProgram(this._shadowProgram);
       this._attributes(this._shadowProgram);
       gl.uniformMatrix4fv(gl.getUniformLocation(this._shadowProgram, "uVP"), false, lp);
+      gl.uniform1f(gl.getUniformLocation(this._shadowProgram, "uWallFade"), fade);
+      gl.uniform3fv(gl.getUniformLocation(this._shadowProgram, "uEye"), eye);
       gl.drawArrays(gl.TRIANGLES, 0, this._count);
       this._shadowDirty = false;
+      this._shadowYaw = this.yaw;
+      this._shadowFade = fade;
     }
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -1408,7 +1461,19 @@ var HomePlanRoomScene = class extends i4 {
     gl.uniform1f(gl.getUniformLocation(this._main, "uSelected"), this.editMode ? Number.isInteger(this.selectedObject) ? this.selectedObject + 1 : 0 : this._keys.indexOf(this.activeKey) + 1);
     gl.uniform1f(gl.getUniformLocation(this._main, "uTime"), this._reduced?.matches ? 0 : performance.now() / 1e3);
     gl.uniform3fv(gl.getUniformLocation(this._main, "uEye"), eye);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uWallFade"), fade);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uWallPass"), 0);
     gl.drawArrays(gl.TRIANGLES, 0, this._count);
+    if (fade && this._wallRanges?.length) {
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.depthMask(false);
+      gl.uniform1f(gl.getUniformLocation(this._main, "uWallPass"), 1);
+      const distance = (o7) => o7.at.reduce((sum, v3, i7) => sum + (v3 - eye[i7]) ** 2, 0);
+      for (const range of [...this._wallRanges].sort((a3, b3) => distance(b3) - distance(a3))) gl.drawArrays(gl.TRIANGLES, range.first, range.count);
+      gl.depthMask(true);
+      gl.disable(gl.BLEND);
+    }
     const positions = this.scene.hotspots.map((h4) => {
       const p4 = project(roomAnchor(this.scene, h4), vp);
       return { ...h4, x: (p4[0] + 1) * 50, y: (1 - p4[1]) * 50 };
@@ -1420,7 +1485,7 @@ var HomePlanRoomScene = class extends i4 {
     clearTimeout(this._animationTimer);
     this._animationTimer = 0;
     if (!this.isConnected || this.mode !== "3d" || this._failed || this.editMode || !this._visible || document.visibilityState === "hidden" || this._reduced?.matches) return;
-    if (this.scene.objects.some((o7) => o7.type === "tv" && sceneActive(this.scene, this.signals, o7.bind))) this._animationTimer = setTimeout(() => {
+    if (this.scene.objects.some((o7) => (o7.type === "tv" || o7.type === "monitor" || o7.type === "desk" && o7.screen !== false) && sceneActive(this.scene, this.signals, o7.bind))) this._animationTimer = setTimeout(() => {
       this._animationTimer = 0;
       this._requestDraw();
     }, 100);
@@ -1429,6 +1494,8 @@ var HomePlanRoomScene = class extends i4 {
     const gl = this._gl, canvas = this._canvas;
     if (!gl || !this._main) return;
     const b3 = canvas.getBoundingClientRect();
+    gl.depthMask(true);
+    gl.disable(gl.BLEND);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.useProgram(this._main);
     gl.uniform1f(gl.getUniformLocation(this._main, "uPick"), 1);
@@ -1512,10 +1579,10 @@ var HomePlanRoomScene = class extends i4 {
   }
   _top() {
     const [w2, d3] = this.scene.size;
-    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
+    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
       if (this.editMode) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this.scene.objects.indexOf(o7) }, bubbles: true, composed: true }));
       else if (o7.select || o7.bind) this._select(o7.select || o7.bind);
-    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${-o7.size[2] / 2} width=${o7.size[0]} height=${o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
+    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${o7.type === "wardrobe-inset" ? -0.035 : -o7.size[2] / 2} width=${o7.size[0]} height=${o7.type === "wardrobe-inset" ? 0.07 : o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}<text x="0" y=${d3 / 2 + 0.17} text-anchor="middle">${"Mobilier et volumes reconstitués"}</text></svg>`;
   }
   render() {
     if (!this.scene) return A;
@@ -1529,14 +1596,14 @@ var HomePlanRoomScene = class extends i4 {
       return b2`<button class=${"hotspot " + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @click=${() => this._select(h4.key)} data-scene-hotspot=${h4.key}><ha-icon icon=${h4.icon || "mdi:circle-outline"}></ha-icon><span>${h4.label}</span></button>`;
     }) : A}${this.activeKey && this.mode === "3d" && !this.showMarkers ? b2`<span class="selected-label" role="status">${this.scene.hotspots.find((h4) => h4.key === this.activeKey)?.label}</span>` : A}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
       this.yaw = this.scene.camera?.yaw ?? -0.57;
-      this.pitch = 0.83;
+      this.pitch = this.scene.camera?.pitch ?? 0.83;
       this.zoom = 1;
       this.requestUpdate();
       this._requestDraw();
     }}>↺</button>${this.mode === "3d" && !this._failed ? b2`<button aria-label="Tourner la pièce" @click=${() => {
       this.yaw += Math.PI / 2;
       this._requestDraw();
-    }}>↻</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
+    }}>↻</button><button data-walls aria-pressed=${this.wallMode !== "solid"} aria-label="Transparence automatique des murs" @click=${() => this.wallMode = this.wallMode === "solid" ? "auto" : "solid"}>Murs</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
   }
 };
 if (!customElements.get("home-plan-room-scene")) customElements.define("home-plan-room-scene", HomePlanRoomScene);
@@ -1671,7 +1738,7 @@ var HomePlanRoomEditor = class extends i4 {
 if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.8.0-rc.1";
+var VERSION = "0.9.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
