@@ -131,3 +131,13 @@ Inverse : remettre la carte préservée par l’API Lovelace, rétablir les zone
 Statut d’installation et preuves exactes : `HOME-PLAN-PREVIEW.md` et `evidence/home-plan-native-2026-10-25.json`. Une recette simulée ne prouve ni l’exécution physique des moteurs ni le rendu sur l’iPhone de l’utilisateur.
 
 Sources du retour tactile : [Companion Haptics](https://companion.home-assistant.io/docs/integrations/haptics/), `home-assistant/frontend` `src/data/haptics.ts` blob `55fab84f604a9cea50def54cc30b02d979685a36` et `src/common/dom/fire_event.ts` blob `3fe1f5103a5fde8d304fd538ef20d801ad56d6b4`, lus le 29 octobre 2026. Événement DOM natif documenté, sans nouvelle dépendance.
+
+## Explorer une pièce — 0.7.0-rc.2
+
+Toucher une pièce ou la vignette ouvre une vue dédiée, avec visuel et commandes côte à côte sur grand écran et superposés dans le flux sur mobile. Illustration, photos et cadrage 2D restent accessibles. Une pièce disposant d’un modèle meublé ajoute les vues 2D/3D et des repères qui sélectionnent une commande, sans déclencher l’appareil. Sur mobile, la scène se compacte et reste visible lorsqu’une commande de repère est ouverte. Les commandes existantes, miniatures de volets, haptique et retours natifs sont conservés.
+
+Le plan propose + / − / recentrage (100–300 %), déplacement à la souris ou au doigt après zoom, et un glissement horizontal pour le niveau voisin à 100 %. Le défilement vertical reste disponible à 100 % ; le mode placement conserve ses coordonnées et son glisser-déposer. Les boutons de niveau restent accessibles au clavier.
+
+Modèle privé facultatif par pièce : `scene_url: /local/rooms/example.json`, `scene_entities: {desk: light.example, shutter: cover.example}`. Un `scene` inline équivalent convient aux aperçus hors ligne. Format version 1 : `size: [4, 3.5]`, contour facultatif `outline: [[-2,-1.75],[2,-1.75],[2,1.75],[-2,1.75]]`, `objects: [{type: bed, at: [0,0,0], size: [1.4,1.2,2]}]`, `hotspots: [{key: desk, label: Bureau, icon: mdi:desk-lamp, at: [-1,1,0]}]`. Les coordonnées du modèle utilisent x, hauteur y, profondeur z ; rotation autour de y en degrés. Les dimensions et le mobilier reconstitués visuellement ne constituent pas un relevé coté.
+
+Le renderer WebGL2 est local, sans CDN, dépendance 3D externe, abonnement HA ni boucle de rendu permanente. Il ne dessine qu’au changement de caméra, d’état ou de taille. À la sortie, observateur, frame, buffers, programmes, textures et contexte GPU sont libérés. Le cache de modèles est borné à huit ; les requêtes sont annulées et les réponses tardives ignorées. Sans WebGL2, le plan meublé 2D conserve les commandes. Les pièces sans scène continuent de fonctionner. Les photos, géométries et associations réelles restent hors du dépôt public.
