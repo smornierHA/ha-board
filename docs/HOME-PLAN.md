@@ -180,3 +180,14 @@ Dans **Modifier la carte → niveau → pièce → Pièce 2D / 3D**, choisir **�
 `hotspots[].plan: [x, z]` remplace uniquement l’emplacement de l’icône dans le plan 2D, en mètres. Le meuble et l’ancrage 3D (`object`/`offset` ou `at`) sont conservés. **Replacer sur l’objet** retire cette position manuelle et rétablit le suivi automatique. Les positions sont chargées lors des visites et des éditions suivantes. Le zoom de travail reste conservé pendant le placement ; les drags annulés ne changent pas la configuration et chaque geste garde son identifiant de pointeur. Aucun placement ne commande l’équipement.
 
 **Meubles 2D** conserve les outils de mobilier et **Aperçu 3D** permet d’inspecter le résultat. Un meuble intégré peut employer `wallNormal` pour disparaître entièrement avec le mur depuis l’arrière ; son cadre et ses portes partagent ce masquage.
+
+
+## Lumière et définition — 0.12.0-rc.1
+
+La scène 3D lit le soleil HA (`sun.sun` par défaut, ou champ de pièce `scene_sun_entity`) depuis le snapshot déjà transmis à la carte. L’élévation fait varier jour/crépuscule/nuit ; les volets des fenêtres utilisent leur `current_position` de 0 % fermé à 100 % ouvert, avec repli sur leur état explicite. Un état solaire ou de volet inconnu utilise une ambiance neutre. Les repères 2D restent sur leur fond clair.
+
+La couleur RGB, la température de blanc ou HS et la luminosité des éclairages actifs déterminent des halos locaux sur le sol, les murs et le mobilier. Les objets partageant une même entité forment une seule source ; les repères dépourvus de maillage lumineux peuvent employer leur ancrage 3D. Le champ `plan` de placement 2D ne déplace pas une source lumineuse. Le nombre de sources envoyé au GPU est limité à huit. Le calcul est une approximation de présentation ; il ne remplace pas un relevé de lux et ne calcule pas des ombres séparées pour chaque lampe.
+
+Sur pointeur fin, le dessin utilise 1,5x au minimum, jusqu’à 2,5x suivant la densité de l’écran et un plafond de 2,6 millions de pixels ; les ombres passent à 2048 px. Sur appareil tactile, le plafond reste 2x et 1,2 million de pixels, avec ombres 1024 px. Les limites du GPU sont respectées. Une écoute de changement de densité suit le passage entre écrans ou le zoom du navigateur, puis est retirée au détachement.
+
+Les variations solaires modifient les uniforms sans reconstruire la géométrie. Un éclairage statique n’ajoute aucune boucle de rendu ; les règles de visibilité et la minuterie commune à 10 images/s des écrans animés sont conservées. Aucun service, polling ou abonnement HA supplémentaire. Vérifications locales : `node tests/home-plan-lighting.mjs` et `CHROME_BIN=... node tests/home-plan-ambience.mjs`.

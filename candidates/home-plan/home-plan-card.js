@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.11.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.12.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -879,8 +879,87 @@ function climateIncrement(state, direction, base) {
   return Math.round(Math.min(i7.max, Math.max(i7.min, start + direction * i7.step)) * 1e3) / 1e3;
 }
 
+// src/candidate/home-plan-room-lighting.js
+var clamp = (v3, a3 = 0, b3 = 1) => Math.max(a3, Math.min(b3, v3));
+var finite = (v3) => typeof v3 === "number" && Number.isFinite(v3);
+var mix = (a3, b3, t6) => a3.map((v3, i7) => v3 + (b3[i7] - v3) * t6);
+var smooth = (a3, b3, v3) => {
+  const t6 = clamp((v3 - a3) / (b3 - a3));
+  return t6 * t6 * (3 - 2 * t6);
+};
+function lightLevel(state) {
+  return state?.state === "on" ? finite(state.attributes?.brightness) ? clamp(state.attributes.brightness / 255) : 1 : 0;
+}
+function lightColor(state) {
+  const a3 = state?.attributes || {};
+  if (Array.isArray(a3.rgb_color) && a3.rgb_color.length === 3 && a3.rgb_color.every(finite)) return a3.rgb_color.map((v3) => clamp(v3 / 255));
+  if (finite(a3.color_temp_kelvin)) return mix([1, 0.6, 0.31], [0.78, 0.87, 1], clamp((a3.color_temp_kelvin - 2e3) / 4500));
+  if (Array.isArray(a3.hs_color) && a3.hs_color.length === 2 && a3.hs_color.every(finite)) {
+    const h4 = (a3.hs_color[0] % 360 + 360) % 360 / 60, s5 = clamp(a3.hs_color[1] / 100), x2 = 1 - Math.abs(h4 % 2 - 1), rgb = h4 < 1 ? [1, x2, 0] : h4 < 2 ? [x2, 1, 0] : h4 < 3 ? [0, 1, x2] : h4 < 4 ? [0, x2, 1] : h4 < 5 ? [x2, 0, 1] : [1, 0, x2];
+    return rgb.map((v3) => 1 - s5 + s5 * v3);
+  }
+  return [1, 0.87, 0.68];
+}
+function coverOpening(state) {
+  if (!state || ["unknown", "unavailable"].includes(state.state)) return null;
+  const p4 = state.attributes?.current_position;
+  if (finite(p4) && p4 >= 0 && p4 <= 100) return p4 / 100;
+  return state.state === "closed" ? 0 : state.state === "open" ? 1 : null;
+}
+function solarDaylight(sun) {
+  if (!sun || !["above_horizon", "below_horizon"].includes(sun.state)) return { known: false, level: 0.55, label: "Ambiance" };
+  const elevation = sun.attributes?.elevation, level = finite(elevation) ? smooth(-6, 12, elevation) : sun.state === "above_horizon" ? 1 : 0;
+  return { known: true, level, label: level < 0.08 ? "Nuit" : level < 0.8 ? "Crépuscule" : "Jour" };
+}
+function worldPoint(o7, offset) {
+  const angle = (o7.rotation || 0) * Math.PI / 180;
+  return [o7.at[0] + offset[0] * Math.cos(angle) + offset[2] * Math.sin(angle), o7.at[1] + offset[1], o7.at[2] - offset[0] * Math.sin(angle) + offset[2] * Math.cos(angle)];
+}
+var TYPES = /* @__PURE__ */ new Set(["ring", "lamp", "lines", "blocks", "backlight", "desk"]);
+function roomLighting(scene, signals = {}, environment = {}) {
+  const solar = solarDaylight(environment.sun), windows = scene.objects.filter((o7) => o7.type === "window");
+  let area = 0, transmission = 0;
+  const daylight = [];
+  for (const o7 of windows) {
+    const weight = o7.size[0] * o7.size[1], opening2 = o7.cover ? coverOpening(signals[o7.cover]) : 1, pass = opening2 ?? 0.55;
+    area += weight;
+    transmission += pass * weight;
+    daylight.push({ key: "window", kind: "daylight", at: worldPoint(o7, [0, 0, 0.2]), rgb: [1, 0.94, 0.81], intensity: solar.level * pass * 0.72, radius: Math.max(...scene.size) * 0.9 });
+  }
+  const opening = area ? transmission / area : 1, admitted = solar.level * (0.1 + 0.9 * opening), ambientStrength = 0.23 + 0.38 * admitted;
+  const ambient = mix([0.61, 0.72, 1], [1, 0.98, 0.94], solar.level).map((v3) => v3 * ambientStrength), direct = 0.065 + 0.32 * solar.level * opening;
+  const grouped = /* @__PURE__ */ new Map();
+  for (const o7 of scene.objects) {
+    if (!o7.bind || !TYPES.has(o7.type)) continue;
+    const s5 = signals[o7.bind];
+    if (s5?.entity_id && !s5.entity_id.startsWith("light.")) continue;
+    if (!lightLevel(s5)) continue;
+    const offset = o7.type === "lamp" ? [0, 0.44, -0.05] : o7.type === "desk" ? [0, 0.9, 0] : [0, 0, 0.09], at = worldPoint(o7, offset), profile = o7.type === "ring" ? { radius: 3.2, power: 1.45 } : o7.type === "lamp" || o7.type === "desk" ? { radius: 2.2, power: 1.1 } : { radius: 1.9, power: 1 };
+    const group = grouped.get(o7.bind);
+    if (group) {
+      group.points.push(at);
+      group.radius = Math.max(group.radius, profile.radius);
+      group.power = Math.max(group.power, profile.power);
+    } else grouped.set(o7.bind, { points: [at], ...profile });
+  }
+  for (const h4 of scene.hotspots) {
+    const s5 = signals[h4.key];
+    if (grouped.has(h4.key) || !s5?.entity_id?.startsWith("light.") || !lightLevel(s5)) continue;
+    const o7 = h4.object && scene.objects.find((o8) => o8.id === h4.object), at = o7 ? worldPoint(o7, h4.offset || [0, 0, 0]) : h4.at;
+    grouped.set(h4.key, { points: [at], radius: 2.1, power: 0.85 });
+  }
+  const lamps = [...grouped].map(([key, g2]) => ({ key, kind: "lamp", at: g2.points[0].map((_2, i7) => g2.points.reduce((sum, p4) => sum + p4[i7], 0) / g2.points.length), rgb: lightColor(signals[key]), radius: g2.radius, intensity: g2.power * lightLevel(signals[key]) ** 0.85 * (1 + 0.65 * (1 - admitted)) }));
+  const sources = [...daylight.filter((s5) => s5.intensity > 1e-3).slice(0, 2), ...lamps.sort((a3, b3) => b3.intensity - a3.intensity)].slice(0, 8);
+  const background = mix([21, 32, 49], [232, 232, 224], clamp(admitted * 0.88 + lamps.reduce((sum, l3) => sum + l3.intensity, 0) * 0.045));
+  return { daylight: solar.level, opening, label: solar.label, solarKnown: solar.known, ambient, direct, sources, background: background.map(Math.round) };
+}
+function roomRenderSize(width, height, dpr = 1, fine = false, maxSize = 4096) {
+  const pixels = fine ? 26e5 : 12e5, target = fine ? Math.max(1.5, Math.min(dpr * 1.25, 2.5)) : Math.min(dpr, 2), ratio = Math.min(target, Math.sqrt(pixels / Math.max(1, width * height)), maxSize / Math.max(1, width, height));
+  return { width: Math.max(1, Math.floor(width * ratio)), height: Math.max(1, Math.floor(height * ratio)), ratio, shadowSize: Math.min(fine ? 2048 : 1024, maxSize) };
+}
+
 // src/candidate/home-plan-room-scene.js
-var clamp = (v3, a3, b3) => Math.max(a3, Math.min(b3, v3));
+var clamp2 = (v3, a3, b3) => Math.max(a3, Math.min(b3, v3));
 var hex = (h4) => /^#[0-9a-f]{6}$/i.test(h4 || "") ? [1, 3, 5].map((i7) => parseInt(h4.slice(i7, i7 + 2), 16) / 255) : [0.8, 0.8, 0.8];
 var sub = (a3, b3) => a3.map((v3, i7) => v3 - b3[i7]);
 var dot = (a3, b3) => a3.reduce((s5, v3, i7) => s5 + v3 * b3[i7], 0);
@@ -1022,7 +1101,7 @@ var Mesh = class {
         raw[axis] = sign * half[axis];
         raw[a3] = (u5 * 2 - 1) * half[a3];
         raw[b3] = (v3 * 2 - 1) * half[b3];
-        const inner = raw.map((x3, k2) => clamp(x3, -half[k2] + r4, half[k2] - r4)), n5 = norm(sub(raw, inner));
+        const inner = raw.map((x3, k2) => clamp2(x3, -half[k2] + r4, half[k2] - r4)), n5 = norm(sub(raw, inner));
         return { p: inner.map((x3, k2) => x3 + n5[k2] * r4 + center[k2]), n: n5 };
       };
       const p4 = [point(i7 / steps, j2 / steps), point((i7 + 1) / steps, j2 / steps), point((i7 + 1) / steps, (j2 + 1) / steps), point(i7 / steps, (j2 + 1) / steps)];
@@ -1037,15 +1116,15 @@ var Mesh = class {
       this.face([x2, y3 - h4 / 2, z2], pb, pa, [x2, y3 - h4 / 2, z2], color);
     }
   }
-  ring(x2, y3, z2, r4, t6, color) {
+  ring(x2, y3, z2, r4, t6, color, material = 0) {
     for (let i7 = 0; i7 < 48; i7++) {
       const a3 = i7 / 48 * Math.PI * 2, b3 = (i7 + 1) / 48 * Math.PI * 2;
-      this.face([x2 + Math.cos(a3) * (r4 - t6), y3, z2 + Math.sin(a3) * (r4 - t6)], [x2 + Math.cos(a3) * r4, y3, z2 + Math.sin(a3) * r4], [x2 + Math.cos(b3) * r4, y3, z2 + Math.sin(b3) * r4], [x2 + Math.cos(b3) * (r4 - t6), y3, z2 + Math.sin(b3) * (r4 - t6)], color, 1);
+      this.face([x2 + Math.cos(a3) * (r4 - t6), y3, z2 + Math.sin(a3) * (r4 - t6)], [x2 + Math.cos(a3) * r4, y3, z2 + Math.sin(a3) * r4], [x2 + Math.cos(b3) * r4, y3, z2 + Math.sin(b3) * r4], [x2 + Math.cos(b3) * (r4 - t6), y3, z2 + Math.sin(b3) * (r4 - t6)], color, material);
     }
   }
 };
 function furnish(mesh, o7, signals, scene) {
-  const [w2, h4, d3] = o7.size, c5 = o7.color || "#ddd9d1", s5 = signals[o7.bind], on = sceneActive(scene, signals, o7.bind), glow = on ? s5?.attributes?.rgb_color ? "#" + s5.attributes.rgb_color.map((v3) => clamp(Math.round(v3), 0, 255).toString(16).padStart(2, "0")).join("") : "#78dcca" : "#9da4a3";
+  const [w2, h4, d3] = o7.size, c5 = o7.color || "#ddd9d1", s5 = signals[o7.bind], on = sceneActive(scene, signals, o7.bind), glow = on ? "#" + lightColor(s5).map((v3) => Math.round(clamp2(v3 * (0.35 + 0.65 * lightLevel(s5)), 0, 1) * 255).toString(16).padStart(2, "0")).join("") : "#9da4a3";
   mesh.origin = o7.at;
   mesh.angle = (o7.rotation || 0) * Math.PI / 180;
   const box = (x2, y3, z2, ww, hh, dd, cc = c5, r4 = 0, mat = 0) => mesh.box(x2, y3, z2, ww, hh, dd, cc, r4, mat);
@@ -1129,7 +1208,7 @@ function furnish(mesh, o7, signals, scene) {
     const frameId = mesh.objectId;
     if (!mesh.editMode) mesh.objectId = scene.hotspots.findIndex((h5) => h5.key === o7.cover) + 1;
     box(0, h4 / 2 + 0.055, 0.04, w2 + 0.13, 0.11, 0.18, "#eae9e0", 0.016);
-    const pos = signals[o7.cover]?.attributes?.current_position, closed = typeof pos === "number" ? (100 - clamp(pos, 0, 100)) / 100 : 0;
+    const pos = signals[o7.cover]?.attributes?.current_position, closed = typeof pos === "number" ? (100 - clamp2(pos, 0, 100)) / 100 : 0;
     if (closed > 0) {
       box(0, h4 / 2 - h4 * closed / 2, 0.072, w2 - 0.09, h4 * closed, 0.025, "#b0b4ae");
       for (let j2 = 0; j2 < Math.floor(h4 * closed / 0.065); j2++) box(0, h4 / 2 - j2 * 0.065, 0.089, w2 - 0.1, 8e-3, 8e-3, "#909995");
@@ -1160,7 +1239,7 @@ function furnish(mesh, o7, signals, scene) {
       for (const [x2, y3, pw, ph] of o7.panels) box(x2, y3, 0.025, pw, ph, 0.045, on ? glow : "#eeede7", 0.015, on ? 1 : 0);
     } else for (let i7 = 0; i7 < 4; i7++) box((i7 % 2 - 0.5) * w2 * 0.48, (Math.floor(i7 / 2) - 0.5) * h4 * 0.48, 0.03, w2 * 0.45, h4 * 0.45, 0.05, glow, 0.018, on ? 1 : 0);
   } else if (o7.type === "ring") {
-    mesh.ring(0, 0, 0, w2 / 2, 0.025, "#f1e9cf");
+    mesh.ring(0, 0, 0, w2 / 2, 0.025, on ? glow : "#dedacb", on ? 1 : 0);
     mesh.cylinder(0, 0.23, 0, 9e-3, 0.46, "#626b6a");
   } else if (o7.type === "collection") {
     for (let level = 0; level < 2; level++) for (let i7 = 0; i7 < 8; i7++) {
@@ -1196,20 +1275,21 @@ function furnish(mesh, o7, signals, scene) {
 var VERT = `#version 300 es
 in vec3 aPosition;in vec3 aNormal;in vec3 aColor;in float aMaterial;in float aObject;in vec2 aUv;in vec2 aWall;uniform mat4 uVP;uniform mat4 uLight;out vec3 vNormal;out vec3 vColor;out vec3 vWorld;out vec4 vShadow;out float vMaterial;flat out float vObject;out vec2 vUv;flat out vec2 vWall;void main(){vWorld=aPosition;vNormal=aNormal;vColor=aColor;vMaterial=aMaterial;vObject=aObject;vUv=aUv;vWall=aWall;vShadow=uLight*vec4(aPosition,1.);gl_Position=uVP*vec4(aPosition,1.);}`;
 var FRAG = `#version 300 es
-precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;flat in vec2 vWall;uniform float uWallFade;out vec4 outColor;
-void main(){if(length(vWall)>.1&&uWallFade>.5&&dot(normalize(uEye.xz),normalize(vWall))<.22)discard;if(uPick>.5){outColor=vec4(vObject/255.,0.,0.,1.);return;}if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)/1024.).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(.66+.39*diffuse*(1.-shade*.65));if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){vec2 uv=vUv;float t=uTime*.9;col=mix(vec3(.018,.035,.10),vec3(.025,.13,.25),uv.y);vec2 stars=vec2(fract(uv.x+t*.08),uv.y);float star=step(.985,fract(sin(dot(floor(stars*vec2(30.,18.)),vec2(12.989,78.233)))*43758.5));col+=vec3(.5,.7,.8)*star*.65;float py=.5+sin(t*1.6)*.18;vec2 ship=(uv-vec2(.26,py))/vec2(.09,.055);float body=step(abs(ship.y),1.-abs(ship.x)*.75)*step(abs(ship.x),1.);col=mix(col,vec3(.18,.85,.94),body);float flame=step(abs(uv.y-py),.015+sin(t*23.)*.004)*step(.12,uv.x)*step(uv.x,.18);col=mix(col,vec3(1.,.48,.15),flame);for(int j=0;j<3;j++){float x=1.-fract(t*.15+float(j)*.33),y=.28+float(j)*.22+sin(t+float(j))* .055;float enemy=step(abs(uv.x-x),.035)*step(abs(uv.y-y),.027);col=mix(col,vec3(.94,.24,.42),enemy);}float bolt=step(abs(uv.y-py),.006)*step(.33,uv.x)*step(fract((uv.x-t*.8)*4.),.22);col+=vec3(.22,.82,.9)*bolt;float hud=step(.92,uv.y)*step(.04,uv.x)*step(uv.x,.34);col=mix(col,vec3(.18,.83,.65),hud);col=mix(col,vec3(.32,.48,.7),step(uv.y,.035));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
+precision highp float;in vec3 vNormal;in vec3 vColor;in vec3 vWorld;in vec4 vShadow;in float vMaterial;uniform sampler2D uShadow;uniform float uPick;uniform float uSelected;uniform float uTime;uniform vec3 uEye;flat in float vObject;in vec2 vUv;flat in vec2 vWall;uniform float uWallFade;uniform vec3 uAmbient;uniform float uDirect;uniform float uShadowTexel;uniform int uLampCount;uniform vec4 uLampPosition[8];uniform vec4 uLampColor[8];out vec4 outColor;
+void main(){if(length(vWall)>.1&&uWallFade>.5&&dot(normalize(uEye.xz),normalize(vWall))<.22)discard;if(uPick>.5){outColor=vec4(vObject/255.,0.,0.,1.);return;}if(vMaterial>5.5&&vMaterial<6.5)discard;vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-3.5,8.,4.5));float diffuse=max(dot(n,light),0.);vec3 q=vShadow.xyz/vShadow.w*.5+.5;float shade=0.;float bias=max(.0014*(1.-diffuse),.0005);for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++){float depth=texture(uShadow,q.xy+vec2(x,y)*uShadowTexel).r;shade+=(q.z-bias>depth?1.:0.);};shade/=9.;if(q.z>1.||q.x<0.||q.x>1.||q.y<0.||q.y>1.)shade=0.;vec3 base=vColor;if(vMaterial>1.5&&vMaterial<2.5){float plank=floor(vWorld.x/.16);float joint=step(.97,fract(vWorld.x/.16));float grain=sin(vWorld.z*21.+sin(vWorld.x*38.)*2.)*.009;float stagger=step(.987,fract((vWorld.z+mod(plank,3.)*.62)/1.8));base*=.94+.06*fract(sin(plank*12.98)*43758.5)+grain-joint*.12-stagger*.13;}if(vMaterial>2.5){base*=.98+sin(vWorld.x*42.+vWorld.z*27.)*.012;}vec3 col=base*(uAmbient+vec3(uDirect*diffuse*(1.-shade*.65)));for(int i=0;i<8;i++){if(i>=uLampCount)break;vec3 delta=uLampPosition[i].xyz-vWorld;float dist2=dot(delta,delta);float radius=uLampPosition[i].w;float falloff=1./(1.+dist2/(radius*radius));float facing=max(dot(n,normalize(delta+vec3(0.,.001,0.))),0.);float pool=(.13+.87*facing)*falloff*falloff;col+=base*uLampColor[i].rgb*uLampColor[i].w*pool*.72;}col=col/(vec3(1.)+max(col-vec3(.8),vec3(0.))*.35);if(vMaterial>.5&&vMaterial<1.5)col=base*1.22;if(vMaterial>3.5&&vMaterial<4.5){vec2 uv=vUv;float t=uTime*.7;vec2 q=(uv-vec2(.5,.52))*vec2(1.,.8);float rays=pow(max(0.,sin(atan(q.y,q.x)*28.+length(q)*18.-t*4.)),15.);col=mix(vec3(.08,.13,.32),vec3(.23,.42,.66),uv.y)+rays*.36;vec2 face=(uv-vec2(.51+sin(t)*.025,.48))/vec2(.23,.48);float head=1.-smoothstep(.9,1.,length(face));col=mix(col,vec3(.87,.68,.51),head);float hair=step(.68,uv.y)*step(abs(uv.x-.51),.27)+step(.62+sin(uv.x*48.)*.04,uv.y)*step(abs(uv.x-.51),.22);col=mix(col,vec3(.09,.16,.22),min(1.,hair));for(int side=-1;side<=1;side+=2){vec2 e=(uv-vec2(.51+float(side)*.1,.53))/vec2(.08,.025);float eye=1.-smoothstep(.8,1.,length(e));col=mix(col,vec3(.95,.97,.9),eye);float pupil=1.-smoothstep(.013,.021,length(uv-vec2(.51+float(side)*.1+sin(t)*.008,.53)));col=mix(col,vec3(.02,.24,.31),pupil);}float flash=pow(max(0.,sin((uv.x+uv.y)*31.-t*3.)),24.);col+=vec3(.3,.29,.16)*flash*.25;}else if(vMaterial>4.5&&vMaterial<5.5){vec2 uv=vUv;float t=uTime*.9;col=mix(vec3(.018,.035,.10),vec3(.025,.13,.25),uv.y);vec2 stars=vec2(fract(uv.x+t*.08),uv.y);float star=step(.985,fract(sin(dot(floor(stars*vec2(30.,18.)),vec2(12.989,78.233)))*43758.5));col+=vec3(.5,.7,.8)*star*.65;float py=.5+sin(t*1.6)*.18;vec2 ship=(uv-vec2(.26,py))/vec2(.09,.055);float body=step(abs(ship.y),1.-abs(ship.x)*.75)*step(abs(ship.x),1.);col=mix(col,vec3(.18,.85,.94),body);float flame=step(abs(uv.y-py),.015+sin(t*23.)*.004)*step(.12,uv.x)*step(uv.x,.18);col=mix(col,vec3(1.,.48,.15),flame);for(int j=0;j<3;j++){float x=1.-fract(t*.15+float(j)*.33),y=.28+float(j)*.22+sin(t+float(j))* .055;float enemy=step(abs(uv.x-x),.035)*step(abs(uv.y-y),.027);col=mix(col,vec3(.94,.24,.42),enemy);}float bolt=step(abs(uv.y-py),.006)*step(.33,uv.x)*step(fract((uv.x-t*.8)*4.),.22);col+=vec3(.22,.82,.9)*bolt;float hud=step(.92,uv.y)*step(.04,uv.x)*step(uv.x,.34);col=mix(col,vec3(.18,.83,.65),hud);col=mix(col,vec3(.32,.48,.7),step(uv.y,.035));}if(uSelected>.5&&abs(vObject-uSelected)<.1){float rim=pow(1.-abs(dot(n,normalize(uEye-vWorld))),2.);col=mix(col,vec3(.18,.59,.92),.3)+vec3(.09,.23,.35)*rim;}col=mix(col,vec3(.91,.9,.86),.025);outColor=vec4(col,1.);}`;
 var SHADOW_V = `#version 300 es
 in vec3 aPosition;in float aMaterial;uniform mat4 uVP;in vec2 aWall;out vec2 vShadowWall;out float vSkip;void main(){vShadowWall=aWall;vSkip=aMaterial;gl_Position=uVP*vec4(aPosition,1.);}`;
 var SHADOW_F = `#version 300 es
 precision highp float;in float vSkip;in vec2 vShadowWall;uniform float uWallFade;uniform vec3 uEye;void main(){if(uWallFade>.5&&length(vShadowWall)>.1&&dot(normalize(uEye.xz),normalize(vShadowWall))<.22)discard;if(vSkip>5.5&&vSkip<6.5)discard;}`;
 var HomePlanRoomScene = class extends i4 {
-  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, editMarkers: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
-  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;width:100%;box-sizing:border-box;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot.editing{touch-action:none;cursor:grab}.hotspot.editing:active{cursor:grabbing}.hotspot.editing.selected{z-index:5}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{box-sizing:border-box;padding:62px 14px 22px}.stage.is-2d .tools{top:9px;right:9px;left:auto;bottom:auto}.stage.is-2d .hint{bottom:6px;left:14px;right:14px;max-width:none;text-align:center}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage.is-3d{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  static properties = { scene: {}, signals: {}, environment: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, editMarkers: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;width:100%;box-sizing:border-box;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:var(--scene-caption,#627078);font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot.editing{touch-action:none;cursor:grab}.hotspot.editing:active{cursor:grabbing}.hotspot.editing.selected{z-index:5}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:var(--scene-caption,#65747a)}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{box-sizing:border-box;padding:62px 14px 22px}.stage.is-2d .tools{top:9px;right:9px;left:auto;bottom:auto}.stage.is-2d .hint{bottom:6px;left:14px;right:14px;max-width:none;text-align:center}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage.is-3d{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
   constructor() {
     super();
     this.mode = "3d";
     this.wallMode = "auto";
     this.signals = {};
+    this.environment = {};
     this._positions = [];
     this.yaw = -0.57;
     this.pitch = 0.83;
@@ -1220,6 +1300,10 @@ var HomePlanRoomScene = class extends i4 {
     this._visible = true;
     this._visibility = () => this._requestDraw();
     this._motion = () => this._requestDraw();
+    this._resolutionChange = () => {
+      this._watchResolution();
+      this._requestDraw();
+    };
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1234,6 +1318,7 @@ var HomePlanRoomScene = class extends i4 {
         this._intersection.observe(this);
       }
     });
+    this._watchResolution();
     document.addEventListener("visibilitychange", this._visibility);
     this._reduced = matchMedia("(prefers-reduced-motion: reduce)");
     this._reduced.addEventListener("change", this._motion);
@@ -1246,6 +1331,8 @@ var HomePlanRoomScene = class extends i4 {
     this._intersection?.disconnect();
     document.removeEventListener("visibilitychange", this._visibility);
     this._reduced?.removeEventListener("change", this._motion);
+    this._resolution?.removeEventListener("change", this._resolutionChange);
+    this._resolution = null;
   }
   updated(changed) {
     if (changed.has("scene")) {
@@ -1269,6 +1356,11 @@ var HomePlanRoomScene = class extends i4 {
     if (changed.has("_failed") && this._failed) this.zoom = 1;
     if (this.mode === "3d") this._init();
     this._requestDraw();
+  }
+  _watchResolution() {
+    this._resolution?.removeEventListener("change", this._resolutionChange);
+    this._resolution = matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`);
+    this._resolution.addEventListener("change", this._resolutionChange);
   }
   _program(vs, fs) {
     const gl = this._gl;
@@ -1316,9 +1408,11 @@ var HomePlanRoomScene = class extends i4 {
       this._main = this._program(VERT, FRAG);
       this._shadowProgram = this._program(SHADOW_V, SHADOW_F);
       this._buffer = gl.createBuffer();
+      this._renderLimit = Math.min(4096, gl.getParameter(gl.MAX_TEXTURE_SIZE), gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
+      this._shadowSize = roomRenderSize(1, 1, window.devicePixelRatio || 1, matchMedia("(pointer:fine)").matches, this._renderLimit).shadowSize;
       this._depth = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this._depth);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, 1024, 1024, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, this._shadowSize, this._shadowSize, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -1424,8 +1518,9 @@ var HomePlanRoomScene = class extends i4 {
     if (!gl) return;
     const canvas = this._canvas, box = canvas.getBoundingClientRect();
     if (!box.width || !box.height) return;
-    const ratio = Math.min(2, window.devicePixelRatio || 1);
-    const cw = Math.round(box.width * ratio), ch = Math.round(box.height * ratio);
+    const quality = roomRenderSize(box.width, box.height, window.devicePixelRatio || 1, matchMedia("(pointer:fine)").matches, this._renderLimit);
+    this._quality = quality;
+    const cw = quality.width, ch = quality.height;
     if (canvas.width !== cw || canvas.height !== ch) {
       canvas.width = cw;
       canvas.height = ch;
@@ -1448,7 +1543,7 @@ var HomePlanRoomScene = class extends i4 {
     gl.disable(gl.CULL_FACE);
     if (this._shadowDirty) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this._fb);
-      gl.viewport(0, 0, 1024, 1024);
+      gl.viewport(0, 0, this._shadowSize, this._shadowSize);
       gl.clear(gl.DEPTH_BUFFER_BIT);
       gl.useProgram(this._shadowProgram);
       this._attributes(this._shadowProgram);
@@ -1471,6 +1566,19 @@ var HomePlanRoomScene = class extends i4 {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this._depth);
     gl.uniform1i(gl.getUniformLocation(this._main, "uShadow"), 0);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uShadowTexel"), 1 / this._shadowSize);
+    const lighting = roomLighting(this.scene, this.signals, this.environment);
+    this._lighting = lighting;
+    gl.uniform3fv(gl.getUniformLocation(this._main, "uAmbient"), lighting.ambient);
+    gl.uniform1f(gl.getUniformLocation(this._main, "uDirect"), lighting.direct);
+    gl.uniform1i(gl.getUniformLocation(this._main, "uLampCount"), lighting.sources.length);
+    const lampPositions = new Float32Array(32), lampColors = new Float32Array(32);
+    lighting.sources.forEach((s5, i7) => {
+      lampPositions.set([...s5.at, s5.radius], i7 * 4);
+      lampColors.set([...s5.rgb, s5.intensity], i7 * 4);
+    });
+    gl.uniform4fv(gl.getUniformLocation(this._main, "uLampPosition[0]"), lampPositions);
+    gl.uniform4fv(gl.getUniformLocation(this._main, "uLampColor[0]"), lampColors);
     gl.uniform1f(gl.getUniformLocation(this._main, "uPick"), 0);
     gl.uniform1f(gl.getUniformLocation(this._main, "uSelected"), this.editMode ? Number.isInteger(this.selectedObject) ? this.selectedObject + 1 : 0 : this._keys.indexOf(this.activeKey) + 1);
     gl.uniform1f(gl.getUniformLocation(this._main, "uTime"), this._reduced?.matches ? 0 : performance.now() / 1e3);
@@ -1504,7 +1612,7 @@ var HomePlanRoomScene = class extends i4 {
     gl.uniform1f(gl.getUniformLocation(this._main, "uPick"), 1);
     gl.drawArrays(gl.TRIANGLES, 0, this._count);
     const pixel = new Uint8Array(4);
-    gl.readPixels(clamp(Math.floor((x2 - b3.left) / b3.width * canvas.width), 0, canvas.width - 1), clamp(Math.floor((b3.bottom - y3) / b3.height * canvas.height), 0, canvas.height - 1), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+    gl.readPixels(clamp2(Math.floor((x2 - b3.left) / b3.width * canvas.width), 0, canvas.width - 1), clamp2(Math.floor((b3.bottom - y3) / b3.height * canvas.height), 0, canvas.height - 1), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
     this._draw();
     const id = pixel[0];
     if (this.editMode) {
@@ -1527,11 +1635,11 @@ var HomePlanRoomScene = class extends i4 {
     this._pointers.set(e6.pointerId, { x: e6.clientX, y: e6.clientY });
     if (this._pointers.size === 2) {
       const [a3, b3] = [...this._pointers.values()], distance = Math.hypot(a3.x - b3.x, a3.y - b3.y);
-      if (this._lastDistance) this.zoom = clamp(this.zoom * distance / this._lastDistance, 0.7, 2.6);
+      if (this._lastDistance) this.zoom = clamp2(this.zoom * distance / this._lastDistance, 0.7, 2.6);
       this._lastDistance = distance;
     } else {
       this.yaw += (e6.clientX - old.x) * 9e-3;
-      this.pitch = clamp(this.pitch + (e6.clientY - old.y) * 5e-3, 0.35, 1.35);
+      this.pitch = clamp2(this.pitch + (e6.clientY - old.y) * 5e-3, 0.35, 1.35);
     }
     this._requestDraw();
   }
@@ -1545,7 +1653,7 @@ var HomePlanRoomScene = class extends i4 {
     return this.mode === "3d" && !this._failed ? this.scene?.camera?.zoom ?? 1.12 : 1;
   }
   _zoom(delta) {
-    this.zoom = clamp(this.zoom + delta, 0.7, 2.6);
+    this.zoom = clamp2(this.zoom + delta, 0.7, 2.6);
     this.requestUpdate();
     this._requestDraw();
   }
@@ -1564,7 +1672,7 @@ var HomePlanRoomScene = class extends i4 {
   _objectMove(e6) {
     const drag = this._objectDrag;
     if (!drag) return;
-    const start = drag.start.matrixTransform(drag.matrix), end = new DOMPoint(e6.clientX, e6.clientY).matrixTransform(drag.matrix), x2 = clamp(drag.o.at[0] + end.x - start.x, -this.scene.size[0] / 2, this.scene.size[0] / 2), z2 = clamp(drag.o.at[2] + end.y - start.y, -this.scene.size[1] / 2, this.scene.size[1] / 2);
+    const start = drag.start.matrixTransform(drag.matrix), end = new DOMPoint(e6.clientX, e6.clientY).matrixTransform(drag.matrix), x2 = clamp2(drag.o.at[0] + end.x - start.x, -this.scene.size[0] / 2, this.scene.size[0] / 2), z2 = clamp2(drag.o.at[2] + end.y - start.y, -this.scene.size[1] / 2, this.scene.size[1] / 2);
     drag.point = [Math.round(x2 * 100) / 100, drag.o.at[1], Math.round(z2 * 100) / 100];
     drag.el.setAttribute("transform", `translate(${x2} ${z2}) rotate(${-(drag.o.rotation || 0)})`);
   }
@@ -1603,10 +1711,10 @@ var HomePlanRoomScene = class extends i4 {
     if (Math.hypot(e6.clientX - d3.start.x, e6.clientY - d3.start.y) < 3 && !d3.moved) return;
     d3.moved = true;
     const a3 = d3.start.matrixTransform(d3.matrix), b3 = new DOMPoint(e6.clientX, e6.clientY).matrixTransform(d3.matrix);
-    d3.plan = [clamp(d3.origin[0] + b3.x - a3.x, -this.scene.size[0] / 2 - 0.15, this.scene.size[0] / 2 + 0.15), clamp(d3.origin[1] + b3.y - a3.y, -this.scene.size[1] / 2 - 0.15, this.scene.size[1] / 2 + 0.15)].map((v3) => Math.round(v3 * 100) / 100);
+    d3.plan = [clamp2(d3.origin[0] + b3.x - a3.x, -this.scene.size[0] / 2 - 0.15, this.scene.size[0] / 2 + 0.15), clamp2(d3.origin[1] + b3.y - a3.y, -this.scene.size[1] / 2 - 0.15, this.scene.size[1] / 2 + 0.15)].map((v3) => Math.round(v3 * 100) / 100);
     const p4 = new DOMPoint(...d3.plan).matrixTransform(d3.screen), r4 = this.renderRoot.querySelector(".stage").getBoundingClientRect();
-    d3.el.style.left = clamp((p4.x - r4.x) / r4.width * 100, 5, 95) + "%";
-    d3.el.style.top = clamp((p4.y - r4.y) / r4.height * 100, 8, 87) + "%";
+    d3.el.style.left = clamp2((p4.x - r4.x) / r4.width * 100, 5, 95) + "%";
+    d3.el.style.top = clamp2((p4.y - r4.y) / r4.height * 100, 8, 87) + "%";
   }
   _markerUp(e6, cancel = false) {
     const d3 = this._markerDrag;
@@ -1636,14 +1744,15 @@ var HomePlanRoomScene = class extends i4 {
   }
   render() {
     if (!this.scene) return A;
-    return b2`<div class=${"stage " + (this.mode === "3d" && !this._failed ? "is-3d" : "is-2d")} @pointerdown=${this._down} @pointermove=${this._move} @pointerup=${this._up} @pointercancel=${this._up} @wheel=${(e6) => {
+    const lighting = roomLighting(this.scene, this.signals, this.environment), bg = lighting.background;
+    return b2`<div style=${this.mode === "3d" && !this._failed ? `background:radial-gradient(ellipse at 50% 35%,rgb(${bg.map((v3) => Math.min(255, v3 + 18)).join(",")}),rgb(${bg.join(",")}));--scene-caption:${bg[0] < 120 ? "#d6e2ef" : "#405563"}` : A} class=${"stage " + (this.mode === "3d" && !this._failed ? "is-3d" : "is-2d")} @pointerdown=${this._down} @pointermove=${this._move} @pointerup=${this._up} @pointercancel=${this._up} @wheel=${(e6) => {
       if (e6.ctrlKey) {
         e6.preventDefault();
         this._zoom(e6.deltaY > 0 ? -0.08 : 0.08);
       }
-    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${(this.mode === "2d" || this._failed || this.showMarkers) && !this.editMode || this.mode === "2d" && this.editMode && this.editMarkers ? this._positions.map((h4) => {
+    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · " + lighting.label.toUpperCase()}</span>${(this.mode === "2d" || this._failed || this.showMarkers) && !this.editMode || this.mode === "2d" && this.editMode && this.editMarkers ? this._positions.map((h4) => {
       const s5 = this.signals?.[h4.key], on = ["on", "playing", "heat"].includes(s5?.state);
-      return b2`<button class=${"hotspot " + (this.editMarkers ? "editing " : "") + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @pointerdown=${(e6) => this._markerDown(e6, h4)} @pointermove=${this._markerMove} @pointerup=${this._markerUp} @pointercancel=${(e6) => this._markerUp(e6, true)} @keydown=${(e6) => this._markerKey(e6, h4)} @click=${(e6) => {
+      return b2`<button class=${"hotspot " + (this.editMarkers ? "editing " : "") + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp2(h4.x, 5, 95)}%;top:${clamp2(h4.y, 8, 87)}%`} aria-label=${h4.label} @pointerdown=${(e6) => this._markerDown(e6, h4)} @pointermove=${this._markerMove} @pointerup=${this._markerUp} @pointercancel=${(e6) => this._markerUp(e6, true)} @keydown=${(e6) => this._markerKey(e6, h4)} @click=${(e6) => {
         if (this.editMode) {
           e6.stopPropagation();
           this._markerSelected(h4.key);
@@ -1801,7 +1910,7 @@ var HomePlanRoomEditor = class extends i4 {
    ${this._error ? b2`<p class="error" role="alert">${this._error}</p>` : A}
    ${scene ? b2`
     <home-plan-room-scene .scene=${scene} .mode=${this._view} .editMode=${true} .editMarkers=${markers} .activeKey=${markers ? key : void 0} .selectedObject=${this._index}
-     .signals=${Object.fromEntries(Object.entries(this.room.scene_entities || {}).map(([k2, id]) => [k2, this.hass?.states?.[id]]))}
+     .environment=${{ sun: this.hass?.states?.[this.room.scene_sun_entity || "sun.sun"] }} .signals=${Object.fromEntries(Object.entries(this.room.scene_entities || {}).map(([k2, id]) => [k2, this.hass?.states?.[id]]))}
      @room-object-selected=${(e6) => {
       e6.stopPropagation();
       this._index = e6.detail.index;
@@ -1865,7 +1974,7 @@ var HomePlanRoomEditor = class extends i4 {
 if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.11.0-rc.1";
+var VERSION = "0.12.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
@@ -2802,6 +2911,9 @@ var HomePlanCard = class extends i4 {
       if (e6.name !== "AbortError" && epoch === this._sceneEpoch && this.isConnected) this._sceneError = e6.message;
     }
   }
+  _sceneEnvironment(r4) {
+    return { sun: this._state(r4.scene_sun_entity || "sun.sun") };
+  }
   _sceneSignals(r4) {
     return Object.fromEntries(Object.entries(r4.scene_entities || {}).map(([key, id]) => [key, this._state(id)]));
   }
@@ -2826,7 +2938,7 @@ var HomePlanCard = class extends i4 {
       if (e6.key === "Escape") this._close();
     }}><header class="hpf-explorer-head"><button data-room-back @click=${this._close} aria-label="Revenir au plan">${icon("mdi:arrow-left")}</button><div><span class="hpf-explorer-level">${this._config.floor || this._model.floor}</span><h2>${r4.name}</h2></div><span class="hpf-explorer-temp">${this._temperature(r4) ? this._temperatureText(r4) : ""}</span></header>
       <div class="hpf-explorer-layout"><div class="hpf-room-visual"><div class="hpf-visual-tabs" role="group" aria-label="Vue de la pièce">${tabs.map(([mode, label]) => b2`<button aria-pressed=${view === mode} data-room-view=${mode} @click=${() => this._roomView = mode}>${mode === "3d" ? icon("mdi:cube-outline") : A}${label}</button>`)}</div>
-        ${["3d", "2d"].includes(view) && this._roomScene ? b2`<home-plan-room-scene ?compact=${!!this._activeHotspot} .scene=${this._roomScene} .signals=${this._sceneSignals(r4)} .mode=${view} .activeKey=${this._activeHotspot} @room-equipment-selected=${(e6) => {
+        ${["3d", "2d"].includes(view) && this._roomScene ? b2`<home-plan-room-scene ?compact=${!!this._activeHotspot} .scene=${this._roomScene} .signals=${this._sceneSignals(r4)} .environment=${this._sceneEnvironment(r4)} .mode=${view} .activeKey=${this._activeHotspot} @room-equipment-selected=${(e6) => {
       this._activeHotspot = e6.detail.key;
       this.updateComplete.then(() => this.renderRoot.querySelector("[data-focused-equipment]")?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
     }}></home-plan-room-scene>` : view === "3d" ? b2`<div class="hpf-room-flat" role="status">${this._sceneError || "Préparation de la pièce…"}${this._sceneError ? b2`<button @click=${() => this._roomView = "2d"}>Afficher le plan 2D</button>` : A}</div>` : view === "2d" ? this._roomPlan(r4) : b2`<div class="hpf-explorer-photo"><img src=${view === "photos" ? photo : illustration} alt=${(view === "photos" ? "Photo de " : "Illustration de ") + r4.name}>${view === "photos" && r4.photos?.length > 1 ? b2`<div class="hpf-gallery-controls"><button aria-label="Photo précédente" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + r4.photos.length - 1) % r4.photos.length }}>‹</button><span>${(this._photos[r4.id] || 0) + 1} / ${r4.photos.length}</span><button aria-label="Photo suivante" @click=${() => this._photos = { ...this._photos, [r4.id]: ((this._photos[r4.id] || 0) + 1) % r4.photos.length }}>›</button></div>` : A}</div>`}
