@@ -1,3 +1,9 @@
+## Plan — deuxième pièce et détails du 30 octobre 2026
+
+Le candidat autonome **0.13.0-rc.1** ajoute les primitives génériques ruban LED, bibliothèque à cases et purificateur vertical. Le modèle privé de la pièce pilote corrige trois détails sans déplacer les autres objets ; une seconde pièce reçoit ses vues 2D/3D, deux fenêtres et volets indépendants et douze associations natives vérifiées. Les scènes conservent éclairage solaire/local, sélection directe, édition des meubles et repères, cadrage et animations bornées. Les touches consécutives de placement lisent désormais la position enregistrée plutôt que celle du dernier dessin. Tests des nouvelles primitives, éclairage, interactions/éditeur et contrats existants réussis ; deux scènes privées sur quatre largeurs. Installé : quatre fichiers et configuration relus, seule ressource du plan actualisée et 43 autres conservées. Code et fixtures fictives publics ; photos, contours et associations domestiques privés. Preuve : `evidence/home-plan-room-expansion-2026-10-30.json`. Pas de fusion, release HACS ni recette physique iOS revendiquée.
+
+Les objets `led-strip`, `shelf` et `tower-fan` utilisent la même scène locale. Les bibliothèques acceptent `columns` et `rows` entiers de 1 à 6 ; la géométrie est bornée. Les rubans suivent leur entité `light` et participent à l’éclairage de proximité. Un purificateur ne devient jamais une source de lumière. Les façades et placards utilisent `wallNormal` pour disparaître depuis l’extérieur. Les scènes de chaque pièce restent indépendantes ; la configuration d’une pièce ne remplace pas celle d’une autre.
+
 # Plan de la maison — candidat autonome
 
 `custom:home-plan-card` affiche un plan local, les pièces et leurs équipements réels. Le nom du sélecteur de cartes est **Plan de la maison**. Le candidat autonome ne modifie pas les distributions météo, Personnes ou Garage.

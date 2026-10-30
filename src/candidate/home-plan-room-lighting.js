@@ -25,7 +25,7 @@ export function solarDaylight(sun){
  return {known:true,level,label:level<.08?'Nuit':level<.8?'Crépuscule':'Jour'};
 }
 function worldPoint(o,offset){const angle=(o.rotation||0)*Math.PI/180;return [o.at[0]+offset[0]*Math.cos(angle)+offset[2]*Math.sin(angle),o.at[1]+offset[1],o.at[2]-offset[0]*Math.sin(angle)+offset[2]*Math.cos(angle)];}
-const TYPES=new Set(['ring','lamp','lines','blocks','backlight','desk']);
+const TYPES=new Set(['ring','lamp','lines','blocks','backlight','desk','led-strip']);
 export function roomLighting(scene,signals={},environment={}){
  const solar=solarDaylight(environment.sun),windows=scene.objects.filter(o=>o.type==='window');
  let area=0,transmission=0;const daylight=[];
