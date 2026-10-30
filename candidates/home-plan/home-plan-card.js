@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.12.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.13.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -915,7 +915,7 @@ function worldPoint(o7, offset) {
   const angle = (o7.rotation || 0) * Math.PI / 180;
   return [o7.at[0] + offset[0] * Math.cos(angle) + offset[2] * Math.sin(angle), o7.at[1] + offset[1], o7.at[2] - offset[0] * Math.sin(angle) + offset[2] * Math.cos(angle)];
 }
-var TYPES = /* @__PURE__ */ new Set(["ring", "lamp", "lines", "blocks", "backlight", "desk"]);
+var TYPES = /* @__PURE__ */ new Set(["ring", "lamp", "lines", "blocks", "backlight", "desk", "led-strip"]);
 function roomLighting(scene, signals = {}, environment = {}) {
   const solar = solarDaylight(environment.sun), windows = scene.objects.filter((o7) => o7.type === "window");
   let area = 0, transmission = 0;
@@ -987,7 +987,7 @@ function project(p4, m3) {
 function validateRoomScene(scene) {
   if (!scene || scene.version !== 1 || !Array.isArray(scene.size) || scene.size.length !== 2 || scene.size.some((n5) => !Number.isFinite(n5) || n5 < 1 || n5 > 20)) throw Error("Dimensions de la pièce invalides.");
   if (!Array.isArray(scene.objects) || scene.objects.length > 120 || !Array.isArray(scene.hotspots) || scene.hotspots.length > 30) throw Error("Modèle de pièce trop complexe.");
-  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor", "wardrobe-inset"]);
+  const kinds = /* @__PURE__ */ new Set(["box", "bed", "desk", "chair", "dresser", "wardrobe", "tv", "pc", "window", "door", "radiator", "lines", "blocks", "ring", "collection", "poster", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor", "wardrobe-inset", "led-strip", "shelf", "tower-fan"]);
   for (const o7 of scene.objects) {
     if (!kinds.has(o7.type) || !Array.isArray(o7.at) || o7.at.length !== 3 || o7.at.some((x2) => !Number.isFinite(x2) || Math.abs(x2) > 25) || !Array.isArray(o7.size) || o7.size.length !== 3 || o7.size.some((x2) => !Number.isFinite(x2) || x2 <= 0 || x2 > 20) || o7.rotation !== void 0 && !Number.isFinite(o7.rotation)) throw Error("Objet de pièce invalide.");
   }
@@ -999,6 +999,7 @@ function validateRoomScene(scene) {
     if (o7.openRight !== void 0 && typeof o7.openRight !== "boolean") throw Error("Piètement de bureau invalide.");
     if (o7.screen !== void 0 && typeof o7.screen !== "boolean") throw Error("Option écran invalide.");
   }
+  for (const o7 of scene.objects) for (const key of ["columns", "rows"]) if (o7[key] !== void 0 && (!Number.isInteger(o7[key]) || o7[key] < 1 || o7[key] > 6)) throw Error("Compartiments de meuble invalides.");
   if (scene.camera?.zoom !== void 0 && (!Number.isFinite(scene.camera.zoom) || scene.camera.zoom < 0.7 || scene.camera.zoom > 2.6)) throw Error("Zoom initial invalide.");
   const objectIds = /* @__PURE__ */ new Set();
   for (const o7 of scene.objects) {
@@ -1133,7 +1134,7 @@ function furnish(mesh, o7, signals, scene) {
     for (const x2 of [-w2 * 0.38, w2 * 0.38]) for (const z2 of [-d3 * 0.38, d3 * 0.38]) mesh.cylinder(x2, 0.1, z2, 0.035, 0.18, "#afb4b3");
     box(0, 0.86, -d3 / 2 + 0.02, w2 + 0.06, 1.05, 0.13, "#30383d", 0.04);
     box(0, 0.48, 0, w2 * 0.98, 0.22, d3 * 0.96, "#e5e2d9", 0.08);
-    box(0, 0.64, 0.23, w2 * 0.99, 0.23, d3 * 0.72, "#eeeade", 0.11, 3);
+    box(0, 0.64, 0.23, w2 * 0.99, 0.23, d3 * 0.72, o7.color || "#eeeade", 0.11, 3);
     box(-w2 * 0.25, 0.72, -d3 * 0.31, w2 * 0.45, 0.19, 0.52, "#faf7ed", 0.08, 3);
     box(w2 * 0.25, 0.72, -d3 * 0.31, w2 * 0.45, 0.19, 0.52, "#e7e4db", 0.08, 3);
     box(0, 0.78, -d3 * 0.13, 0.52, 0.2, 0.36, "#c5cccb", 0.09, 3);
@@ -1182,6 +1183,23 @@ function furnish(mesh, o7, signals, scene) {
       mesh.angle = save;
     }
     for (const x2 of [-0.24, 0.24]) box(x2, 0.69, 0, 0.04, 0.04, 0.29, "#838d90", 0.01);
+  } else if (o7.type === "led-strip") {
+    box(0, 0, 0, w2, Math.min(h4, 0.025), Math.min(d3, 0.025), on ? glow : "#d6dbd5", 4e-3, on ? 1 : 0);
+  } else if (o7.type === "shelf") {
+    const cols = clamp2(Math.round(o7.columns || 3), 1, 6), rows = clamp2(Math.round(o7.rows || 4), 1, 6), t6 = 0.035;
+    for (let i7 = 0; i7 <= cols; i7++) box(-w2 / 2 + i7 * w2 / cols, h4 / 2, 0, t6, h4, d3, c5);
+    for (let j2 = 0; j2 <= rows; j2++) box(0, j2 * h4 / rows, 0, w2, t6, d3, c5);
+    for (let i7 = 0; i7 < cols; i7++) for (let j2 = 0; j2 < rows; j2++) {
+      const x2 = -w2 / 2 + (i7 + 0.5) * w2 / cols, y3 = j2 * h4 / rows + 0.035;
+      for (let k2 = 0; k2 < 3; k2++) box(x2 + (k2 - 1) * w2 / cols * 0.17, y3 + h4 / rows * 0.3, 0, w2 / cols * 0.13, h4 / rows * 0.58, d3 * 0.64, ["#788f91", "#aa785d", "#c3b89c"][(i7 + j2 + k2) % 3]);
+    }
+  } else if (o7.type === "tower-fan") {
+    mesh.cylinder(0, 0.07, 0, w2 * 0.44, 0.14, c5);
+    box(0, h4 * 0.27, 0, w2 * 0.55, h4 * 0.42, d3 * 0.58, c5, 0.06);
+    const r4 = w2 * 0.36, cy = h4 * 0.69, hh = h4 * 0.5;
+    for (const x2 of [-r4, r4]) box(x2, cy, 0, w2 * 0.14, hh, d3 * 0.45, c5, 0.05);
+    for (const y3 of [cy - hh / 2, cy + hh / 2]) box(0, y3, 0, w2 * 0.8, w2 * 0.14, d3 * 0.45, c5, 0.05);
+    box(0, h4 * 0.21, d3 * 0.31, w2 * 0.18, 0.025, 0.012, on ? "#73c6dd" : "#8a969b", 6e-3, on ? 1 : 0);
   } else if (o7.type === "wardrobe-inset") {
     box(0, h4 / 2, -0.035, w2, h4, 0.045, c5);
     for (const x2 of [-w2 / 2 - 0.045, w2 / 2 + 0.045]) box(x2, h4 / 2, 0.015, 0.09, h4 + 0.12, 0.11, "#ece9e1");
@@ -1224,7 +1242,7 @@ function furnish(mesh, o7, signals, scene) {
     box(0, 0, 0, w2, h4, d3, "#f6f2e8", 0.025);
     for (let i7 = 0; i7 < 12; i7++) box(-w2 * 0.44 + i7 * w2 * 0.08, 0, d3 / 2 + 5e-3, 0.012, h4 * 0.84, 0.012, "#d2d1c8");
   } else if (o7.type === "lines") {
-    const mat = on ? 1 : 0, lineColor = on ? glow : "#f2f1eb";
+    const mat = on ? 1 : 0, lineColor = on ? glow : o7.bind ? "#f2f1eb" : c5;
     if (o7.segments) {
       for (const [a3, b3] of o7.segments) mesh.beam(a3, b3, 0.025, 0.025, lineColor, mat);
     } else {
@@ -1700,7 +1718,7 @@ var HomePlanRoomScene = class extends i4 {
     e6.stopPropagation();
     const svg = this.renderRoot.querySelector("svg.top"), matrix = svg?.getScreenCTM();
     if (!matrix) return;
-    this._markerDrag = { pointerId: e6.pointerId, key: h4.key, el: e6.currentTarget, matrix: matrix.inverse(), screen: matrix, start: new DOMPoint(e6.clientX, e6.clientY), origin: roomPlanAnchor(this.scene, h4), style: e6.currentTarget.style.cssText, moved: false };
+    this._markerDrag = { pointerId: e6.pointerId, key: h4.key, el: e6.currentTarget, matrix: matrix.inverse(), screen: matrix, start: new DOMPoint(e6.clientX, e6.clientY), origin: roomPlanAnchor(this.scene, this.scene.hotspots.find((x2) => x2.key === h4.key) || h4), style: e6.currentTarget.style.cssText, moved: false };
     e6.currentTarget.setPointerCapture(e6.pointerId);
     this._markerSelected(h4.key);
   }
@@ -1731,7 +1749,7 @@ var HomePlanRoomScene = class extends i4 {
     if (!delta) return;
     e6.preventDefault();
     e6.stopPropagation();
-    const plan = roomPlanAnchor(this.scene, h4).map((v3, i7) => Math.round((v3 + delta[i7]) * 100) / 100);
+    const current = this.scene.hotspots.find((x2) => x2.key === h4.key) || h4, plan = roomPlanAnchor(this.scene, current).map((v3, i7) => Math.round((v3 + delta[i7]) * 100) / 100);
     this._markerSelected(h4.key);
     this.dispatchEvent(new CustomEvent("room-marker-moved", { detail: { key: h4.key, plan }, bubbles: true, composed: true }));
   }
@@ -1974,7 +1992,7 @@ var HomePlanRoomEditor = class extends i4 {
 if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.12.0-rc.1";
+var VERSION = "0.13.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];

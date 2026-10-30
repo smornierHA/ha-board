@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-30T19:55:30.753651+00:00",
+  "candidate_version": "0.13.0-rc.1",
+  "scope": "Generic LED strip, cubby shelf and tower air-purifier primitives; colorable bedding; immediate saved-coordinate lookup for repeated marker keys. Two private room models.",
+  "visibility": {
+    "repository": "public",
+    "excluded": [
+      "photos and video",
+      "house geometry",
+      "names and bindings",
+      "raw native API payloads"
+    ]
+  },
+  "validation": {
+    "new_primitives": "Finite GPU geometry, local strip lighting without treating fan as light, 2D selection, consecutive-key regression passed.",
+    "existing": "Lighting pure and browser, object picking/animations/editor/default views, 14 fictitious card groups, room explorer 1000 updates, resource lifecycle 100 mounts/1000 updates, climate/notices/collection passed.",
+    "private": "Two room models inspected in 2D/3D, day and night, simulated PC/TV, editor and return; 320/390/736/1150 px, no overflow or page/GL error. Pilot model delta restricted to three objects and one associated label/anchor; all other positions/bindings preserved.",
+    "initial_test_failure": "A repeated-key interaction exposed use of a stale rendered marker. Resolved by looking up current saved hotspot; regression dispatches two events before the next frame.",
+    "physical_ios": "not tested",
+    "physical_device_commands": 0
+  },
+  "native_installation": {
+    "files_written": 4,
+    "all_read_back_equal": true,
+    "existing_resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "dashboard_targeted_delta_verified": true,
+    "client_refresh_required": true,
+    "bundle_sha256": "203949d9f00c47c7297440dd134af4aa18841b01a1450a51de2e17f8092780b6"
+  },
+  "publication": {
+    "merged": false,
+    "hacs_release": false,
+    "ci": "Local checks only; skip-ci draft branch/PR."
+  },
+  "limitations": [
+    "Visual reconstruction, not measured dimensions.",
+    "A network-presence PC signal does not prove power.",
+    "Unavailable TV is not shown as controllable or online.",
+    "Light spill is an approximation within the existing eight-source budget."
+  ]
+}

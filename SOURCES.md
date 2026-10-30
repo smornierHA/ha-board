@@ -1,3 +1,7 @@
+## Plan — deuxième pièce et détails du 30 octobre 2026
+
+Les corrections explicites de l’utilisateur et treize nouvelles photos gouvernent les modèles privés ; les cotes restent une reconstitution visuelle. Les sources natives ont été découvertes et relues avant association, sans renommer ni commander les appareils. Les géométries et les photos sont absentes du dépôt public ; leur référence privée conserve provenance et retour arrière. Primitives maintenues : `home-plan-room-scene.js`, contrat fictif : `tests/home-plan-room-models.mjs`.
+
 ## Plan — ambiance lumineuse 0.12.0-rc.1
 
 L’inspection du renderer confirme un éclairage constant, un dessin sans suréchantillonnage sur écran 1x et des ombres 1024 px. Cela peut contribuer au manque de netteté signalé, sans prouver à lui seul le rendu du PC utilisateur. Les états solaires et la position du volet natifs ont été lus ; leurs valeurs et identifiants domestiques sont conservés uniquement dans la référence privée. Le module pur `home-plan-room-lighting.js` calcule l’ambiance à partir des snapshots HA existants. Tests : `tests/home-plan-lighting.mjs`, `tests/home-plan-ambience.mjs` et contrats de pièce existants. Les effets sont une approximation visuelle, pas une mesure photométrique. Aucun changement des géométries privées.
