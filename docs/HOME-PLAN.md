@@ -162,3 +162,12 @@ Un objet d’architecture peut fournir `wallNormal: [nx, nz]`, normale horizonta
 Le type `monitor` représente un écran orienté avec son pied ; plusieurs écrans peuvent partager `bind: pc`. Le bureau accepte `screen: false` pour retirer son écran intégré et `openRight: true` pour un piètement ouvert. Le jeu spatial est un dessin original du shader, animé au maximum à 10 images/s dans une unique minuterie partagée avec la TV. L’état PC reste celui de la source configurée ; une détection réseau ne devient pas une mesure d’alimentation.
 
 Les Nanoleaf `lines` acceptent `segments: [[[x1,y1],[x2,y2]], ...]` et les `blocks` des `panels: [[x,y,largeur,hauteur], ...]` en coordonnées locales métriques, avant rotation de l’objet. Les formats précédents restent valides. Les segments et panneaux suivent le déplacement et la rotation du groupe ; leurs dimensions locales sont définies dans le modèle.
+
+
+## Cadrage et vue initiale — 0.10.0-rc.1
+
+Les parois proches définies par `wallNormal` sont désormais entièrement masquées, sans seconde passe transparente. Leur ombre et leur interception de la sélection sont retirées ensemble ; le bouton **Murs** restaure les volumes opaques. La géométrie reste en mémoire, sans reconstruction lors de l’orbite.
+
+En 2D, la taille du SVG comprend ses marges. Le dessin reste centré et entier au cadrage initial ; ses commandes sont en haut à droite. La chaise suit les dimensions configurées. Les zooms 2D et 3D sont distincts : passer par le plan 2D ne remplace pas le cadrage 3D. `scene.camera.zoom` accepte 0,7 à 2,6 ; le zoom 3D initial vaut 1,12 sans valeur explicite, celui du plan 2D vaut 1. **Garder ce cadrage** conserve angle et zoom 3D.
+
+Dans **Modifier la carte**, choisir niveau et pièce, puis **Vue par défaut de cette pièce** : Illustration, Plan 2D ou Vue 3D, puis enregistrer dans Home Assistant. Le champ de pièce `default_view` prend `illustration`, `2d` ou `3d`. Le choix s’applique à chaque ouverture de la pièce ; les onglets restent utilisables pendant la visite. Si l’image ou la scène choisie manque, la vue 2D prend le relais. En l’absence de configuration, le comportement précédent est conservé (3D si une scène existe, sinon illustration disponible, sinon 2D).
