@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-30T13:58:58.544810+00:00",
+  "component": "custom:home-plan-card",
+  "version": "0.11.0-rc.1",
+  "bundle_bytes": 274516,
+  "bundle_sha256": "60234b1bfdd90e059f7265bae59d85428acd75ab66811fff02662aaf8526a304",
+  "native": {
+    "versioned_files_readback_equal": 3,
+    "resource_updated_in_place": true,
+    "other_resources_preserved": 43,
+    "existing_positions_and_bindings_preserved": true,
+    "patch_scope": [
+      "pilot room scene_url",
+      "documentation_url"
+    ],
+    "client_loaded": false,
+    "physical_device_commands": 0
+  },
+  "local_validation": {
+    "existing_browser_groups": 17,
+    "fictitious_groups": 14,
+    "private_groups": 3,
+    "equipment_placement": [
+      "all scene markers visible in dedicated editor tab",
+      "real mouse drag",
+      "arrow 5 cm / Shift arrow 1 cm",
+      "numeric X/Y",
+      "no furniture or 3D-anchor mutation",
+      "zoom preserved after edits",
+      "cancelled drag preserves coordinates",
+      "reload persistence",
+      "reset to automatic anchor",
+      "no service call"
+    ],
+    "private_visual": [
+      "whole dressing pixels equal to scene with dressing removed from behind",
+      "11 equipment markers",
+      "CDP touch drag at 390 px",
+      "editor responsive at 320/390/736/1150 px",
+      "preview return retains marker position",
+      "2D framing and view-default round trip"
+    ],
+    "retained": [
+      "GPU picking / opaque wall occlusion",
+      "PC/TV animations and stops",
+      "native furniture editor and bindings",
+      "three opening views and fallback",
+      "1000 HA states and 100 mounts cleanup",
+      "pure climate/notices/collection contracts"
+    ]
+  },
+  "semantics": "Manual marker positions affect 2D icons only. Original 3D attachments remain unchanged. No extra HA polling/subscription.",
+  "private_assets": "House geometry, photos, names, bindings and internal screenshots remain outside public Git.",
+  "ci": "Local checks only; skip-ci on draft commit.",
+  "merged": false,
+  "hacs_release": false
+}
