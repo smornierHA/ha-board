@@ -171,3 +171,12 @@ Les parois proches définies par `wallNormal` sont désormais entièrement masqu
 En 2D, la taille du SVG comprend ses marges. Le dessin reste centré et entier au cadrage initial ; ses commandes sont en haut à droite. La chaise suit les dimensions configurées. Les zooms 2D et 3D sont distincts : passer par le plan 2D ne remplace pas le cadrage 3D. `scene.camera.zoom` accepte 0,7 à 2,6 ; le zoom 3D initial vaut 1,12 sans valeur explicite, celui du plan 2D vaut 1. **Garder ce cadrage** conserve angle et zoom 3D.
 
 Dans **Modifier la carte**, choisir niveau et pièce, puis **Vue par défaut de cette pièce** : Illustration, Plan 2D ou Vue 3D, puis enregistrer dans Home Assistant. Le champ de pièce `default_view` prend `illustration`, `2d` ou `3d`. Le choix s’applique à chaque ouverture de la pièce ; les onglets restent utilisables pendant la visite. Si l’image ou la scène choisie manque, la vue 2D prend le relais. En l’absence de configuration, le comportement précédent est conservé (3D si une scène existe, sinon illustration disponible, sinon 2D).
+
+
+## Placer les entités sur le plan de pièce — 0.11.0-rc.1
+
+Dans **Modifier la carte → niveau → pièce → Pièce 2D / 3D**, choisir **Équipements 2D**. Tous les repères du modèle sont affichés, y compris les équipements indisponibles. Toucher une icône ou la choisir dans **Repère d’équipement**, puis la glisser, utiliser les flèches (5 cm ; Maj 1 cm) ou saisir X/Y. L’association Home Assistant du repère sélectionné reste modifiable sous le plan. Terminer par **Enregistrer** dans l’éditeur HA.
+
+`hotspots[].plan: [x, z]` remplace uniquement l’emplacement de l’icône dans le plan 2D, en mètres. Le meuble et l’ancrage 3D (`object`/`offset` ou `at`) sont conservés. **Replacer sur l’objet** retire cette position manuelle et rétablit le suivi automatique. Les positions sont chargées lors des visites et des éditions suivantes. Le zoom de travail reste conservé pendant le placement ; les drags annulés ne changent pas la configuration et chaque geste garde son identifiant de pointeur. Aucun placement ne commande l’équipement.
+
+**Meubles 2D** conserve les outils de mobilier et **Aperçu 3D** permet d’inspecter le résultat. Un meuble intégré peut employer `wallNormal` pour disparaître entièrement avec le mur depuis l’arrière ; son cadre et ses portes partagent ce masquage.

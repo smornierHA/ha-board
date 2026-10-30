@@ -1,3 +1,7 @@
+## Plan — équipements 2D 0.11.0-rc.1
+
+Le retour utilisateur du 30 octobre constate que le mobilier est modifiable mais que les repères d’entités ne le sont pas, et demande le masquage du dressing depuis l’arrière. Inspection du renderer : les icônes étaient exclues en édition. L’éditeur et le renderer maintenus sont dans `src/candidate/` ; contrat fictif dans `tests/home-plan-object-interaction.mjs`. La scène réelle conserve sa géométrie et ajoute une normale de masquage au dressing. La référence privée conserve source, associations, installation et retour arrière ; aucun inventaire domestique dans Git.
+
 ## Plan — cadrage 0.10.0-rc.1
 
 Le retour utilisateur et la capture du 30 octobre corrigent la position du dressing et demandent le retrait des pans mansardés, le masquage complet des murs proches, le retour des éclairages muraux, le cadrage et la vue d’ouverture configurable. Ces corrections priment sur l’interprétation précédente des photos. La capture, les photos et le modèle restent privés. Le renderer et l’éditeur sont dans `src/candidate/` ; contrats fictifs dans `tests/home-plan-object-interaction.mjs`, preuve expurgée dans `evidence/home-plan-framing-2026-10-30.json`. Référence privée actualisée dans le même incrément.

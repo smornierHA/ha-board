@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.10.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.11.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -930,6 +930,7 @@ function validateRoomScene(scene) {
   for (const h4 of scene.hotspots) {
     if (typeof h4.key !== "string" || seen.has(h4.key) || !Array.isArray(h4.at) || h4.at.length !== 3 || h4.at.some((n5) => !Number.isFinite(n5) || Math.abs(n5) > 25)) throw Error("Repère de pièce invalide.");
     if (h4.states && (!Array.isArray(h4.states) || h4.states.length > 20 || h4.states.some((v3) => typeof v3 !== "string" || v3.length > 80))) throw Error("États actifs invalides.");
+    if (h4.plan !== void 0 && (!Array.isArray(h4.plan) || h4.plan.length !== 2 || h4.plan.some((v3) => !Number.isFinite(v3) || Math.abs(v3) > 25))) throw Error("Position 2D de repère invalide.");
     seen.add(h4.key);
   }
   return scene;
@@ -943,6 +944,10 @@ function roomAnchor(scene, h4) {
   if (!o7) return h4.at;
   const a3 = (o7.rotation || 0) * Math.PI / 180, p4 = h4.offset || [0, 0, 0];
   return [o7.at[0] + p4[0] * Math.cos(a3) + p4[2] * Math.sin(a3), o7.at[1] + p4[1], o7.at[2] - p4[0] * Math.sin(a3) + p4[2] * Math.cos(a3)];
+}
+function roomPlanAnchor(scene, h4) {
+  const p4 = roomAnchor(scene, h4);
+  return h4.plan || [p4[0], p4[2]];
 }
 function triangulate(points) {
   const ids = points.map((_2, i7) => i7), tri = [], area = points.reduce((s5, a3, i7) => {
@@ -1198,8 +1203,8 @@ in vec3 aPosition;in float aMaterial;uniform mat4 uVP;in vec2 aWall;out vec2 vSh
 var SHADOW_F = `#version 300 es
 precision highp float;in float vSkip;in vec2 vShadowWall;uniform float uWallFade;uniform vec3 uEye;void main(){if(uWallFade>.5&&length(vShadowWall)>.1&&dot(normalize(uEye.xz),normalize(vShadowWall))<.22)discard;if(vSkip>5.5&&vSkip<6.5)discard;}`;
 var HomePlanRoomScene = class extends i4 {
-  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
-  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{box-sizing:border-box;padding:62px 14px 22px}.stage.is-2d .tools{top:9px;right:9px;left:auto;bottom:auto}.stage.is-2d .hint{bottom:6px;left:14px;right:14px;max-width:none;text-align:center}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage.is-3d{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
+  static properties = { scene: {}, signals: {}, mode: {}, activeKey: {}, editMode: { type: Boolean }, editMarkers: { type: Boolean }, showMarkers: { type: Boolean }, selectedObject: {}, wallMode: {}, _failed: { state: true }, _positions: { state: true } };
+  static styles = i`:host{display:block;min-width:0;color:var(--hp-ink,#27313a)}.stage{position:relative;width:100%;box-sizing:border-box;aspect-ratio:1.15;min-height:280px;max-height:600px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 40%,#f4f1e8,#dedfdc);touch-action:pan-y}.stage.is-3d{touch-action:none}.stage canvas,.top{display:block;width:100%;height:100%;position:absolute;inset:0}.tools{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:13px;background:#fffffff0;color:#29353e;box-shadow:0 3px 16px #17253316}.tools button{min-width:38px;height:38px;border:0;border-radius:9px;background:transparent;color:inherit;font:600 15px system-ui;cursor:pointer}.tools button[aria-pressed=true]{background:#dcebf7;color:#275f91}.tools button[data-walls]{font-size:10px}.tools button:hover{background:#e6eaec}.hint{position:absolute;right:14px;bottom:64px;max-width:48%;text-align:right;color:#627078;font:10px system-ui;pointer-events:none}.hotspot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:32px;height:32px;border:1px solid #ffffffc9;border-radius:12px;background:#fffffff0;color:#536370;box-shadow:0 3px 12px #25323c25;cursor:pointer;z-index:2}.hotspot.editing{touch-action:none;cursor:grab}.hotspot.editing:active{cursor:grabbing}.hotspot.editing.selected{z-index:5}.hotspot:after{content:"";position:absolute;inset:-6px}.hotspot.on{background:#fff0b8;color:#8e6200}.hotspot.selected{outline:3px solid #548add80;background:#e9f1ff;color:#2365bb}.hotspot.unavailable{color:#92999c;border-style:dashed}.hotspot ha-icon{--mdc-icon-size:18px;width:18px;height:18px;display:block}.hotspot span{position:absolute;top:41px;left:50%;transform:translateX(-50%);padding:4px 7px;background:#fffffff0;border-radius:6px;white-space:nowrap;font:600 10px system-ui;opacity:0;pointer-events:none}.hotspot:focus-visible span,.hotspot:hover span,.hotspot.selected span{opacity:1}button:focus-visible{outline:3px solid #3270cf}.scale{position:absolute;left:15px;top:14px;font:10px system-ui;letter-spacing:.04em;color:#65747a}.fallback{padding:12px;color:#6a7379;font:12px system-ui}.top{box-sizing:border-box;padding:62px 14px 22px}.stage.is-2d .tools{top:9px;right:9px;left:auto;bottom:auto}.stage.is-2d .hint{bottom:6px;left:14px;right:14px;max-width:none;text-align:center}.top .object{stroke:#ffffffaa;stroke-width:.015}.top text{font: .095px system-ui;fill:#586b76}.top .wall{fill:none;stroke:#8c989d;stroke-width:.07}.selected-label{position:absolute;right:12px;top:12px;padding:7px 11px;background:#e6f1ff;color:#245a90;border:1px solid #92b9ea;border-radius:10px;font:600 11px system-ui;max-width:50%}.top [role=button]{cursor:pointer;outline:none}.top .chosen .object{stroke:#347fc6;stroke-width:.05}.top .grid{stroke:#9ba6a419;stroke-width:.01}@media(max-width:650px){:host([compact]) .stage.is-3d{aspect-ratio:1.55;min-height:220px;max-height:310px}}@media(max-width:460px){.stage{min-height:290px;aspect-ratio:1.06}.hint{font-size:9px;right:10px;bottom:62px;max-width:calc(100% - 20px)}.tools{left:8px;bottom:8px}.hotspot{width:32px;height:32px;border-radius:10px}.tools button{min-width:34px}}`;
   constructor() {
     super();
     this.mode = "3d";
@@ -1246,10 +1251,13 @@ var HomePlanRoomScene = class extends i4 {
     if (changed.has("scene")) {
       if (this.scene) {
         validateRoomScene(this.scene);
-        this.yaw = this.scene.camera?.yaw ?? -0.57;
-        this.pitch = this.scene.camera?.pitch ?? 0.83;
-        this._zooms = {};
-        this.zoom = this._initialZoom();
+        const old = changed.get("scene");
+        if (!this.editMode || !old || JSON.stringify(old.camera) !== JSON.stringify(this.scene.camera) || JSON.stringify(old.size) !== JSON.stringify(this.scene.size)) {
+          this.yaw = this.scene.camera?.yaw ?? -0.57;
+          this.pitch = this.scene.camera?.pitch ?? 0.83;
+          this._zooms = {};
+          this.zoom = this._initialZoom();
+        }
       }
       this._signature = "";
     }
@@ -1340,6 +1348,7 @@ var HomePlanRoomScene = class extends i4 {
     this._resize = null;
     this._canvas?.removeEventListener("webglcontextlost", this._contextLost);
     this._objectDrag = null;
+    this._markerDrag = null;
     const g2 = this._gl;
     if (g2) {
       for (const p4 of [this._main, this._shadowProgram]) if (p4) g2.deleteProgram(p4);
@@ -1405,7 +1414,7 @@ var HomePlanRoomScene = class extends i4 {
       const top = this.renderRoot.querySelector("svg.top"), matrix = top?.getScreenCTM(), rect = this.renderRoot.querySelector(".stage")?.getBoundingClientRect();
       if (!matrix || !rect) return;
       const positions2 = this.scene.hotspots.map((h4) => {
-        const p4 = new DOMPoint(roomAnchor(this.scene, h4)[0], roomAnchor(this.scene, h4)[2]).matrixTransform(matrix);
+        const anchor = roomPlanAnchor(this.scene, h4), p4 = new DOMPoint(...anchor).matrixTransform(matrix);
         return { ...h4, x: (p4.x - rect.left) / rect.width * 100, y: (p4.y - rect.top) / rect.height * 100 };
       });
       if (JSON.stringify(positions2) !== JSON.stringify(this._positions)) this._positions = positions2;
@@ -1544,7 +1553,7 @@ var HomePlanRoomScene = class extends i4 {
     this.dispatchEvent(new CustomEvent("room-equipment-selected", { detail: { key }, bubbles: true, composed: true }));
   }
   _objectDown(e6, o7) {
-    if (!this.editMode || e6.button > 0) return;
+    if (!this.editMode || this.editMarkers || e6.button > 0) return;
     e6.stopPropagation();
     e6.preventDefault();
     const svg = e6.currentTarget.ownerSVGElement;
@@ -1568,18 +1577,62 @@ var HomePlanRoomScene = class extends i4 {
     if (!cancel) this.dispatchEvent(new CustomEvent("room-object-moved", { detail: { index: d3.index, at: d3.point }, bubbles: true, composed: true }));
   }
   _objectKey(e6, o7) {
-    if (!this.editMode) return;
+    if (!this.editMode || this.editMarkers) return;
     const d3 = { ArrowLeft: [-0.05, 0], ArrowRight: [0.05, 0], ArrowUp: [0, -0.05], ArrowDown: [0, 0.05] }[e6.key];
     if (!d3) return;
     e6.preventDefault();
     this.dispatchEvent(new CustomEvent("room-object-moved", { detail: { index: this.scene.objects.indexOf(o7), at: [o7.at[0] + d3[0], o7.at[1], o7.at[2] + d3[1]] }, bubbles: true, composed: true }));
   }
+  _markerSelected(key) {
+    this.dispatchEvent(new CustomEvent("room-marker-selected", { detail: { key }, bubbles: true, composed: true }));
+  }
+  _markerDown(e6, h4) {
+    if (!this.editMode || !this.editMarkers || this.mode !== "2d" || e6.button > 0 || this._markerDrag) return;
+    e6.preventDefault();
+    e6.stopPropagation();
+    const svg = this.renderRoot.querySelector("svg.top"), matrix = svg?.getScreenCTM();
+    if (!matrix) return;
+    this._markerDrag = { pointerId: e6.pointerId, key: h4.key, el: e6.currentTarget, matrix: matrix.inverse(), screen: matrix, start: new DOMPoint(e6.clientX, e6.clientY), origin: roomPlanAnchor(this.scene, h4), style: e6.currentTarget.style.cssText, moved: false };
+    e6.currentTarget.setPointerCapture(e6.pointerId);
+    this._markerSelected(h4.key);
+  }
+  _markerMove(e6) {
+    const d3 = this._markerDrag;
+    if (!d3 || d3.pointerId !== e6.pointerId) return;
+    e6.stopPropagation();
+    if (Math.hypot(e6.clientX - d3.start.x, e6.clientY - d3.start.y) < 3 && !d3.moved) return;
+    d3.moved = true;
+    const a3 = d3.start.matrixTransform(d3.matrix), b3 = new DOMPoint(e6.clientX, e6.clientY).matrixTransform(d3.matrix);
+    d3.plan = [clamp(d3.origin[0] + b3.x - a3.x, -this.scene.size[0] / 2 - 0.15, this.scene.size[0] / 2 + 0.15), clamp(d3.origin[1] + b3.y - a3.y, -this.scene.size[1] / 2 - 0.15, this.scene.size[1] / 2 + 0.15)].map((v3) => Math.round(v3 * 100) / 100);
+    const p4 = new DOMPoint(...d3.plan).matrixTransform(d3.screen), r4 = this.renderRoot.querySelector(".stage").getBoundingClientRect();
+    d3.el.style.left = clamp((p4.x - r4.x) / r4.width * 100, 5, 95) + "%";
+    d3.el.style.top = clamp((p4.y - r4.y) / r4.height * 100, 8, 87) + "%";
+  }
+  _markerUp(e6, cancel = false) {
+    const d3 = this._markerDrag;
+    if (!d3 || d3.pointerId !== e6.pointerId) return;
+    e6.stopPropagation();
+    this._markerDrag = null;
+    if (d3.el.hasPointerCapture(e6.pointerId)) d3.el.releasePointerCapture(e6.pointerId);
+    d3.el.style.cssText = d3.style;
+    if (!cancel && d3.moved) this.dispatchEvent(new CustomEvent("room-marker-moved", { detail: { key: d3.key, plan: d3.plan }, bubbles: true, composed: true }));
+  }
+  _markerKey(e6, h4) {
+    if (!this.editMode || !this.editMarkers) return;
+    const step = e6.shiftKey ? 0.01 : 0.05, delta = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e6.key];
+    if (!delta) return;
+    e6.preventDefault();
+    e6.stopPropagation();
+    const plan = roomPlanAnchor(this.scene, h4).map((v3, i7) => Math.round((v3 + delta[i7]) * 100) / 100);
+    this._markerSelected(h4.key);
+    this.dispatchEvent(new CustomEvent("room-marker-moved", { detail: { key: h4.key, plan }, bubbles: true, composed: true }));
+  }
   _top() {
     const [w2, d3] = this.scene.size;
-    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
-      if (this.editMode) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this.scene.objects.indexOf(o7) }, bubbles: true, composed: true }));
-      else if (o7.select || o7.bind) this._select(o7.select || o7.bind);
-    }} role=${this.editMode || o7.bind ? "button" : A} tabindex=${this.editMode || o7.bind ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<g transform=${`scale(${o7.size[0] / 0.65} ${o7.size[2] / 0.65})`}><circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/></g>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${o7.type === "wardrobe-inset" ? -0.035 : -o7.size[2] / 2} width=${o7.size[0]} height=${o7.type === "wardrobe-inset" ? 0.07 : o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}</svg>`;
+    return w`<svg class="top" viewBox=${`${(-w2 / 2 - 0.2) / this.zoom} ${(-d3 / 2 - 0.2) / this.zoom} ${(w2 + 0.4) / this.zoom} ${(d3 + 0.4) / this.zoom}`} role="img" aria-label="Plan 2D meublé de la pièce">${this.scene.outline ? w`<polygon points=${this.scene.outline.map((p4) => p4.join(",")).join(" ")} fill="#e4e3da"/>` : w`<rect x=${-w2 / 2} y=${-d3 / 2} width=${w2} height=${d3} fill="#e4e3da" rx=".04"/>`}${this.scene.objects.filter((o7) => this.editMode && !this.editMarkers ? !o7.locked : !["ring", "poster", "lines", "blocks", "tv", "window", "door", "slope", "camera", "lamp", "backlight", "floor-heat", "monitor"].includes(o7.type)).map((o7) => w`<g data-room-object=${this.scene.objects.indexOf(o7)} class=${!this.editMarkers && this.selectedObject === this.scene.objects.indexOf(o7) ? "chosen" : ""} @pointerdown=${(e6) => this._objectDown(e6, o7)} @pointermove=${this._objectMove} @pointerup=${this._objectUp} @pointercancel=${(e6) => this._objectUp(e6, true)} @keydown=${(e6) => this._objectKey(e6, o7)} @click=${() => {
+      if (this.editMode && !this.editMarkers) this.dispatchEvent(new CustomEvent("room-object-selected", { detail: { index: this.scene.objects.indexOf(o7) }, bubbles: true, composed: true }));
+      else if (!this.editMode && (o7.select || o7.bind)) this._select(o7.select || o7.bind);
+    }} role=${!this.editMarkers && (this.editMode || o7.bind) ? "button" : A} tabindex=${!this.editMarkers && (this.editMode || o7.bind) ? 0 : A} aria-label=${o7.label || o7.type} transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}>${o7.type === "chair" ? w`<g transform=${`scale(${o7.size[0] / 0.65} ${o7.size[2] / 0.65})`}><circle r=".24" fill="#c1c9c7"/><path d="M-.23 -.13Q0 -.30 .23 -.13" fill="none" stroke="#8d9b9b" stroke-width=".065"/><path d="M-.30 -.04V.17M.30 -.04V.17M0 .25V.34M-.28 .28L-.19 .20M.28 .28L.19 .20" stroke="#889695" stroke-width=".035" stroke-linecap="round"/></g>` : w`<rect class="object" x=${-o7.size[0] / 2} y=${o7.type === "wardrobe-inset" ? -0.035 : -o7.size[2] / 2} width=${o7.size[0]} height=${o7.type === "wardrobe-inset" ? 0.07 : o7.size[2]} fill=${o7.type === "bed" ? "#f7f5eb" : o7.color || "#a9b6b6"} rx=${o7.type === "bed" ? ".08" : ".025"}/>`}${o7.type === "bed" ? w`<rect x=${-o7.size[0] * 0.44} y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/><rect x=".05" y=${-o7.size[2] * 0.43} width=${o7.size[0] * 0.4} height=".4" rx=".06" fill="#d0d5d2"/>` : A}</g>`)}<path class="wall" d=${this.scene.outline ? "M" + this.scene.outline.map((p4) => p4.join(" ")).join("L") + "Z" : `M${-w2 / 2} ${d3 / 2}V${-d3 / 2}H${w2 / 2}V${d3 / 2}Z`}/>${this.scene.objects.filter((o7) => o7.type === "window" || o7.type === "door").map((o7) => w`<g transform=${`translate(${o7.at[0]} ${o7.at[2]}) rotate(${-(o7.rotation || 0)})`}><rect x=${-o7.size[0] / 2} y="-.04" width=${o7.size[0]} height=".08" fill=${o7.type === "window" ? "#6fb1c6" : "#b7a787"}/></g>`)}</svg>`;
   }
   render() {
     if (!this.scene) return A;
@@ -1588,9 +1641,14 @@ var HomePlanRoomScene = class extends i4 {
         e6.preventDefault();
         this._zoom(e6.deltaY > 0 ? -0.08 : 0.08);
       }
-    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${(this.mode === "2d" || this._failed || this.showMarkers) && !this.editMode ? this._positions.map((h4) => {
+    }}>${this.mode === "2d" || this._failed ? this._top() : b2`<canvas aria-label="Vue tridimensionnelle de la pièce"></canvas>`}<span class="scale">${this.mode === "2d" || this._failed ? "PLAN MEUBLÉ" : "VUE 3D · COUPE ARCHITECTURALE"}</span>${(this.mode === "2d" || this._failed || this.showMarkers) && !this.editMode || this.mode === "2d" && this.editMode && this.editMarkers ? this._positions.map((h4) => {
       const s5 = this.signals?.[h4.key], on = ["on", "playing", "heat"].includes(s5?.state);
-      return b2`<button class=${"hotspot " + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @click=${() => this._select(h4.key)} data-scene-hotspot=${h4.key}><ha-icon icon=${h4.icon || "mdi:circle-outline"}></ha-icon><span>${h4.label}</span></button>`;
+      return b2`<button class=${"hotspot " + (this.editMarkers ? "editing " : "") + (on ? "on " : "") + (this.activeKey === h4.key ? "selected " : "") + (!s5 || ["unknown", "unavailable"].includes(s5.state) ? "unavailable" : "")} style=${`left:${clamp(h4.x, 5, 95)}%;top:${clamp(h4.y, 8, 87)}%`} aria-label=${h4.label} @pointerdown=${(e6) => this._markerDown(e6, h4)} @pointermove=${this._markerMove} @pointerup=${this._markerUp} @pointercancel=${(e6) => this._markerUp(e6, true)} @keydown=${(e6) => this._markerKey(e6, h4)} @click=${(e6) => {
+        if (this.editMode) {
+          e6.stopPropagation();
+          this._markerSelected(h4.key);
+        } else this._select(h4.key);
+      }} data-scene-hotspot=${h4.key}><ha-icon icon=${h4.icon || "mdi:circle-outline"}></ha-icon><span>${h4.label}</span></button>`;
     }) : A}${this.activeKey && this.mode === "3d" && !this.showMarkers ? b2`<span class="selected-label" role="status">${this.scene.hotspots.find((h4) => h4.key === this.activeKey)?.label}</span>` : A}<div class="tools" role="group" aria-label="Caméra de la pièce"><button aria-label="Réduire la pièce" @click=${() => this._zoom(-0.15)}>−</button><button aria-label="Agrandir la pièce" @click=${() => this._zoom(0.15)}>+</button><button aria-label="Recentrer la pièce" @click=${() => {
       this.yaw = this.scene.camera?.yaw ?? -0.57;
       this.pitch = this.scene.camera?.pitch ?? 0.83;
@@ -1600,19 +1658,20 @@ var HomePlanRoomScene = class extends i4 {
     }}>↺</button>${this.mode === "3d" && !this._failed ? b2`<button aria-label="Tourner la pièce" @click=${() => {
       this.yaw += Math.PI / 2;
       this._requestDraw();
-    }}>↻</button><button data-walls aria-pressed=${this.wallMode !== "solid"} aria-label="Masquage automatique des murs" @click=${() => this.wallMode = this.wallMode === "solid" ? "auto" : "solid"}>Murs</button>` : A}</div><span class="hint">${this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
+    }}>↻</button><button data-walls aria-pressed=${this.wallMode !== "solid"} aria-label="Masquage automatique des murs" @click=${() => this.wallMode = this.wallMode === "solid" ? "auto" : "solid"}>Murs</button>` : A}</div><span class="hint">${this.editMarkers ? "Glisser un repère · flèches : 5 cm" : this.mode === "3d" && !this._failed ? "Toucher un objet · glisser pour tourner" : "Toucher un équipement pour le commander"}</span></div>${this._failed ? b2`<p class="fallback">La vue 2D reste disponible sur cet appareil.</p>` : A}`;
   }
 };
 if (!customElements.get("home-plan-room-scene")) customElements.define("home-plan-room-scene", HomePlanRoomScene);
 
 // src/candidate/home-plan-room-editor.js
 var HomePlanRoomEditor = class extends i4 {
-  static properties = { hass: {}, room: {}, _scene: { state: true }, _index: { state: true }, _view: { state: true }, _error: { state: true }, _group: { state: true }, _binding: { state: true } };
-  static styles = i`:host{display:block}.panel{display:grid;gap:12px}.intro{font-size:12px;line-height:1.5;color:var(--secondary-text-color)}.toolbar{display:flex;gap:6px;flex-wrap:wrap}button,select,input{font:inherit;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color,#d3dce4);border-radius:9px;min-height:44px;padding:8px;box-sizing:border-box}button{cursor:pointer}button[aria-pressed=true]{background:var(--primary-color,#2c679e);color:var(--text-primary-color,#fff)}button:disabled{opacity:.4}.fields{display:grid;gap:10px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}label{display:grid;gap:5px;font-size:12px}input,select{width:100%;min-width:0}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}h4{font-size:14px;margin:5px 0}.status{font-size:12px;color:var(--secondary-text-color)}.error{color:var(--error-color)}.actions{display:flex;gap:8px}.actions>*{flex:1}home-plan-room-scene{max-width:620px;width:100%;margin:auto}.note{padding:10px;border-radius:10px;background:var(--secondary-background-color)}@media(max-width:420px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}`;
+  static properties = { hass: {}, room: {}, _scene: { state: true }, _index: { state: true }, _view: { state: true }, _error: { state: true }, _group: { state: true }, _binding: { state: true }, _target: { state: true } };
+  static styles = i`:host{display:block}.panel{display:grid;gap:12px;min-width:0}.panel>*{min-width:0;max-width:100%}.grid>*{min-width:0}.actions button{min-width:0}.intro{font-size:12px;line-height:1.5;color:var(--secondary-text-color)}.toolbar{display:flex;gap:6px;flex-wrap:wrap}.toolbar button{flex:1 1 80px;font-size:12px;padding:8px 6px}code{overflow-wrap:anywhere}button,select,input{font:inherit;color:var(--primary-text-color);background:var(--card-background-color);border:1px solid var(--divider-color,#d3dce4);border-radius:9px;min-height:44px;padding:8px;box-sizing:border-box}button{cursor:pointer}button[aria-pressed=true]{background:var(--primary-color,#2c679e);color:var(--text-primary-color,#fff)}button:disabled{opacity:.4}.fields{display:grid;gap:10px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}label{display:grid;gap:5px;font-size:12px}input,select{width:100%;min-width:0}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}h4{font-size:14px;margin:5px 0}.status{font-size:12px;color:var(--secondary-text-color)}.error{color:var(--error-color)}.actions{display:flex;gap:8px}.actions>*{flex:1}home-plan-room-scene{max-width:620px;width:100%;margin:auto}.note{padding:10px;border-radius:10px;background:var(--secondary-background-color)}@media(max-width:420px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}`;
   constructor() {
     super();
     this._index = 0;
     this._view = "2d";
+    this._target = "objects";
     this._group = true;
     this._error = "";
     this._revision = 0;
@@ -1655,7 +1714,7 @@ var HomePlanRoomEditor = class extends i4 {
       this._scene = structuredClone(scene);
       this._index = Math.min(this._index, scene.objects.length - 1);
       if (scene.objects[this._index]?.locked) this._index = scene.objects.findIndex((o7) => !o7.locked);
-      this._binding = "";
+      if (!scene.hotspots.some((h4) => h4.key === this._binding)) this._binding = "";
     } catch (e6) {
       if (!abort.signal.aborted && revision === this._revision) this._error = e6.message;
     }
@@ -1707,35 +1766,106 @@ var HomePlanRoomEditor = class extends i4 {
     const r4 = this.renderRoot.querySelector("home-plan-room-scene");
     if (r4) this._save({ ...this._scene, camera: { ...this._scene.camera, yaw: r4.yaw, pitch: r4.pitch, zoom: r4.zoom } });
   }
+  _moveMarker(key, plan) {
+    if (!Array.isArray(plan) || plan.length !== 2 || plan.some((v3) => !Number.isFinite(v3))) return;
+    const scene = structuredClone(this._scene), h4 = scene.hotspots.find((h5) => h5.key === key);
+    if (!h4) return;
+    h4.plan = plan.map((v3) => Math.round(v3 * 100) / 100);
+    this._binding = key;
+    this._save(scene);
+  }
+  _resetMarker(key) {
+    const scene = structuredClone(this._scene), h4 = scene.hotspots.find((h5) => h5.key === key);
+    if (!h4) return;
+    delete h4.plan;
+    this._save(scene);
+  }
   render() {
-    const scene = this._scene, o7 = scene?.objects[this._index], keys = scene?.hotspots || [], key = this._binding || o7?.select || o7?.bind || keys[0]?.key, h4 = keys.find((h5) => h5.key === key);
-    return b2`<div class="panel"><p class="intro">Choisir un objet dans le plan ou la liste. En 2D, glisser pour le déplacer ; les flèches du clavier ajustent de 5 cm. Les modifications sont conservées avec <strong>Enregistrer</strong> dans l’éditeur Home Assistant.</p><div class="toolbar" role="group" aria-label="Configuration de la pièce"><button data-room-editor-view="2d" aria-pressed=${this._view === "2d"} @click=${() => this._view = "2d"}>Disposition 2D</button><button data-room-editor-view="3d" aria-pressed=${this._view === "3d"} @click=${() => this._view = "3d"}>Aperçu 3D</button></div>${this._error ? b2`<p class="error" role="alert">${this._error}</p>` : A}${scene ? b2`<home-plan-room-scene .scene=${scene} .mode=${this._view} .editMode=${true} .selectedObject=${this._index} .signals=${Object.fromEntries(Object.entries(this.room.scene_entities || {}).map(([k2, id]) => [k2, this.hass?.states?.[id]]))} @room-object-selected=${(e6) => {
+    const scene = this._scene, o7 = scene?.objects[this._index], keys = scene?.hotspots || [], markers = this._view === "2d" && this._target === "markers", key = this._binding || o7?.select || o7?.bind || keys[0]?.key, h4 = keys.find((h5) => h5.key === key), plan = h4 ? roomPlanAnchor(scene, h4) : [0, 0];
+    return b2`<div class="panel">
+   <p class="intro">Choisir <strong>Meubles 2D</strong> pour le mobilier ou <strong>Équipements 2D</strong> pour les icônes. Glisser sur le plan, ou utiliser les flèches du clavier par pas de 5 cm (Maj : 1 cm pour les repères). Cliquer sur <strong>Enregistrer</strong> dans l’éditeur Home Assistant pour conserver les réglages.</p>
+   <div class="toolbar" role="group" aria-label="Configuration de la pièce">
+    <button data-room-editor-view="2d" aria-pressed=${this._view === "2d" && !markers} @click=${() => {
+      this._view = "2d";
+      this._target = "objects";
+    }}>Meubles 2D</button>
+    <button data-room-editor-view="markers" aria-pressed=${markers} @click=${() => {
+      this._view = "2d";
+      this._target = "markers";
+    }}>Équipements 2D</button>
+    <button data-room-editor-view="3d" aria-pressed=${this._view === "3d"} @click=${() => {
+      this._view = "3d";
+      this._target = "objects";
+    }}>Aperçu 3D</button>
+   </div>
+   ${this._error ? b2`<p class="error" role="alert">${this._error}</p>` : A}
+   ${scene ? b2`
+    <home-plan-room-scene .scene=${scene} .mode=${this._view} .editMode=${true} .editMarkers=${markers} .activeKey=${markers ? key : void 0} .selectedObject=${this._index}
+     .signals=${Object.fromEntries(Object.entries(this.room.scene_entities || {}).map(([k2, id]) => [k2, this.hass?.states?.[id]]))}
+     @room-object-selected=${(e6) => {
       e6.stopPropagation();
       this._index = e6.detail.index;
       this._binding = "";
-    }} @room-object-moved=${(e6) => {
+    }}
+     @room-object-moved=${(e6) => {
       e6.stopPropagation();
       this._index = e6.detail.index;
       this._patch({ at: e6.detail.at });
-    }}></home-plan-room-scene><label>Objet<select data-room-object-picker .value=${String(this._index)} @change=${(e6) => {
+    }}
+     @room-marker-selected=${(e6) => {
+      e6.stopPropagation();
+      this._binding = e6.detail.key;
+    }}
+     @room-marker-moved=${(e6) => {
+      e6.stopPropagation();
+      this._moveMarker(e6.detail.key, e6.detail.plan);
+    }}></home-plan-room-scene>
+    ${markers ? b2`
+     <label>Repère d’équipement<select data-room-marker-picker .value=${key || ""} @change=${(e6) => this._binding = e6.target.value}>${keys.map((k2) => b2`<option value=${k2.key}>${k2.label}</option>`)}</select></label>
+     ${h4 ? b2`<div class="grid">${[0, 1].map((i7) => b2`<label>Position ${i7 ? "Y" : "X"} du repère (m)<input data-room-marker-field=${i7} type="number" step="0.01" .value=${String(plan[i7])} @change=${(e6) => {
+      const next = [...plan];
+      next[i7] = Number(e6.target.value);
+      this._moveMarker(key, next);
+    }}></label>`)}</div>
+      <button data-marker-reset ?disabled=${!h4.plan} @click=${() => this._resetMarker(key)}>Replacer sur l’objet</button>
+      <p class="status note">Ces coordonnées règlent l’icône du plan 2D. La sélection 3D reste attachée à l’objet. <strong>Replacer sur l’objet</strong> rétablit le suivi automatique de sa position.</p>` : b2`<p class="status">Aucun repère dans ce modèle.</p>`}
+    ` : b2`
+     <label>Objet<select data-room-object-picker .value=${String(this._index)} @change=${(e6) => {
       this._index = Number(e6.target.value);
       this._binding = "";
-    }}>${scene.objects.map((obj, i7) => !obj.locked ? b2`<option value=${String(i7)}>${obj.label || obj.id || obj.type}</option>` : A)}</select></label>${o7 ? b2`<h4>${o7.label || o7.id || o7.type}</h4>${o7.locked ? b2`<p class="status">Élément d’architecture conservé. Choisir un meuble ou un équipement.</p>` : b2`<label class="check"><input type="checkbox" .checked=${this._group} @change=${(e6) => this._group = e6.target.checked}>Déplacer / faire pivoter l’ensemble associé ${o7.group ? "(" + o7.group + ")" : ""}</label><div class="grid">${[["at", 0, "Position X (m)"], ["at", 2, "Position Y du plan (m)"], ["at", 1, "Hauteur au sol (m)"], ["size", 0, "Largeur (m)"], ["size", 2, "Profondeur (m)"], ["size", 1, "Hauteur (m)"]].map(([field, i7, label]) => b2`<label>${label}<input data-object-field=${field + "-" + i7} type="number" step="0.05" .value=${String(o7[field][i7])} @change=${(e6) => this._value(field, i7, e6.target.value)}></label>`)}<label>Rotation (°)<input data-object-rotation type="number" step="5" .value=${String(o7.rotation || 0)} @change=${(e6) => {
+    }}>${scene.objects.map((obj, i7) => !obj.locked ? b2`<option value=${String(i7)}>${obj.label || obj.id || obj.type}</option>` : A)}</select></label>
+     ${o7 ? b2`<h4>${o7.label || o7.id || o7.type}</h4>${o7.locked ? b2`<p class="status">Élément d’architecture conservé. Choisir un meuble ou un équipement.</p>` : b2`
+      <label class="check"><input type="checkbox" .checked=${this._group} @change=${(e6) => this._group = e6.target.checked}>Déplacer / faire pivoter l’ensemble associé ${o7.group ? "(" + o7.group + ")" : ""}</label>
+      <div class="grid">${[["at", 0, "Position X (m)"], ["at", 2, "Position Y du plan (m)"], ["at", 1, "Hauteur au sol (m)"], ["size", 0, "Largeur (m)"], ["size", 2, "Profondeur (m)"], ["size", 1, "Hauteur (m)"]].map(([field, i7, label]) => b2`<label>${label}<input data-object-field=${field + "-" + i7} type="number" step="0.05" .value=${String(o7[field][i7])} @change=${(e6) => this._value(field, i7, e6.target.value)}></label>`)}
+       <label>Rotation (°)<input data-object-rotation type="number" step="5" .value=${String(o7.rotation || 0)} @change=${(e6) => {
       if (Number.isFinite(Number(e6.target.value))) this._patch({ rotation: Number(e6.target.value) });
-    }}></label><label>Couleur<input type="color" .value=${o7.color || "#b5bebd"} @change=${(e6) => this._patch({ color: e6.target.value })}></label></div>`}` : A}<h4>Associations Home Assistant</h4><label>Composant<select data-room-binding-key .value=${key || ""} @change=${(e6) => this._binding = e6.target.value}>${keys.map((k2) => b2`<option value=${k2.key}>${k2.label}</option>`)}</select></label>${key ? b2`<ha-form .hass=${this.hass} .data=${{ entity: this.room.scene_entities?.[key] || "" }} .schema=${[{ name: "entity", selector: { entity: {} } }]} .computeLabel=${() => h4?.label || "Équipement"} @value-changed=${(e6) => {
+    }}></label>
+       <label>Couleur<input type="color" .value=${o7.color || "#b5bebd"} @change=${(e6) => this._patch({ color: e6.target.value })}></label>
+      </div>`}` : A}
+    `}
+    <h4>Association Home Assistant</h4>
+    ${!markers ? b2`<label>Composant<select data-room-binding-key .value=${key || ""} @change=${(e6) => this._binding = e6.target.value}>${keys.map((k2) => b2`<option value=${k2.key}>${k2.label}</option>`)}</select></label>` : A}
+    ${key ? b2`
+     <ha-form .hass=${this.hass} .data=${{ entity: this.room.scene_entities?.[key] || "" }} .schema=${[{ name: "entity", selector: { entity: {} } }]} .computeLabel=${() => h4?.label || "Équipement"} @value-changed=${(e6) => {
       e6.stopPropagation();
       this._bindings(key, e6.detail.value.entity);
-    }}></ha-form><label>États qui animent le composant<input data-room-active-states .value=${(h4?.states || ["on", "playing", "paused", "buffering"]).join(", ")} @change=${(e6) => {
+    }}></ha-form>
+     <label>États qui animent le composant<input data-room-active-states .value=${(h4?.states || ["on", "playing", "paused", "buffering"]).join(", ")} @change=${(e6) => {
       const states = e6.target.value.split(",").map((v3) => v3.trim()).filter(Boolean), next = structuredClone(scene);
       next.hotspots = next.hotspots.map((x2) => x2.key === key ? { ...x2, states } : x2);
       this._save(next);
-    }}></label><p class="status">Exemple : <code>home</code> pour une présence réseau de PC. Une présence réseau ne confirme pas à elle seule l’alimentation de l’ordinateur.</p>` : A}<div class="actions"><button ?disabled=${this._view !== "3d"} @click=${this._setCamera}>Garder ce cadrage</button><button ?disabled=${!this.room.scene_url} @click=${() => this.dispatchEvent(new CustomEvent("room-scene-reset", { bubbles: true, composed: true }))}>Rétablir le modèle initial</button></div><p class="status note">Cet éditeur modifie la scène et ses associations. Il ne commande aucun appareil.</p>` : b2`<p class="status">Chargement du modèle…</p>`}</div>`;
+    }}></label>
+     <p class="status">Exemple : <code>home</code> pour une présence réseau de PC. Une présence réseau ne confirme pas à elle seule l’alimentation de l’ordinateur.</p>` : A}
+    <div class="actions"><button ?disabled=${this._view !== "3d"} @click=${this._setCamera}>Garder ce cadrage</button><button ?disabled=${!this.room.scene_url} @click=${() => this.dispatchEvent(new CustomEvent("room-scene-reset", { bubbles: true, composed: true }))}>Rétablir le modèle initial</button></div>
+    <p class="status note">Cet éditeur modifie la scène et ses associations. Il ne commande aucun appareil.</p>
+   ` : b2`<p class="status">Chargement du modèle…</p>`}
+  </div>`;
   }
 };
 if (!customElements.get("home-plan-room-editor")) customElements.define("home-plan-room-editor", HomePlanRoomEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.10.0-rc.1";
+var VERSION = "0.11.0-rc.1";
 var ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var MODES = [["", "home", "Pièces"], ["lights", "lightbulb", "Lumières"], ["temperature", "thermometer", "Temp."], ["openings", "door-open", "Ouvertures"], ["covers", "blinds", "Volets"]];
