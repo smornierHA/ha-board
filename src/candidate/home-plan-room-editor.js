@@ -56,6 +56,7 @@ export class HomePlanRoomEditor extends LitElement {
      <ha-form .hass=${this.hass} .data=${{entity:this.room.scene_entities?.[key]||''}} .schema=${[{name:'entity',selector:{entity:{}}}]} .computeLabel=${()=>h?.label||'Équipement'} @value-changed=${e=>{e.stopPropagation();this._bindings(key,e.detail.value.entity);}}></ha-form>
      <label>États qui animent le composant<input data-room-active-states .value=${(h?.states||['on','playing','paused','buffering']).join(', ')} @change=${e=>{const states=e.target.value.split(',').map(v=>v.trim()).filter(Boolean),next=structuredClone(scene);next.hotspots=next.hotspots.map(x=>x.key===key?{...x,states}:x);this._save(next);}}></label>
      <p class="status">Exemple : <code>home</code> pour une présence réseau de PC. Une présence réseau ne confirme pas à elle seule l’alimentation de l’ordinateur.</p>`:nothing}
+    <label class="check"><input data-camera-fit type="checkbox" .checked=${!!scene.camera?.fit} @change=${e=>this._save({...scene,camera:{...scene.camera,fit:e.target.checked}})}>Adapter le cadrage à l’écran</label>
     <div class="actions"><button ?disabled=${this._view!=='3d'} @click=${this._setCamera}>Garder ce cadrage</button><button ?disabled=${!this.room.scene_url} @click=${()=>this.dispatchEvent(new CustomEvent('room-scene-reset',{bubbles:true,composed:true}))}>Rétablir le modèle initial</button></div>
     <p class="status note">Cet éditeur modifie la scène et ses associations. Il ne commande aucun appareil.</p>
    `:html`<p class="status">Chargement du modèle…</p>`}

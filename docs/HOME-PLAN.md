@@ -258,3 +258,14 @@ Les objets `lamp` acceptent `lamp_style: standard | photography | clip`. Le prem
 La géométrie réelle, les cotes, le plan PDF, les photos et les associations sont conservés dans la référence privée. Les nouvelles cotes utilisateur priment sur les anciennes estimations ; les dimensions non mesurées restent approximatives.
 
 Validation : `tests/home-plan-room-groups.mjs` couvre les cibles natives, les compteurs, les inconnus, les exclusions, les engrenages, les pourcentages, l’inversion d’écran, les cycles et les quatre largeurs. Les contrôles des modèles, de l’exploration, des signalements, de l’éclairage et de l’édition restent passants. Les essais de commande sont des doubles HA, sans action physique.
+
+
+## Cadrage adapté à l’écran — 0.17.0-rc.2
+
+Un modèle peut définir `camera.fit: true`. Le cadrage initial utilise alors la largeur réelle du visuel et conserve le contour du sol ainsi que les attaches d’équipements dans le cadre. `camera.zoom` reste le zoom souhaité maximal au démarrage. Les boutons +/− et les gestes gardent un zoom manuel relatif à cette vue ; Recentrer rétablit le cadrage initial adapté. L’option ne change pas les scènes qui ne l’activent pas.
+
+Le calcul dépend du cadrage initial, du modèle et des dimensions de la vue, et reste en cache entre ces changements. Une sélection d’équipement ou une simple mise à jour d’état ne refait pas le cadrage. La hauteur du visuel reste constante sur mobile. Dans l’éditeur **Pièce 2D / 3D**, la case **Adapter le cadrage à l’écran** permet de choisir ce comportement ; **Garder ce cadrage** conserve l’option.
+
+Le modèle privé a été recalé selon les corrections de mesure de l’utilisateur. Le dessin ancien joint sert uniquement à identifier les extrémités des cotes ; il ne remplace pas les corrections déjà retenues. Les valeurs réelles, coordonnées et pièces jointes restent dans la référence privée.
+
+Validation ciblée : le test des modèles exerce le cadrage sur trois largeurs, le zoom manuel, son rétablissement et le rendu GPU. Les parcours d’exploration, sélection et édition restent passants. La recette privée contrôle les dimensions, les dégagements, les vues jour/nuit et la taille constante à la sélection. Les commandes natives déjà qualifiées ne sont pas rejouées physiquement.

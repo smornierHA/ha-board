@@ -180,3 +180,8 @@ Ces trois sources, relues au commit frontend `91c28c2f587553a817a315cfbbeee072a6
 ## Plan — groupes de pièce et cotes, 31 octobre 2026
 
 Le mandat courant est la série de remarques utilisateur et ses cinq pièces jointes. Le plan coté et les photographies privées ont été recroisés avec les nouvelles mesures, qui remplacent les estimations concernées. Les groupes natifs existants et leurs membres ont été relus par les API supportées ; aucun helper, nom ou identifiant n’est modifié. Les trois cartes du dashboard natif, les visibilités personnelles et la ressource du plan ont été rapprochées de la révision précédente avant une modification limitée. Sources maintenues : `src/candidate/home-plan-room-groups.js`, `home-plan-card.js`, `home-plan-room-scene.js` et l’éditeur. Preuve publique expurgée : `evidence/home-plan-room-groups-2026-10-31.json`. Géométrie et inventaire réels restent dans la référence privée ; aucun original personnel n’entre dans Git.
+
+
+## Plan — corrections de cotes et cadrage, 31 octobre 2026
+
+Les deux nouvelles mesures de l’utilisateur remplacent les valeurs concernées de la révision précédente. Les deux pièces jointes identifient les points de mesure et le cadrage initial à améliorer. Source maintenue du cadrage : `src/candidate/home-plan-room-scene.js`, option de scène facultative et éditeur natif. La géométrie et les mesures restent privées. Preuve expurgée : `evidence/home-plan-room-framing-2026-10-31.json`.

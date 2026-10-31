@@ -1,3 +1,7 @@
+## Plan — cadrage adaptatif du 31 octobre 2026
+
+Le candidat autonome **0.17.0-rc.2** est installé. Le modèle privé de pièce reçoit les deux cotes utilisateur corrigées et un cadrage plus plongeant. L’option `camera.fit` adapte le cadrage initial à la largeur de la vue en conservant le sol et les attaches d’équipements dans le cadre ; le zoom manuel et Recentrer restent disponibles. Le calcul est mémorisé par scène, cadrage initial et dimensions, sans nouveau timer ni abonnement. L’éditeur expose Adapter le cadrage à l’écran. Trois suites ciblées passent ; contrôle privé jour/nuit, 2D/3D, largeurs 320/390/1150, taille mobile constante et réinitialisation du cadrage réussis. Quatre fichiers natifs relus, sept liens de configuration actualisés, delta exact et 43 autres ressources conservées. Les groupes, commandes et visibilités personnelles sont préservés. Les preuves inchangées du lot précédent sont réutilisées ; aucune commande physique, fusion, CI ou release HACS. Preuve : `evidence/home-plan-room-framing-2026-10-31.json`.
+
 ## Plan — objets directs, médias et comptes PC du 31 octobre 2026
 
 ## Plan — groupes de pièce et modèle coté du 31 octobre 2026

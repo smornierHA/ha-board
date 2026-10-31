@@ -12,7 +12,7 @@ import {exactGroup,roomGroupSummary} from './home-plan-room-groups.js';
 import './home-plan-room-editor.js';
 import './home-plan-pc-setup.js';
 
-export const VERSION = '0.17.0-rc.1';
+export const VERSION = '0.17.0-rc.2';
 const ENTITY = /^[a-z_]+\.[a-z0-9_]+$/;
 const BAD = new Set(['unknown', 'unavailable']);
 const ALERT_CLASSES = new Set(['smoke','gas','moisture','problem','tamper','battery','safety']);
