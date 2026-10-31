@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-31",
+  "candidate_version": "0.16.0-rc.1",
+  "base_commit": "68fd29f56ebfe73a6e3ce968541ae9cee1d3b43a",
+  "bundle_sha256": "e56a5c11b2573adf61570c69de6ab95899a521f187b1c5ce5e19d78c315b533a",
+  "tests": [
+    {
+      "suite": "pc-setup",
+      "exit": 0
+    },
+    {
+      "suite": "media",
+      "exit": 0
+    },
+    {
+      "suite": "notices",
+      "exit": 0
+    },
+    {
+      "suite": "climate",
+      "exit": 0
+    },
+    {
+      "suite": "collection",
+      "exit": 0
+    },
+    {
+      "suite": "lighting",
+      "exit": 0
+    },
+    {
+      "suite": "room-models",
+      "exit": 0
+    },
+    {
+      "suite": "ambience",
+      "exit": 0
+    },
+    {
+      "suite": "refinements",
+      "exit": 0
+    },
+    {
+      "suite": "room-explorer",
+      "exit": 0
+    },
+    {
+      "suite": "object-interaction",
+      "exit": 0
+    },
+    {
+      "suite": "browser",
+      "exit": 0
+    }
+  ],
+  "final_targeted_checks": [
+    "PC setup after native editor addition",
+    "shelf model after partial back panels",
+    "private 2-room 2D/3D desktop/mobile and 4 unique photos"
+  ],
+  "private_qa": {
+    "rooms": 2,
+    "widths": [
+      390,
+      1150
+    ],
+    "direct_grid": true,
+    "horizontal_overflow": false,
+    "fixed_mobile_stage": true,
+    "photo_count": 4,
+    "illustration": true,
+    "runtime_errors": 0
+  },
+  "native": {
+    "files": 9,
+    "all_readback_equal": true,
+    "dashboard_hash": "416e7b1fdd6ab4c9",
+    "exact_dashboard_delta": true,
+    "other_resources_preserved": 43,
+    "all_plan_sections_span_two": true
+  },
+  "pc_setup": {
+    "component_installed": true,
+    "real_accounts_created": false,
+    "pending": "User enters two passwords and submits the native administrator form.",
+    "native_core_contract": "2026.9.4 official config/auth and config/auth_provider/homeassistant APIs",
+    "no_credentials_in_config_or_logs": true,
+    "no_automatic_mutation_on_mount": true,
+    "existing_accounts_preserved": true,
+    "concurrent_dashboard_changes_refused": true,
+    "visibility_is_not_an_ACL": true
+  },
+  "delivery": {
+    "ci": false,
+    "merged": false,
+    "hacs_release": false,
+    "physical_commands": 0,
+    "physical_ios_acceptance": false
+  },
+  "privacy": "Only generic code/docs and fictitious fixtures in Git. No photos, house geometry or domestic identifiers."
+}
