@@ -241,3 +241,20 @@ L’assistant relit ensuite Lovelace, replace les deux cartes personnelles dans 
 Contrats natifs vérifiés dans le code officiel de Core **2026.9.4** (`components/config/auth.py` et `auth_provider_homeassistant.py`), version de l’instance. Les tests utilisent des doubles : création réelle et connexion sur les PC attendent l’action de l’utilisateur dans le formulaire. Les appels de configuration ne passent jamais par une modification de `.storage`.
 
 Pour une bibliothèque, `backed: true` ferme le fond entier ; `backed_columns: [0,1]` ferme seulement certaines colonnes (indices depuis zéro). `empty_cells: [[colonne, rangée]]` réserve une case, indices depuis zéro à partir du bas. Les entrées sont bornées et validées ; les lampes conservent leurs propres objets et attaches de sélection.
+
+
+## Groupes et synthèse de pièce — 0.17
+
+Les champs de pièce `light_group`, `cover_group` et `opening_group` choisissent des entités natives. L’éditeur visuel les expose dans **Équipements et zone de la pièce**. Le groupe de lumières définit les membres du bloc Éclairages ; celui des volets définit le bloc des volets de fenêtre, tandis que les écrans de projection conservent leurs commandes individuelles. Les exclusions et la zone de la pièce restent respectées.
+
+Trois boutons au-dessus du visuel donnent le nombre actif/total : lumières allumées, volets ouverts et fenêtres ouvertes. Les états absents ou inconnus sont explicités. Un clic ouvre `hass-more-info` sur le groupe, ou sur l’entité unique. Sans groupe multi-entité configuré, le bouton rejoint les commandes de la pièce. Une sélection n’actionne aucun appareil. Les boutons sont visibles sur une ligne dédiée au téléphone, sans modifier la taille du plan à la sélection d’un objet.
+
+Les blocs collectifs ont un engrenage ouvrant la fiche native. Le groupe reçoit une seule commande lorsque sa liste de membres développée correspond exactement à la portée, sans cycle, troncature, exclusion ou politique de course individuelle. Le chemin individuel conserve les limites et inversions si nécessaire. Les badges **25 %, 50 %, 75 %** expriment un pourcentage d’ouverture, ou de déploiement pour un écran ; ils ne suivent pas le remplissage visuel de fermeture. Les miniatures retenues restent intactes.
+
+Les défauts attachés à une porte ou fenêtre affichent désormais l’icône de cet équipement avec son compteur, comme les autres repères. Le petit compteur circulaire isolé est retiré. La position reste attachée à l’ouvrant ; le détail indique toujours les raisons et leur niveau.
+
+Les objets `lamp` acceptent `lamp_style: standard | photography | clip`. Le premier conserve le dessin existant, le deuxième dessine un pied à trois branches et une boîte à lumière, et le dernier une pince et une tête orientée. L’éditeur permet de choisir le style. Une console `variant: switch` peut fournir `joycon_colors: ["#e0c040", "#4080b0"]` ; les couleurs claires par défaut sont conservées. Ces primitives n’ajoutent ni requête réseau ni boucle d’animation.
+
+La géométrie réelle, les cotes, le plan PDF, les photos et les associations sont conservés dans la référence privée. Les nouvelles cotes utilisateur priment sur les anciennes estimations ; les dimensions non mesurées restent approximatives.
+
+Validation : `tests/home-plan-room-groups.mjs` couvre les cibles natives, les compteurs, les inconnus, les exclusions, les engrenages, les pourcentages, l’inversion d’écran, les cycles et les quatre largeurs. Les contrôles des modèles, de l’exploration, des signalements, de l’éclairage et de l’édition restent passants. Les essais de commande sont des doubles HA, sans action physique.

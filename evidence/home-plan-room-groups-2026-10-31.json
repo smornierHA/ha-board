@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-31",
+  "candidate_version": "0.17.0-rc.1",
+  "base_commit": "b30831db0e48340ec0502caec20cc9db9663a29e",
+  "bundle_sha256": "85dfe21b850b6f3f97c0ae551903800849cdd19e409899646abeb42cc746d09f",
+  "tests": [
+    {
+      "suite": "room-groups",
+      "exit": 0
+    },
+    {
+      "suite": "room-models",
+      "exit": 0
+    },
+    {
+      "suite": "refinements",
+      "exit": 0
+    },
+    {
+      "suite": "room-explorer",
+      "exit": 0
+    },
+    {
+      "suite": "browser",
+      "exit": 0
+    },
+    {
+      "suite": "notices",
+      "exit": 0
+    },
+    {
+      "suite": "climate",
+      "exit": 0
+    },
+    {
+      "suite": "collection",
+      "exit": 0
+    },
+    {
+      "suite": "media",
+      "exit": 0
+    },
+    {
+      "suite": "lighting",
+      "exit": 0
+    },
+    {
+      "suite": "ambience",
+      "exit": 0
+    },
+    {
+      "suite": "object-interaction",
+      "exit": 0
+    }
+  ],
+  "browser_groups": 14,
+  "private_visual_qa": {
+    "rooms": 2,
+    "widths": [
+      390,
+      1150
+    ],
+    "views": [
+      "2d",
+      "3d"
+    ],
+    "gallery_images": 4,
+    "fixed_mobile_stage": true,
+    "overflow": false,
+    "runtime_errors": 0
+  },
+  "installed": {
+    "candidate": true,
+    "files_readback_equal": 4,
+    "dashboard_delta_exact": true,
+    "other_resources_preserved": 43,
+    "personal_visibility_preserved": true,
+    "personal_column_span": 2
+  },
+  "device_actions": false,
+  "new_accounts_created": false,
+  "physical_ios_acceptance": false,
+  "native_browser_render": false,
+  "merged": false,
+  "hacs_release": false,
+  "ci_run": false,
+  "privacy": "Only generic code and fictional fixtures are public; measured geometry, original plans/photos and native entity mappings are private."
+}

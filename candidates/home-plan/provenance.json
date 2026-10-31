@@ -1,30 +1,30 @@
 {
-  "version": "0.16.0-rc.1",
+  "version": "0.17.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 115175,
-      "sha256": "66a4e273d3e65eeaa71b7df311ef6aca9c58a379ad0195f8c6adcbc36ab778fa"
+      "bytes": 120247,
+      "sha256": "68562b92fb37e091e43d60c54d7c5d4f98c6eb7886685afd90784ce3d3650101"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 44402,
-      "sha256": "b059d5373fce53358ab372f638386dc3d7fe35d742830c2ddd8e0b856ddd8508"
+      "bytes": 46089,
+      "sha256": "eec9852b57c990052a97bab14a3ee2160832c327008308ced2a3024f0c4df983"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 666,
-      "sha256": "85b1312e1b0ac2c0825a7e3c04a0eb82626a96f70120799e1cb72078d4a5824a"
+      "sha256": "fbb7953422649aa77e115a14ab5ff35c174d989cb96a8afa3a3b19b67815c99f"
     },
     "tests/home-plan-browser.mjs": {
-      "bytes": 55341,
-      "sha256": "c2404f1b550ba9a30dfb422e13f2ce5c036f0e86209a57597268642bf15abb7a"
+      "bytes": 55720,
+      "sha256": "3dbef6b87932cb3809b253aaa8f6c79dc0dae5d824105f68478aa327d60c8cf5"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 183478,
-      "sha256": "767a2e8bc4da936c8d681be6c8692a05eee9f5ff6e8bb1b789d9258e12160e1c"
+      "bytes": 328172,
+      "sha256": "85dfe21b850b6f3f97c0ae551903800849cdd19e409899646abeb42cc746d09f"
     },
     "src/candidate/home-plan-notices.js": {
-      "bytes": 9725,
-      "sha256": "8535362d83fe35be8b0bb2a16feb5e4c2ef4c5a6f1b4e3cda19e86b0fd1727eb"
+      "bytes": 9960,
+      "sha256": "4eb7833cac5f90195950e72e5c1a47d6d708fafca941ffb946d68a388583a26b"
     },
     "tests/home-plan-notices.mjs": {
       "bytes": 10196,
@@ -39,16 +39,16 @@
       "sha256": "c76369ed089c189575658f370b7aa57dcd5a2d22bc00680a00cc781ac24e22d9"
     },
     "package.json": {
-      "bytes": 461,
-      "sha256": "765b25764fd1c22c735eba1d8de32b4fd0702f832ef86cabd6f81ccd2523ff75"
+      "bytes": 597,
+      "sha256": "ebdbe038733249dfe7680cb8e2f2b051628714adf97d3649a70103eddab85c69"
     },
     "package-lock.json": {
       "bytes": 16869,
       "sha256": "307db15cd68fa81f5ff8e94a4ae196dc456b894ae3e19e1f90acecab412ef9c4"
     },
     ".github/workflows/poc-contracts.yml": {
-      "bytes": 4183,
-      "sha256": "f8ee03a10f33a6b474a161a6af8eb3ba95b2be4a40e6a5a1db4f3e888af9bc20"
+      "bytes": 4286,
+      "sha256": "3a3d1a19383d7d1a6dc447ded49c4e444d694c94aa397c34526915558d1e4213"
     },
     "src/candidate/home-plan-climate.js": {
       "bytes": 3048,
@@ -59,24 +59,24 @@
       "sha256": "72b054249ab7368587054de40230a0cc38c8bf8a11ab049e582a94186a3c4a6b"
     },
     "src/candidate/home-plan-room-scene.js": {
-      "bytes": 52957,
-      "sha256": "96a672629bfb2cb7fbd46abd5e26aa9e6462d93aa4837e715a8053bfa0b54e7c"
+      "bytes": 54056,
+      "sha256": "37ad85f4e08446caa92c2edfa466df686a1907e0f046845792beeb25f4eac160"
     },
     "src/candidate/home-plan-media.js": {
       "bytes": 1745,
       "sha256": "c0f83d1c875b9a0491d1811d3607073442df49e82ba4d70fa7c371363ac27bb8"
     },
     "tests/home-plan-refinements.mjs": {
-      "bytes": 10649,
-      "sha256": "46e80528aff708bc673f0084664a6ce6c5c08366fbecdaf90217472a878d72bc"
+      "bytes": 10810,
+      "sha256": "172c9916d33f2ec739cbf5b37f581f6dae9af7cb91ddb7b75d94a00473988251"
     },
     "tests/home-plan-room-explorer.mjs": {
       "bytes": 10847,
       "sha256": "33f957f703514a098da616ba687914031487713ef8e3ac980e15db2829891895"
     },
     "tests/home-plan-room-models.mjs": {
-      "bytes": 4177,
-      "sha256": "38751a5435ca4db9a4533b20d4150a2c3de9038216d584a261c7d872581085a3"
+      "bytes": 4390,
+      "sha256": "e8c16d5ef3ad456a5c188f8cf5f119079b0e6184cb9ec4f081a5f090df0865bf"
     },
     "tests/home-plan-media.mjs": {
       "bytes": 2548,
@@ -93,18 +93,26 @@
     "tests/home-plan-pc-setup.mjs": {
       "bytes": 7454,
       "sha256": "e6cc0269226cafcb1da89a5023fafd58fcca2ca3a10606c6d5333852b0fcb5d4"
+    },
+    "src/candidate/home-plan-room-groups.js": {
+      "bytes": 1849,
+      "sha256": "f3921a5606eb3a8b0748674fd754697ab3c75f196d3d55eb709776217a8537f1"
+    },
+    "tests/home-plan-room-groups.mjs": {
+      "bytes": 7598,
+      "sha256": "860fddf8f08fc98b389718366a012d489438594d62a0616936457973d88ae407"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "12 local suites passed including 14 browser groups. PC onboarding and shelf models rechecked after final refinements; private 2-room desktop/mobile grids, four-photo gallery and illustration passed. User creation tested only on service doubles, not executed for real.",
+  "tests": "12 local suites passed, including 14 browser groups; private two-room desktop/mobile views and gallery verified. No device actions.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,
   "notices": "docs/HOME-PLAN-NOTICES.md; BSD-3-Clause embedded in the standalone bundle",
   "date": "2026-10-31",
-  "base_commit": "68fd29f56ebfe73a6e3ce968541ae9cee1d3b43a",
-  "bundle_sha256": "e56a5c11b2573adf61570c69de6ab95899a521f187b1c5ce5e19d78c315b533a",
+  "base_commit": "b30831db0e48340ec0502caec20cc9db9663a29e",
+  "bundle_sha256": "85dfe21b850b6f3f97c0ae551903800849cdd19e409899646abeb42cc746d09f",
   "installed_candidate": true,
-  "pc_accounts": "Native administrator password-entry step pending; no real account created automatically."
+  "pc_accounts": "Existing native personal sections and user visibility retained; no account creation in this revision."
 }

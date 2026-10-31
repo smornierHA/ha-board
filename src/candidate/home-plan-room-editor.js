@@ -46,6 +46,7 @@ export class HomePlanRoomEditor extends LitElement {
       <label class="check"><input type="checkbox" .checked=${this._group} @change=${e=>this._group=e.target.checked}>Déplacer / faire pivoter l’ensemble associé ${o.group?'('+o.group+')':''}</label>
       <div class="grid">${[['at',0,'Position X (m)'],['at',2,'Position Y du plan (m)'],['at',1,'Hauteur au sol (m)'],['size',0,'Largeur (m)'],['size',2,'Profondeur (m)'],['size',1,'Hauteur (m)']].map(([field,i,label])=>html`<label>${label}<input data-object-field=${field+'-'+i} type="number" step="0.05" .value=${String(o[field][i])} @change=${e=>this._value(field,i,e.target.value)}></label>`)}
        <label>Rotation (°)<input data-object-rotation type="number" step="5" .value=${String(o.rotation||0)} @change=${e=>{if(Number.isFinite(Number(e.target.value)))this._patch({rotation:Number(e.target.value)});}}></label>
+       ${o.type==='lamp'?html`<label>Type de lampe<select data-lamp-style .value=${o.lamp_style||'standard'} @change=${e=>this._patch({lamp_style:e.target.value})}><option value="standard">Lampe de bureau</option><option value="photography">Spot de photographie sur pied</option><option value="clip">Liseuse à pince</option></select></label>`:nothing}
        <label>Couleur<input type="color" .value=${o.color||'#b5bebd'} @change=${e=>this._patch({color:e.target.value})}></label>
       </div>`}`:nothing}
     `}
