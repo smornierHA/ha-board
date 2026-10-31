@@ -20,8 +20,13 @@ assert.equal(await renderer.locator('[data-scene-hotspot]').count(),0,'3D is fre
 await card.locator('[data-focused-equipment=desk] input').fill('63');await card.locator('[data-focused-equipment=desk] input').dispatchEvent('change');assert.deepEqual(await page.evaluate(()=>calls.at(-1)),['light','turn_on',{brightness_pct:63},{entity_id:'light.example'}]);
 assert.equal(await page.evaluate(()=>hass.states['light.example'].state),'off','no optimistic state');
 for(const width of [320,390,736,1100]){await page.setViewportSize({width,height:1100});await page.evaluate(()=>card.updateComplete);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await card.screenshot({path:path.join(out,`room-${width}.png`)});}
-// While adjusting a device on mobile, scrolling keeps the compact scene visible.
-await page.setViewportSize({width:390,height:700});await page.evaluate(()=>window.scrollTo(0,250));const pinned=await card.locator('home-plan-room-scene').boundingBox();assert.ok(pinned.y>=-2&&pinned.y+pinned.height<=700,'mobile scene remains visible beside the selected controls');await page.evaluate(()=>window.scrollTo(0,0));
+// Selecting a device on mobile must keep the same canvas footprint, with controls below.
+await page.setViewportSize({width:390,height:700});await page.evaluate(()=>{window.scrollTo(0,0);card._activeHotspot=null;});await page.evaluate(()=>card.updateComplete);
+const initial=await renderer.boundingBox(),scrollBefore=await page.evaluate(()=>scrollY);
+await renderer.evaluate(r=>r.dispatchEvent(new CustomEvent('room-equipment-selected',{detail:{key:'desk'},bubbles:true,composed:true})));await card.locator('[data-focused-equipment=desk]').waitFor();
+const selected=await renderer.boundingBox(),control=await card.locator('[data-focused-equipment=desk]').boundingBox();
+assert.ok(Math.abs(initial.height-selected.height)<1&&Math.abs(initial.width-selected.width)<1,'selection keeps the mobile canvas dimensions');assert.ok(control.y>=selected.y+selected.height,'selected controls are below the visual');assert.equal(await page.evaluate(()=>scrollY),scrollBefore,'selection does not move the page');
+await card.locator('[aria-label="Fermer la commande sélectionnée"]').click();assert.ok(Math.abs((await renderer.boundingBox()).height-initial.height)<1,'closing controls preserves the canvas');
 // 2D/3D transitions allocate and release GPU contexts; no frame loop is retained.
 for(let i=0;i<5;i++){await card.locator('[data-room-view="2d"]').click();await renderer.locator('.top').waitFor();await card.locator('[data-room-view="3d"]').click();await renderer.locator('canvas').waitFor();}
 await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>!!card.shadowRoot.querySelector('home-plan-room-scene')._gl),true);

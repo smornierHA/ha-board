@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-31",
+  "candidate_version": "0.15.0-rc.1",
+  "base_commit": "e2a6b710aa903b2ab0954bac377c968a7db6f14d",
+  "bundle_sha256": "93921059ca036f95ac4e569d8bdbfa48cedbbc100c11cb0afe318b8bce4ecbb4",
+  "tests": [
+    {
+      "suite": "media",
+      "exit": 0
+    },
+    {
+      "suite": "notices",
+      "exit": 0
+    },
+    {
+      "suite": "climate",
+      "exit": 0
+    },
+    {
+      "suite": "collection",
+      "exit": 0
+    },
+    {
+      "suite": "lighting",
+      "exit": 0
+    },
+    {
+      "suite": "room-models",
+      "exit": 0
+    },
+    {
+      "suite": "ambience",
+      "exit": 0
+    },
+    {
+      "suite": "object-interaction",
+      "exit": 0
+    },
+    {
+      "suite": "refinements",
+      "exit": 0
+    },
+    {
+      "suite": "room-explorer",
+      "exit": 0
+    },
+    {
+      "suite": "browser",
+      "exit": 0
+    }
+  ],
+  "private_render": {
+    "rooms": 2,
+    "widths": [
+      390,
+      1150
+    ],
+    "views": [
+      "2d",
+      "3d"
+    ],
+    "fixed_mobile_stage": true,
+    "overflow": false,
+    "runtime_errors": 0
+  },
+  "native_installation": {
+    "files": 5,
+    "file_readback_equal": true,
+    "exact_dashboard_delta": true,
+    "other_resources_preserved": 43,
+    "personal_cards_updated": 2,
+    "loaded_in_existing_client": false,
+    "dashboard_hash": "c4784c14efc48825",
+    "screenshot_engine": "One 20-second native screenshot attempt timed out; no rendered-native acceptance claimed."
+  },
+  "media_findings": "An Art app identifier can coexist with an off Art-status attribute. Positive Art evidence now excludes activity consistently. Per-room aliases collapse UI duplicates; complementary integrations remain available.",
+  "privacy": "Only generic code, docs and fictitious fixtures in Git. No domestic geometry, photographs, entity IDs or user IDs.",
+  "limitations": [
+    "No physical device command",
+    "No actual iOS or child-session acceptance",
+    "No merge or HACS release",
+    "Photo-based proportions remain estimates"
+  ]
+}
