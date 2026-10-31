@@ -1,4 +1,4 @@
-/* HA-BOARD Home Plan 0.17.0-rc.1 | Lit incorporated | see THIRD-PARTY-NOTICES.md
+/* HA-BOARD Home Plan 0.17.0-rc.2 | Lit incorporated | see THIRD-PARTY-NOTICES.md
 BSD 3-Clause License
 
 Copyright (c) 2017 Google LLC. All rights reserved.
@@ -1034,6 +1034,7 @@ function validateRoomScene(scene) {
     if (o7.design !== void 0 && !["wanted", "manga"].includes(o7.design)) throw Error("Décor invalide.");
   }
   if (scene.camera?.zoom !== void 0 && (!Number.isFinite(scene.camera.zoom) || scene.camera.zoom < 0.7 || scene.camera.zoom > 2.6)) throw Error("Zoom initial invalide.");
+  if (scene.camera?.fit !== void 0 && typeof scene.camera.fit !== "boolean") throw Error("Adaptation du cadrage invalide.");
   const objectIds = /* @__PURE__ */ new Set();
   for (const o7 of scene.objects) {
     if (o7.id && (typeof o7.id !== "string" || objectIds.has(o7.id))) throw Error("Identifiant d’objet invalide.");
@@ -1654,7 +1655,7 @@ var HomePlanRoomScene = class extends i4 {
       this._signature = signature;
       this._shadowDirty = true;
     }
-    const span = Math.max(...this.scene.size) * 1.48 / this.zoom, eye = [Math.sin(this.yaw) * 12 * Math.cos(this.pitch), 12 * Math.sin(this.pitch), Math.cos(this.yaw) * 12 * Math.cos(this.pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0])), lp = multiply(ortho(11, 11), lookAt([-3.5, 8, 4.5], [0, 0, 0]));
+    const span = Math.max(...this.scene.size) * 1.48 / this._cameraZoom(box), eye = [Math.sin(this.yaw) * 12 * Math.cos(this.pitch), 12 * Math.sin(this.pitch), Math.cos(this.yaw) * 12 * Math.cos(this.pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0])), lp = multiply(ortho(11, 11), lookAt([-3.5, 8, 4.5], [0, 0, 0]));
     const fade = this.wallMode === "solid" ? 0 : 1;
     if (this._shadowYaw !== this.yaw || this._shadowFade !== fade) this._shadowDirty = true;
     gl.enable(gl.DEPTH_TEST);
@@ -1768,6 +1769,19 @@ var HomePlanRoomScene = class extends i4 {
     this._pointers.delete(e6.pointerId);
     this._lastDistance = null;
     if (e6.currentTarget.hasPointerCapture(e6.pointerId)) e6.currentTarget.releasePointerCapture(e6.pointerId);
+  }
+  _cameraZoom(box) {
+    const c5 = this.scene.camera;
+    if (!c5?.fit) return this.zoom;
+    const key = [box.width, box.height, c5.yaw, c5.pitch, c5.zoom].join(":");
+    if (this._fitScene !== this.scene || this._fitKey !== key) {
+      const [w2, d3] = this.scene.size, yaw = c5.yaw ?? -0.57, pitch = c5.pitch ?? 0.83, span = Math.max(w2, d3) * 1.48, eye = [Math.sin(yaw) * 12 * Math.cos(pitch), 12 * Math.sin(pitch), Math.cos(yaw) * 12 * Math.cos(pitch)], vp = multiply(ortho(span * box.width / box.height, span), lookAt(eye, [0, 0.65, 0]));
+      const points = [...(this.scene.outline || [[-w2 / 2, -d3 / 2], [w2 / 2, -d3 / 2], [w2 / 2, d3 / 2], [-w2 / 2, d3 / 2]]).map(([x2, z2]) => [x2, 0, z2]), ...this.scene.hotspots.map((h4) => roomAnchor(this.scene, h4))].map((p4) => project(p4, vp)), extent = Math.max(...points.flatMap(([x2, y3]) => [Math.abs(x2) / 0.94, Math.abs(y3) / 0.92]));
+      this._fitScale = extent > 0 ? Math.min(1, 1 / (extent * (c5.zoom ?? 1.12))) : 1;
+      this._fitScene = this.scene;
+      this._fitKey = key;
+    }
+    return this.zoom * this._fitScale;
   }
   _initialZoom() {
     return this.mode === "3d" && !this._failed ? this.scene?.camera?.zoom ?? 1.12 : 1;
@@ -2139,6 +2153,7 @@ var HomePlanRoomEditor = class extends i4 {
       this._save(next);
     }}></label>
      <p class="status">Exemple : <code>home</code> pour une présence réseau de PC. Une présence réseau ne confirme pas à elle seule l’alimentation de l’ordinateur.</p>` : A}
+    <label class="check"><input data-camera-fit type="checkbox" .checked=${!!scene.camera?.fit} @change=${(e6) => this._save({ ...scene, camera: { ...scene.camera, fit: e6.target.checked } })}>Adapter le cadrage à l’écran</label>
     <div class="actions"><button ?disabled=${this._view !== "3d"} @click=${this._setCamera}>Garder ce cadrage</button><button ?disabled=${!this.room.scene_url} @click=${() => this.dispatchEvent(new CustomEvent("room-scene-reset", { bubbles: true, composed: true }))}>Rétablir le modèle initial</button></div>
     <p class="status note">Cet éditeur modifie la scène et ses associations. Il ne commande aucun appareil.</p>
    ` : b2`<p class="status">Chargement du modèle…</p>`}
@@ -2339,7 +2354,7 @@ var HomePlanPCSetupEditor = class extends i4 {
 if (!customElements.get("home-plan-pc-setup-editor")) customElements.define("home-plan-pc-setup-editor", HomePlanPCSetupEditor);
 
 // src/candidate/home-plan-card.js
-var VERSION = "0.17.0-rc.1";
+var VERSION = "0.17.0-rc.2";
 var ENTITY2 = /^[a-z_]+\.[a-z0-9_]+$/;
 var BAD2 = /* @__PURE__ */ new Set(["unknown", "unavailable"]);
 var OPEN_CLASSES = /* @__PURE__ */ new Set(["door", "window", "opening", "garage_door"]);

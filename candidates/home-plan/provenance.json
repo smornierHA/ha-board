@@ -1,10 +1,10 @@
 {
-  "version": "0.17.0-rc.1",
+  "version": "0.17.0-rc.2",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
       "bytes": 120247,
-      "sha256": "68562b92fb37e091e43d60c54d7c5d4f98c6eb7886685afd90784ce3d3650101"
+      "sha256": "863a94f2ae5454fb3a9d6251e250d680b846ded5478ee99638ce7f50cf6bdc86"
     },
     "src/candidate/home-plan-card.css": {
       "bytes": 46089,
@@ -12,15 +12,15 @@
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 666,
-      "sha256": "fbb7953422649aa77e115a14ab5ff35c174d989cb96a8afa3a3b19b67815c99f"
+      "sha256": "0c3ee2ab568a682c15c7bfaffbd36d0d0f30b4a5780b5d0edf763b382ecac87e"
     },
     "tests/home-plan-browser.mjs": {
       "bytes": 55720,
       "sha256": "3dbef6b87932cb3809b253aaa8f6c79dc0dae5d824105f68478aa327d60c8cf5"
     },
     "candidates/home-plan/home-plan-card.js": {
-      "bytes": 328172,
-      "sha256": "85dfe21b850b6f3f97c0ae551903800849cdd19e409899646abeb42cc746d09f"
+      "bytes": 329635,
+      "sha256": "e8ae6e8f45ff2d34c95d7783b874def4b92178ad7cd584d1c354e41c1074081f"
     },
     "src/candidate/home-plan-notices.js": {
       "bytes": 9960,
@@ -59,8 +59,8 @@
       "sha256": "72b054249ab7368587054de40230a0cc38c8bf8a11ab049e582a94186a3c4a6b"
     },
     "src/candidate/home-plan-room-scene.js": {
-      "bytes": 54056,
-      "sha256": "37ad85f4e08446caa92c2edfa466df686a1907e0f046845792beeb25f4eac160"
+      "bytes": 55062,
+      "sha256": "6fd6de719a0e3c4ead2fc792d9f6a9d5cb1a939b7c977bf01034f8a2e50e7d30"
     },
     "src/candidate/home-plan-media.js": {
       "bytes": 1745,
@@ -75,8 +75,8 @@
       "sha256": "33f957f703514a098da616ba687914031487713ef8e3ac980e15db2829891895"
     },
     "tests/home-plan-room-models.mjs": {
-      "bytes": 4390,
-      "sha256": "e8c16d5ef3ad456a5c188f8cf5f119079b0e6184cb9ec4f081a5f090df0865bf"
+      "bytes": 5694,
+      "sha256": "6bc5fe7ad988e23a4a9516b6e4a398373e67235507e176ddc2eb5d1d6486f5ec"
     },
     "tests/home-plan-media.mjs": {
       "bytes": 2548,
@@ -105,14 +105,14 @@
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "12 local suites passed, including 14 browser groups; private two-room desktop/mobile views and gallery verified. No device actions.",
+  "tests": "Three focused suites passed; private corrected geometry, 320/390/1150 widths, day/night, 2D/3D, fixed mobile stage and camera reset verified. Unchanged prior evidence retained.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,
   "notices": "docs/HOME-PLAN-NOTICES.md; BSD-3-Clause embedded in the standalone bundle",
   "date": "2026-10-31",
-  "base_commit": "b30831db0e48340ec0502caec20cc9db9663a29e",
-  "bundle_sha256": "85dfe21b850b6f3f97c0ae551903800849cdd19e409899646abeb42cc746d09f",
+  "base_commit": "be6bc7506321a10eebef8973f45eec3cc847b791",
+  "bundle_sha256": "e8ae6e8f45ff2d34c95d7783b874def4b92178ad7cd584d1c354e41c1074081f",
   "installed_candidate": true,
   "pc_accounts": "Existing native personal sections and user visibility retained; no account creation in this revision."
 }

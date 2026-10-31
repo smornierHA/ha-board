@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-31",
+  "candidate_version": "0.17.0-rc.2",
+  "base_commit": "be6bc7506321a10eebef8973f45eec3cc847b791",
+  "bundle_sha256": "e8ae6e8f45ff2d34c95d7783b874def4b92178ad7cd584d1c354e41c1074081f",
+  "tests": [
+    {
+      "suite": "room-models",
+      "exit": 0
+    },
+    {
+      "suite": "room-explorer",
+      "exit": 0
+    },
+    {
+      "suite": "object-interaction",
+      "exit": 0
+    }
+  ],
+  "private_qa": {
+    "widths": [
+      320,
+      390,
+      1150
+    ],
+    "views": [
+      "2d",
+      "3d"
+    ],
+    "day_and_night": true,
+    "whole_floor_and_equipment_anchors_visible": true,
+    "mobile_stage_fixed": true,
+    "camera_reset": true,
+    "runtime_errors": 0
+  },
+  "installed": {
+    "files_readback_equal": 4,
+    "changed_url_fields": 7,
+    "exact_dashboard_delta": true,
+    "other_resources_preserved": 43,
+    "personal_visibility_preserved": true
+  },
+  "physical_commands": false,
+  "real_native_browser_render": false,
+  "real_ios_acceptance": false,
+  "ci_run": false,
+  "merged": false,
+  "hacs_release": false,
+  "privacy": "Only generic frontend code and fictional fixtures are public; measured geometry and original attachments remain private."
+}
