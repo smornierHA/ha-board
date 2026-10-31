@@ -76,3 +76,7 @@ Les sources à la racine de `src/` sont les originaux immuables de l’import in
 
 ## Exigences de recette et interface adoptées localement
 Chaque carte dispose d’un éditeur visuel natif, d’un nom sans version et d’un lien de documentation ; README présente le catalogue et un bouton HACS. Tester le bundle réellement livré, y compris carte native non encore définie. La CI simulée et l’installation HACS ne prouvent pas le rendu. Les sources originales src/ restent immuables. Toute future publication part d’un nouveau SHA intégré testé ; release stable seulement après la recette ciblée d’ACCEPTANCE. Ces règles ne revendiquent pas une adoption complète du socle.
+
+## Plan — point courant du 31 octobre 2026
+
+Le candidat autonome installé est **0.15.0-rc.1** : taille du plan mobile constante, commandes en dessous, objets triés en une ligne, vignette navigable, engrenage lumière en en-tête, compteur attaché lisible et état Art contradictoire traité. Alias TV regroupés dans le plan ; intégrations complémentaires conservées. Deux consoles procédurales et modèles privés ajustés. Onze suites locales, 14 groupes navigateur et deux pièces privées sur ordinateur/mobile vérifiés ; cinq fichiers natifs relus, delta exact et 43 autres ressources conservées. Les deux cartes personnelles sont actualisées. Pas de fusion, release HACS, commande physique ni recette réelle iOS/comptes enfants. Preuve : `evidence/home-plan-mobile-media-2026-10-31.json`.

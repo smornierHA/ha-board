@@ -3,8 +3,8 @@ const known=s=>!!s&&!['unknown','unavailable',''].includes(s.state);
 const text=v=>String(v??'').toLowerCase().replace(/[ _-]/g,'');
 export function isArtMode(s){
  const value=s?.attributes?.art_mode_status;
- if(value!==undefined&&value!==null)return value===true||['on','true','art','artmode'].includes(text(value));
- return [s?.attributes?.app_id,s?.attributes?.source].some(v=>['art','artmode','com.samsung.tv.art'].includes(text(v)));
+ // The running app can report Art while the websocket status still says off.
+ return value===true||['on','true','art','artmode'].includes(text(value))||[s?.attributes?.app_id,s?.attributes?.source].some(v=>['art','artmode','com.samsung.tv.art'].includes(text(v)));
 }
 export function mediaPolicy(id,options=[]){return options.find(p=>p.entity===id||p.aliases?.includes(id))||{};}
 export function mediaPresentation(id,getState,options=[]){
