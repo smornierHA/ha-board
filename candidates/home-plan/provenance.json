@@ -1,18 +1,18 @@
 {
-  "version": "0.15.0-rc.1",
+  "version": "0.16.0-rc.1",
   "standalone_candidate": true,
   "files": {
     "src/candidate/home-plan-card.js": {
-      "bytes": 116149,
-      "sha256": "95c902383cd7a449df93fed4a89ad1d3516db4bcae55ee4246df98432814d5df"
+      "bytes": 115175,
+      "sha256": "66a4e273d3e65eeaa71b7df311ef6aca9c58a379ad0195f8c6adcbc36ab778fa"
     },
     "src/candidate/home-plan-card.css": {
-      "bytes": 44604,
-      "sha256": "af5766ac9f7d838f7db13fff2570f071517d3ffa51cce1a6d07e9de818eee190"
+      "bytes": 44402,
+      "sha256": "b059d5373fce53358ab372f638386dc3d7fe35d742830c2ddd8e0b856ddd8508"
     },
     "scripts/build_home_plan.mjs": {
       "bytes": 666,
-      "sha256": "9b46401ec2c12d1ca3a8e43f0265aae2e57b0421f7291ac185c40a35e51d044b"
+      "sha256": "85b1312e1b0ac2c0825a7e3c04a0eb82626a96f70120799e1cb72078d4a5824a"
     },
     "tests/home-plan-browser.mjs": {
       "bytes": 55341,
@@ -59,8 +59,8 @@
       "sha256": "72b054249ab7368587054de40230a0cc38c8bf8a11ab049e582a94186a3c4a6b"
     },
     "src/candidate/home-plan-room-scene.js": {
-      "bytes": 52192,
-      "sha256": "3e31fa9687e9b9337130f8a77e33ec939b169d64fac83ca8f8e5ed105a214ff7"
+      "bytes": 52957,
+      "sha256": "96a672629bfb2cb7fbd46abd5e26aa9e6462d93aa4837e715a8053bfa0b54e7c"
     },
     "src/candidate/home-plan-media.js": {
       "bytes": 1745,
@@ -71,27 +71,40 @@
       "sha256": "46e80528aff708bc673f0084664a6ce6c5c08366fbecdaf90217472a878d72bc"
     },
     "tests/home-plan-room-explorer.mjs": {
-      "bytes": 10449,
-      "sha256": "c01a2fe76eca0288bcafff6e29ab130fac177b9108165cce8c40f960fae153ed"
+      "bytes": 10847,
+      "sha256": "33f957f703514a098da616ba687914031487713ef8e3ac980e15db2829891895"
     },
     "tests/home-plan-room-models.mjs": {
-      "bytes": 4136,
-      "sha256": "1aa08b5c5953472225fd4c0a2325698a8332384a52d6b92b8d89e32646f7a820"
+      "bytes": 4177,
+      "sha256": "38751a5435ca4db9a4533b20d4150a2c3de9038216d584a261c7d872581085a3"
     },
     "tests/home-plan-media.mjs": {
       "bytes": 2548,
       "sha256": "a3b4bf2e44d8ea696da8b33266486faa16c6e8609b808f8f69322dbd0f83b710"
+    },
+    "src/candidate/home-plan-pc-layout.js": {
+      "bytes": 2567,
+      "sha256": "b526a4b360e568dfc9d1b8d01ab642e30309a882379905f1fd02a6a27662757a"
+    },
+    "src/candidate/home-plan-pc-setup.js": {
+      "bytes": 9978,
+      "sha256": "f06605e0ebe6b019e7e4a5a27c0b15dffeb708cd3fc6273beea16c990ea2f54f"
+    },
+    "tests/home-plan-pc-setup.mjs": {
+      "bytes": 7454,
+      "sha256": "e6cc0269226cafcb1da89a5023fafd58fcca2ca3a10606c6d5333852b0fcb5d4"
     }
   },
   "domestic_assets_in_module": false,
   "runtime": "lit-element 4.2.0 and locked transitive runtime; BSD-3-Clause embedded",
-  "tests": "11 local suites passed, including 14 browser contract groups; private desktop/mobile 2-room render and fixed stage selection verified. Normal multiprocess Chromium 145 passed object/editor contracts after an in-process harness was killed by the environment. No device action or real iOS/child-session acceptance.",
+  "tests": "12 local suites passed including 14 browser groups. PC onboarding and shelf models rechecked after final refinements; private 2-room desktop/mobile grids, four-photo gallery and illustration passed. User creation tested only on service doubles, not executed for real.",
   "ci_run": false,
   "merged": false,
   "hacs_release": false,
   "notices": "docs/HOME-PLAN-NOTICES.md; BSD-3-Clause embedded in the standalone bundle",
   "date": "2026-10-31",
-  "base_commit": "e2a6b710aa903b2ab0954bac377c968a7db6f14d",
-  "bundle_sha256": "93921059ca036f95ac4e569d8bdbfa48cedbbc100c11cb0afe318b8bce4ecbb4",
-  "installed_candidate": true
+  "base_commit": "68fd29f56ebfe73a6e3ce968541ae9cee1d3b43a",
+  "bundle_sha256": "e56a5c11b2573adf61570c69de6ab95899a521f187b1c5ce5e19d78c315b533a",
+  "installed_candidate": true,
+  "pc_accounts": "Native administrator password-entry step pending; no real account created automatically."
 }
